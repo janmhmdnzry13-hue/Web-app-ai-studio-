@@ -1,0 +1,204 @@
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
+import { authService } from '../services/auth.service';
+import { userService } from '../services/user.service';
+import {
+  AuthSession,
+  LoginCredentials,
+  PasswordResetConfirmPayload,
+  PasswordResetRequestPayload,
+  PasswordResetResponse,
+  Profile,
+  SignupPayload,
+  User,
+  UserPreferences,
+} from '../types/user.types';
+
+interface AuthContextValue {
+  session: AuthSession | null;
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
+  signup: (payload: SignupPayload) => Promise<{ success: boolean; error?: string }>;
+  loginAsDemo: () => Promise<void>;
+  logout: () => Promise<void>;
+  updateProfile: (profile: Partial<Profile>) => Promise<{ success: boolean; error?: string }>;
+  updateUserPreferences: (prefs: Partial<UserPreferences>) => Promise<void>;
+  requestPasswordReset: (payload: PasswordResetRequestPayload) => Promise<{ success: boolean; data?: PasswordResetResponse; error?: string }>;
+  confirmPasswordReset: (payload: PasswordResetConfirmPayload) => Promise<{ success: boolean; message?: string; error?: string }>;
+}
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<AuthSession | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    async function initSession() {
+      try {
+        const res = await authService.getCurrentSession();
+        if (res.success && res.data) {
+          setSession(res.data);
+        }
+      } catch {
+        // Fallback gracefully
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    initSession();
+  }, []);
+
+  const login = useCallback(async (credentials: LoginCredentials) => {
+    setIsLoading(true);
+    try {
+      const res = await authService.login(credentials);
+      if (res.success && res.data) {
+        setSession(res.data);
+        return { success: true };
+      }
+      return { success: false, error: res.error?.message || 'Login failed' };
+    } catch {
+      return { success: false, error: 'An unexpected error occurred during login' };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const signup = useCallback(async (payload: SignupPayload) => {
+    setIsLoading(true);
+    try {
+      const res = await authService.signup(payload);
+      if (res.success && res.data) {
+        setSession(res.data);
+        return { success: true };
+      }
+      return { success: false, error: res.error?.message || 'Signup failed' };
+    } catch {
+      return { success: false, error: 'An unexpected error occurred during signup' };
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const loginAsDemo = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await authService.createDemoSession();
+      if (res.success && res.data) {
+        setSession(res.data);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const logout = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      await authService.logout();
+      setSession(null);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const updateProfile = useCallback(
+    async (profileUpdates: Partial<Profile>) => {
+      if (!session?.user) {
+        return { success: false, error: 'No active session' };
+      }
+      const res = await userService.updateProfile(session.user.id, profileUpdates);
+      if (res.success && res.data) {
+        setSession((prev) => (prev ? { ...prev, user: res.data! } : null));
+        return { success: true };
+      }
+      return { success: false, error: res.error?.message || 'Failed to update profile' };
+    },
+    [session]
+  );
+
+  const updateUserPreferences = useCallback(
+    async (prefs: Partial<UserPreferences>) => {
+      if (!session?.user) return;
+      const res = await userService.updatePreferences(session.user.id, prefs);
+      if (res.success && res.data) {
+        setSession((prev) => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            user: {
+              ...prev.user,
+              preferences: res.data!,
+            },
+          };
+        });
+      }
+    },
+    [session]
+  );
+
+  const requestPasswordReset = useCallback(async (payload: PasswordResetRequestPayload) => {
+    try {
+      const res = await authService.requestPasswordReset(payload);
+      if (res.success && res.data) {
+        return { success: true, data: res.data };
+      }
+      return { success: false, error: res.error?.message || 'Password reset request failed' };
+    } catch {
+      return { success: false, error: 'Unexpected error during password reset request' };
+    }
+  }, []);
+
+  const confirmPasswordReset = useCallback(async (payload: PasswordResetConfirmPayload) => {
+    try {
+      const res = await authService.confirmPasswordReset(payload);
+      if (res.success && res.data) {
+        return { success: true, message: res.data.message };
+      }
+      return { success: false, error: res.error?.message || 'Password reset confirmation failed' };
+    } catch {
+      return { success: false, error: 'Unexpected error resetting password' };
+    }
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      session,
+      user: session?.user ?? null,
+      isAuthenticated: !!session?.token,
+      isLoading,
+      login,
+      signup,
+      loginAsDemo,
+      logout,
+      updateProfile,
+      updateUserPreferences,
+      requestPasswordReset,
+      confirmPasswordReset,
+    }),
+    [
+      session,
+      isLoading,
+      login,
+      signup,
+      loginAsDemo,
+      logout,
+      updateProfile,
+      updateUserPreferences,
+      requestPasswordReset,
+      confirmPasswordReset,
+    ]
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth(): AuthContextValue {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

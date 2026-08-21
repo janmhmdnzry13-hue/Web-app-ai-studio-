@@ -1,0 +1,6 @@
+{
+  "name": "ORIGIN - Personal Life OS",
+  "description": "A modern AI-powered personal life operating system foundation for tasks, goals, habits, finances, emotions, relationships, notes, and insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
