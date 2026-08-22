@@ -184,8 +184,8 @@ export function calculateHabitStreak(
 
 export class HabitService extends BaseService implements IHabitService {
   private async resolveUserId(providedUserId?: string): Promise<string> {
-    if (providedUserId && !providedUserId.includes('@') && providedUserId.startsWith('usr_')) {
-      return providedUserId;
+    if (providedUserId && typeof providedUserId === 'string' && providedUserId.trim().length > 0) {
+      return providedUserId.trim();
     }
     const sessionRes = await authService.getCurrentSession();
     if (sessionRes.data?.user?.id) {
@@ -315,16 +315,15 @@ export class HabitService extends BaseService implements IHabitService {
       if (!dto || !dto.name || dto.name.trim().length === 0) {
         return this.failure('HABIT_VALIDATION_ERROR', 'Habit name is required.');
       }
-      if (!dto.routine || dto.routine.trim().length === 0) {
-        return this.failure('HABIT_VALIDATION_ERROR', 'Habit routine is required.');
-      }
+
+      const routineText = (dto.routine && dto.routine.trim().length > 0) ? dto.routine.trim() : dto.name.trim();
 
       const habits = this.getStoredHabits(userId);
       const newHabit: Habit = {
         id: generateId('hab'),
         userId,
         name: dto.name.trim(),
-        routine: dto.routine.trim(),
+        routine: routineText,
         cue: '',
         reward: '',
         category: dto.category || 'General',

@@ -16,8 +16,14 @@ import { AppOverviewPage } from './pages/app/AppOverviewPage';
 import { TasksPage } from './pages/app/TasksPage';
 import { GoalsPage } from './pages/app/GoalsPage';
 import { HabitsPage } from './pages/app/HabitsPage';
+import { FinancesPage } from './pages/app/FinancesPage';
+import { EmotionsPage } from './pages/app/EmotionsPage';
+import { RelationshipsPage } from './pages/app/RelationshipsPage';
+import { NotesPage } from './pages/app/NotesPage';
+import { InsightsPage } from './pages/app/InsightsPage';
 import { ArchitecturePage } from './pages/app/ArchitecturePage';
 import { SettingsPage } from './pages/app/SettingsPage';
+import { AIPage } from './pages/app/AIPage';
 import { ModulePlaceholderPage } from './pages/app/ModulePlaceholderPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { GenericErrorPage } from './pages/GenericErrorPage';
@@ -51,12 +57,12 @@ export default function App() {
                     <Route path="tasks" element={<TasksPage />} />
                     <Route path="goals" element={<GoalsPage />} />
                     <Route path="habits" element={<HabitsPage />} />
-                    <Route path="finances" element={<ModulePlaceholderPage />} />
-                    <Route path="emotions" element={<ModulePlaceholderPage />} />
-                    <Route path="relationships" element={<ModulePlaceholderPage />} />
-                    <Route path="notes" element={<ModulePlaceholderPage />} />
-                    <Route path="ai" element={<ModulePlaceholderPage />} />
-                    <Route path="insights" element={<ModulePlaceholderPage />} />
+                    <Route path="finances" element={<FinancesPage />} />
+                    <Route path="emotions" element={<EmotionsPage />} />
+                    <Route path="relationships" element={<RelationshipsPage />} />
+                    <Route path="notes" element={<NotesPage />} />
+                    <Route path="insights" element={<InsightsPage />} />
+                    <Route path="ai" element={<AIPage />} />
                     <Route path="architecture" element={<ArchitecturePage />} />
                     <Route path="settings" element={<SettingsPage />} />
                   </Route>

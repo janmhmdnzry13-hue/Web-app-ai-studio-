@@ -3,6 +3,7 @@ import { cn } from '../../lib/utils';
 
 export type BadgeVariant =
   | 'default'
+  | 'primary'
   | 'secondary'
   | 'outline'
   | 'success'
@@ -21,6 +22,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 export function Badge({ className, variant = 'default', size = 'sm', children, ...props }: BadgeProps) {
   const variants: Record<BadgeVariant, string> = {
     default: 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900',
+    primary: 'bg-emerald-600 text-white dark:bg-emerald-500 dark:text-neutral-950 font-medium',
     secondary: 'bg-neutral-100 text-neutral-800 dark:bg-neutral-800 dark:text-neutral-200',
     outline: 'border border-neutral-300 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 bg-transparent',
     success: 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/60',

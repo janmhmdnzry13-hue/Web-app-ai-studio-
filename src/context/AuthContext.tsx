@@ -26,6 +26,8 @@ interface AuthContextValue {
   updateUserPreferences: (prefs: Partial<UserPreferences>) => Promise<void>;
   requestPasswordReset: (payload: PasswordResetRequestPayload) => Promise<{ success: boolean; data?: PasswordResetResponse; error?: string }>;
   confirmPasswordReset: (payload: PasswordResetConfirmPayload) => Promise<{ success: boolean; message?: string; error?: string }>;
+  exportUserData: () => Promise<{ success: boolean; data?: unknown; error?: string }>;
+  deleteAccount: () => Promise<{ success: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -163,6 +165,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const exportUserData = useCallback(async () => {
+    if (!session?.user?.id) {
+      return { success: false, error: 'No authenticated user session found.' };
+    }
+    try {
+      const res = await userService.exportFullUserData(session.user.id);
+      if (res.success && res.data) {
+        return { success: true, data: res.data };
+      }
+      return { success: false, error: res.error?.message || 'Export failed.' };
+    } catch {
+      return { success: false, error: 'Unexpected error during user data export.' };
+    }
+  }, [session]);
+
+  const deleteAccount = useCallback(async () => {
+    if (!session?.user?.id) {
+      return { success: false, error: 'No authenticated user session found.' };
+    }
+    try {
+      const res = await userService.deleteAccount(session.user.id);
+      if (res.success) {
+        setSession(null);
+        return { success: true };
+      }
+      return { success: false, error: res.error?.message || 'Account deletion failed.' };
+    } catch {
+      return { success: false, error: 'Unexpected error deleting account.' };
+    }
+  }, [session]);
+
   const value = useMemo(
     () => ({
       session,
@@ -177,6 +210,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserPreferences,
       requestPasswordReset,
       confirmPasswordReset,
+      exportUserData,
+      deleteAccount,
     }),
     [
       session,
@@ -189,6 +224,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       updateUserPreferences,
       requestPasswordReset,
       confirmPasswordReset,
+      exportUserData,
+      deleteAccount,
     ]
   );
 

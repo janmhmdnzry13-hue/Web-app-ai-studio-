@@ -126,8 +126,8 @@ const STARTER_GOALS: readonly Omit<Goal, 'id' | 'userId' | 'createdAt' | 'update
 
 export class GoalService extends BaseService implements IGoalService {
   private async resolveUserId(providedUserId?: string): Promise<string> {
-    if (providedUserId && !providedUserId.includes('@') && providedUserId.startsWith('usr_')) {
-      return providedUserId;
+    if (providedUserId && typeof providedUserId === 'string' && providedUserId.trim().length > 0) {
+      return providedUserId.trim();
     }
     const sessionRes = await authService.getCurrentSession();
     if (sessionRes.data?.user?.id) {

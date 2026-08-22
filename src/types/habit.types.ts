@@ -41,7 +41,7 @@ export interface HabitLog extends UserScopedEntity {
 
 export interface CreateHabitDTO {
   readonly name: string;
-  readonly routine: string;
+  readonly routine?: string;
   readonly frequency: HabitFrequency;
   readonly timeOfDay?: HabitTimeOfDay;
   readonly targetUnits?: number;

@@ -7,6 +7,7 @@ export type GoalCategory =
   | 'health_vitality'
   | 'career_craft'
   | 'financial_freedom'
+  | 'financial_growth'
   | 'mind_learning'
   | 'relationships_community'
   | 'creative_expression'

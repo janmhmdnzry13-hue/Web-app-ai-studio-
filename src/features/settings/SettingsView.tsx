@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useToast } from '../../context/ToastContext';
@@ -9,6 +10,7 @@ import { Input } from '../../components/ui/Input';
 import { Textarea } from '../../components/ui/Textarea';
 import { Checkbox } from '../../components/ui/Checkbox';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/Tabs';
+import { Badge } from '../../components/ui/Badge';
 import { envConfig } from '../../config/env.config';
 import {
   Sun,
@@ -20,6 +22,10 @@ import {
   Shield,
   Download,
   Globe,
+  Trash2,
+  AlertTriangle,
+  Sparkles,
+  Bot,
 } from 'lucide-react';
 
 const AVATAR_PRESETS = [
@@ -30,7 +36,8 @@ const AVATAR_PRESETS = [
 ];
 
 export function SettingsView() {
-  const { user, updateProfile, updateUserPreferences } = useAuth();
+  const navigate = useNavigate();
+  const { user, updateProfile, updateUserPreferences, exportUserData, deleteAccount } = useAuth();
   const { theme, setTheme } = useTheme();
   const { success, error, info } = useToast();
 
@@ -53,6 +60,11 @@ export function SettingsView() {
   // Notification state
   const [inAppNotifs, setInAppNotifs] = useState(user?.preferences.notificationChannels.inApp ?? true);
   const [dailyDigest, setDailyDigest] = useState(user?.preferences.notificationChannels.dailyDigest ?? true);
+
+  // Account Deletion State
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   // Sync state when user changes
   useEffect(() => {
@@ -116,35 +128,51 @@ export function SettingsView() {
     }
   };
 
-  const handleExportData = () => {
-    const exportPayload = {
-      app: 'ORIGIN OS',
-      version: envConfig.appVersion,
-      exportedAt: new Date().toISOString(),
-      user: {
-        id: user?.id,
-        email: user?.email,
-        profile: { displayName, headline, bio, avatarUrl, primaryLifeFocus },
-        preferences: {
-          theme,
-          timezone,
-          weekStartDay,
-          reducedMotion,
-          compactDensity,
-          notificationChannels: { inApp: inAppNotifs, dailyDigest },
-        },
-      },
-      status: 'Phase 2 Real Core Export Archive',
-    };
+  const handleExportData = async () => {
+    setIsExporting(true);
+    try {
+      const res = await exportUserData();
+      if (!res.success || !res.data) {
+        error('Export Failed', res.error || 'Failed to assemble export archive.');
+        return;
+      }
 
-    const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `origin_data_export_${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-    success('Data Export Generated', 'Your configuration was saved to a JSON file.');
+      const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const dateStr = new Date().toISOString().split('T')[0];
+      link.download = `origin_full_export_${user?.id || 'me'}_${dateStr}.json`;
+      link.click();
+      URL.revokeObjectURL(url);
+      success('Complete Data Export Generated', 'Your full multi-domain database has been exported.');
+    } catch {
+      error('Export Error', 'An unexpected error occurred during export.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    if (deleteConfirmText.trim().toUpperCase() !== 'DELETE') {
+      error('Confirmation Mismatch', 'Please type DELETE in all uppercase to confirm.');
+      return;
+    }
+
+    setIsDeletingAccount(true);
+    try {
+      const res = await deleteAccount();
+      if (res.success) {
+        success('Account Permanently Deleted', 'All data stores associated with your identity have been erased.');
+        navigate('/auth/login');
+      } else {
+        error('Deletion Failed', res.error || 'Could not complete account deletion.');
+      }
+    } catch {
+      error('Deletion Error', 'An error occurred during account deletion.');
+    } finally {
+      setIsDeletingAccount(false);
+    }
   };
 
   return (
@@ -172,8 +200,11 @@ export function SettingsView() {
           <TabsTrigger value="notifications" leftIcon={<Bell className="h-3.5 w-3.5" />}>
             Notifications
           </TabsTrigger>
+          <TabsTrigger value="ai" leftIcon={<Sparkles className="h-3.5 w-3.5" />}>
+            AI Co-Pilot
+          </TabsTrigger>
           <TabsTrigger value="data" leftIcon={<Shield className="h-3.5 w-3.5" />}>
-            Data Sovereignty
+            Data & Privacy
           </TabsTrigger>
         </TabsList>
 
@@ -462,7 +493,56 @@ export function SettingsView() {
           </Card>
         </TabsContent>
 
-        {/* Tab 6: Data & Privacy */}
+        {/* Tab 6: AI Co-Pilot */}
+        <TabsContent value="ai" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>AI Co-Pilot & Directives</CardTitle>
+              <CardDescription>
+                Configure intelligence model execution, user directives, and domain grounding privacy.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5 max-w-2xl">
+              <div className="p-4 rounded-xl border border-purple-500/20 bg-purple-500/5 dark:bg-purple-950/20 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Bot className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                    <span className="text-xs font-bold text-neutral-900 dark:text-neutral-100">
+                      ORIGIN Intelligence Architecture
+                    </span>
+                  </div>
+                  <Badge variant="primary" size="sm">Gemini 2.5 Flash</Badge>
+                </div>
+                <p className="text-xs text-neutral-600 dark:text-neutral-300">
+                  ORIGIN runs server-side AI proxying with zero client-side credential leakage. Context is dynamically filtered so the AI only receives entities strictly relevant to your current prompt intent.
+                </p>
+                <div className="pt-1">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => navigate('/app/ai')}
+                    leftIcon={<Sparkles className="h-3.5 w-3.5 text-purple-500" />}
+                  >
+                    Open AI Studio & Memory Directives
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-3 border-t border-neutral-200 dark:border-neutral-800 pt-4">
+                <h4 className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">
+                  Safety & Mutation Policy
+                </h4>
+                <ul className="text-xs text-neutral-600 dark:text-neutral-400 space-y-2 list-disc pl-4">
+                  <li><strong>Gated Mutations:</strong> AI can never modify tasks, goals, habits, or transactions without your explicit confirmation.</li>
+                  <li><strong>Domain Minimization:</strong> Intent classifier strips unrequested modules (e.g. asking about tasks never attaches relationship notes).</li>
+                  <li><strong>Client Safety:</strong> API keys are strictly hosted in backend container environment variables.</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Tab 7: Data & Privacy */}
         <TabsContent value="data" className="space-y-6">
           <Card>
             <CardHeader>
@@ -478,7 +558,7 @@ export function SettingsView() {
                     Export Full Workspace Configuration
                   </h4>
                   <p className="text-xs text-neutral-500 dark:text-neutral-400">
-                    Generates an offline portable JSON backup containing your user preferences, tasks, habits, and goals.
+                    Generates an offline portable JSON backup containing your user preferences, tasks, habits, goals, finances, reflections, notes, and AI memories.
                   </p>
                 </div>
                 <Button
@@ -486,8 +566,9 @@ export function SettingsView() {
                   variant="secondary"
                   leftIcon={<Download className="h-3.5 w-3.5" />}
                   onClick={handleExportData}
+                  isLoading={isExporting}
                 >
-                  Download JSON
+                  Download Complete Archive
                 </Button>
               </div>
 
@@ -496,6 +577,56 @@ export function SettingsView() {
                 <p>Environment: {envConfig.isProduction ? 'Production' : 'Development Container'}</p>
                 <p>App Version: {envConfig.appVersion}</p>
                 <p>Client Security: Isolated User ID Scopes & Token Expiration Engine</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Danger Zone: Account Deletion */}
+          <Card className="border-rose-300 dark:border-rose-900/50 bg-rose-500/5 dark:bg-rose-950/20">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+                <CardTitle className="text-rose-900 dark:text-rose-100">Danger Zone: Permanent Account Deletion</CardTitle>
+              </div>
+              <CardDescription className="text-rose-700 dark:text-rose-300">
+                Irreversible destructive operation. Once deleted, all associated data cannot be recovered.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 max-w-xl">
+              <div className="p-3 rounded-lg bg-rose-100/50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-800 text-xs text-rose-800 dark:text-rose-200 space-y-1">
+                <p className="font-bold">This will permanently delete:</p>
+                <ul className="list-disc pl-4 space-y-0.5 text-[11px]">
+                  <li>All tasks, subtasks, projects, and backlog items</li>
+                  <li>All life goals, milestones, and progress history</li>
+                  <li>All atomic habits, completion logs, and streak metrics</li>
+                  <li>All financial transactions, category budgets, and cashflow records</li>
+                  <li>All reflections, energy check-ins, relationships, and knowledge notes</li>
+                  <li>All custom AI memories and conversation history</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-neutral-800 dark:text-neutral-200">
+                  Type <span className="font-mono font-bold text-rose-600 dark:text-rose-400">DELETE</span> to confirm:
+                </label>
+                <Input
+                  placeholder="DELETE"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  className="font-mono text-xs max-w-xs"
+                />
+              </div>
+
+              <div className="pt-1">
+                <Button
+                  variant="danger"
+                  leftIcon={<Trash2 className="h-3.5 w-3.5" />}
+                  disabled={deleteConfirmText.trim() !== 'DELETE'}
+                  isLoading={isDeletingAccount}
+                  onClick={handleDeleteAccount}
+                >
+                  Permanently Delete My Account & All Data
+                </Button>
               </div>
             </CardContent>
           </Card>

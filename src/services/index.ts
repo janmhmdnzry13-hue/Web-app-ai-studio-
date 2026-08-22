@@ -14,3 +14,4 @@ export * from './note.service';
 export * from './ai.service';
 export * from './notification.service';
 export * from './insight.service';
+export * from './search.service';

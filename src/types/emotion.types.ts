@@ -1,46 +1,60 @@
 /**
- * Emotion, Energy & Daily Reflection Domain Models
+ * Emotional Reflection & Energy Domain Models
+ * Sovereign, private self-reflection with mood, energy, and stress tracking.
  */
 import { DateOnlyString, EntityId, ISODateString, UserScopedEntity } from './common.types';
 
-export type MoodValence = 1 | 2 | 3 | 4 | 5; // 1 = Very Low, 5 = Peak / Thriving
-
-export type EnergyLevel = 1 | 2 | 3 | 4 | 5; // 1 = Depleted, 5 = Energized
+export type RatingScale1To5 = 1 | 2 | 3 | 4 | 5;
 
 export type PrimaryEmotion =
-  | 'joy'
   | 'calm'
-  | 'gratitude'
-  | 'focus'
-  | 'curiosity'
-  | 'fatigue'
-  | 'anxiety'
-  | 'frustration'
-  | 'sadness'
-  | 'overwhelm';
+  | 'focused'
+  | 'energized'
+  | 'grateful'
+  | 'joyful'
+  | 'neutral'
+  | 'anxious'
+  | 'fatigued'
+  | 'frustrated'
+  | 'overwhelmed'
+  | 'reflective';
 
-export interface EmotionEntry extends UserScopedEntity {
-  readonly mood: MoodValence;
-  readonly energy: EnergyLevel;
-  readonly primaryEmotion: PrimaryEmotion;
-  readonly tags: readonly string[]; // Context tags: e.g. ['deep_work', 'sleep_7h', 'exercise']
-  readonly note?: string;
+export interface EmotionReflectionEntry extends UserScopedEntity {
+  readonly date: DateOnlyString; // YYYY-MM-DD
+  readonly mood: RatingScale1To5; // 1 = Very Low / Distressed, 5 = High / Thriving
+  readonly energy: RatingScale1To5; // 1 = Depleted, 5 = High Vitality
+  readonly stress: RatingScale1To5; // 1 = Very Low / Calm, 5 = Very High Stress
+  readonly primaryEmotion?: PrimaryEmotion;
+  readonly reflection: string; // Core guided prompt or summary reflection
+  readonly journalEntry: string; // Full freeform private journal entry
+  readonly tags: readonly string[]; // e.g. ['deep_work', 'walk_in_nature', 'good_sleep']
   readonly loggedAt: ISODateString;
 }
 
-export interface ReflectionPromptAnswer {
-  readonly promptId: string;
-  readonly question: string;
-  readonly answer: string;
+export type EmotionalReflection = EmotionReflectionEntry;
+
+export interface ReflectionTrendSummary {
+  readonly averageMood: number;
+  readonly averageEnergy: number;
+  readonly averageStress: number;
+  readonly entryCount: number;
+  readonly streakDays: number;
+  readonly dominantEmotion?: PrimaryEmotion;
+  readonly dateRange: {
+    readonly start: DateOnlyString;
+    readonly end: DateOnlyString;
+  };
 }
 
-export interface DailyReflection extends UserScopedEntity {
-  readonly date: DateOnlyString; // YYYY-MM-DD
-  readonly morningIntent?: string;
-  readonly eveningWins: readonly string[];
-  readonly learnedLesson?: string;
-  readonly gratitudeList: readonly string[];
-  readonly overallRating: number; // 1-10
-  readonly answers: readonly ReflectionPromptAnswer[];
-  readonly completedAt: ISODateString;
+export interface CreateReflectionDTO {
+  readonly date: DateOnlyString;
+  readonly mood: RatingScale1To5;
+  readonly energy: RatingScale1To5;
+  readonly stress: RatingScale1To5;
+  readonly primaryEmotion?: PrimaryEmotion;
+  readonly reflection: string;
+  readonly journalEntry?: string;
+  readonly tags?: readonly string[];
 }
+
+export interface UpdateReflectionDTO extends Partial<CreateReflectionDTO> {}

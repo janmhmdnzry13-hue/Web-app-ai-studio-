@@ -90,8 +90,8 @@ const STARTER_TASKS: readonly Omit<Task, 'id' | 'userId' | 'createdAt' | 'update
 
 export class TaskService extends BaseService implements ITaskService {
   private async resolveUserId(providedUserId?: string): Promise<string> {
-    if (providedUserId && !providedUserId.includes('@') && providedUserId.startsWith('usr_')) {
-      return providedUserId;
+    if (providedUserId && typeof providedUserId === 'string' && providedUserId.trim().length > 0) {
+      return providedUserId.trim();
     }
     const sessionRes = await authService.getCurrentSession();
     if (sessionRes.data?.user?.id) {

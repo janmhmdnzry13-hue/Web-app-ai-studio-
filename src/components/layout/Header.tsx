@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useShell } from '../../context/ShellContext';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { SYSTEM_MODULES } from '../../config/constants';
+import { notificationService } from '../../services/notification.service';
+import { NotificationCenter } from '../../features/notifications/NotificationCenter';
 import {
   Menu,
   Search,
@@ -23,6 +25,23 @@ export function Header() {
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [isNotifCenterOpen, setIsNotifCenterOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Poll / check unread notification count
+  useEffect(() => {
+    if (!user?.id) return;
+    const checkCount = async () => {
+      const countRes = await notificationService.getUnreadCount(user.id);
+      if (countRes.success) {
+        setUnreadCount(countRes.data || 0);
+      }
+    };
+    checkCount();
+    const interval = setInterval(checkCount, 15000);
+    return () => clearInterval(interval);
+  }, [user?.id, isNotifCenterOpen]);
 
   // Find active module metadata based on current pathname
   const currentModule = SYSTEM_MODULES.find((m) => m.path === location.pathname) || {
@@ -89,7 +108,7 @@ export function Header() {
           className="flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/60 px-3 py-1.5 text-xs text-neutral-500 dark:text-neutral-400 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors cursor-pointer"
         >
           <Search className="h-3.5 w-3.5" />
-          <span className="hidden md:inline">Quick command...</span>
+          <span className="hidden md:inline">Global search...</span>
           <kbd className="hidden md:inline-flex items-center gap-0.5 rounded bg-neutral-200/70 dark:bg-neutral-800 px-1.5 py-0.2 font-mono text-[10px] text-neutral-600 dark:text-neutral-300">
             ⌘K
           </kbd>
@@ -105,18 +124,20 @@ export function Header() {
           {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </button>
 
-        {/* Notifications Icon with Badge */}
+        {/* Notifications Icon with Live Badge */}
         <button
           type="button"
-          onClick={() => navigate('/app/architecture')}
-          aria-label="Notifications"
-          className="relative rounded-lg p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors"
+          onClick={() => setIsNotifCenterOpen(true)}
+          aria-label="Notifications Center"
+          className="relative rounded-lg p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors cursor-pointer"
         >
           <Bell className="h-4 w-4" />
-          <span className="absolute right-1.5 top-1.5 flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-          </span>
+          {unreadCount > 0 && (
+            <span className="absolute right-1.5 top-1.5 flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500" />
+            </span>
+          )}
         </button>
 
         {/* Context Panel Toggle (Desktop) */}
@@ -149,6 +170,12 @@ export function Header() {
           align="right"
         />
       </div>
+
+      {/* Notification Center Modal */}
+      <NotificationCenter
+        isOpen={isNotifCenterOpen}
+        onClose={() => setIsNotifCenterOpen(false)}
+      />
     </header>
   );
 }

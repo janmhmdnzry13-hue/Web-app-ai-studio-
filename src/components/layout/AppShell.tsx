@@ -6,6 +6,7 @@ import { ContextPanel } from './ContextPanel';
 import { BottomNav } from './BottomNav';
 import { CommandPalette } from '../ui/CommandPalette';
 import { ToastContainer } from '../ui/Toast';
+import { FloatingAIAssistant } from '../ai/FloatingAIAssistant';
 import { useShell } from '../../context/ShellContext';
 import { SYSTEM_MODULES } from '../../config/constants';
 import { X, LogOut, Settings } from 'lucide-react';
@@ -136,7 +137,8 @@ export function AppShell() {
         </div>
       )}
 
-      {/* Global Command Palette and Toast Stack */}
+      {/* Global Command Palette, Floating AI Co-Pilot, and Toast Stack */}
+      <FloatingAIAssistant />
       <CommandPalette />
       <ToastContainer />
     </div>

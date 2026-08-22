@@ -1,13 +1,13 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
-import { Badge } from './Badge';
+import { Badge, BadgeVariant } from './Badge';
 
 export interface PageHeaderProps {
   title: string;
   description?: string;
   badge?: {
     label: string;
-    variant?: 'default' | 'secondary' | 'outline' | 'success' | 'warning' | 'info' | 'subtle';
+    variant?: BadgeVariant;
   };
   actions?: React.ReactNode;
   breadcrumbs?: { label: string; href?: string }[];
