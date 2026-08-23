@@ -299,9 +299,23 @@ export function SettingsView() {
                   rows={3}
                 />
 
-                <div className="pt-2">
+                <div className="pt-2 flex items-center justify-between">
                   <Button type="submit" isLoading={isSavingProfile}>
                     Save Operator Profile
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      if (user?.id) {
+                        localStorage.removeItem(`origin_onboarding_completed_${user.id}`);
+                        window.location.reload();
+                      }
+                    }}
+                    className="text-xs rounded-full"
+                  >
+                    Recalibrate Priorities & Onboarding
                   </Button>
                 </div>
               </form>

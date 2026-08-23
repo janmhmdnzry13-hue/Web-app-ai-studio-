@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
 import { aiService } from '../../services/ai.service';
@@ -23,12 +23,13 @@ import {
   Layers,
   Info,
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export function FloatingAIAssistant() {
   const { user } = useAuth();
   const { success, error, info } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<AIMessage[]>([]);
@@ -42,6 +43,65 @@ export function FloatingAIAssistant() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Dynamic contextual prompt chips according to current screen
+  const contextualPrompts = useMemo(() => {
+    const p = location.pathname;
+    if (p.includes('/tasks')) {
+      return [
+        'Prioritize my active tasks for maximum impact',
+        'Break down my top task into micro-actions',
+        'Suggest focus sequence for today',
+      ];
+    }
+    if (p.includes('/habits')) {
+      return [
+        'Analyze my ritual consistency trend',
+        'Suggest an effortless morning habit stack',
+        'How to recover momentum after a missed day',
+      ];
+    }
+    if (p.includes('/goals')) {
+      return [
+        'Review my quarterly milestone pacing',
+        'Break this goal into 3 tangible milestones',
+        'Evaluate if my active goals are balanced',
+      ];
+    }
+    if (p.includes('/finances')) {
+      return [
+        'Analyze my net monthly cash flow',
+        'Suggest realistic budget thresholds',
+        'Identify largest expense categories',
+      ];
+    }
+    if (p.includes('/emotions')) {
+      return [
+        'Guide me through a calm evening reflection',
+        'Help me process stress and recalibrate',
+        'Mindful reflection for clarity',
+      ];
+    }
+    if (p.includes('/notes')) {
+      return [
+        'Synthesize core themes across my notes',
+        'Summarize recent insights into key takeaways',
+        'Suggest connections between ideas',
+      ];
+    }
+    if (p.includes('/relationships')) {
+      return [
+        'Who should I reach out to this week?',
+        'Suggest meaningful connection ideas',
+      ];
+    }
+    // Default / Home
+    return [
+      'What should I focus on right now?',
+      'Help me plan a calm, productive day',
+      'Give me an evening progress debrief',
+    ];
+  }, [location.pathname]);
 
   // Initialize conversations and prompt templates
   useEffect(() => {
@@ -361,21 +421,22 @@ export function FloatingAIAssistant() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Starter Templates */}
-          {messages.length <= 2 && (
-            <div className="px-4 py-2 border-t border-neutral-100 dark:border-[rgba(240,238,230,0.06)] bg-neutral-50/50 dark:bg-[#141C20]/40 overflow-x-auto whitespace-nowrap scrollbar-none flex gap-1.5">
-              {templates.slice(0, 4).map((tmpl) => (
-                <button
-                  key={tmpl.id}
-                  type="button"
-                  onClick={() => handleSendMessage(tmpl.prompt)}
-                  className="text-[11px] px-3 py-1 rounded-full border border-neutral-200/80 dark:border-[rgba(240,238,230,0.1)] bg-white dark:bg-[#1A2226] hover:border-[#D9822B] dark:hover:border-[#E3A857] text-neutral-700 dark:text-[#8D9793] transition-colors cursor-pointer"
-                >
-                  {tmpl.label}
-                </button>
-              ))}
-            </div>
-          )}
+          {/* Contextual & Starter Prompt Chips */}
+          <div className="px-4 py-2 border-t border-neutral-100 dark:border-[rgba(240,238,230,0.06)] bg-neutral-50/70 dark:bg-[#141C20]/50 overflow-x-auto whitespace-nowrap scrollbar-none flex items-center gap-1.5">
+            <span className="text-[10px] uppercase font-bold tracking-wider text-[#D9822B] dark:text-[#E3A857] shrink-0 mr-0.5">
+              Guide:
+            </span>
+            {contextualPrompts.map((promptText, idx) => (
+              <button
+                key={`ctx_${idx}`}
+                type="button"
+                onClick={() => handleSendMessage(promptText)}
+                className="text-[11px] px-3 py-1 rounded-full border border-neutral-200/80 dark:border-[rgba(240,238,230,0.1)] bg-white dark:bg-[#1A2226] hover:border-[#D9822B] dark:hover:border-[#E3A857] text-neutral-700 dark:text-[#8D9793] transition-colors cursor-pointer shrink-0 shadow-2xs"
+              >
+                {promptText}
+              </button>
+            ))}
+          </div>
 
           {/* Input Form */}
           <form

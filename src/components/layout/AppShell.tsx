@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
@@ -7,6 +7,7 @@ import { BottomNav } from './BottomNav';
 import { CommandPalette } from '../ui/CommandPalette';
 import { ToastContainer } from '../ui/Toast';
 import { FloatingAIAssistant } from '../ai/FloatingAIAssistant';
+import { OnboardingModal } from '../onboarding/OnboardingModal';
 import { useShell } from '../../context/ShellContext';
 import { SYSTEM_MODULES } from '../../config/constants';
 import { X, LogOut, Settings } from 'lucide-react';
@@ -29,6 +30,17 @@ export function AppShell() {
   const { isMobileMenuOpen, setMobileMenuOpen } = useShell();
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+
+  const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
+
+  useEffect(() => {
+    if (user?.id) {
+      const isCompleted = localStorage.getItem(`origin_onboarding_completed_${user.id}`);
+      if (!isCompleted) {
+        setIsOnboardingOpen(true);
+      }
+    }
+  }, [user?.id]);
 
   const iconMap: Record<string, React.ReactNode> = {
     LayoutDashboard: <LayoutDashboard className="h-4 w-4" />,
@@ -140,7 +152,11 @@ export function AppShell() {
         </div>
       )}
 
-      {/* Global Command Palette, Floating AI Co-Pilot, and Toast Stack */}
+      {/* Global Command Palette, Floating AI Co-Pilot, Onboarding, and Toast Stack */}
+      <OnboardingModal
+        isOpen={isOnboardingOpen}
+        onComplete={() => setIsOnboardingOpen(false)}
+      />
       <FloatingAIAssistant />
       <CommandPalette />
       <ToastContainer />
