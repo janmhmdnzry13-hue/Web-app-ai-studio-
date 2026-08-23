@@ -326,15 +326,27 @@ export function SettingsView() {
                     setTheme('light');
                     info('Light theme activated');
                   }}
-                  className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`relative flex flex-col items-center justify-center p-5 rounded-xl border text-center transition-all cursor-pointer ${
                     theme === 'light'
-                      ? 'border-neutral-900 bg-white ring-2 ring-neutral-900/10 shadow-xs'
-                      : 'border-neutral-200 bg-neutral-50/50 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/50'
+                      ? 'border-neutral-900 bg-white dark:bg-neutral-800 ring-2 ring-neutral-900 dark:ring-neutral-100 shadow-md'
+                      : 'border-neutral-200 bg-neutral-50/70 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/40 dark:hover:bg-neutral-900'
                   }`}
                 >
-                  <Sun className="h-6 w-6 text-neutral-800 mb-2" />
-                  <span className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">Light</span>
+                  {theme === 'light' && (
+                    <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-neutral-900 dark:bg-neutral-100 ring-2 ring-white dark:ring-neutral-900" />
+                  )}
+                  <div className="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-2.5">
+                    <Sun className="h-5 w-5" />
+                  </div>
+                  <span className="text-xs font-bold text-neutral-900 dark:text-neutral-100">Light</span>
                   <span className="text-[11px] text-neutral-500 mt-0.5">High contrast daytime</span>
+                  <span className={`mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                    theme === 'light'
+                      ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900'
+                      : 'bg-transparent text-transparent'
+                  }`}>
+                    Active
+                  </span>
                 </button>
 
                 <button
@@ -343,15 +355,27 @@ export function SettingsView() {
                     setTheme('dark');
                     info('Dark theme activated');
                   }}
-                  className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`relative flex flex-col items-center justify-center p-5 rounded-xl border text-center transition-all cursor-pointer ${
                     theme === 'dark'
-                      ? 'border-neutral-100 bg-neutral-900 ring-2 ring-neutral-100/10 shadow-xs'
-                      : 'border-neutral-200 bg-neutral-50/50 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/50'
+                      ? 'border-neutral-900 dark:border-neutral-100 bg-neutral-900 text-white ring-2 ring-neutral-900 dark:ring-neutral-100 shadow-md'
+                      : 'border-neutral-200 bg-neutral-50/70 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/40 dark:hover:bg-neutral-900'
                   }`}
                 >
-                  <Moon className="h-6 w-6 text-neutral-200 mb-2" />
-                  <span className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">Dark</span>
-                  <span className="text-[11px] text-neutral-500 mt-0.5">Eye-safe twilight</span>
+                  {theme === 'dark' && (
+                    <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-purple-400 ring-2 ring-neutral-900" />
+                  )}
+                  <div className="h-10 w-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-2.5">
+                    <Moon className="h-5 w-5" />
+                  </div>
+                  <span className={`text-xs font-bold ${theme === 'dark' ? 'text-white' : 'text-neutral-900 dark:text-neutral-100'}`}>Dark</span>
+                  <span className={`text-[11px] mt-0.5 ${theme === 'dark' ? 'text-neutral-300' : 'text-neutral-500'}`}>Eye-safe twilight</span>
+                  <span className={`mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                    theme === 'dark'
+                      ? 'bg-white text-neutral-900'
+                      : 'bg-transparent text-transparent'
+                  }`}>
+                    Active
+                  </span>
                 </button>
 
                 <button
@@ -360,15 +384,27 @@ export function SettingsView() {
                     setTheme('system');
                     info('System theme mode activated');
                   }}
-                  className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all cursor-pointer ${
+                  className={`relative flex flex-col items-center justify-center p-5 rounded-xl border text-center transition-all cursor-pointer ${
                     theme === 'system'
-                      ? 'border-neutral-900 dark:border-neutral-100 bg-white dark:bg-neutral-900 ring-2 ring-neutral-500/10 shadow-xs'
-                      : 'border-neutral-200 bg-neutral-50/50 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/50'
+                      ? 'border-neutral-900 dark:border-neutral-100 bg-neutral-100 dark:bg-neutral-800 ring-2 ring-neutral-900 dark:ring-neutral-100 shadow-md'
+                      : 'border-neutral-200 bg-neutral-50/70 hover:bg-white dark:border-neutral-800 dark:bg-neutral-900/40 dark:hover:bg-neutral-900'
                   }`}
                 >
-                  <Monitor className="h-6 w-6 text-neutral-600 dark:text-neutral-300 mb-2" />
-                  <span className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">System</span>
+                  {theme === 'system' && (
+                    <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-blue-500 ring-2 ring-white dark:ring-neutral-900" />
+                  )}
+                  <div className="h-10 w-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center mb-2.5">
+                    <Monitor className="h-5 w-5" />
+                  </div>
+                  <span className="text-xs font-bold text-neutral-900 dark:text-neutral-100">System</span>
                   <span className="text-[11px] text-neutral-500 mt-0.5">Follow OS preference</span>
+                  <span className={`mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                    theme === 'system'
+                      ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900'
+                      : 'bg-transparent text-transparent'
+                  }`}>
+                    Active
+                  </span>
                 </button>
               </div>
             </CardContent>

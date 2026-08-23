@@ -1,35 +1,54 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   :root {
+    color-scheme: light;
     --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Fraunces', Georgia, serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     
-    --bg-primary: #fafafa;
-    --bg-surface: #ffffff;
-    --bg-surface-elevated: #f4f4f5;
-    --bg-muted: #f4f4f5;
-    --border-subtle: #e4e4e7;
-    --border-default: #d4d4d8;
-    --text-primary: #18181b;
-    --text-secondary: #52525b;
-    --text-muted: #71717a;
-    --accent: #18181b;
-    --accent-contrast: #fafafa;
+    --bg-primary: #FAF8F5;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #F3EFEA;
+    --bg-muted: #F0ECE6;
+    --border-subtle: rgba(26, 34, 38, 0.08);
+    --border-default: rgba(26, 34, 38, 0.14);
+    --text-primary: #141C20;
+    --text-secondary: #5A6662;
+    --text-muted: #7A8782;
+    
+    --amber: #D9822B;
+    --amber-soft: rgba(217, 130, 43, 0.12);
+    --teal: #3D8B82;
+    --clay: #B56B48;
+    --sage: #6B8550;
+    
+    --accent: #141C20;
+    --accent-contrast: #FAF8F5;
   }
 
   .dark {
-    --bg-primary: #09090b;
-    --bg-surface: #121215;
-    --bg-surface-elevated: #18181b;
-    --bg-muted: #1e1e24;
-    --border-subtle: #27272a;
-    --border-default: #3f3f46;
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --accent: #fafafa;
-    --accent-contrast: #09090b;
+    color-scheme: dark;
+    --bg-primary: #10161A;
+    --bg-surface: #182024;
+    --bg-surface-elevated: #202A2E;
+    --bg-muted: #151D21;
+    --border-subtle: rgba(240, 238, 230, 0.08);
+    --border-default: rgba(240, 238, 230, 0.14);
+    --text-primary: #F0EEE6;
+    --text-secondary: #8D9793;
+    --text-muted: #707A75;
+    
+    --amber: #E3A857;
+    --amber-soft: rgba(227, 168, 87, 0.14);
+    --teal: #57ABA0;
+    --clay: #C97F5C;
+    --sage: #93AC78;
+    
+    --accent: #E3A857;
+    --accent-contrast: #10161A;
   }
 
   * {
@@ -49,9 +68,32 @@
   }
 }
 
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Background Mesh & Atmospheric Glows */
+.origin-mesh {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.65;
+  background:
+    radial-gradient(600px 420px at 10% -5%, rgba(227, 168, 87, 0.09), transparent 60%),
+    radial-gradient(550px 380px at 95% 15%, rgba(87, 171, 160, 0.07), transparent 60%);
+}
+
+.dark .origin-mesh {
+  opacity: 0.85;
+  background:
+    radial-gradient(600px 420px at 10% -5%, rgba(227, 168, 87, 0.12), transparent 60%),
+    radial-gradient(550px 380px at 95% 15%, rgba(87, 171, 160, 0.09), transparent 60%);
+}
+
 /* Accessibility: Focus outlines */
 :focus-visible {
-  outline: 2px solid #71717a;
+  outline: 2px solid var(--amber, #E3A857);
   outline-offset: 2px;
 }
 
@@ -78,10 +120,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(161, 161, 170, 0.4);
+  background: rgba(141, 151, 147, 0.3);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(161, 161, 170, 0.7);
+  background: rgba(141, 151, 147, 0.5);
 }

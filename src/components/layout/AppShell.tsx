@@ -46,12 +46,15 @@ export function AppShell() {
   };
 
   return (
-    <div className="flex min-h-screen bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 overflow-x-hidden">
+    <div className="flex min-h-screen bg-[#FAF8F5] dark:bg-[#10161A] text-neutral-900 dark:text-[#F0EEE6] overflow-x-hidden relative">
+      {/* Ambient background mesh inspired by reference */}
+      <div className="origin-mesh" />
+
       {/* Desktop Left Sidebar */}
       <Sidebar />
 
       {/* Main Column */}
-      <div className="flex flex-1 flex-col min-w-0">
+      <div className="flex flex-1 flex-col min-w-0 relative z-10">
         <Header />
 
         <div className="flex flex-1 min-w-0">

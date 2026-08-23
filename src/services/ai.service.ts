@@ -218,17 +218,22 @@ export class AIService extends BaseService implements IAIService {
       let providerName = 'gemini';
 
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 12000);
+
         const res = await fetch('/api/ai/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
           body: JSON.stringify({
             message: messageText.trim(),
             context: contextResult.payload,
             memories: memoryResult.success && memoryResult.data ? memoryResult.data : [],
-            conversationHistory: conversation.messages.slice(-6),
+            conversationHistory: conversation.messages.slice(-4),
             moduleContext: options?.moduleContext,
           }),
         });
+        clearTimeout(timeoutId);
 
         if (!res.ok) {
           throw new Error(`Server responded with status ${res.status}`);

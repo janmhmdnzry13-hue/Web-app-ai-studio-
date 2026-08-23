@@ -35,15 +35,22 @@ export function BottomNav() {
             end={item.to === '/app'}
             className={({ isActive }) =>
               cn(
-                'flex flex-col items-center justify-center w-full h-full text-[10px] font-medium transition-colors gap-1 min-h-[44px]',
+                'flex flex-col items-center justify-center w-full h-full text-[10px] transition-colors gap-0.5 min-h-[44px] relative',
                 isActive
-                  ? 'text-neutral-900 dark:text-neutral-100 font-semibold'
-                  : 'text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200'
+                  ? 'text-[#D9822B] dark:text-[#E3A857] font-semibold'
+                  : 'text-neutral-500 hover:text-neutral-800 dark:text-[#8D9793] dark:hover:text-[#F0EEE6] font-medium'
               )
             }
           >
-            {item.icon}
-            <span>{item.label}</span>
+            {({ isActive }) => (
+              <>
+                <span className="h-5 w-5 flex items-center justify-center">{item.icon}</span>
+                <span>{item.label}</span>
+                {isActive && (
+                  <span className="w-1 h-1 rounded-full bg-[#D9822B] dark:bg-[#E3A857] mt-0.5" />
+                )}
+              </>
+            )}
           </NavLink>
         ))}
 
@@ -51,7 +58,7 @@ export function BottomNav() {
           type="button"
           onClick={toggleMobileMenu}
           aria-label="All Modules"
-          className="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200 gap-1 min-h-[44px]"
+          className="flex flex-col items-center justify-center w-full h-full text-[10px] font-medium text-neutral-500 hover:text-neutral-800 dark:text-[#8D9793] dark:hover:text-[#F0EEE6] gap-0.5 min-h-[44px] cursor-pointer"
         >
           <MoreHorizontal className="h-5 w-5" />
           <span>More</span>

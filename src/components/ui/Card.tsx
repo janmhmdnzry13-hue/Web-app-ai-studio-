@@ -11,16 +11,16 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function Card({ className, variant = 'default', ...props }: CardProps) {
   const variants = {
-    default: 'bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800/80 shadow-xs',
-    elevated: 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-sm',
-    subtle: 'bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/60 dark:border-neutral-800/60',
-    outline: 'bg-transparent border border-neutral-300 dark:border-neutral-700',
+    default: 'bg-white dark:bg-neutral-900/90 border border-neutral-200/70 dark:border-neutral-800/80 shadow-xs backdrop-blur-xs',
+    elevated: 'bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-sm',
+    subtle: 'bg-neutral-50/70 dark:bg-neutral-900/40 border border-neutral-200/50 dark:border-neutral-800/50',
+    outline: 'bg-transparent border border-neutral-200 dark:border-neutral-800',
   };
 
   return (
     <div
       className={cn(
-        'rounded-xl text-neutral-900 dark:text-neutral-100 transition-colors',
+        'rounded-xl text-neutral-900 dark:text-neutral-100 transition-all duration-150',
         variants[variant],
         className
       )}
@@ -36,7 +36,7 @@ export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDiv
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h3
-      className={cn('text-base font-semibold tracking-tight text-neutral-900 dark:text-neutral-100', className)}
+      className={cn('text-sm sm:text-base font-semibold tracking-tight text-neutral-900 dark:text-neutral-100', className)}
       {...props}
     />
   );
@@ -51,5 +51,5 @@ export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDi
 }
 
 export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('flex items-center p-5 pt-0 border-t border-neutral-100 dark:border-neutral-800/50 mt-4', className)} {...props} />;
+  return <div className={cn('flex items-center p-5 pt-0 border-t border-neutral-100 dark:border-neutral-800/60 mt-3', className)} {...props} />;
 }

@@ -7,11 +7,25 @@
     <meta name="description" content="ORIGIN is a modern AI-powered personal life operating system for tasks, goals, habits, finances, emotions, and insights." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <meta property="og:title" content="ORIGIN — Personal Life OS" />
     <meta property="og:description" content="A modern AI-powered personal life operating system foundation." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('origin_theme_preference');
+          var theme = stored ? JSON.parse(stored) : 'system';
+          var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (isDark) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="bg-neutral-50 text-neutral-900 antialiased selection:bg-neutral-900 selection:text-neutral-50 dark:bg-neutral-950 dark:text-neutral-100 dark:selection:bg-neutral-100 dark:selection:text-neutral-900">
     <div id="root"></div>

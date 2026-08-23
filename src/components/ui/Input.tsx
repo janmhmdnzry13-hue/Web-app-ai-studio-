@@ -38,10 +38,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-invalid={!!error}
             aria-describedby={error ? errorId : hint ? hintId : undefined}
             className={cn(
-              'flex h-10 w-full rounded-lg border bg-white px-3 py-2 text-sm text-neutral-900 placeholder:text-neutral-400 transition-colors focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-neutral-100 dark:focus:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-50',
+              'flex h-9 w-full rounded-lg border border-neutral-200/80 bg-white px-3 py-2 text-xs sm:text-sm text-neutral-900 placeholder:text-neutral-400 transition-all duration-150 focus:border-neutral-900 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-neutral-100 dark:focus:ring-neutral-100 disabled:cursor-not-allowed disabled:opacity-50 shadow-2xs',
               leftIcon && 'pl-9',
               rightIcon && 'pr-9',
-              error && 'border-red-500 focus:border-red-500 focus:ring-red-500 dark:border-red-500',
+              error && 'border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500',
               className
             )}
             {...props}

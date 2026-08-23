@@ -12,9 +12,9 @@ const PORT = 3000;
 
 app.use(express.json({ limit: '5mb' }));
 
-// Centralized AI Model Config with automatic resilient model fallbacks
-const PRIMARY_GEMINI_MODEL = 'gemini-3.7-flash';
-const SECONDARY_GEMINI_MODEL = 'gemini-flash-latest';
+// Centralized AI Model Config with automatic resilient low-latency model fallbacks
+const PRIMARY_GEMINI_MODEL = 'gemini-2.5-flash';
+const SECONDARY_GEMINI_MODEL = 'gemini-1.5-flash';
 
 let geminiClient: GoogleGenAI | null = null;
 
@@ -36,7 +36,7 @@ function getGeminiClient(): GoogleGenAI | null {
   return geminiClient;
 }
 
-// Resilient API Caller with backoff and multi-model failover for transient 503 / 429 errors
+// Resilient API Caller with fast multi-model failover for transient 503 / 429 errors
 async function executeGeminiContentGeneration(
   ai: GoogleGenAI,
   requestParams: {
@@ -50,34 +50,21 @@ async function executeGeminiContentGeneration(
   let lastError: any = null;
 
   for (const model of modelsToAttempt) {
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      try {
-        const response = await ai.models.generateContent({
-          model,
-          contents: requestParams.contents,
-          config: {
-            systemInstruction: requestParams.systemInstruction,
-            temperature: requestParams.temperature ?? 0.7,
-            responseMimeType: requestParams.responseMimeType ?? 'application/json',
-          },
-        });
-        return { text: response.text || '{}', modelUsed: model };
-      } catch (err: any) {
-        lastError = err;
-        const errorMsg = err?.message || String(err);
-        const isTransient =
-          errorMsg.includes('503') ||
-          errorMsg.includes('429') ||
-          errorMsg.includes('UNAVAILABLE') ||
-          errorMsg.includes('high demand') ||
-          errorMsg.includes('RESOURCE_EXHAUSTED');
-
-        if (attempt === 1 && isTransient) {
-          await new Promise((r) => setTimeout(r, 600));
-        } else {
-          break; // Move to alternative model fallback
-        }
-      }
+    try {
+      const response = await ai.models.generateContent({
+        model,
+        contents: requestParams.contents,
+        config: {
+          systemInstruction: requestParams.systemInstruction,
+          temperature: requestParams.temperature ?? 0.7,
+          responseMimeType: requestParams.responseMimeType ?? 'application/json',
+        },
+      });
+      return { text: response.text || '{}', modelUsed: model };
+    } catch (err: any) {
+      lastError = err;
+      // Immediately try fallback model without long sleep delays
+      continue;
     }
   }
 

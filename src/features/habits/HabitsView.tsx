@@ -315,57 +315,65 @@ export function HabitsView() {
       />
 
       {/* Metrics Summary Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card variant="default" className="p-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Completed Today</span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Completed Today</span>
+            <div className="h-6 w-6 rounded-lg bg-[#93AC78]/10 text-[#93AC78] flex items-center justify-center">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">
-            {stats.todayCompletedCount} / {stats.total}
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">
+            {stats.todayCompletedCount} <span className="text-xs font-normal text-neutral-400 font-sans">/ {stats.total}</span>
           </p>
-        </Card>
+        </div>
 
-        <Card variant="default" className="p-4">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Top Active Streak</span>
-            <Flame className="h-4 w-4 text-amber-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Top Active Streak</span>
+            <div className="h-6 w-6 rounded-lg bg-[#E3A857]/10 text-[#D9822B] dark:text-[#E3A857] flex items-center justify-center">
+              <Flame className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">
-            {stats.maxStreak} <span className="text-xs font-normal text-neutral-500">days</span>
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">
+            {stats.maxStreak} <span className="text-xs font-normal text-neutral-400 font-sans">days</span>
           </p>
-        </Card>
+        </div>
 
-        <Card variant="default" className="p-4">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Total Check-ins</span>
-            <Activity className="h-4 w-4 text-blue-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Total Check-ins</span>
+            <div className="h-6 w-6 rounded-lg bg-[#57ABA0]/10 text-[#57ABA0] flex items-center justify-center">
+              <Activity className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">{stats.totalMetLogs}</p>
-        </Card>
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">{stats.totalMetLogs}</p>
+        </div>
 
-        <Card variant="default" className="p-4">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Consistency Rate</span>
-            <Award className="h-4 w-4 text-neutral-900 dark:text-neutral-100" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Consistency Rate</span>
+            <div className="h-6 w-6 rounded-lg bg-[#C97F5C]/10 text-[#C97F5C] flex items-center justify-center">
+              <Award className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">
             {stats.total > 0 ? Math.round((stats.todayCompletedCount / stats.total) * 100) : 0}%
           </p>
-        </Card>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <Card className="p-4">
+      <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 dark:text-[#707A75]" />
             <input
               type="text"
               placeholder="Search habits, routines, or cues..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:focus:ring-neutral-100"
+              className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-neutral-50/50 dark:bg-[#202A2E]/40 focus:outline-none focus:ring-1 focus:ring-[#D9822B] dark:focus:ring-[#E3A857]"
             />
           </div>
 
@@ -374,7 +382,7 @@ export function HabitsView() {
               aria-label="Filter habits by category"
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 cursor-pointer"
+              className="px-3 py-1.5 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-white dark:bg-[#202A2E] text-neutral-800 dark:text-[#F0EEE6] cursor-pointer"
             >
               <option value="all">All Categories</option>
               <option value="Health & Vitality">Health & Vitality</option>
@@ -387,7 +395,7 @@ export function HabitsView() {
               aria-label="Filter habits by cadence frequency"
               value={frequencyFilter}
               onChange={(e) => setFrequencyFilter(e.target.value as HabitFrequency | 'all')}
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 cursor-pointer"
+              className="px-3 py-1.5 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-white dark:bg-[#202A2E] text-neutral-800 dark:text-[#F0EEE6] cursor-pointer"
             >
               <option value="all">All Frequencies</option>
               <option value="daily">Daily Cadence</option>
@@ -398,10 +406,10 @@ export function HabitsView() {
             </select>
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* 7-Day Completion Matrix Grid */}
-      <Card className="overflow-x-auto">
+      <div className="rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs overflow-hidden">
         {habits.length === 0 && !isLoading ? (
           <EmptyState
             title="No habits match your active criteria"
@@ -410,21 +418,23 @@ export function HabitsView() {
             onAction={handleOpenCreateModal}
           />
         ) : (
-          <div className="min-w-[640px]">
+          <div className="min-w-[640px] overflow-x-auto">
             {/* Matrix Table Header */}
-            <div className="flex items-center justify-between p-4 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/40 text-xs font-semibold text-neutral-600 dark:text-neutral-400">
+            <div className="flex items-center justify-between p-4 border-b border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] bg-neutral-50/50 dark:bg-[#10161A]/40 text-xs font-semibold text-neutral-600 dark:text-[#8D9793]">
               <div className="w-1/3">Habit Cadence</div>
               <div className="w-24 text-center">Streak</div>
               <div className="flex-1 flex justify-around">
                 {dateColumns.map((col) => (
                   <div
                     key={col.dateStr}
-                    className={`flex flex-col items-center justify-center w-10 py-1 rounded-lg ${
-                      col.isToday ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 font-bold' : ''
+                    className={`flex flex-col items-center justify-center w-10 py-1.5 rounded-xl ${
+                      col.isToday
+                        ? 'bg-[#E3A857] text-[#10161A] font-bold shadow-2xs'
+                        : 'text-neutral-600 dark:text-[#8D9793]'
                     }`}
                   >
-                    <span className="text-[10px] uppercase">{col.dayName}</span>
-                    <span className="text-xs">{col.dayNum}</span>
+                    <span className="text-[10px] uppercase font-semibold">{col.dayName}</span>
+                    <span className="text-xs font-mono">{col.dayNum}</span>
                   </div>
                 ))}
               </div>
@@ -539,7 +549,7 @@ export function HabitsView() {
             </div>
           </div>
         )}
-      </Card>
+      </div>
 
       {/* Create / Edit Habit Modal Dialog */}
       <Dialog

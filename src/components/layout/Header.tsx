@@ -22,7 +22,7 @@ import { Dropdown } from '../ui/Dropdown';
 export function Header() {
   const { toggleMobileMenu, setCommandPaletteOpen, isContextPanelOpen, toggleContextPanel } = useShell();
   const { user, logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { resolvedTheme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -76,40 +76,40 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-neutral-200/80 dark:border-neutral-800/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md px-4 sm:px-6">
+    <header className="sticky top-0 z-20 flex h-14 w-full items-center justify-between border-b border-neutral-200/60 dark:border-neutral-800/60 bg-white/85 dark:bg-neutral-900/85 backdrop-blur-md px-4 sm:px-6">
       {/* Left: Mobile Hamburger & Current View Context */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           type="button"
           onClick={toggleMobileMenu}
           aria-label="Open navigation menu"
-          className="md:hidden rounded-lg p-2 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+          className="md:hidden rounded-lg p-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
         >
           <Menu className="h-5 w-5" />
         </button>
 
         <div className="flex items-center gap-2 truncate">
-          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100 truncate">
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100 tracking-tight truncate">
             {currentModule.name}
           </span>
           <span className="hidden sm:inline-block h-1 w-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-          <span className="hidden sm:inline-block text-xs text-neutral-400 truncate">
-            Foundation Status: Operational
+          <span className="hidden sm:inline-block text-xs text-neutral-400 font-normal truncate">
+            ORIGIN System
           </span>
         </div>
       </div>
 
       {/* Right: Quick Command search, Theme, Notifications, Pulse toggle, Avatar */}
-      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
         {/* Command Search Trigger */}
         <button
           type="button"
           onClick={() => setCommandPaletteOpen(true)}
-          className="flex items-center gap-2 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950/60 px-3 py-1.5 text-xs text-neutral-500 dark:text-neutral-400 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors cursor-pointer"
+          className="flex items-center gap-2 rounded-lg border border-neutral-200/80 dark:border-neutral-800 bg-neutral-50/70 dark:bg-neutral-950/60 px-2.5 py-1.5 text-xs text-neutral-500 dark:text-neutral-400 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors cursor-pointer"
         >
-          <Search className="h-3.5 w-3.5" />
-          <span className="hidden md:inline">Global search...</span>
-          <kbd className="hidden md:inline-flex items-center gap-0.5 rounded bg-neutral-200/70 dark:bg-neutral-800 px-1.5 py-0.2 font-mono text-[10px] text-neutral-600 dark:text-neutral-300">
+          <Search className="h-3.5 w-3.5 text-neutral-400" />
+          <span className="hidden md:inline text-[11px]">Search system...</span>
+          <kbd className="hidden md:inline-flex items-center gap-0.5 rounded bg-neutral-200/60 dark:bg-neutral-800/80 px-1.5 py-0.2 font-mono text-[10px] text-neutral-500 dark:text-neutral-400">
             ⌘K
           </kbd>
         </button>
@@ -119,9 +119,9 @@ export function Header() {
           type="button"
           onClick={toggleTheme}
           aria-label="Toggle visual theme"
-          className="rounded-lg p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors"
+          className="rounded-lg p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors cursor-pointer"
         >
-          {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {resolvedTheme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </button>
 
         {/* Notifications Icon with Live Badge */}
@@ -129,7 +129,7 @@ export function Header() {
           type="button"
           onClick={() => setIsNotifCenterOpen(true)}
           aria-label="Notifications Center"
-          className="relative rounded-lg p-2 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors cursor-pointer"
+          className="relative rounded-lg p-1.5 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors cursor-pointer"
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 && (
@@ -145,7 +145,7 @@ export function Header() {
           type="button"
           onClick={toggleContextPanel}
           aria-label="Toggle Context Panel"
-          className={`hidden lg:flex rounded-lg p-2 transition-colors ${
+          className={`hidden lg:flex rounded-lg p-1.5 transition-colors cursor-pointer ${
             isContextPanelOpen
               ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900'
               : 'text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100'
@@ -159,9 +159,9 @@ export function Header() {
           trigger={
             <button
               type="button"
-              className="flex items-center gap-2 rounded-full ring-1 ring-neutral-200 dark:ring-neutral-800 p-0.5 hover:ring-neutral-400 transition-all cursor-pointer"
+              className="flex items-center gap-2 rounded-full ring-1 ring-neutral-200/90 dark:ring-neutral-800 p-0.5 hover:ring-neutral-400 transition-all cursor-pointer"
             >
-              <div className="h-7 w-7 rounded-full bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 flex items-center justify-center font-bold text-xs">
+              <div className="h-6.5 w-6.5 rounded-full bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 flex items-center justify-center font-bold text-xs">
                 {user?.profile.displayName.charAt(0).toUpperCase() || 'U'}
               </div>
             </button>

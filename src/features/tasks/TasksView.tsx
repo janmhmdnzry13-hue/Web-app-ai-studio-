@@ -332,52 +332,60 @@ export function TasksView() {
       />
 
       {/* Metrics Summary Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <Card variant="default" className="p-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Due Today</span>
-            <Calendar className="h-4 w-4 text-amber-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Due Today</span>
+            <div className="h-6 w-6 rounded-lg bg-[#E3A857]/10 text-[#D9822B] dark:text-[#E3A857] flex items-center justify-center">
+              <Calendar className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">{stats.dueToday}</p>
-        </Card>
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">{stats.dueToday}</p>
+        </div>
 
-        <Card variant="default" className="p-4">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">In Progress</span>
-            <Clock className="h-4 w-4 text-blue-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">In Progress</span>
+            <div className="h-6 w-6 rounded-lg bg-[#57ABA0]/10 text-[#57ABA0] flex items-center justify-center">
+              <Clock className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">{stats.inProgress}</p>
-        </Card>
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">{stats.inProgress}</p>
+        </div>
 
-        <Card variant="default" className="p-4">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Completed</span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Completed</span>
+            <div className="h-6 w-6 rounded-lg bg-[#93AC78]/10 text-[#93AC78] flex items-center justify-center">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">{stats.completed}</p>
-        </Card>
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">{stats.completed}</p>
+        </div>
 
-        <Card variant="default" className="p-4">
+        <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
           <div className="flex items-center justify-between text-neutral-500">
-            <span className="text-xs font-medium uppercase tracking-wider">Urgent Focus</span>
-            <AlertCircle className="h-4 w-4 text-rose-500" />
+            <span className="text-[10px] font-semibold tracking-[0.16em] uppercase text-[#707A75] dark:text-[#8D9793]">Urgent Focus</span>
+            <div className="h-6 w-6 rounded-lg bg-[#C97F5C]/10 text-[#C97F5C] flex items-center justify-center">
+              <AlertCircle className="h-3.5 w-3.5" />
+            </div>
           </div>
-          <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mt-1">{stats.urgent}</p>
-        </Card>
+          <p className="text-2xl font-serif font-semibold text-neutral-900 dark:text-[#F0EEE6] mt-1.5">{stats.urgent}</p>
+        </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <Card className="p-4">
+      <div className="p-4 rounded-2xl bg-white/80 dark:bg-[#182024]/90 border border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] shadow-xs">
         <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
           {/* Search Input */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 dark:text-[#707A75]" />
             <input
               type="text"
               placeholder="Search tasks, descriptions, or tags..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 focus:outline-none focus:ring-1 focus:ring-neutral-900 dark:focus:ring-neutral-100"
+              className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-neutral-50/50 dark:bg-[#202A2E]/40 focus:outline-none focus:ring-1 focus:ring-[#D9822B] dark:focus:ring-[#E3A857]"
             />
           </div>
 
@@ -387,7 +395,7 @@ export function TasksView() {
               aria-label="Filter tasks by status"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as TaskStatus | 'all')}
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 cursor-pointer"
+              className="px-3 py-1.5 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-white dark:bg-[#202A2E] text-neutral-800 dark:text-[#F0EEE6] cursor-pointer"
             >
               <option value="all">All Statuses</option>
               <option value="todo">To Do</option>
@@ -400,7 +408,7 @@ export function TasksView() {
               aria-label="Filter tasks by priority"
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value as PriorityLevel | 'all')}
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 cursor-pointer"
+              className="px-3 py-1.5 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-white dark:bg-[#202A2E] text-neutral-800 dark:text-[#F0EEE6] cursor-pointer"
             >
               <option value="all">All Priorities</option>
               <option value="urgent">Urgent</option>
@@ -413,7 +421,7 @@ export function TasksView() {
               aria-label="Sort tasks by attribute"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'dueDate' | 'priority' | 'createdAt' | 'title')}
-              className="px-2.5 py-1.5 text-xs rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 cursor-pointer"
+              className="px-3 py-1.5 text-xs rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-white dark:bg-[#202A2E] text-neutral-800 dark:text-[#F0EEE6] cursor-pointer"
             >
               <option value="createdAt">Created Date</option>
               <option value="dueDate">Due Date</option>
@@ -426,13 +434,13 @@ export function TasksView() {
               onClick={() => setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))}
               title={`Sort direction: ${sortDirection}`}
               aria-label={`Sort direction: ${sortDirection}`}
-              className="p-1.5 rounded-lg border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
+              className="p-2 rounded-xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] hover:bg-neutral-100 dark:hover:bg-[#202A2E] text-neutral-600 dark:text-[#8D9793] cursor-pointer"
             >
-              <ArrowUpDown className="h-4 w-4" />
+              <ArrowUpDown className="h-3.5 w-3.5" />
             </button>
           </div>
         </div>
-      </Card>
+      </div>
 
       {/* Task List */}
       <div className="space-y-3">

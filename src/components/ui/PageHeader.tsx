@@ -23,13 +23,13 @@ export function PageHeader({
   className,
 }: PageHeaderProps) {
   return (
-    <div className={cn('flex flex-col gap-3 pb-5 border-b border-neutral-200/70 dark:border-neutral-800/70 mb-6', className)}>
+    <div className={cn('flex flex-col gap-2.5 pb-4 border-b border-neutral-200/60 dark:border-[rgba(240,238,230,0.08)] mb-6', className)}>
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-neutral-400">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[11px] text-neutral-400 dark:text-[#707A75]">
           {breadcrumbs.map((crumb, idx) => (
             <React.Fragment key={crumb.label}>
               {idx > 0 && <span>/</span>}
-              <span className={cn(idx === breadcrumbs.length - 1 ? 'text-neutral-700 dark:text-neutral-200 font-medium' : '')}>
+              <span className={cn(idx === breadcrumbs.length - 1 ? 'text-neutral-700 dark:text-[#F0EEE6] font-medium' : '')}>
                 {crumb.label}
               </span>
             </React.Fragment>
@@ -37,10 +37,10 @@ export function PageHeader({
         </nav>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+          <div className="flex items-center gap-2">
+            <h1 className="text-xl sm:text-2xl font-serif font-semibold tracking-tight text-neutral-900 dark:text-[#F0EEE6]">
               {title}
             </h1>
             {badge && (
@@ -50,7 +50,7 @@ export function PageHeader({
             )}
           </div>
           {description && (
-            <p className="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-neutral-500 dark:text-[#8D9793] max-w-2xl leading-relaxed">
               {description}
             </p>
           )}

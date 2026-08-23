@@ -37,22 +37,22 @@ export function NavItem({
       onClick={onClick}
       className={({ isActive }) =>
         cn(
-          'group flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-all duration-150 relative cursor-pointer select-none',
+          'group flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-all duration-150 relative cursor-pointer select-none',
           isActive
-            ? 'bg-neutral-900 text-neutral-50 dark:bg-neutral-100 dark:text-neutral-950 font-semibold shadow-xs'
-            : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/80 dark:hover:text-neutral-100',
-          isCollapsed && 'justify-center px-2'
+            ? 'bg-neutral-900 text-neutral-50 dark:bg-neutral-100 dark:text-neutral-950 font-semibold shadow-2xs'
+            : 'text-neutral-600 hover:bg-neutral-100/90 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800/80 dark:hover:text-neutral-100',
+          isCollapsed && 'justify-center px-1.5'
         )
       }
     >
-      <span className="shrink-0 h-4.5 w-4.5 flex items-center justify-center">{icon}</span>
+      <span className="shrink-0 h-4 w-4 flex items-center justify-center">{icon}</span>
 
       {!isCollapsed && <span className="truncate flex-1">{label}</span>}
 
       {!isCollapsed && badge !== undefined && (
         <span
           className={cn(
-            'ml-auto rounded-full px-1.5 py-0.2 text-[10px] font-semibold leading-tight',
+            'ml-auto rounded-full px-1.5 py-0.2 text-[10px] font-medium leading-tight',
             badgeStyles[badgeVariant]
           )}
         >

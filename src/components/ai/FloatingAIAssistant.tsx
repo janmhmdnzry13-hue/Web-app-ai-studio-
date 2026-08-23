@@ -155,40 +155,51 @@ export function FloatingAIAssistant() {
 
   return (
     <>
-      {/* Floating Trigger Button: Positioned cleanly above mobile nav & respecting safe areas */}
+      {/* Floating Trigger Button: Conic Gradient FAB */}
       <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-40">
         {!isOpen && (
           <button
             type="button"
             onClick={() => setIsOpen(true)}
-            aria-label="Open ORIGIN AI Assistant"
-            className="group flex items-center gap-2.5 px-4 py-3 rounded-full bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            aria-label="Open ORIGIN AI Co-Pilot"
+            className="group relative flex items-center justify-center h-14 w-14 rounded-full p-[2px] shadow-xl hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
+            style={{
+              background: 'conic-gradient(from 200deg, #E3A857, #C97F5C, #57ABA0, #E3A857)',
+              boxShadow: '0 10px 25px rgba(227, 168, 87, 0.35), 0 2px 8px rgba(0,0,0,0.3)',
+            }}
           >
-            <div className="relative">
-              <Sparkles className="h-5 w-5 text-purple-400 dark:text-purple-600 animate-pulse" />
+            <div className="h-full w-full rounded-full bg-[#FAF8F5] dark:bg-[#10161A] flex items-center justify-center text-[#D9822B] dark:text-[#E3A857]">
+              <Sparkles className="h-6 w-6 stroke-[1.8]" />
             </div>
-            <span className="text-xs font-bold tracking-tight pr-1">ORIGIN AI</span>
           </button>
         )}
       </div>
 
       {/* Floating Co-Pilot Drawer / Modal */}
       {isOpen && (
-        <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[440px] h-[580px] max-h-[82vh] rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div className="fixed bottom-20 md:bottom-6 right-4 md:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[440px] h-[590px] max-h-[84vh] rounded-3xl border border-neutral-200/80 dark:border-[rgba(240,238,230,0.12)] bg-white/95 dark:bg-[#182024]/95 backdrop-blur-xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-200 dark:border-neutral-800 bg-neutral-50/80 dark:bg-neutral-950/50 backdrop-blur-md">
-            <div className="flex items-center gap-2.5">
-              <div className="h-7 w-7 rounded-lg bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 flex items-center justify-center font-bold text-xs">
-                <Sparkles className="h-4 w-4 text-purple-400 dark:text-purple-600" />
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-200/70 dark:border-[rgba(240,238,230,0.08)] bg-neutral-50/60 dark:bg-[#141C20]/60">
+            <div className="flex items-center gap-3">
+              <div
+                className="h-8 w-8 rounded-full p-[1.5px] flex items-center justify-center shrink-0"
+                style={{ background: 'conic-gradient(from 200deg, #E3A857, #C97F5C, #57ABA0, #E3A857)' }}
+              >
+                <div className="h-full w-full rounded-full bg-[#FAF8F5] dark:bg-[#10161A] flex items-center justify-center text-[#D9822B] dark:text-[#E3A857]">
+                  <Sparkles className="h-4 w-4 stroke-[1.8]" />
+                </div>
               </div>
               <div>
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-xs font-bold text-neutral-900 dark:text-neutral-100">
-                    ORIGIN Co-Pilot
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-semibold tracking-tight text-neutral-900 dark:text-[#F0EEE6]">
+                    ORIGIN AI
                   </h3>
-                  <Badge variant="primary" size="sm">Gemini Grounded</Badge>
+                  <span className="inline-flex items-center gap-1 text-[11px] text-[#6B8550] dark:text-[#93AC78] font-medium">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#6B8550] dark:bg-[#93AC78] animate-pulse" />
+                    Here to assist
+                  </span>
                 </div>
-                <p className="text-[10px] text-neutral-400">Personal Life Operating System</p>
+                <p className="text-[10px] text-neutral-400">Contextual Life Intelligence</p>
               </div>
             </div>
 
@@ -197,8 +208,8 @@ export function FloatingAIAssistant() {
                 type="button"
                 onClick={() => setIsMemoryModalOpen(true)}
                 aria-label="AI Memory & Preferences"
-                title="AI Memory Directives"
-                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors"
+                title="AI Directives"
+                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-[#F0EEE6] rounded-lg hover:bg-neutral-100 dark:hover:bg-[#202A2E] transition-colors cursor-pointer"
               >
                 <Brain className="h-4 w-4" />
               </button>
@@ -211,7 +222,7 @@ export function FloatingAIAssistant() {
                 }}
                 aria-label="Open Fullscreen AI Studio"
                 title="Fullscreen Studio"
-                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors"
+                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-[#F0EEE6] rounded-lg hover:bg-neutral-100 dark:hover:bg-[#202A2E] transition-colors cursor-pointer"
               >
                 <Maximize2 className="h-4 w-4" />
               </button>
@@ -221,7 +232,7 @@ export function FloatingAIAssistant() {
                 onClick={handleClearHistory}
                 aria-label="Clear chat history"
                 title="Reset conversation"
-                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors"
+                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-[#F0EEE6] rounded-lg hover:bg-neutral-100 dark:hover:bg-[#202A2E] transition-colors cursor-pointer"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
@@ -230,42 +241,42 @@ export function FloatingAIAssistant() {
                 type="button"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close Assistant"
-                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 rounded-lg hover:bg-neutral-200/50 dark:hover:bg-neutral-800 transition-colors ml-1"
+                className="p-1.5 text-neutral-400 hover:text-neutral-700 dark:hover:text-[#F0EEE6] rounded-lg hover:bg-neutral-100 dark:hover:bg-[#202A2E] transition-colors cursor-pointer ml-1"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
           </div>
 
-          {/* Context Minimization & Epistemological Transparency Bar */}
+          {/* Context Minimization Bar */}
           {lastContextSummary && (
-            <div className="px-4 py-1.5 bg-neutral-100/70 dark:bg-neutral-950/70 border-b border-neutral-200/60 dark:border-neutral-800/60 flex items-center justify-between text-[10px] text-neutral-500">
-              <span className="flex items-center gap-1 truncate">
-                <ShieldCheck className="h-3 w-3 text-emerald-500 shrink-0" />
+            <div className="px-4 py-1.5 bg-[#FBF9F5] dark:bg-[#141C20] border-b border-neutral-200/60 dark:border-[rgba(240,238,230,0.06)] flex items-center justify-between text-[10px] text-neutral-500">
+              <span className="flex items-center gap-1.5 truncate">
+                <ShieldCheck className="h-3 w-3 text-[#57ABA0] shrink-0" />
                 <span className="truncate">{lastContextSummary.summary}</span>
               </span>
               <span className="shrink-0 font-mono text-[9px] uppercase tracking-wider text-neutral-400">
-                Minimization active
+                Grounding Active
               </span>
             </div>
           )}
 
           {/* Message Stream */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 text-xs">
             {messages.map((msg, index) => {
               const isUser = msg.role === 'user';
               return (
                 <div
                   key={msg.id || index}
-                  className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} space-y-1.5`}
+                  className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} space-y-1`}
                 >
                   <div
-                    className={`max-w-[90%] p-3 rounded-2xl ${
+                    className={`max-w-[85%] px-4 py-3 rounded-2xl ${
                       isUser
-                        ? 'bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 rounded-tr-xs'
+                        ? 'bg-[#D9822B] dark:bg-[#E3A857] text-[#1A1408] font-medium rounded-tr-xs shadow-xs'
                         : msg.isError
-                        ? 'bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800 rounded-tl-xs'
-                        : 'bg-neutral-100/90 dark:bg-neutral-800/80 text-neutral-900 dark:text-neutral-100 rounded-tl-xs'
+                        ? 'bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 rounded-tl-xs'
+                        : 'bg-neutral-100/90 dark:bg-[#202A2E] text-neutral-900 dark:text-[#F0EEE6] border border-neutral-200/60 dark:border-[rgba(240,238,230,0.08)] rounded-tl-xs shadow-xs'
                     }`}
                   >
                     <div className="whitespace-pre-wrap leading-relaxed">
@@ -274,9 +285,9 @@ export function FloatingAIAssistant() {
 
                     {/* Proposed Action Cards */}
                     {msg.proposedActions && msg.proposedActions.length > 0 && (
-                      <div className="mt-3 space-y-2 pt-2 border-t border-neutral-200 dark:border-neutral-700/60">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 block mb-1">
-                          Proposed System Actions ({msg.proposedActions.length})
+                      <div className="mt-3 space-y-2 pt-2 border-t border-neutral-200 dark:border-[rgba(240,238,230,0.1)]">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#B56B48] dark:text-[#C97F5C] block mb-1">
+                          Proposed Actions ({msg.proposedActions.length})
                         </span>
                         {msg.proposedActions.map((action) => (
                           <ActionConfirmationCard key={action.id} action={action} />
@@ -291,7 +302,7 @@ export function FloatingAIAssistant() {
                       <button
                         type="button"
                         onClick={() => handleCopyMessage(msg.content, index)}
-                        className="hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center gap-1"
+                        className="hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center gap-1 cursor-pointer"
                       >
                         {copiedIndex === index ? (
                           <>
@@ -310,7 +321,7 @@ export function FloatingAIAssistant() {
                         <button
                           type="button"
                           onClick={handleRetryLast}
-                          className="hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center gap-1"
+                          className="hover:text-neutral-700 dark:hover:text-neutral-200 flex items-center gap-1 cursor-pointer"
                         >
                           <RotateCcw className="h-3 w-3" />
                           <span>Retry</span>
@@ -321,13 +332,13 @@ export function FloatingAIAssistant() {
 
                   {/* Follow-up Prompts */}
                   {msg.suggestedFollowups && msg.suggestedFollowups.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pt-1.5 max-w-[95%]">
+                    <div className="flex flex-wrap gap-1.5 pt-1 max-w-[95%]">
                       {msg.suggestedFollowups.map((sug, sIdx) => (
                         <button
                           key={sIdx}
                           type="button"
                           onClick={() => handleSendMessage(sug)}
-                          className="text-[11px] px-2.5 py-1 rounded-full border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800/60 hover:bg-neutral-50 dark:hover:bg-neutral-700/60 text-neutral-700 dark:text-neutral-300 transition-colors"
+                          className="text-[11px] px-3 py-1 rounded-full border border-neutral-200 dark:border-[rgba(240,238,230,0.12)] bg-white dark:bg-[#1F282D] hover:border-[#D9822B] dark:hover:border-[#E3A857] text-neutral-700 dark:text-neutral-300 transition-colors cursor-pointer"
                         >
                           {sug}
                         </button>
@@ -341,10 +352,10 @@ export function FloatingAIAssistant() {
             {/* Loading / Typing State */}
             {isLoading && (
               <div className="flex items-center gap-2 text-neutral-400 py-2">
-                <div className="h-6 w-6 rounded-lg bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
-                  <Sparkles className="h-3.5 w-3.5 text-purple-500 animate-spin" />
+                <div className="h-6 w-6 rounded-lg bg-neutral-100 dark:bg-[#202A2E] flex items-center justify-center">
+                  <Sparkles className="h-3.5 w-3.5 text-[#D9822B] dark:text-[#E3A857] animate-spin" />
                 </div>
-                <span className="text-xs italic">Consulting context engine & Gemini...</span>
+                <span className="text-xs italic text-neutral-400">Harmonizing context & Gemini...</span>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -352,13 +363,13 @@ export function FloatingAIAssistant() {
 
           {/* Quick Starter Templates */}
           {messages.length <= 2 && (
-            <div className="px-4 py-2 border-t border-neutral-100 dark:border-neutral-800/80 bg-neutral-50/50 dark:bg-neutral-950/20 overflow-x-auto whitespace-nowrap scrollbar-none flex gap-1.5">
-              {templates.slice(0, 3).map((tmpl) => (
+            <div className="px-4 py-2 border-t border-neutral-100 dark:border-[rgba(240,238,230,0.06)] bg-neutral-50/50 dark:bg-[#141C20]/40 overflow-x-auto whitespace-nowrap scrollbar-none flex gap-1.5">
+              {templates.slice(0, 4).map((tmpl) => (
                 <button
                   key={tmpl.id}
                   type="button"
                   onClick={() => handleSendMessage(tmpl.prompt)}
-                  className="text-[10px] px-2.5 py-1 rounded-lg border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 hover:border-neutral-400 text-neutral-700 dark:text-neutral-300 transition-colors"
+                  className="text-[11px] px-3 py-1 rounded-full border border-neutral-200/80 dark:border-[rgba(240,238,230,0.1)] bg-white dark:bg-[#1A2226] hover:border-[#D9822B] dark:hover:border-[#E3A857] text-neutral-700 dark:text-[#8D9793] transition-colors cursor-pointer"
                 >
                   {tmpl.label}
                 </button>
@@ -372,24 +383,24 @@ export function FloatingAIAssistant() {
               e.preventDefault();
               handleSendMessage();
             }}
-            className="p-3 border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex items-center gap-2"
+            className="p-3 border-t border-neutral-200/80 dark:border-[rgba(240,238,230,0.08)] bg-white dark:bg-[#182024] flex items-center gap-2"
           >
             <input
               ref={inputRef}
               type="text"
-              placeholder="Ask ORIGIN to plan, break down goals, audit habits..."
+              placeholder="Ask ORIGIN AI to plan, reflect, review habits…"
               value={inputPrompt}
               onChange={(e) => setInputPrompt(e.target.value)}
               disabled={isLoading}
-              className="flex-1 bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700 rounded-xl px-3.5 py-2 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-purple-500"
+              className="flex-1 bg-neutral-50 dark:bg-[#202A2E] border border-neutral-200/80 dark:border-[rgba(240,238,230,0.1)] rounded-full px-4 py-2 text-xs text-neutral-900 dark:text-[#F0EEE6] placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-[#D9822B] dark:focus:ring-[#E3A857]"
             />
             <button
               type="submit"
               disabled={isLoading || !inputPrompt.trim()}
               aria-label="Send message"
-              className="h-9 w-9 rounded-xl bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 flex items-center justify-center disabled:opacity-40 hover:opacity-90 active:scale-95 transition-all shrink-0"
+              className="h-8.5 w-8.5 rounded-full bg-[#D9822B] dark:bg-[#E3A857] text-[#1A1408] flex items-center justify-center disabled:opacity-35 hover:opacity-90 active:scale-95 transition-all shrink-0 cursor-pointer shadow-xs"
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-4 w-4 stroke-[2.2]" />
             </button>
           </form>
         </div>
