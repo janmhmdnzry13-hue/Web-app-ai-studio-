@@ -74,7 +74,7 @@ export class EmotionService extends BaseService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getStorageKey(userId: string): string {
@@ -82,6 +82,7 @@ export class EmotionService extends BaseService {
   }
 
   private getStoredReflections(userId: string): EmotionReflectionEntry[] {
+    if (!userId) return [];
     const raw = safeStorage.get<EmotionReflectionEntry[]>(this.getStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_REFLECTIONS.map((sr) => ({
@@ -99,6 +100,7 @@ export class EmotionService extends BaseService {
   }
 
   private saveStoredReflections(userId: string, entries: EmotionReflectionEntry[]): void {
+    if (!userId) return;
     safeStorage.set(this.getStorageKey(userId), entries);
   }
 

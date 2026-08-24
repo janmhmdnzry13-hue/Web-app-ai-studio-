@@ -93,7 +93,7 @@ const STARTER_RELATIONSHIPS: readonly Omit<Relationship, 'id' | 'userId' | 'crea
         id: 'int_4',
         date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         type: 'video',
-        notes: 'Review of Phase 3 life OS modules and interaction contracts.',
+        notes: 'Review of life OS modules and interaction contracts.',
         createdAt: new Date().toISOString(),
       },
     ],
@@ -110,7 +110,7 @@ export class RelationshipService extends BaseService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getStorageKey(userId: string): string {
@@ -118,6 +118,7 @@ export class RelationshipService extends BaseService {
   }
 
   private getStoredRelationships(userId: string): Relationship[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Relationship[]>(this.getStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_RELATIONSHIPS.map((sr) => ({
@@ -134,6 +135,7 @@ export class RelationshipService extends BaseService {
   }
 
   private saveStoredRelationships(userId: string, relationships: Relationship[]): void {
+    if (!userId) return;
     safeStorage.set(this.getStorageKey(userId), relationships);
   }
 

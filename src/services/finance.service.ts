@@ -23,6 +23,7 @@ import {
 } from '../types/finance.types';
 import { authService } from './auth.service';
 import { BaseService } from './base.service';
+import { getCurrentMonthString } from '../lib/dateUtils';
 
 /**
  * Monetary Arithmetic Helper Functions (Integer Minor-Units)
@@ -216,7 +217,7 @@ export class FinanceService extends BaseService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getTransactionStorageKey(userId: string): string {
@@ -228,6 +229,7 @@ export class FinanceService extends BaseService {
   }
 
   private getStoredTransactions(userId: string): Transaction[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Transaction[]>(this.getTransactionStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_TRANSACTIONS.map((st) => ({
@@ -244,10 +246,12 @@ export class FinanceService extends BaseService {
   }
 
   private saveStoredTransactions(userId: string, txs: Transaction[]): void {
+    if (!userId) return;
     safeStorage.set(this.getTransactionStorageKey(userId), txs);
   }
 
   private getStoredBudgets(userId: string): Budget[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Budget[]>(this.getBudgetStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_BUDGETS.map((b) => ({
@@ -264,6 +268,7 @@ export class FinanceService extends BaseService {
   }
 
   private saveStoredBudgets(userId: string, budgets: Budget[]): void {
+    if (!userId) return;
     safeStorage.set(this.getBudgetStorageKey(userId), budgets);
   }
 
@@ -283,6 +288,10 @@ export class FinanceService extends BaseService {
       } else {
         userId = await this.resolveUserId();
         params = userIdOrParams || {};
+      }
+
+      if (!userId) {
+        return this.success([]);
       }
 
       let txs = this.getStoredTransactions(userId);
@@ -509,11 +518,13 @@ export class FinanceService extends BaseService {
   ): Promise<ServiceResult<readonly BudgetProgress[]>> {
     try {
       const userId = maybeMonth ? await this.resolveUserId(userIdOrMonth) : await this.resolveUserId();
+      if (!userId) return this.success([]);
+
       const targetMonthYear =
         maybeMonth ||
         (typeof userIdOrMonth === 'string' && userIdOrMonth.includes('-')
           ? userIdOrMonth
-          : new Date().toISOString().slice(0, 7));
+          : getCurrentMonthString());
 
       const budgets = this.getStoredBudgets(userId);
       const txs = this.getStoredTransactions(userId);
@@ -745,7 +756,26 @@ export class FinanceService extends BaseService {
         maybeMonthYear ||
         (typeof userIdOrMonthYear === 'string' && userIdOrMonthYear.includes('-')
           ? userIdOrMonthYear
-          : new Date().toISOString().slice(0, 7));
+          : getCurrentMonthString());
+
+      if (!userId) {
+        return this.success({
+          monthYear: targetMonthYear,
+          periodMonthYear: targetMonthYear,
+          currency: 'USD',
+          totalIncome: 0,
+          totalIncomeMinorUnits: 0,
+          totalExpense: 0,
+          totalExpenseMinorUnits: 0,
+          netBalance: 0,
+          netBalanceMinorUnits: 0,
+          savingsRate: 0,
+          savingsRatePercentage: 0,
+          transactionCount: 0,
+          categoryBreakdown: { income: {}, expense: {} },
+          topExpenses: [],
+        });
+      }
 
       const txs = this.getStoredTransactions(userId);
       const scopedTxs = txs.filter((t) => t.date.startsWith(targetMonthYear));

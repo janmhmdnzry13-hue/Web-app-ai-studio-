@@ -67,14 +67,14 @@ const STARTER_GOALS: readonly Omit<Goal, 'id' | 'userId' | 'createdAt' | 'update
     milestones: [
       {
         id: 'ms_4',
-        title: 'Deliver Phase 1 Architectural Foundation and verified contracts',
+        title: 'Complete System Architecture and Core Domain Foundations',
         isCompleted: true,
         completedAt: '2026-08-01T12:00:00.000Z',
         weight: 30,
       },
       {
         id: 'ms_5',
-        title: 'Deliver Phase 2 Core Engine (Auth, Tasks, Habits, Goals)',
+        title: 'Deploy Production Core Engine (Tasks, Habits, Goals, Finances)',
         isCompleted: true,
         completedAt: '2026-08-21T08:00:00.000Z',
         weight: 40,
@@ -133,7 +133,7 @@ export class GoalService extends BaseService implements IGoalService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getStorageKey(userId: string): string {
@@ -141,6 +141,7 @@ export class GoalService extends BaseService implements IGoalService {
   }
 
   private getStoredGoals(userId: string): Goal[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Goal[]>(this.getStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_GOALS.map((sg) => ({
@@ -157,12 +158,14 @@ export class GoalService extends BaseService implements IGoalService {
   }
 
   private saveStoredGoals(userId: string, goals: Goal[]): void {
+    if (!userId) return;
     safeStorage.set(this.getStorageKey(userId), goals);
   }
 
   async getGoals(userId?: string): Promise<ServiceResult<readonly Goal[]>> {
     try {
       const uid = await this.resolveUserId(userId);
+      if (!uid) return this.success([]);
       const goals = this.getStoredGoals(uid);
       return this.success(goals);
     } catch (err) {

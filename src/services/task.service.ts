@@ -97,7 +97,7 @@ export class TaskService extends BaseService implements ITaskService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getStorageKey(userId: string): string {
@@ -105,9 +105,10 @@ export class TaskService extends BaseService implements ITaskService {
   }
 
   private getStoredTasks(userId: string): Task[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Task[]>(this.getStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
-      // Auto-seed demo tasks
+      // Auto-seed demo tasks ONLY for explicit demo user
       const seeded = STARTER_TASKS.map((st) => ({
         ...st,
         id: generateId('tsk'),
@@ -122,6 +123,7 @@ export class TaskService extends BaseService implements ITaskService {
   }
 
   private saveStoredTasks(userId: string, tasks: Task[]): void {
+    if (!userId) return;
     safeStorage.set(this.getStorageKey(userId), tasks);
   }
 
@@ -139,6 +141,10 @@ export class TaskService extends BaseService implements ITaskService {
       } else {
         userId = await this.resolveUserId();
         params = userIdOrParams || {};
+      }
+
+      if (!userId) {
+        return this.success({ items: [], total: 0, page: 1, limit: 50, hasMore: false });
       }
 
       let tasks = this.getStoredTasks(userId);

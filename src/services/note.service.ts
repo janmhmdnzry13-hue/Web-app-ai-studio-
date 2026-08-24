@@ -72,7 +72,7 @@ export class NoteService extends BaseService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getStorageKey(userId: string): string {
@@ -100,6 +100,7 @@ export class NoteService extends BaseService {
   }
 
   private getStoredNotes(userId: string): Note[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Note[]>(this.getStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_NOTES.map((sn) => ({
@@ -116,6 +117,7 @@ export class NoteService extends BaseService {
   }
 
   private saveStoredNotes(userId: string, notes: Note[]): void {
+    if (!userId) return;
     safeStorage.set(this.getStorageKey(userId), notes);
   }
 

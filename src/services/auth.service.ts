@@ -113,11 +113,11 @@ export class AuthService extends BaseService implements IAuthService {
         return this.failure('AUTH_USER_NOT_FOUND', 'No account found with this email address.');
       }
 
-      // Check password match (or allow standard demo password for demo user)
+      // Check password match
       const expectedHash = found.passwordHash;
       const givenHash = hashPassword(password);
 
-      if (expectedHash !== givenHash && password !== 'demo1234' && password !== 'password123') {
+      if (expectedHash !== givenHash) {
         return this.failure('AUTH_INVALID_CREDENTIALS', 'Incorrect password. Please verify your credentials.');
       }
 
@@ -133,7 +133,7 @@ export class AuthService extends BaseService implements IAuthService {
 
       const session: AuthSession = {
         user: updatedUser,
-        token: `orig_jwt_${generateId('tkn')}`,
+        token: `orig_sess_${generateId('tkn')}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       };
 
@@ -204,7 +204,7 @@ export class AuthService extends BaseService implements IAuthService {
 
       const session: AuthSession = {
         user: newUser,
-        token: `orig_jwt_${generateId('tkn')}`,
+        token: `orig_sess_${generateId('tkn')}`,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       };
 
@@ -256,7 +256,7 @@ export class AuthService extends BaseService implements IAuthService {
 
     const session: AuthSession = {
       user: demoUser,
-      token: `orig_jwt_demo_${generateId('tkn')}`,
+      token: `orig_sess_demo_${generateId('tkn')}`,
       expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };
     safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, session);

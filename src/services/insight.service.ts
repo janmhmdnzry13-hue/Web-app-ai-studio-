@@ -24,12 +24,31 @@ export class InsightService extends BaseService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   async getSystemSummary(providedUserId?: string): Promise<ServiceResult<SystemDataSummary>> {
     try {
       const userId = await this.resolveUserId(providedUserId);
+      if (!userId) {
+        return this.success({
+          totalTasksCompleted: 0,
+          pendingTasksCount: 0,
+          activeGoalsCount: 0,
+          averageGoalProgress: 0,
+          habitConsistencyRate: 0,
+          activeHabitsCount: 0,
+          monthlyExpenseTotal: 0,
+          monthlyIncomeTotal: 0,
+          netCashflow: 0,
+          averageMood: null,
+          averageEnergy: null,
+          averageStress: null,
+          reflectionsCount: 0,
+          relationshipsTracked: 0,
+          hasSufficientData: false,
+        });
+      }
 
       const [tasksRes, goalsRes, habitsRes, logsRes, finRes, trendsRes, relsRes] = await Promise.all([
         taskService.getTasks(userId),

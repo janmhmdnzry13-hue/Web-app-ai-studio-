@@ -66,13 +66,27 @@ export function formatRelativeTime(isoDate: string | Date | undefined | null): s
 }
 
 /**
- * Format currency amount
+ * Format currency amount with precision
  */
 export function formatCurrency(amount: number, currency = 'USD'): string {
+  if (typeof amount !== 'number' || isNaN(amount)) return '$0.00';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
     minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
+/**
+ * Format exact full currency with cents
+ */
+export function formatExactCurrency(amount: number, currency = 'USD'): string {
+  if (typeof amount !== 'number' || isNaN(amount)) return '$0.00';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount);
 }
@@ -84,3 +98,4 @@ export function truncate(text: string, maxLength: number): string {
   if (!text || text.length <= maxLength) return text;
   return `${text.slice(0, maxLength).trim()}…`;
 }
+

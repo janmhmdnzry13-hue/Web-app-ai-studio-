@@ -46,7 +46,7 @@ export class NotificationService extends BaseService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getStorageKey(userId: string): string {
@@ -57,19 +57,23 @@ export class NotificationService extends BaseService {
     return `${APP_CONSTANTS.STORAGE_KEYS.NOTIFICATION_SETTINGS_PREFIX}${userId}`;
   }
 
-  getNotificationSettings(userId = 'usr_origin_demo'): NotificationRuleSettings {
+  getNotificationSettings(userId = ''): NotificationRuleSettings {
+    if (!userId) return DEFAULT_SETTINGS;
     return safeStorage.get<NotificationRuleSettings>(this.getSettingsStorageKey(userId), DEFAULT_SETTINGS);
   }
 
   saveNotificationSettings(userId: string, settings: NotificationRuleSettings): void {
+    if (!userId) return;
     safeStorage.set(this.getSettingsStorageKey(userId), settings);
   }
 
   private getStoredNotifications(userId: string): Notification[] {
+    if (!userId) return [];
     return safeStorage.get<Notification[]>(this.getStorageKey(userId), []);
   }
 
   private saveStoredNotifications(userId: string, notifs: Notification[]): void {
+    if (!userId) return;
     safeStorage.set(this.getStorageKey(userId), notifs);
   }
 

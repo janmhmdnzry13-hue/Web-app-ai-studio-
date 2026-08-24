@@ -9,6 +9,7 @@ import { DateOnlyString, ServiceResult } from '../types/common.types';
 import { CreateHabitDTO, Habit, HabitFrequency, HabitLog, HabitStreak, HabitTimeOfDay } from '../types/habit.types';
 import { authService } from './auth.service';
 import { BaseService } from './base.service';
+import { getTodayDateString as getLocalTodayDateString, getLocalDateString } from '../lib/dateUtils';
 
 export interface IHabitService {
   getHabits(userId?: string): Promise<ServiceResult<readonly Habit[]>>;
@@ -74,12 +75,13 @@ const STARTER_HABITS: readonly Omit<Habit, 'id' | 'userId' | 'createdAt' | 'upda
 ];
 
 export function getTodayDateString(): DateOnlyString {
-  return new Date().toISOString().split('T')[0];
+  return getLocalTodayDateString();
 }
 
 export function isDayExpectedForFrequency(dateStr: string, frequency: HabitFrequency, customDays?: readonly number[]): boolean {
-  const date = new Date(`${dateStr}T12:00:00.000Z`);
-  const dayOfWeek = date.getUTCDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const parts = dateStr.split('-').map(Number);
+  const date = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
+  const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
   switch (frequency) {
     case 'daily':
@@ -118,17 +120,18 @@ export function calculateHabitStreak(
   const today = getTodayDateString();
   let currentStreak = 0;
 
-  const checkDate = new Date(`${today}T12:00:00.000Z`);
+  const parts = today.split('-').map(Number);
+  const checkDate = new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
   const todayCompleted = completedDatesSet.has(today);
 
   // If not completed today, start checking from yesterday without breaking streak yet
   if (!todayCompleted) {
-    checkDate.setUTCDate(checkDate.getUTCDate() - 1);
+    checkDate.setDate(checkDate.getDate() - 1);
   }
 
   // Walk backwards day by day
   for (let i = 0; i < 365; i++) {
-    const dStr = checkDate.toISOString().split('T')[0];
+    const dStr = getLocalDateString(checkDate);
     const isExpected = isDayExpectedForFrequency(dStr, frequency, customDays);
 
     if (isExpected) {
@@ -139,8 +142,7 @@ export function calculateHabitStreak(
         break;
       }
     }
-    // Step 1 day back
-    checkDate.setUTCDate(checkDate.getUTCDate() - 1);
+    checkDate.setDate(checkDate.getDate() - 1);
   }
 
   // 2. Calculate Longest Streak
@@ -148,12 +150,14 @@ export function calculateHabitStreak(
   let tempStreak = 0;
 
   if (sortedDates.length > 0) {
-    const startDate = new Date(`${sortedDates[0]}T12:00:00.000Z`);
-    const endDate = new Date(`${today}T12:00:00.000Z`);
+    const startParts = sortedDates[0].split('-').map(Number);
+    const startDate = new Date(startParts[0], startParts[1] - 1, startParts[2], 12, 0, 0);
+    const endParts = today.split('-').map(Number);
+    const endDate = new Date(endParts[0], endParts[1] - 1, endParts[2], 12, 0, 0);
     const scanDate = new Date(startDate);
 
     while (scanDate <= endDate) {
-      const dStr = scanDate.toISOString().split('T')[0];
+      const dStr = getLocalDateString(scanDate);
       const isExpected = isDayExpectedForFrequency(dStr, frequency, customDays);
 
       if (isExpected) {
@@ -166,7 +170,7 @@ export function calculateHabitStreak(
           tempStreak = 0;
         }
       }
-      scanDate.setUTCDate(scanDate.getUTCDate() + 1);
+      scanDate.setDate(scanDate.getDate() + 1);
     }
   }
 
@@ -191,7 +195,7 @@ export class HabitService extends BaseService implements IHabitService {
     if (sessionRes.data?.user?.id) {
       return sessionRes.data.user.id;
     }
-    return 'usr_origin_demo';
+    return '';
   }
 
   private getHabitsStorageKey(userId: string): string {
@@ -203,6 +207,7 @@ export class HabitService extends BaseService implements IHabitService {
   }
 
   private getStoredHabits(userId: string): Habit[] {
+    if (!userId) return [];
     const raw = safeStorage.get<Habit[]>(this.getHabitsStorageKey(userId), []);
     if (raw.length === 0 && userId === 'usr_origin_demo') {
       const seeded = STARTER_HABITS.map((sh) => ({
@@ -221,7 +226,7 @@ export class HabitService extends BaseService implements IHabitService {
       for (let dayOffset = 0; dayOffset < 6; dayOffset++) {
         const d = new Date(today);
         d.setDate(d.getDate() - dayOffset);
-        const dStr = d.toISOString().split('T')[0];
+        const dStr = getLocalDateString(d);
 
         seeded.forEach((h) => {
           if (isDayExpectedForFrequency(dStr, h.frequency, h.customDaysOfWeek)) {
@@ -246,20 +251,24 @@ export class HabitService extends BaseService implements IHabitService {
   }
 
   private getStoredLogs(userId: string): HabitLog[] {
+    if (!userId) return [];
     return safeStorage.get<HabitLog[]>(this.getLogsStorageKey(userId), []);
   }
 
   private saveStoredHabits(userId: string, habits: Habit[]): void {
+    if (!userId) return;
     safeStorage.set(this.getHabitsStorageKey(userId), habits);
   }
 
   private saveStoredLogs(userId: string, logs: HabitLog[]): void {
+    if (!userId) return;
     safeStorage.set(this.getLogsStorageKey(userId), logs);
   }
 
   async getHabits(userId?: string): Promise<ServiceResult<readonly Habit[]>> {
     try {
       const uid = await this.resolveUserId(userId);
+      if (!uid) return this.success([]);
       const habits = this.getStoredHabits(uid);
       const logs = this.getStoredLogs(uid);
 

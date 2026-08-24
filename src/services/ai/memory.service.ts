@@ -15,12 +15,12 @@ export class AIMemoryService extends BaseService {
   }
 
   private loadMemories(userId: string): AIMemoryItem[] {
-    const raw = safeStorage.get<AIMemoryItem[] | null>(this.getStorageKey(userId), null);
-    if (!raw) {
-      // Seed transparent defaults
-      const defaults: AIMemoryItem[] = [
+    const raw = safeStorage.get<AIMemoryItem[]>(this.getStorageKey(userId), []);
+    // Zero fake memories for real users; only provide starter directives for explicit demo account if empty
+    if (raw.length === 0 && userId === 'usr_origin_demo') {
+      const demoDefaults: AIMemoryItem[] = [
         {
-          id: `mem_default_1`,
+          id: `mem_demo_1`,
           userId,
           key: 'Preferred Deep Work Block',
           value: 'Morning 9:00 AM - 11:30 AM for highest cognitive leverage',
@@ -29,7 +29,7 @@ export class AIMemoryService extends BaseService {
           updatedAt: new Date().toISOString(),
         },
         {
-          id: `mem_default_2`,
+          id: `mem_demo_2`,
           userId,
           key: 'Planning Cadence',
           value: 'Daily 3-priority matrix with time-boxed sprints',
@@ -38,8 +38,8 @@ export class AIMemoryService extends BaseService {
           updatedAt: new Date().toISOString(),
         },
       ];
-      this.saveMemories(userId, defaults);
-      return defaults;
+      this.saveMemories(userId, demoDefaults);
+      return demoDefaults;
     }
     return raw;
   }

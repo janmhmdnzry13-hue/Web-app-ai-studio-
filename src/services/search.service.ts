@@ -40,7 +40,7 @@ export class SearchService extends BaseService {
       return providedUserId.trim();
     }
     const sessionRes = await authService.getCurrentSession();
-    return sessionRes.data?.user?.id || 'usr_origin_demo';
+    return sessionRes.data?.user?.id || '';
   }
 
   async search(params: GlobalSearchParams): Promise<ServiceResult<readonly GlobalSearchResult[]>> {
