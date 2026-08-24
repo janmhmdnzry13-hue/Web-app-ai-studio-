@@ -1,12 +1,13 @@
 /**
- * User Service Contract & Implementation
- * Manages user profile updates, system preferences, avatar customization, and session persistence.
+ * User Service Implementation
+ * Communicates with the real server backend for profile updates, preferences, audit logs, and account lifecycle.
  */
 import { APP_CONSTANTS } from '../config/constants';
 import { safeStorage } from '../lib/storage';
+import { apiClient } from '../lib/api-client';
 import { ServiceResult } from '../types/common.types';
 import { AuthSession, Profile, User, UserPreferences } from '../types/user.types';
-import { authService, StoredUserAccount } from './auth.service';
+import { authService } from './auth.service';
 import { BaseService } from './base.service';
 
 export interface UserExportArchive {
@@ -40,24 +41,15 @@ export interface IUserService {
 }
 
 export class UserService extends BaseService implements IUserService {
-  private getRegisteredUsers(): StoredUserAccount[] {
-    return safeStorage.get<StoredUserAccount[]>(APP_CONSTANTS.STORAGE_KEYS.USERS_DB, []);
-  }
-
-  private saveRegisteredUsers(users: StoredUserAccount[]): void {
-    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USERS_DB, users);
-  }
-
   async getUserProfile(userId: string): Promise<ServiceResult<Profile>> {
-    const users = this.getRegisteredUsers();
-    const account = users.find((u) => u.user.id === userId);
-    if (account) {
-      return this.success(account.user.profile);
-    }
-
     const sessionRes = await authService.getCurrentSession();
     if (sessionRes.data?.user && sessionRes.data.user.id === userId) {
       return this.success(sessionRes.data.user.profile);
+    }
+
+    const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
+    if (session?.user && session.user.id === userId) {
+      return this.success(session.user.profile);
     }
 
     return this.failure('USER_NOT_FOUND', 'Active user profile not found.');
@@ -65,105 +57,106 @@ export class UserService extends BaseService implements IUserService {
 
   async updateProfile(userId: string, updates: Partial<Profile>): Promise<ServiceResult<User>> {
     try {
-      const users = this.getRegisteredUsers();
-      const accountIndex = users.findIndex((u) => u.user.id === userId);
+      const res = await apiClient.put<User>('/api/users/profile', updates);
+      if (res.success && res.data) {
+        const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
+        if (session) {
+          safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, {
+            ...session,
+            user: res.data,
+          });
+        }
+        return this.success(res.data);
+      }
 
+      // Fallback update in local storage
       const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
-      const currentUser = accountIndex >= 0 ? users[accountIndex].user : session?.user;
-
-      if (!currentUser) {
-        return this.failure('USER_NOT_FOUND', 'Target user was not found.');
-      }
-
-      const updatedUser: User = {
-        ...currentUser,
-        profile: {
-          ...currentUser.profile,
-          ...updates,
-        },
-        updatedAt: new Date().toISOString(),
-      };
-
-      if (accountIndex >= 0) {
-        users[accountIndex] = {
-          ...users[accountIndex],
-          user: updatedUser,
-        };
-        this.saveRegisteredUsers(users);
-      }
-
       if (session && session.user.id === userId) {
-        const updatedSession: AuthSession = {
-          ...session,
-          user: updatedUser,
+        const updatedUser: User = {
+          ...session.user,
+          profile: {
+            ...session.user.profile,
+            ...updates,
+          },
+          updatedAt: new Date().toISOString(),
         };
-        safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, updatedSession);
+        safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, { ...session, user: updatedUser });
+        return this.success(updatedUser);
       }
 
-      return this.success(updatedUser);
-    } catch (err) {
-      return this.failure('USER_UPDATE_FAILED', 'Failed to update profile.', { err });
+      return this.failure('USER_UPDATE_FAILED', 'Failed to update profile.');
+    } catch (err: any) {
+      return this.failure('USER_UPDATE_FAILED', err.message || 'Failed to update profile.');
     }
   }
 
   async updatePreferences(userId: string, preferences: Partial<UserPreferences>): Promise<ServiceResult<UserPreferences>> {
     try {
-      const users = this.getRegisteredUsers();
-      const accountIndex = users.findIndex((u) => u.user.id === userId);
+      const res = await apiClient.put<User>('/api/users/preferences', preferences);
+      if (res.success && res.data) {
+        const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
+        if (session) {
+          safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, {
+            ...session,
+            user: res.data,
+          });
+        }
+        return this.success(res.data.preferences);
+      }
 
+      // Fallback
       const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
-      const currentUser = accountIndex >= 0 ? users[accountIndex].user : session?.user;
-
-      if (!currentUser) {
-        return this.failure('USER_NOT_FOUND', 'Target user was not found.');
-      }
-
-      const currentPrefs = currentUser.preferences;
-      const updatedPrefs: UserPreferences = {
-        ...currentPrefs,
-        ...preferences,
-        notificationChannels: {
-          ...currentPrefs.notificationChannels,
-          ...(preferences.notificationChannels || {}),
-        },
-      };
-
-      const updatedUser: User = {
-        ...currentUser,
-        preferences: updatedPrefs,
-        updatedAt: new Date().toISOString(),
-      };
-
-      if (accountIndex >= 0) {
-        users[accountIndex] = {
-          ...users[accountIndex],
-          user: updatedUser,
-        };
-        this.saveRegisteredUsers(users);
-      }
-
       if (session && session.user.id === userId) {
-        const updatedSession: AuthSession = {
-          ...session,
-          user: updatedUser,
+        const updatedPrefs: UserPreferences = {
+          ...session.user.preferences,
+          ...preferences,
         };
-        safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, updatedSession);
+        const updatedUser: User = {
+          ...session.user,
+          preferences: updatedPrefs,
+          updatedAt: new Date().toISOString(),
+        };
+        safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, { ...session, user: updatedUser });
+        return this.success(updatedPrefs);
       }
 
-      return this.success(updatedPrefs);
-    } catch (err) {
-      return this.failure('USER_PREFS_FAILED', 'Failed to update user preferences.', { err });
+      return this.failure('USER_PREFS_FAILED', 'Failed to update preferences.');
+    } catch (err: any) {
+      return this.failure('USER_PREFS_FAILED', err.message || 'Failed to update user preferences.');
     }
   }
 
   async exportFullUserData(userId: string): Promise<ServiceResult<UserExportArchive>> {
     try {
-      if (!userId) return this.failure('INVALID_USER', 'User ID is required for export.');
+      const res = await apiClient.post<any>('/api/auth/export-data');
+      if (res.success && res.data) {
+        const archive: UserExportArchive = {
+          version: APP_CONSTANTS.VERSION,
+          exportedAt: res.data.exportedAt || new Date().toISOString(),
+          user: res.data.user,
+          data: {
+            tasks: res.data.tasks || [],
+            goals: res.data.goals || [],
+            habits: res.data.habits || [],
+            habitLogs: res.data.habitLogs || [],
+            transactions: res.data.transactions || [],
+            budgets: res.data.budgets || [],
+            reflections: res.data.reflections || [],
+            relationships: res.data.relationships || [],
+            notes: res.data.notes || [],
+            noteFolders: [],
+            notifications: [],
+            aiMemories: [],
+            aiConversations: [],
+            insights: [],
+          },
+        };
+        return this.success(archive);
+      }
 
-      const users = this.getRegisteredUsers();
-      const account = users.find((u) => u.user.id === userId);
+      // Local fallback export
       const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
-      const fallbackUser: User = {
+      const fallbackUser: User = session?.user || {
         id: userId,
         email: `${userId}@origin-os.internal`,
         role: 'member',
@@ -171,11 +164,7 @@ export class UserService extends BaseService implements IUserService {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         lastLoginAt: new Date().toISOString(),
-        profile: {
-          displayName: 'ORIGIN Operator',
-          headline: 'Self-Sovereign Identity',
-          bio: '',
-        },
+        profile: { displayName: 'Alex Vance', headline: 'Lead Architect', bio: '' },
         preferences: {
           theme: 'system',
           timezone: 'UTC',
@@ -188,9 +177,6 @@ export class UserService extends BaseService implements IUserService {
         },
       };
 
-      const user = account?.user || (session?.user.id === userId ? session.user : fallbackUser);
-
-      // Collect all user-isolated module stores
       const tasks = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.TASKS_PREFIX}${userId}`, []);
       const goals = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.GOALS_PREFIX}${userId}`, []);
       const habits = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.HABITS_PREFIX}${userId}`, []);
@@ -200,16 +186,11 @@ export class UserService extends BaseService implements IUserService {
       const reflections = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.REFLECTIONS_PREFIX}${userId}`, []);
       const relationships = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.RELATIONSHIPS_PREFIX}${userId}`, []);
       const notes = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.NOTES_PREFIX}${userId}`, []);
-      const noteFolders = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.NOTE_FOLDERS_PREFIX}${userId}`, []);
-      const notifications = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.NOTIFICATIONS_PREFIX}${userId}`, []);
-      const aiMemories = safeStorage.get<unknown[]>(`origin_ai_memories_${userId}`, []);
-      const aiConversations = safeStorage.get<unknown[]>(`origin_ai_conversations_${userId}`, []);
-      const insights = safeStorage.get<unknown[]>(`${APP_CONSTANTS.STORAGE_KEYS.INSIGHTS_PREFIX}${userId}`, []);
 
-      const archive: UserExportArchive = {
+      return this.success({
         version: APP_CONSTANTS.VERSION,
         exportedAt: new Date().toISOString(),
-        user,
+        user: fallbackUser,
         data: {
           tasks,
           goals,
@@ -220,25 +201,23 @@ export class UserService extends BaseService implements IUserService {
           reflections,
           relationships,
           notes,
-          noteFolders,
-          notifications,
-          aiMemories,
-          aiConversations,
-          insights,
+          noteFolders: [],
+          notifications: [],
+          aiMemories: [],
+          aiConversations: [],
+          insights: [],
         },
-      };
-
-      return this.success(archive);
-    } catch (err) {
-      return this.failure('EXPORT_FAILED', 'Failed to generate user data export archive.', { err });
+      });
+    } catch (err: any) {
+      return this.failure('EXPORT_FAILED', err.message || 'Failed to export user data.');
     }
   }
 
   async deleteAccount(userId: string): Promise<ServiceResult<boolean>> {
     try {
-      if (!userId) return this.failure('INVALID_USER', 'User ID is required.');
+      await apiClient.delete('/api/auth/delete-account');
 
-      // 1. Remove all isolated user stores
+      // Clear local storage keys
       safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.TASKS_PREFIX}${userId}`);
       safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.GOALS_PREFIX}${userId}`);
       safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.HABITS_PREFIX}${userId}`);
@@ -248,27 +227,12 @@ export class UserService extends BaseService implements IUserService {
       safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.REFLECTIONS_PREFIX}${userId}`);
       safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.RELATIONSHIPS_PREFIX}${userId}`);
       safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.NOTES_PREFIX}${userId}`);
-      safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.NOTE_FOLDERS_PREFIX}${userId}`);
-      safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.NOTIFICATIONS_PREFIX}${userId}`);
-      safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.NOTIFICATION_SETTINGS_PREFIX}${userId}`);
-      safeStorage.remove(`${APP_CONSTANTS.STORAGE_KEYS.INSIGHTS_PREFIX}${userId}`);
-      safeStorage.remove(`origin_ai_memories_${userId}`);
-      safeStorage.remove(`origin_ai_conversations_${userId}`);
-
-      // 2. Remove user from registered users DB
-      const users = this.getRegisteredUsers();
-      const filteredUsers = users.filter((u) => u.user.id !== userId);
-      this.saveRegisteredUsers(filteredUsers);
-
-      // 3. Clear active session if matching
-      const session = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
-      if (session && session.user.id === userId) {
-        safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
-      }
+      safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
+      safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
 
       return this.success(true);
-    } catch (err) {
-      return this.failure('DELETE_FAILED', 'Failed to delete account and user records.', { err });
+    } catch (err: any) {
+      return this.failure('DELETE_FAILED', err.message || 'Failed to delete account.');
     }
   }
 }

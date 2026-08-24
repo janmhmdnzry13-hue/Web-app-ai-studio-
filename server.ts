@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import { GoogleGenAI, Type } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
 import { generateLocalAIResponse, generateLocalDynamicInsights } from './src/services/ai/local-engine';
+import { apiRouter } from './src/server/routes';
+import { optionalAuth, AuthenticatedRequest } from './src/server/auth';
 
 dotenv.config();
 
@@ -11,6 +13,9 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json({ limit: '5mb' }));
+
+// Mount all modular REST endpoints (Auth, Tasks, Habits, Goals, Finances, Notes, Billing, Audit)
+app.use('/api', apiRouter);
 
 // Centralized AI Model Config with automatic resilient low-latency model fallbacks
 const PRIMARY_GEMINI_MODEL = 'gemini-2.5-flash';

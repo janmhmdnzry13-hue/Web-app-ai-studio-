@@ -1,21 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useShell } from '../../context/ShellContext';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { NavItem } from '../navigation/NavItem';
-import { SYSTEM_MODULES } from '../../config/constants';
 import {
   LayoutDashboard,
   CheckSquare,
-  Target,
   Repeat,
+  Target,
   Wallet,
   HeartHandshake,
   Users,
   FileText,
   Sparkles,
   Compass,
-  Code2,
   Settings,
   PanelLeftClose,
   PanelLeft,
@@ -23,33 +21,20 @@ import {
   Moon,
   LogOut,
   SlidersHorizontal,
+  ChevronDown,
+  ChevronRight,
+  Crown,
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
+import { Link } from 'react-router-dom';
 
 export function Sidebar() {
   const { isSidebarCollapsed, toggleSidebar, isContextPanelOpen, toggleContextPanel } = useShell();
   const { user, logout } = useAuth();
   const { resolvedTheme, toggleTheme } = useTheme();
+  const [isExpandedDomainsOpen, setIsExpandedDomainsOpen] = useState(false);
 
-  const iconMap: Record<string, React.ReactNode> = {
-    LayoutDashboard: <LayoutDashboard className="h-4 w-4" />,
-    CheckSquare: <CheckSquare className="h-4 w-4" />,
-    Target: <Target className="h-4 w-4" />,
-    Repeat: <Repeat className="h-4 w-4" />,
-    Wallet: <Wallet className="h-4 w-4" />,
-    HeartHandshake: <HeartHandshake className="h-4 w-4" />,
-    Users: <Users className="h-4 w-4" />,
-    FileText: <FileText className="h-4 w-4" />,
-    Sparkles: <Sparkles className="h-4 w-4" />,
-    Compass: <Compass className="h-4 w-4" />,
-    Code2: <Code2 className="h-4 w-4" />,
-    Settings: <Settings className="h-4 w-4" />,
-  };
-
-  const coreModules = SYSTEM_MODULES.filter((m) => m.category === 'core' && m.id !== 'settings');
-  const productivityModules = SYSTEM_MODULES.filter((m) => m.category === 'productivity');
-  const wellnessModules = SYSTEM_MODULES.filter((m) => m.category === 'wellness');
-  const intelligenceModules = SYSTEM_MODULES.filter((m) => m.category === 'intelligence');
+  const isPro = user?.role === 'admin' || (user as any)?.subscription?.tier === 'pro';
 
   return (
     <aside
@@ -71,8 +56,13 @@ export function Sidebar() {
           </div>
           {!isSidebarCollapsed && (
             <div className="truncate">
-              <div className="font-bold text-sm tracking-tight text-neutral-900 dark:text-[#F0EEE6]">
+              <div className="font-bold text-sm tracking-tight text-neutral-900 dark:text-[#F0EEE6] flex items-center gap-1.5">
                 ORIGIN
+                {isPro && (
+                  <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                    PRO
+                  </span>
+                )}
               </div>
               <div className="text-[10px] text-neutral-400 dark:text-[#707A75] font-normal leading-tight">
                 Your life, unhurried.
@@ -91,65 +81,64 @@ export function Sidebar() {
         </button>
       </div>
 
-      {/* Nav Link Tree */}
+      {/* Nav Link Tree with Progressive Disclosure */}
       <div className="flex-1 overflow-y-auto px-2.5 py-3 space-y-3">
-        {/* Core Group */}
+        {/* Core Daily Loop */}
         <div className="space-y-0.5">
           {!isSidebarCollapsed && (
             <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-              Core
+              Daily Focus
             </div>
           )}
-          {coreModules.map((mod) => (
-            <NavItem
-              key={mod.id}
-              to={mod.path}
-              label={mod.name}
-              icon={iconMap[mod.iconName]}
-              isCollapsed={isSidebarCollapsed}
-            />
-          ))}
+          <NavItem to="/app" label="Today & Focus" icon={<LayoutDashboard className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+          <NavItem to="/app/tasks" label="Tasks" icon={<CheckSquare className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+          <NavItem to="/app/habits" label="Habits" icon={<Repeat className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
         </div>
 
-        {/* Life & Balance Group */}
-        <div className="space-y-0.5">
-          {!isSidebarCollapsed && (
-            <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-              Life
-            </div>
+        {/* Extended Life Dimensions (Progressive Disclosure) */}
+        <div className="space-y-0.5 pt-1">
+          {!isSidebarCollapsed ? (
+            <button
+              type="button"
+              onClick={() => setIsExpandedDomainsOpen((prev) => !prev)}
+              className="w-full flex items-center justify-between px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors cursor-pointer"
+            >
+              <span>Life Dimensions</span>
+              {isExpandedDomainsOpen ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+            </button>
+          ) : (
+            <div className="border-t border-neutral-200/40 dark:border-neutral-800/40 my-1" />
           )}
-          {wellnessModules.map((mod) => (
-            <NavItem
-              key={mod.id}
-              to={mod.path}
-              label={mod.name}
-              icon={iconMap[mod.iconName]}
-              isCollapsed={isSidebarCollapsed}
-            />
-          ))}
-        </div>
 
-        {/* Intelligence Group */}
-        <div className="space-y-0.5">
-          {!isSidebarCollapsed && (
-            <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-              Intelligence
+          {/* When expanded on full sidebar, or shown directly on collapsed */}
+          {(isExpandedDomainsOpen || isSidebarCollapsed) && (
+            <div className="space-y-0.5 animate-in fade-in duration-150">
+              <NavItem to="/app/goals" label="Goals" icon={<Target className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem to="/app/finances" label="Finances" icon={<Wallet className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem to="/app/emotions" label="Reflections" icon={<HeartHandshake className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem to="/app/relationships" label="Relationships" icon={<Users className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem to="/app/notes" label="Notes" icon={<FileText className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem to="/app/insights" label="Insights" icon={<Compass className="h-4 w-4" />} isCollapsed={isSidebarCollapsed} />
             </div>
           )}
-          {intelligenceModules.map((mod) => (
-            <NavItem
-              key={mod.id}
-              to={mod.path}
-              label={mod.name}
-              icon={iconMap[mod.iconName]}
-              isCollapsed={isSidebarCollapsed}
-            />
-          ))}
         </div>
       </div>
 
       {/* Footer Controls & User Card */}
       <div className="p-2 border-t border-neutral-200/60 dark:border-neutral-800/60 space-y-0.5">
+        {!isPro && !isSidebarCollapsed && (
+          <Link
+            to="/app/settings?tab=billing"
+            className="flex items-center gap-2 px-2.5 py-2 mb-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20 text-neutral-800 dark:text-neutral-200 hover:border-amber-500/40 transition-all text-xs group"
+          >
+            <Crown className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform" />
+            <div className="flex-1 min-w-0">
+              <div className="font-semibold text-[11px] text-amber-700 dark:text-amber-400">Upgrade to Pro</div>
+              <div className="text-[9px] text-neutral-500 dark:text-neutral-400 truncate">Unlimited AI & vault</div>
+            </div>
+          </Link>
+        )}
+
         <NavItem
           to="/app/settings"
           label="Settings"
@@ -179,12 +168,12 @@ export function Sidebar() {
         >
           <div className="flex items-center gap-2 min-w-0">
             <div className="h-6.5 w-6.5 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center font-semibold text-xs text-neutral-700 dark:text-neutral-300 shrink-0">
-              {user?.profile.displayName.charAt(0).toUpperCase() || 'U'}
+              {user?.profile?.displayName?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             {!isSidebarCollapsed && (
               <div className="truncate">
                 <p className="text-xs font-medium text-neutral-800 dark:text-neutral-200 truncate">
-                  {user?.profile.displayName || 'Guest'}
+                  {user?.profile?.displayName || 'Alex Vance'}
                 </p>
                 <p className="text-[10px] text-neutral-400 truncate">{user?.email || 'origin-guest'}</p>
               </div>

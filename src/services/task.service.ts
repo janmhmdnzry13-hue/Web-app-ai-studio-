@@ -1,9 +1,10 @@
 /**
- * Task Service Contract & Persistent Implementation
- * Provides robust CRUD, user-data isolation, status transitions, subtasks, search, and filtering.
+ * Task Service Implementation
+ * Communicates with the real server database (/api/tasks) with client-side cache and offline resilience.
  */
 import { APP_CONSTANTS } from '../config/constants';
 import { safeStorage } from '../lib/storage';
+import { apiClient } from '../lib/api-client';
 import { generateId } from '../lib/utils';
 import { PaginatedResult, PaginationParams, PriorityLevel, ServiceResult } from '../types/common.types';
 import { CreateTaskDTO, Subtask, Task, TaskStatus, UpdateTaskDTO } from '../types/task.types';
@@ -29,65 +30,6 @@ export interface ITaskService {
   seedStarterTasks(userId: string): Promise<ServiceResult<Task[]>>;
 }
 
-const STARTER_TASKS: readonly Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>[] = [
-  {
-    title: 'Review System Architecture & Domain Specifications',
-    description: 'Verify all 10 domain contracts, user-scoped security, and persistence models.',
-    status: 'in_progress',
-    priority: 'urgent',
-    dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    estimatedMinutes: 45,
-    actualMinutes: 20,
-    tags: ['Architecture', 'Core'],
-    subtasks: [
-      { id: 'sub_1', title: 'Verify authentication and session token expiry', completed: true, completedAt: new Date().toISOString() },
-      { id: 'sub_2', title: 'Validate goal milestone boundary mathematics', completed: true, completedAt: new Date().toISOString() },
-      { id: 'sub_3', title: 'Implement habit streak calculation algorithm', completed: false },
-    ],
-  },
-  {
-    title: 'Daily 30-Minute Aerobic Zone 2 Cardio',
-    description: 'Maintain cardiovascular base and aerobic mitochondrial efficiency.',
-    status: 'todo',
-    priority: 'high',
-    dueDate: new Date().toISOString(),
-    estimatedMinutes: 30,
-    tags: ['Health', 'Vitality'],
-    subtasks: [
-      { id: 'sub_4', title: 'Warmup and dynamic mobility stretch', completed: false },
-      { id: 'sub_5', title: 'Maintain 130-145 BPM heart rate for 30 minutes', completed: false },
-    ],
-  },
-  {
-    title: 'Conduct Monthly Financial Trajectory & Expense Audit',
-    description: 'Evaluate category cashflow against target savings and investment allocation.',
-    status: 'todo',
-    priority: 'medium',
-    dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-    estimatedMinutes: 60,
-    tags: ['Finances', 'Quarterly'],
-    subtasks: [
-      { id: 'sub_6', title: 'Export bank statement CSV', completed: false },
-      { id: 'sub_7', title: 'Categorize recurring subscription costs', completed: false },
-    ],
-  },
-  {
-    title: 'Read 20 pages of Systems Thinking handbook',
-    description: 'Continuous synthesis of feedback loops and emergent behaviors.',
-    status: 'completed',
-    priority: 'low',
-    dueDate: new Date().toISOString(),
-    estimatedMinutes: 25,
-    actualMinutes: 25,
-    completedAt: new Date().toISOString(),
-    tags: ['Mind', 'Reading'],
-    subtasks: [
-      { id: 'sub_8', title: 'Read Chapter 4 on Feedback Delays', completed: true, completedAt: new Date().toISOString() },
-      { id: 'sub_9', title: 'Capture key insights into knowledge graph', completed: true, completedAt: new Date().toISOString() },
-    ],
-  },
-];
-
 export class TaskService extends BaseService implements ITaskService {
   private async resolveUserId(providedUserId?: string): Promise<string> {
     if (providedUserId && typeof providedUserId === 'string' && providedUserId.trim().length > 0) {
@@ -106,20 +48,7 @@ export class TaskService extends BaseService implements ITaskService {
 
   private getStoredTasks(userId: string): Task[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Task[]>(this.getStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      // Auto-seed demo tasks ONLY for explicit demo user
-      const seeded = STARTER_TASKS.map((st) => ({
-        ...st,
-        id: generateId('tsk'),
-        userId,
-        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Task[]>(this.getStorageKey(userId), []);
   }
 
   private saveStoredTasks(userId: string, tasks: Task[]): void {
@@ -147,7 +76,15 @@ export class TaskService extends BaseService implements ITaskService {
         return this.success({ items: [], total: 0, page: 1, limit: 50, hasMore: false });
       }
 
-      let tasks = this.getStoredTasks(userId);
+      // Try fetching live records from server backend
+      let tasks: Task[] = [];
+      const res = await apiClient.get<Task[]>('/api/tasks');
+      if (res.success && Array.isArray(res.data)) {
+        tasks = res.data;
+        this.saveStoredTasks(userId, tasks);
+      } else {
+        tasks = this.getStoredTasks(userId);
+      }
 
       // Filter by Status
       if (params.status && params.status !== 'all') {
@@ -171,7 +108,7 @@ export class TaskService extends BaseService implements ITaskService {
           (t) =>
             t.title.toLowerCase().includes(query) ||
             t.description?.toLowerCase().includes(query) ||
-            t.tags.some((tag) => tag.toLowerCase().includes(query))
+            t.tags?.some((tag) => tag.toLowerCase().includes(query))
         );
       }
 
@@ -240,7 +177,19 @@ export class TaskService extends BaseService implements ITaskService {
         return this.failure('TASK_VALIDATION_ERROR', 'Task title is required.');
       }
 
-      const tasks = this.getStoredTasks(userId);
+      const res = await apiClient.post<Task>('/api/tasks', dto);
+      if (res.success && res.data) {
+        const tasks = this.getStoredTasks(userId);
+        tasks.unshift(res.data);
+        this.saveStoredTasks(userId, tasks);
+        return this.success(res.data);
+      }
+
+      // Offline / error handling fallback
+      if (res.error?.code === 'PLAN_LIMIT_REACHED') {
+        return this.failure('PLAN_LIMIT_REACHED', res.error.message);
+      }
+
       const newTask: Task = {
         id: generateId('tsk'),
         userId,
@@ -257,61 +206,50 @@ export class TaskService extends BaseService implements ITaskService {
         updatedAt: new Date().toISOString(),
       };
 
+      const tasks = this.getStoredTasks(userId);
       tasks.unshift(newTask);
       this.saveStoredTasks(userId, tasks);
-
       return this.success(newTask);
-    } catch (err) {
-      return this.failure('TASK_CREATE_ERROR', 'Failed to create task.', { err });
+    } catch (err: any) {
+      return this.failure('TASK_CREATE_ERROR', 'Failed to create task record.', { err });
     }
   }
 
-  async updateTask(
-    userIdOrId: string,
-    idOrDto: string | UpdateTaskDTO,
-    maybeDto?: UpdateTaskDTO
-  ): Promise<ServiceResult<Task>> {
+  async updateTask(userIdOrId: string, idOrDto: string | UpdateTaskDTO, maybeDto?: UpdateTaskDTO): Promise<ServiceResult<Task>> {
     try {
-      let userId: string;
-      let taskId: string;
-      let dto: UpdateTaskDTO;
+      const userId = maybeDto ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
+      const taskId = maybeDto ? (idOrDto as string) : userIdOrId;
+      const dto = (maybeDto || idOrDto) as UpdateTaskDTO;
 
-      if (maybeDto) {
-        userId = await this.resolveUserId(userIdOrId);
-        taskId = idOrDto as string;
-        dto = maybeDto;
-      } else {
-        userId = await this.resolveUserId();
-        taskId = userIdOrId;
-        dto = idOrDto as UpdateTaskDTO;
+      const res = await apiClient.put<Task>(`/api/tasks/${taskId}`, dto);
+      if (res.success && res.data) {
+        const tasks = this.getStoredTasks(userId);
+        const index = tasks.findIndex((t) => t.id === taskId);
+        if (index !== -1) {
+          tasks[index] = res.data;
+          this.saveStoredTasks(userId, tasks);
+        }
+        return this.success(res.data);
       }
 
+      // Local fallback
       const tasks = this.getStoredTasks(userId);
       const index = tasks.findIndex((t) => t.id === taskId);
-
       if (index === -1) {
         return this.failure('TASK_NOT_FOUND', `Task with ID ${taskId} not found.`);
       }
 
-      const current = tasks[index];
-      const nextStatus = dto.status || current.status;
-      const isNewlyCompleted = nextStatus === 'completed' && current.status !== 'completed';
-
       const updatedTask: Task = {
-        ...current,
+        ...tasks[index],
         ...dto,
-        title: dto.title !== undefined ? dto.title.trim() : current.title,
-        status: nextStatus,
-        completedAt: isNewlyCompleted ? new Date().toISOString() : nextStatus === 'completed' ? current.completedAt : undefined,
         updatedAt: new Date().toISOString(),
       };
 
       tasks[index] = updatedTask;
       this.saveStoredTasks(userId, tasks);
-
       return this.success(updatedTask);
     } catch (err) {
-      return this.failure('TASK_UPDATE_ERROR', 'Failed to update task.', { err });
+      return this.failure('TASK_UPDATE_ERROR', 'Failed to update task record.', { err });
     }
   }
 
@@ -320,90 +258,51 @@ export class TaskService extends BaseService implements ITaskService {
       const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const taskId = maybeId || userIdOrId;
 
+      await apiClient.delete(`/api/tasks/${taskId}`);
+
       const tasks = this.getStoredTasks(userId);
       const filtered = tasks.filter((t) => t.id !== taskId);
-
-      if (filtered.length === tasks.length) {
-        return this.failure('TASK_NOT_FOUND', `Task with ID ${taskId} not found.`);
-      }
-
       this.saveStoredTasks(userId, filtered);
+
       return this.success(undefined);
     } catch (err) {
       return this.failure('TASK_DELETE_ERROR', 'Failed to delete task.', { err });
     }
   }
 
-  async toggleSubtask(
-    userIdOrTaskId: string,
-    taskIdOrSubtaskId: string,
-    maybeSubtaskId?: string
-  ): Promise<ServiceResult<Task>> {
+  async toggleSubtask(userIdOrTaskId: string, taskIdOrSubtaskId: string, maybeSubtaskId?: string): Promise<ServiceResult<Task>> {
     try {
-      let userId: string;
-      let taskId: string;
-      let subtaskId: string;
-
-      if (maybeSubtaskId) {
-        userId = await this.resolveUserId(userIdOrTaskId);
-        taskId = taskIdOrSubtaskId;
-        subtaskId = maybeSubtaskId;
-      } else {
-        userId = await this.resolveUserId();
-        taskId = userIdOrTaskId;
-        subtaskId = taskIdOrSubtaskId;
-      }
+      const userId = maybeSubtaskId ? await this.resolveUserId(userIdOrTaskId) : await this.resolveUserId();
+      const taskId = maybeSubtaskId ? taskIdOrSubtaskId : userIdOrTaskId;
+      const subtaskId = maybeSubtaskId || taskIdOrSubtaskId;
 
       const tasks = this.getStoredTasks(userId);
-      const taskIndex = tasks.findIndex((t) => t.id === taskId);
-
-      if (taskIndex === -1) {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) {
         return this.failure('TASK_NOT_FOUND', `Task with ID ${taskId} not found.`);
       }
 
-      const task = tasks[taskIndex];
-      const subtasks = task.subtasks.map((s) => {
-        if (s.id === subtaskId) {
-          const nextCompleted = !s.completed;
+      const updatedSubtasks = (task.subtasks || []).map((sub) => {
+        if (sub.id === subtaskId) {
+          const nextCompleted = !sub.completed;
           return {
-            ...s,
+            ...sub,
             completed: nextCompleted,
             completedAt: nextCompleted ? new Date().toISOString() : undefined,
           };
         }
-        return s;
+        return sub;
       });
 
-      const updatedTask: Task = {
-        ...task,
-        subtasks,
-        updatedAt: new Date().toISOString(),
-      };
-
-      tasks[taskIndex] = updatedTask;
-      this.saveStoredTasks(userId, tasks);
-
-      return this.success(updatedTask);
+      return this.updateTask(userId, taskId, { subtasks: updatedSubtasks });
     } catch (err) {
-      return this.failure('SUBTASK_TOGGLE_ERROR', 'Failed to toggle subtask.', { err });
+      return this.failure('TASK_SUBTASK_ERROR', 'Failed to toggle subtask.', { err });
     }
   }
 
   async seedStarterTasks(userId: string): Promise<ServiceResult<Task[]>> {
-    try {
-      const seeded = STARTER_TASKS.map((st) => ({
-        ...st,
-        id: generateId('tsk'),
-        userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-
-      this.saveStoredTasks(userId, seeded);
-      return this.success(seeded);
-    } catch (err) {
-      return this.failure('TASK_SEED_ERROR', 'Failed to seed starter tasks.', { err });
-    }
+    const tasks = this.getStoredTasks(userId);
+    return this.success(tasks);
   }
 }
 
