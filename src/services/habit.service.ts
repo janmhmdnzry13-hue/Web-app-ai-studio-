@@ -321,25 +321,35 @@ export class HabitService extends BaseService implements IHabitService {
       const userId = typeof userIdOrDto === 'string' ? await this.resolveUserId(userIdOrDto) : await this.resolveUserId();
       const dto = (typeof userIdOrDto === 'object' ? userIdOrDto : maybeDto) as CreateHabitDTO;
 
-      if (!dto || !dto.name || dto.name.trim().length === 0) {
-        return this.failure('HABIT_VALIDATION_ERROR', 'Habit name is required.');
+      if (!userId) {
+        return this.failure('AUTH_REQUIRED', 'Authenticated user ID is required to create a habit.');
       }
 
-      const routineText = (dto.routine && dto.routine.trim().length > 0) ? dto.routine.trim() : dto.name.trim();
+      if (!dto || !dto.name || dto.name.trim().length === 0) {
+        return this.failure('HABIT_VALIDATION_ERROR', 'Habit name is required and cannot be empty.');
+      }
+
+      const trimmedName = dto.name.trim();
+      const routineText = (dto.routine && dto.routine.trim().length > 0) ? dto.routine.trim() : trimmedName;
 
       const habits = this.getStoredHabits(userId);
       const newHabit: Habit = {
         id: generateId('hab'),
         userId,
-        name: dto.name.trim(),
+        name: trimmedName,
         routine: routineText,
-        cue: '',
-        reward: '',
-        category: dto.category || 'General',
+        cue: dto.cue?.trim() || '',
+        reward: dto.reward?.trim() || '',
+        category: dto.category || 'Health & Energy',
         frequency: dto.frequency || 'daily',
-        timeOfDay: dto.timeOfDay || 'anytime',
-        targetUnits: dto.targetUnits || 1,
-        unitLabel: dto.unitLabel || 'session',
+        customDaysOfWeek: dto.frequency === 'custom' ? (dto.customDaysOfWeek && dto.customDaysOfWeek.length > 0 ? dto.customDaysOfWeek : [1, 2, 3, 4, 5]) : undefined,
+        timeOfDay: dto.timeOfDay || 'morning',
+        targetUnits: typeof dto.targetUnits === 'number' && dto.targetUnits > 0 ? dto.targetUnits : 1,
+        unitLabel: dto.unitLabel?.trim() || 'session',
+        why: dto.why?.trim() || '',
+        icon: dto.icon || '🌱',
+        color: dto.color || '',
+        goalId: dto.goalId,
         isArchived: false,
         streak: {
           currentStreak: 0,
@@ -379,6 +389,14 @@ export class HabitService extends BaseService implements IHabitService {
         updates = idOrUpdates as Partial<Habit>;
       }
 
+      if (!userId) {
+        return this.failure('AUTH_REQUIRED', 'Authenticated user ID is required to update a habit.');
+      }
+
+      if (updates.name !== undefined && updates.name.trim().length === 0) {
+        return this.failure('HABIT_VALIDATION_ERROR', 'Habit name cannot be empty.');
+      }
+
       const habits = this.getStoredHabits(userId);
       const index = habits.findIndex((h) => h.id === habitId);
 
@@ -391,7 +409,18 @@ export class HabitService extends BaseService implements IHabitService {
         ...current,
         ...updates,
         name: updates.name !== undefined ? updates.name.trim() : current.name,
-        routine: updates.routine !== undefined ? updates.routine.trim() : current.routine,
+        routine: updates.routine !== undefined ? updates.routine.trim() : (updates.name !== undefined ? updates.name.trim() : current.routine),
+        cue: updates.cue !== undefined ? updates.cue.trim() : current.cue,
+        reward: updates.reward !== undefined ? updates.reward.trim() : current.reward,
+        category: updates.category !== undefined ? updates.category : current.category,
+        frequency: updates.frequency !== undefined ? updates.frequency : current.frequency,
+        customDaysOfWeek: updates.customDaysOfWeek !== undefined ? updates.customDaysOfWeek : (updates.frequency && updates.frequency !== 'custom' ? undefined : current.customDaysOfWeek),
+        timeOfDay: updates.timeOfDay !== undefined ? updates.timeOfDay : current.timeOfDay,
+        targetUnits: updates.targetUnits !== undefined ? (Number(updates.targetUnits) > 0 ? Number(updates.targetUnits) : 1) : current.targetUnits,
+        unitLabel: updates.unitLabel !== undefined ? updates.unitLabel.trim() : current.unitLabel,
+        why: updates.why !== undefined ? updates.why.trim() : current.why,
+        icon: updates.icon !== undefined ? updates.icon : current.icon,
+        color: updates.color !== undefined ? updates.color : current.color,
         updatedAt: new Date().toISOString(),
       };
 
@@ -408,6 +437,10 @@ export class HabitService extends BaseService implements IHabitService {
     try {
       const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const habitId = maybeId || userIdOrId;
+
+      if (!userId) {
+        return this.failure('AUTH_REQUIRED', 'Authenticated user ID is required.');
+      }
 
       const habits = this.getStoredHabits(userId);
       const index = habits.findIndex((h) => h.id === habitId);
@@ -433,6 +466,10 @@ export class HabitService extends BaseService implements IHabitService {
     try {
       const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const habitId = maybeId || userIdOrId;
+
+      if (!userId) {
+        return this.failure('AUTH_REQUIRED', 'Authenticated user ID is required to delete a habit.');
+      }
 
       const habits = this.getStoredHabits(userId);
       const filteredHabits = habits.filter((h) => h.id !== habitId);

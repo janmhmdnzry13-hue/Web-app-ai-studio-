@@ -77,7 +77,31 @@ export class AuthService extends BaseService implements IAuthService {
         return this.success(res.data);
       }
 
-      return this.failure(res.error?.code || 'AUTH_INVALID_CREDENTIALS', res.error?.message || 'Invalid email or password.');
+      // If backend responded with a non-network error code, respect it
+      if (res.error && res.error.code !== 'NETWORK_ERROR') {
+        return this.failure(res.error.code, res.error.message || 'Invalid email or password.');
+      }
+
+      // Offline / Local test fallback
+      const storedUsers = safeStorage.get<Record<string, { user: User; passwordHash: string }>>('origin_os_users_db', {});
+      const userRecord = storedUsers[email];
+      if (!userRecord) {
+        return this.failure('AUTH_INVALID_CREDENTIALS', 'Invalid email or password.');
+      }
+
+      if (userRecord.passwordHash !== password) {
+        return this.failure('AUTH_INVALID_CREDENTIALS', 'Invalid email or password.');
+      }
+
+      const session: AuthSession = {
+        token: `mock_jwt_${Date.now()}_${userRecord.user.id}`,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        user: userRecord.user,
+      };
+
+      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, session);
+      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, session.token);
+      return this.success(session);
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Authentication failed unexpectedly', { err });
     }
@@ -106,7 +130,48 @@ export class AuthService extends BaseService implements IAuthService {
         return this.success(res.data);
       }
 
-      return this.failure(res.error?.code || 'AUTH_EMAIL_EXISTS', res.error?.message || 'Signup failed.');
+      if (res.error && res.error.code !== 'NETWORK_ERROR') {
+        return this.failure(res.error.code, res.error.message || 'Signup failed.');
+      }
+
+      // Offline / Local test fallback
+      const storedUsers = safeStorage.get<Record<string, { user: User; passwordHash: string }>>('origin_os_users_db', {});
+      if (storedUsers[email]) {
+        return this.failure('AUTH_EMAIL_EXISTS', 'An account with this email address already exists.');
+      }
+
+      const newUser: User = {
+        id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        email,
+        role: 'member',
+        emailVerified: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lastLoginAt: new Date().toISOString(),
+        profile: {
+          displayName,
+          headline: 'Self-Actualizer',
+          bio: '',
+          primaryLifeFocus: 'Deep Work & Daily Focus',
+        },
+        preferences: { ...DEFAULT_DEMO_USER.preferences },
+      };
+
+      storedUsers[email] = {
+        user: newUser,
+        passwordHash: password,
+      };
+      safeStorage.set('origin_os_users_db', storedUsers);
+
+      const session: AuthSession = {
+        token: `mock_jwt_${Date.now()}_${newUser.id}`,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+        user: newUser,
+      };
+
+      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, session);
+      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, session.token);
+      return this.success(session);
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Signup failed unexpectedly', { err });
     }
@@ -163,7 +228,21 @@ export class AuthService extends BaseService implements IAuthService {
       if (res.success && res.data) {
         return this.success(res.data);
       }
-      return this.failure(res.error?.code || 'AUTH_ERROR', res.error?.message || 'Password reset request failed.');
+      if (res.error && res.error.code !== 'NETWORK_ERROR') {
+        return this.failure(res.error.code, res.error.message || 'Password reset request failed.');
+      }
+
+      // Offline / test fallback
+      const token = `reset_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      const resets = safeStorage.get<Record<string, { email: string; token: string }>>('origin_os_resets', {});
+      resets[token] = { email: payload.email, token };
+      safeStorage.set('origin_os_resets', resets);
+
+      return this.success({
+        success: true,
+        message: 'Password reset instructions have been issued.',
+        resetToken: token,
+      });
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Password reset request failed.');
     }
@@ -175,7 +254,27 @@ export class AuthService extends BaseService implements IAuthService {
       if (res.success && res.data) {
         return this.success(res.data);
       }
-      return this.failure(res.error?.code || 'AUTH_ERROR', res.error?.message || 'Password reset failed.');
+      if (res.error && res.error.code !== 'NETWORK_ERROR') {
+        return this.failure(res.error.code, res.error.message || 'Password reset failed.');
+      }
+
+      // Offline / test fallback
+      const resets = safeStorage.get<Record<string, { email: string; token: string }>>('origin_os_resets', {});
+      const resetRecord = resets[payload.token];
+      if (!resetRecord) {
+        return this.failure('AUTH_INVALID_TOKEN', 'Password reset token is invalid or expired.');
+      }
+
+      const storedUsers = safeStorage.get<Record<string, { user: User; passwordHash: string }>>('origin_os_users_db', {});
+      if (storedUsers[resetRecord.email]) {
+        storedUsers[resetRecord.email].passwordHash = payload.newPassword;
+        safeStorage.set('origin_os_users_db', storedUsers);
+      }
+
+      delete resets[payload.token];
+      safeStorage.set('origin_os_resets', resets);
+
+      return this.success({ success: true, message: 'Password has been reset successfully.' });
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Password reset confirmation failed.');
     }

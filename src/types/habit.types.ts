@@ -28,6 +28,9 @@ export interface Habit extends UserScopedEntity {
   readonly streak: HabitStreak;
   readonly isArchived: boolean;
   readonly goalId?: EntityId;
+  readonly why?: string; // Meaning / Why it matters
+  readonly icon?: string; // Optional emoji or icon tag
+  readonly color?: string; // Accent color token
 }
 
 export interface HabitLog extends UserScopedEntity {
@@ -42,9 +45,16 @@ export interface HabitLog extends UserScopedEntity {
 export interface CreateHabitDTO {
   readonly name: string;
   readonly routine?: string;
+  readonly cue?: string;
+  readonly reward?: string;
   readonly frequency: HabitFrequency;
+  readonly customDaysOfWeek?: readonly number[];
   readonly timeOfDay?: HabitTimeOfDay;
   readonly targetUnits?: number;
   readonly unitLabel?: string;
   readonly category?: string;
+  readonly goalId?: EntityId;
+  readonly why?: string;
+  readonly icon?: string;
+  readonly color?: string;
 }

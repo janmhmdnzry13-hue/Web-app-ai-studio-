@@ -239,9 +239,17 @@ export class TaskService extends BaseService implements ITaskService {
         return this.failure('TASK_NOT_FOUND', `Task with ID ${taskId} not found.`);
       }
 
+      const isNowCompleted = dto.status === 'completed' && tasks[index].status !== 'completed';
+      const isUncompleted = dto.status && dto.status !== 'completed' && tasks[index].status === 'completed';
+
       const updatedTask: Task = {
         ...tasks[index],
         ...dto,
+        completedAt: isNowCompleted
+          ? new Date().toISOString()
+          : isUncompleted
+          ? undefined
+          : tasks[index].completedAt,
         updatedAt: new Date().toISOString(),
       };
 
