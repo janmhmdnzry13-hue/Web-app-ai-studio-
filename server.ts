@@ -5,7 +5,8 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
 import { generateLocalAIResponse, generateLocalDynamicInsights } from './src/services/ai/local-engine';
 import { apiRouter, checkRateLimit } from './src/server/routes';
-import { requireAuth, AuthenticatedRequest } from './src/server/auth';
+import { requireAuth, AuthenticatedRequest, getJwtSecret } from './src/server/auth';
+import { getEncryptionKey } from './src/server/db';
 
 dotenv.config();
 
@@ -314,6 +315,17 @@ Return JSON array with items matching:
 
 // Start Server with Vite Middleware
 async function startServer() {
+  // Validate critical security secrets on server boot
+  try {
+    getJwtSecret();
+    getEncryptionKey();
+  } catch (err: any) {
+    console.error('Fatal Security Error on Server Startup:', err.message);
+    if (process.env.NODE_ENV === 'production') {
+      process.exit(1);
+    }
+  }
+
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },

@@ -17,6 +17,7 @@ import { aiActionExecutor } from './ai/action-executor';
 import { aiMemoryService } from './ai/memory.service';
 import { generateLocalAIResponse } from './ai/local-engine';
 import { safeStorage } from '../lib/storage';
+import { apiClient } from '../lib/api-client';
 
 const CONVERSATIONS_KEY_PREFIX = 'origin_ai_conversations_';
 
@@ -218,33 +219,19 @@ export class AIService extends BaseService implements IAIService {
       let providerName = 'gemini';
 
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-        const res = await fetch('/api/ai/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          signal: controller.signal,
-          body: JSON.stringify({
-            message: messageText.trim(),
-            context: contextResult.payload,
-            memories: memoryResult.success && memoryResult.data ? memoryResult.data : [],
-            conversationHistory: conversation.messages.slice(-4),
-            moduleContext: options?.moduleContext,
-          }),
+        const res = await apiClient.post<any>('/api/ai/chat', {
+          message: messageText.trim(),
+          context: contextResult.payload,
+          memories: memoryResult.success && memoryResult.data ? memoryResult.data : [],
+          conversationHistory: conversation.messages.slice(-4),
+          moduleContext: options?.moduleContext,
         });
-        clearTimeout(timeoutId);
 
-        if (!res.ok) {
-          throw new Error(`Server responded with status ${res.status}`);
-        }
-
-        const json = await res.json();
-        if (json.success && json.data) {
-          serverResponse = json.data;
-          providerName = json.provider || 'gemini';
+        if (res.success && res.data) {
+          serverResponse = res.data;
+          providerName = (res as any).provider || 'gemini';
         } else {
-          throw new Error(json.error || 'Invalid API response format');
+          throw new Error(res.error?.message || 'Invalid API response format');
         }
       } catch (netErr: any) {
         console.warn('Backend /api/ai/chat offline or in fallback, activating robust local engine:', netErr);
@@ -379,20 +366,13 @@ export class AIService extends BaseService implements IAIService {
         aiMemoryService.getMemories(userId),
       ]);
 
-      const res = await fetch('/api/ai/insights', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          context: contextResult.payload,
-          memories: memoryResult.success && memoryResult.data ? memoryResult.data : [],
-        }),
+      const res = await apiClient.post<any[]>('/api/ai/insights', {
+        context: contextResult.payload,
+        memories: memoryResult.success && memoryResult.data ? memoryResult.data : [],
       });
 
-      if (res.ok) {
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data)) {
-          return this.success(json.data);
-        }
+      if (res.success && Array.isArray(res.data)) {
+        return this.success(res.data);
       }
     } catch {
       // Ignore and return fallback

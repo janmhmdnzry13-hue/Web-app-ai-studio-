@@ -2,8 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import { apiRouter, checkRateLimit, resetRateLimitsForTesting } from '../routes';
-import { requireAuth, AuthenticatedRequest } from '../auth';
-import { db } from '../db';
+import { requireAuth, AuthenticatedRequest, getJwtSecret } from '../auth';
+import { db, getEncryptionKey } from '../db';
 
 // Build a dedicated test app mirroring server.ts configuration
 const app = express();
@@ -254,5 +254,84 @@ describe('Phase 1 Security & Authentication Hardening Test Suite', () => {
     // 6th request should fail
     const blocked = checkRateLimit(key, 5, 60000);
     expect(blocked).toBe(false);
+  });
+
+  // Test 12: Production secret validation fails fast without falling back to insecure defaults
+  it('12. Fails fast in production if JWT_SECRET or ENCRYPTION_SECRET is missing or default', () => {
+    const originalEnv = process.env.NODE_ENV;
+    const originalJwt = process.env.JWT_SECRET;
+    const originalEnc = process.env.ENCRYPTION_SECRET;
+
+    try {
+      process.env.NODE_ENV = 'production';
+      delete process.env.JWT_SECRET;
+      delete process.env.ENCRYPTION_SECRET;
+
+      expect(() => getJwtSecret()).toThrowError(/CRITICAL_SECURITY_ERROR: JWT_SECRET/);
+      expect(() => getEncryptionKey()).toThrowError(/CRITICAL_SECURITY_ERROR: ENCRYPTION_SECRET/);
+
+      // Verify that known placeholder values are also rejected in production
+      process.env.JWT_SECRET = 'origin-jwt-production-secret-auth-token-2026';
+      expect(() => getJwtSecret()).toThrowError(/CRITICAL_SECURITY_ERROR: JWT_SECRET/);
+
+      process.env.ENCRYPTION_SECRET = 'origin-aes-256-gcm-master-key-prod-2026';
+      expect(() => getEncryptionKey()).toThrowError(/CRITICAL_SECURITY_ERROR: ENCRYPTION_SECRET/);
+    } finally {
+      process.env.NODE_ENV = originalEnv;
+      if (originalJwt !== undefined) process.env.JWT_SECRET = originalJwt;
+      else delete process.env.JWT_SECRET;
+      if (originalEnc !== undefined) process.env.ENCRYPTION_SECRET = originalEnc;
+      else delete process.env.ENCRYPTION_SECRET;
+    }
+  });
+
+  // Test 13: Multi-tenant resource isolation on Habits and Goals (GET, UPDATE, DELETE)
+  it('13. Enforces strict isolation on Habits and Goals across GET, UPDATE, DELETE', async () => {
+    // User A & User B
+    const uARes = await request(app)
+      .post('/api/auth/signup')
+      .send({ email: `iso_a_${Date.now()}@origin-os.internal`, password: 'Password123!', displayName: 'Iso A' });
+    const tokenA = uARes.body.data.token;
+
+    const uBRes = await request(app)
+      .post('/api/auth/signup')
+      .send({ email: `iso_b_${Date.now()}@origin-os.internal`, password: 'Password123!', displayName: 'Iso B' });
+    const tokenB = uBRes.body.data.token;
+
+    // User A creates habit
+    const habitRes = await request(app)
+      .post('/api/habits')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send({ name: 'Private Habit', frequency: 'daily', timeOfDay: 'morning' });
+    expect(habitRes.body.success).toBe(true);
+    const habitAId = habitRes.body.data.id;
+
+    // User B attempts to access, mutate, or delete User A's habit
+    const getHabit = await request(app).get(`/api/habits/${habitAId}`).set('Authorization', `Bearer ${tokenB}`);
+    expect(getHabit.status).toBe(404);
+
+    const updateHabit = await request(app).patch(`/api/habits/${habitAId}`).set('Authorization', `Bearer ${tokenB}`).send({ name: 'Hacked' });
+    expect(updateHabit.status).toBe(404);
+
+    const deleteHabit = await request(app).delete(`/api/habits/${habitAId}`).set('Authorization', `Bearer ${tokenB}`);
+    expect(deleteHabit.status).toBe(404);
+
+    // User A creates goal
+    const goalRes = await request(app)
+      .post('/api/goals')
+      .set('Authorization', `Bearer ${tokenA}`)
+      .send({ title: 'Private Goal', category: 'career_craft', timeframe: 'annual' });
+    expect(goalRes.body.success).toBe(true);
+    const goalAId = goalRes.body.data.id;
+
+    // User B attempts to access, mutate, or delete User A's goal
+    const getGoal = await request(app).get(`/api/goals/${goalAId}`).set('Authorization', `Bearer ${tokenB}`);
+    expect(getGoal.status).toBe(404);
+
+    const updateGoal = await request(app).patch(`/api/goals/${goalAId}`).set('Authorization', `Bearer ${tokenB}`).send({ title: 'Hacked Goal' });
+    expect(updateGoal.status).toBe(404);
+
+    const deleteGoal = await request(app).delete(`/api/goals/${goalAId}`).set('Authorization', `Bearer ${tokenB}`);
+    expect(deleteGoal.status).toBe(404);
   });
 });

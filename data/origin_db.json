@@ -1151,9 +1151,960 @@
       "lastLoginAt": "2026-08-27T02:42:05.962Z",
       "createdAt": "2026-08-27T02:42:05.963Z",
       "updatedAt": "2026-08-27T02:42:05.963Z"
+    },
+    {
+      "id": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "email": "guest.adbfb487@origin-os.internal",
+      "passwordHash": "$2b$10$D8XTG3VoYuCCENtbI.syhODNsVYpCZQHhZ6Qx3hamEYJVBbJQsFzq",
+      "role": "member",
+      "emailVerified": true,
+      "profile": {
+        "displayName": "Alex Vance",
+        "headline": "Lead Architect (Demo)",
+        "bio": "Designing deliberate personal operating systems in an isolated session.",
+        "primaryLifeFocus": "Deep Work & Career"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "America/New_York",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:30",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals",
+          "notes",
+          "emotions",
+          "relationships"
+        ]
+      },
+      "subscription": {
+        "tier": "pro",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T09:59:32.440Z",
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:39.243Z"
+    },
+    {
+      "id": "usr_80b2634da1f6abbec1de804fa3fe3e7d27d285b64da7fa24",
+      "email": "test_dup_1787824841362@origin-os.internal",
+      "passwordHash": "$2b$10$s7r9fY/oGnsHkU5zyRofLeTIm.Bgx9rmlB9XksIfART5UWl7i4DU.",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_3b256c0f3a78d379e7dcba255c9f9e410e8d0b3fb4b0e492",
+      "profile": {
+        "displayName": "First User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:41.493Z",
+      "createdAt": "2026-08-27T10:00:41.494Z",
+      "updatedAt": "2026-08-27T10:00:41.494Z"
+    },
+    {
+      "id": "usr_3d149c356fc29139548103b26193ace44fa28d1d7a6a0db5",
+      "email": "test_jwt_1787824841613@origin-os.internal",
+      "passwordHash": "$2b$10$LKe91j2mrHZ4/1od1xbhueQBTp20vpTQbgLflIRzWQZLsrRqQBbOm",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_55236fd917d0fd11cfefdd79a82521443472ed281ba6e186",
+      "profile": {
+        "displayName": "JWT Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:41.913Z",
+      "createdAt": "2026-08-27T10:00:41.709Z",
+      "updatedAt": "2026-08-27T10:00:41.913Z"
+    },
+    {
+      "id": "usr_af6977ffd86987e8b746f6c4f19bb8d6e1646d4315dc0b3d",
+      "email": "test_sanitize_1787824842020@origin-os.internal",
+      "passwordHash": "$2b$10$vKq4a6tMCJm7l.zTSQBZ2u13CK8yeB6M0UcKC.y.iYkILNDl8fv4.",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_23a5fbbca222c43053c03f9d91bbd1285e97fc5a0a375d65",
+      "profile": {
+        "displayName": "Sanitize Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:42.117Z",
+      "createdAt": "2026-08-27T10:00:42.117Z",
+      "updatedAt": "2026-08-27T10:00:42.117Z"
+    },
+    {
+      "id": "usr_8cda78c0e37df69c141c12f3c0f4d749ef88f1ef916abdd6",
+      "email": "test_auth_fail_1787824842229@origin-os.internal",
+      "passwordHash": "$2b$10$bFDg2wrICLk8Kp4SqA8Vieol689NY3h/pKNdCQSCod./kuIGlhkCC",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_0a40d1cc6d78df83f1542f68c8f7a4628302091ed3edb0b3",
+      "profile": {
+        "displayName": "Auth Fail Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:42.323Z",
+      "createdAt": "2026-08-27T10:00:42.323Z",
+      "updatedAt": "2026-08-27T10:00:42.323Z"
+    },
+    {
+      "id": "usr_10b2c45acdb9d46e81deda5f0c53803c79e467ceaa131d84",
+      "email": "usera_1787824842546@origin-os.internal",
+      "passwordHash": "$2b$10$U4RyLkqtuiolZm34bszKqOne6UvM4bn5iQl92BIFH8UTPj1UYgTPy",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_10aafc764d0e34a3d5f604336822e19b5860163409fdb190",
+      "profile": {
+        "displayName": "User A",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:42.650Z",
+      "createdAt": "2026-08-27T10:00:42.650Z",
+      "updatedAt": "2026-08-27T10:00:42.650Z"
+    },
+    {
+      "id": "usr_e02592011cd3c5c1e959195e629f4d019aa09e902e92c055",
+      "email": "userb_1787824842755@origin-os.internal",
+      "passwordHash": "$2b$10$3Vk2Es/kchzpYgCLkpW3c.nmfcadRisoRMvGFnQwtXw7G0sFFINxW",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_076f1588a8b3ae739dc9cd13def93e336cd1a98d75551dd3",
+      "profile": {
+        "displayName": "User B",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:42.851Z",
+      "createdAt": "2026-08-27T10:00:42.851Z",
+      "updatedAt": "2026-08-27T10:00:42.851Z"
+    },
+    {
+      "id": "usr_a1f4aba1bf038cb0a495f2b75e4fb2da25db8208b537b5e4",
+      "email": "tamper_1787824843024@origin-os.internal",
+      "passwordHash": "$2b$10$LCj5o5eJkMiopK3GPAdhiOH2N4LDwGenMSOoZqrow1Nq0RPRcVAeK",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_cf8994acdc694f3e5e0c7eb9b127fc4a593f90304b32c293",
+      "profile": {
+        "displayName": "Tamper Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:43.123Z",
+      "createdAt": "2026-08-27T10:00:43.123Z",
+      "updatedAt": "2026-08-27T10:00:43.123Z"
+    },
+    {
+      "id": "usr_1d6eafe17f90b87075e2ea881c6521ce178fd4e719fa3ab3",
+      "email": "ai_user_1787824843292@origin-os.internal",
+      "passwordHash": "$2b$10$fOCDpXyLdeF36Ro.4/Eo2uAUdDOgu57QE8OSA4epTL8GgVFSET75K",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_be35f18518a4887406f67fdf57ca6ff26910db0845c8a6cd",
+      "profile": {
+        "displayName": "AI User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:43.389Z",
+      "createdAt": "2026-08-27T10:00:43.389Z",
+      "updatedAt": "2026-08-27T10:00:43.389Z"
+    },
+    {
+      "id": "usr_419f88c5b6dabf513925b5e06fab64f118d3310d7aafa763",
+      "email": "reset_safe_1787824843499@origin-os.internal",
+      "passwordHash": "$2b$10$IRuL8po2m2TOkFUdzx3Vd.8ZdvFbZwE9uN3wvI361rHHpUkmUVsBu",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_8556b61bbf1fb1f7f37c4fcb946cc13b19162e23fcf322fe",
+      "profile": {
+        "displayName": "Reset Safe User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:00:43.601Z",
+      "createdAt": "2026-08-27T10:00:43.601Z",
+      "updatedAt": "2026-08-27T10:00:43.601Z"
+    },
+    {
+      "id": "usr_523a27c7a6c787eac8bd75cdf417f4ed40be7800719874c9",
+      "email": "test_dup_1787825013314@origin-os.internal",
+      "passwordHash": "$2b$10$xYlSAWeqiB3sc1XYsQW0Qe9uy7vGu3boROO1yz92ITZLTq0L9B1xu",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_3ec0feccdfd95279c8c65188e951be1e8c8d70954517c92b",
+      "profile": {
+        "displayName": "First User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:33.463Z",
+      "createdAt": "2026-08-27T10:03:33.463Z",
+      "updatedAt": "2026-08-27T10:03:33.463Z"
+    },
+    {
+      "id": "usr_cd4500911b368f902deef298a7d6644455409fe2555488c6",
+      "email": "test_jwt_1787825013590@origin-os.internal",
+      "passwordHash": "$2b$10$Vbv7.Hy7YM3W6H9Zr3ZhSuM8l/JYKcm2xWxauNGNysdTKr9P1R7M2",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_148ea002255e81a59c4b28036455152d875b3895f88a7a91",
+      "profile": {
+        "displayName": "JWT Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:33.904Z",
+      "createdAt": "2026-08-27T10:03:33.695Z",
+      "updatedAt": "2026-08-27T10:03:33.904Z"
+    },
+    {
+      "id": "usr_c66e9026dc6bd42cfe9fa4fd6853488335a0eefa9c698f6a",
+      "email": "test_sanitize_1787825014012@origin-os.internal",
+      "passwordHash": "$2b$10$gy04RewU0WYSrJ94KTWMVOK2A7QKqSV//wokNDdZXLQb5uqFQD.nW",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_054ec5ab75e4948a6924c16a5dd94a36dfc4e1216bf4845c",
+      "profile": {
+        "displayName": "Sanitize Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:34.147Z",
+      "createdAt": "2026-08-27T10:03:34.147Z",
+      "updatedAt": "2026-08-27T10:03:34.147Z"
+    },
+    {
+      "id": "usr_97780d4233570dc04488b006a08a0e31dbdcd4cb6b6505b5",
+      "email": "test_auth_fail_1787825014260@origin-os.internal",
+      "passwordHash": "$2b$10$7a2gULmoWInAYiL93FNYP.fwdgO6vsI6/2tWh70dZmdQmYsHx9s3W",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_0d80d33d936375fd813cc6b024bf47d8ac89b6570101ac2e",
+      "profile": {
+        "displayName": "Auth Fail Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:34.361Z",
+      "createdAt": "2026-08-27T10:03:34.361Z",
+      "updatedAt": "2026-08-27T10:03:34.361Z"
+    },
+    {
+      "id": "usr_d0b609b7a7ddb9fb137717bd8d89e3cb15cb8f7d87452dcb",
+      "email": "usera_1787825014596@origin-os.internal",
+      "passwordHash": "$2b$10$iJpcMvKJe.rrrNh.Bqe4XunKS8IaT7hyrgGMSPWeV12YstAD.E/cG",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_ac7f089455de2647ebc8968d300b18c0b48c23f81c2b7520",
+      "profile": {
+        "displayName": "User A",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:34.701Z",
+      "createdAt": "2026-08-27T10:03:34.701Z",
+      "updatedAt": "2026-08-27T10:03:34.701Z"
+    },
+    {
+      "id": "usr_16884d59632d003404145fb9f2197f99bffc07e7bf2d87b5",
+      "email": "userb_1787825014810@origin-os.internal",
+      "passwordHash": "$2b$10$YEYVEpfJn3S4viihqLsxr.j9uwqD5ANRO.G3AVY02kq6mcD0aZPxa",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_b19f06aecc1e0e73501ce7a6dc2402665987b31145cd93ac",
+      "profile": {
+        "displayName": "User B",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:34.928Z",
+      "createdAt": "2026-08-27T10:03:34.928Z",
+      "updatedAt": "2026-08-27T10:03:34.928Z"
+    },
+    {
+      "id": "usr_05892839d2370f83983d0414daf005688379bf945c0fb746",
+      "email": "tamper_1787825015120@origin-os.internal",
+      "passwordHash": "$2b$10$zhnt5gnhm.xSJu6Qlljpe.9dak65w5zoYjU3.7jSeXjcsD/CDkXFm",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_c54445eee8b50daace5fe4fe78fc9333b7dbb25a2c675e93",
+      "profile": {
+        "displayName": "Tamper Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:35.229Z",
+      "createdAt": "2026-08-27T10:03:35.229Z",
+      "updatedAt": "2026-08-27T10:03:35.229Z"
+    },
+    {
+      "id": "usr_c9015dfbc93af6a77e7be161679d69a8e2daf643e7573d33",
+      "email": "ai_user_1787825015399@origin-os.internal",
+      "passwordHash": "$2b$10$zvM4zYxUy173h7gPpHIA2uKADqJMkBL/R1L3HAV603VtzvsRU9vLe",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_5089520326f0e2f3684c14888b1dc8c2688fd9fe5fff8c13",
+      "profile": {
+        "displayName": "AI User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:35.510Z",
+      "createdAt": "2026-08-27T10:03:35.510Z",
+      "updatedAt": "2026-08-27T10:03:35.510Z"
+    },
+    {
+      "id": "usr_e04b62a409ee4e14c840e10d6a1f5fa4a27b2536c6dc327e",
+      "email": "reset_safe_1787825015620@origin-os.internal",
+      "passwordHash": "$2b$10$sH.gIFua94AZ8d.qMwhmduNngcmlGM5Zu8.Dovo7HpW8rLjC/tqQS",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_853565f693d247791f8f63a30bb0024ec244accb4a736ee9",
+      "profile": {
+        "displayName": "Reset Safe User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:35.725Z",
+      "createdAt": "2026-08-27T10:03:35.725Z",
+      "updatedAt": "2026-08-27T10:03:35.725Z"
+    },
+    {
+      "id": "usr_e01a57b8120ac67d575d0a5ddec5c13b1f1273ebff0d3c53",
+      "email": "iso_a_1787825015940@origin-os.internal",
+      "passwordHash": "$2b$10$Q3vU9OIQVuoyXYIxk4Ges..KmmHxv4YX45KRCmmddQ1FB6.pdK1dO",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_31ff030a378cf9d1ec78dcc608c642a526c171c4910e293a",
+      "profile": {
+        "displayName": "Iso A",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:36.044Z",
+      "createdAt": "2026-08-27T10:03:36.044Z",
+      "updatedAt": "2026-08-27T10:03:36.044Z"
+    },
+    {
+      "id": "usr_353ef2d3c9e2213cecc76780fe92df7038af0611aa96e402",
+      "email": "iso_b_1787825016150@origin-os.internal",
+      "passwordHash": "$2b$10$M1vy1UhN6YQLB8IQRgVeSuKleJo3KkC2bgKShJc.n3ofZENLCPwEi",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_60ce9df4f4e990a2767ed96abd9e6069db209479523bca2e",
+      "profile": {
+        "displayName": "Iso B",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-27T10:03:36.266Z",
+      "createdAt": "2026-08-27T10:03:36.266Z",
+      "updatedAt": "2026-08-27T10:03:36.266Z"
     }
   ],
   "tasks": [
+    {
+      "id": "tsk_0f0428ec21e4c93f350dd977a8f13d20c1dbdca186e4d703",
+      "userId": "usr_05892839d2370f83983d0414daf005688379bf945c0fb746",
+      "title": "Task with spoofed userId",
+      "description": "",
+      "priority": "medium",
+      "status": "todo",
+      "dueDate": null,
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-27T10:03:35.337Z",
+      "updatedAt": "2026-08-27T10:03:35.337Z"
+    },
+    {
+      "id": "tsk_759f12104f2babce10401f93216133600af292ce66a87270",
+      "userId": "usr_d0b609b7a7ddb9fb137717bd8d89e3cb15cb8f7d87452dcb",
+      "title": "User A Secret Project",
+      "description": "",
+      "priority": "high",
+      "status": "todo",
+      "dueDate": null,
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-27T10:03:35.040Z",
+      "updatedAt": "2026-08-27T10:03:35.040Z"
+    },
+    {
+      "id": "tsk_2ea53c4d793a1ab4fb26af9eb670e3fe61b325cb96c54235",
+      "userId": "usr_a1f4aba1bf038cb0a495f2b75e4fb2da25db8208b537b5e4",
+      "title": "Task with spoofed userId",
+      "description": "",
+      "priority": "medium",
+      "status": "todo",
+      "dueDate": null,
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-27T10:00:43.231Z",
+      "updatedAt": "2026-08-27T10:00:43.231Z"
+    },
+    {
+      "id": "tsk_97856518ded28363c36e3c01188a9961b7d0f11a8dbcaac6",
+      "userId": "usr_10b2c45acdb9d46e81deda5f0c53803c79e467ceaa131d84",
+      "title": "User A Secret Project",
+      "description": "",
+      "priority": "high",
+      "status": "todo",
+      "dueDate": null,
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-27T10:00:42.958Z",
+      "updatedAt": "2026-08-27T10:00:42.958Z"
+    },
+    {
+      "id": "tsk_1c59b8ad4e365a029dc59e9da6b4994dec912b896a7c543f",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "title": "Complete primary project milestone for the week",
+      "description": "Generated during onboarding based on focus: Deep Work & Career",
+      "priority": "urgent",
+      "status": "todo",
+      "dueDate": "2026-08-27",
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [
+        "intention",
+        "today"
+      ],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-27T09:59:40.167Z",
+      "updatedAt": "2026-08-27T09:59:40.167Z"
+    },
     {
       "id": "tsk_25c79ef12c82471b8c11bd5211d86ae0b2be5f77517b7dce",
       "userId": "usr_e86e1775078e35cf47a819f8b99c320f220a7fe9a1f638c8",
@@ -1301,9 +2252,72 @@
       "subtasks": [],
       "createdAt": "2026-08-27T02:36:00.312Z",
       "updatedAt": "2026-08-27T02:36:00.312Z"
+    },
+    {
+      "id": "task_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_1",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "title": "Review quarterly architecture roadmap",
+      "description": "Synthesize engineering priorities and key milestone deliverables.",
+      "priority": "high",
+      "status": "todo",
+      "dueDate": "2026-08-27",
+      "estimatedMinutes": 60,
+      "actualMinutes": null,
+      "tags": [
+        "strategy",
+        "deep_work"
+      ],
+      "subtasks": [
+        {
+          "id": "sub_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_1",
+          "title": "Outline core milestones",
+          "completed": true
+        },
+        {
+          "id": "sub_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_2",
+          "title": "Align resource capacity",
+          "completed": false
+        }
+      ],
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
+    },
+    {
+      "id": "task_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_2",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "title": "Publish weekly product synthesis",
+      "description": "Share cross-domain insights and key progress updates with the team.",
+      "priority": "medium",
+      "status": "completed",
+      "dueDate": "2026-08-27",
+      "estimatedMinutes": 45,
+      "actualMinutes": 40,
+      "tags": [
+        "communication"
+      ],
+      "subtasks": [],
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
     }
   ],
   "habits": [
+    {
+      "id": "hbt_922b42def05bddfd7964c51b8f8914287ec792a3049c248a",
+      "userId": "usr_e01a57b8120ac67d575d0a5ddec5c13b1f1273ebff0d3c53",
+      "name": "Private Habit",
+      "description": "",
+      "category": "deep_work",
+      "frequency": "daily",
+      "targetDays": [],
+      "targetPerDay": 1,
+      "reminderTime": null,
+      "streakCount": 0,
+      "bestStreak": 0,
+      "totalCompletions": 0,
+      "archived": false,
+      "createdAt": "2026-08-27T10:03:36.375Z",
+      "updatedAt": "2026-08-27T10:03:36.375Z"
+    },
     {
       "id": "habit_demo_1",
       "userId": "usr_origin_demo",
@@ -1333,10 +2347,54 @@
       "archived": false,
       "createdAt": "2026-08-27T02:36:00.312Z",
       "updatedAt": "2026-08-27T02:36:00.312Z"
+    },
+    {
+      "id": "habit_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_1",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "name": "Morning Deep Work Block",
+      "description": "90 minutes of focused, distraction-free execution.",
+      "category": "deep_work",
+      "frequency": "daily",
+      "targetPerDay": 1,
+      "streakCount": 5,
+      "bestStreak": 14,
+      "totalCompletions": 28,
+      "archived": false,
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
+    },
+    {
+      "id": "habit_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_2",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "name": "Mindful Movement & Walk",
+      "description": "30 minutes outdoors to recharge cognitive energy.",
+      "category": "health",
+      "frequency": "daily",
+      "targetPerDay": 1,
+      "streakCount": 12,
+      "bestStreak": 21,
+      "totalCompletions": 42,
+      "archived": false,
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
     }
   ],
   "habitLogs": [],
   "goals": [
+    {
+      "id": "gol_bb763f2f20e8f25fac44566b9b024ed81ba97df724f09f91",
+      "userId": "usr_e01a57b8120ac67d575d0a5ddec5c13b1f1273ebff0d3c53",
+      "title": "Private Goal",
+      "description": "",
+      "category": "career_craft",
+      "horizon": "quarterly",
+      "targetDate": "2026-11-25",
+      "progressPercentage": 0,
+      "status": "active",
+      "milestones": [],
+      "createdAt": "2026-08-27T10:03:36.440Z",
+      "updatedAt": "2026-08-27T10:03:36.440Z"
+    },
     {
       "id": "goal_demo_1",
       "userId": "usr_origin_demo",
@@ -1363,6 +2421,39 @@
       ],
       "createdAt": "2026-08-27T02:36:00.312Z",
       "updatedAt": "2026-08-27T02:36:00.312Z"
+    },
+    {
+      "id": "goal_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_1",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "title": "Architect Enterprise Co-Pilot OS",
+      "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
+      "category": "career",
+      "horizon": "quarterly",
+      "targetDate": "2026-10-26",
+      "progressPercentage": 65,
+      "status": "active",
+      "milestones": [
+        {
+          "id": "mil_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_1",
+          "title": "Security audit & JWT hardening",
+          "completed": true,
+          "order": 1
+        },
+        {
+          "id": "mil_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_2",
+          "title": "Offline-ready data synchronization",
+          "completed": true,
+          "order": 2
+        },
+        {
+          "id": "mil_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_3",
+          "title": "Enterprise RBAC verification",
+          "completed": false,
+          "order": 3
+        }
+      ],
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
     }
   ],
   "transactions": [
@@ -1445,9 +2536,268 @@
       "category": "preference",
       "createdAt": "2026-08-27T02:36:00.313Z",
       "updatedAt": "2026-08-27T02:36:00.313Z"
+    },
+    {
+      "id": "mem_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_1",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "key": "Preferred Deep Work Block",
+      "value": "Morning 9:00 AM - 11:30 AM for highest cognitive leverage",
+      "category": "routine",
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
+    },
+    {
+      "id": "mem_usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487_2",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "key": "Planning Cadence",
+      "value": "Daily 3-priority matrix with time-boxed sprints",
+      "category": "preference",
+      "createdAt": "2026-08-27T09:59:32.440Z",
+      "updatedAt": "2026-08-27T09:59:32.440Z"
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit_71af98fd74cf6b8b409207a413aa51731cb35036f489df6d",
+      "userId": "usr_353ef2d3c9e2213cecc76780fe92df7038af0611aa96e402",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "iso_b_1787825016150@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:36.318Z"
+    },
+    {
+      "id": "audit_bda483a4be1366361f86187ac278016c2010ab3ac22fb211",
+      "userId": "usr_e01a57b8120ac67d575d0a5ddec5c13b1f1273ebff0d3c53",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "iso_a_1787825015940@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:36.096Z"
+    },
+    {
+      "id": "audit_141e9433416715ae0fc9f8868bdeacc250129e992aa3ae2d",
+      "userId": "usr_e04b62a409ee4e14c840e10d6a1f5fa4a27b2536c6dc327e",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1787825015620@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:35.884Z"
+    },
+    {
+      "id": "audit_d9edc29bba6e19ba0f6b74ffd5ef23eebdf13b748cf6b230",
+      "userId": "usr_e04b62a409ee4e14c840e10d6a1f5fa4a27b2536c6dc327e",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1787825015620@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:35.776Z"
+    },
+    {
+      "id": "audit_3c4ecf3834352a8d72f469b5b2f556ea6a9f58bb41919b24",
+      "userId": "usr_c9015dfbc93af6a77e7be161679d69a8e2daf643e7573d33",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ai_user_1787825015399@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:35.561Z"
+    },
+    {
+      "id": "audit_56e6ae201770e84d6848b83a67b4b6c156e677bfb911280d",
+      "userId": "usr_05892839d2370f83983d0414daf005688379bf945c0fb746",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "tamper_1787825015120@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:35.281Z"
+    },
+    {
+      "id": "audit_ae6a897c9c0926a3664fe086ff2c20447a7b2c1afaf3b2ea",
+      "userId": "usr_16884d59632d003404145fb9f2197f99bffc07e7bf2d87b5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "userb_1787825014810@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:34.982Z"
+    },
+    {
+      "id": "audit_fb1e4c1330f70c5101b48e715233de75e16e80e7ec8179b9",
+      "userId": "usr_d0b609b7a7ddb9fb137717bd8d89e3cb15cb8f7d87452dcb",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "usera_1787825014596@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:34.753Z"
+    },
+    {
+      "id": "audit_f6d21955fecefb2167c229a7be3869fc6be074a526a6a7f9",
+      "userId": "usr_97780d4233570dc04488b006a08a0e31dbdcd4cb6b6505b5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_auth_fail_1787825014260@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:34.413Z"
+    },
+    {
+      "id": "audit_8303fea8f64a35863afd2e45d774be89aae155fbca4eea4e",
+      "userId": "usr_c66e9026dc6bd42cfe9fa4fd6853488335a0eefa9c698f6a",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_sanitize_1787825014012@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:34.199Z"
+    },
+    {
+      "id": "audit_3b5d5d3b0aa2abc98eefa1a19e1b18a4fe8b4c37c5fbc54a",
+      "userId": "usr_cd4500911b368f902deef298a7d6644455409fe2555488c6",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-08-27T10:03:33.955Z"
+    },
+    {
+      "id": "audit_741792989a489e8f0fe538551515b3d7165df4311e41d2b4",
+      "userId": "usr_cd4500911b368f902deef298a7d6644455409fe2555488c6",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_jwt_1787825013590@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:33.747Z"
+    },
+    {
+      "id": "audit_61b79fe648cf5d5fc09ddaf2f83ea859aae1b21abb4dfd16",
+      "userId": "usr_523a27c7a6c787eac8bd75cdf417f4ed40be7800719874c9",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_dup_1787825013314@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:03:33.516Z"
+    },
+    {
+      "id": "audit_4d9aee434c2a270bc700f2a96f1d804b92e712e056ab6cf4",
+      "userId": "usr_419f88c5b6dabf513925b5e06fab64f118d3310d7aafa763",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1787824843499@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:43.760Z"
+    },
+    {
+      "id": "audit_e5f224e5e81ca206f74477b947bbb6b84f10f0c8005e8d47",
+      "userId": "usr_419f88c5b6dabf513925b5e06fab64f118d3310d7aafa763",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1787824843499@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:43.653Z"
+    },
+    {
+      "id": "audit_d8c003111ce551612e44e6a6cffbdc196772b828d489c3ad",
+      "userId": "usr_1d6eafe17f90b87075e2ea881c6521ce178fd4e719fa3ab3",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ai_user_1787824843292@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:43.441Z"
+    },
+    {
+      "id": "audit_f0e53b8ec9261dab4b5de5975c9c220678fabd951894bf85",
+      "userId": "usr_a1f4aba1bf038cb0a495f2b75e4fb2da25db8208b537b5e4",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "tamper_1787824843024@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:43.175Z"
+    },
+    {
+      "id": "audit_62f4e2e49d81edc40f85d917b9990a00ff870f72f50da8b7",
+      "userId": "usr_e02592011cd3c5c1e959195e629f4d019aa09e902e92c055",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "userb_1787824842755@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:42.902Z"
+    },
+    {
+      "id": "audit_28553acf5255c89c9dbdddda8243f9d027a6475a13beb062",
+      "userId": "usr_10b2c45acdb9d46e81deda5f0c53803c79e467ceaa131d84",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "usera_1787824842546@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:42.702Z"
+    },
+    {
+      "id": "audit_c17e7c336a00ae85d87e3beca9deda606f11e3e0d9801184",
+      "userId": "usr_8cda78c0e37df69c141c12f3c0f4d749ef88f1ef916abdd6",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_auth_fail_1787824842229@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:42.374Z"
+    },
+    {
+      "id": "audit_3a5ca758a6207c85a8777b0285595344810818240844bae4",
+      "userId": "usr_af6977ffd86987e8b746f6c4f19bb8d6e1646d4315dc0b3d",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_sanitize_1787824842020@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:42.170Z"
+    },
+    {
+      "id": "audit_ca9ede663a61fd0874161d3df119f8ba627f01eb9e055dae",
+      "userId": "usr_3d149c356fc29139548103b26193ace44fa28d1d7a6a0db5",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-08-27T10:00:41.965Z"
+    },
+    {
+      "id": "audit_8fa6198d3879f4b4f527d8e08824320fb6c5ca0547216c06",
+      "userId": "usr_3d149c356fc29139548103b26193ace44fa28d1d7a6a0db5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_jwt_1787824841613@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:41.763Z"
+    },
+    {
+      "id": "audit_0362f63aae1b6b900a6cd70843b34a891d1ffaa248d2a692",
+      "userId": "usr_80b2634da1f6abbec1de804fa3fe3e7d27d285b64da7fa24",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_dup_1787824841362@origin-os.internal"
+      },
+      "timestamp": "2026-08-27T10:00:41.546Z"
+    },
+    {
+      "id": "audit_ff87c455d8617526cd5e8e64c46eba57cf4dacc678052296",
+      "userId": "usr_demo_gst_2c03edd80a5025a368d5c1b00c79dae6cdd0d22dadbfb487",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-08-27T09:59:32.492Z"
+    },
     {
       "id": "audit_0e5ce23f95b0496938b780833dccf23a7cd2576352125a67",
       "userId": "usr_45debcd11d7d7b2bb013fe200d3e2327b22e512a0beea07e",
@@ -1784,6 +3134,20 @@
       "expiresAt": "2026-08-27T03:42:06.071Z",
       "used": false,
       "createdAt": "2026-08-27T02:42:06.071Z"
+    },
+    {
+      "token": "rst_200045c515732125ac01eb5c08beb9007e1091663216dd16",
+      "email": "reset_safe_1787824843499@origin-os.internal",
+      "expiresAt": "2026-08-27T11:00:43.709Z",
+      "used": false,
+      "createdAt": "2026-08-27T10:00:43.709Z"
+    },
+    {
+      "token": "rst_6818f87e6a55bb19d98de600e173225cb36b19cea80ff3de",
+      "email": "reset_safe_1787825015620@origin-os.internal",
+      "expiresAt": "2026-08-27T11:03:35.832Z",
+      "used": false,
+      "createdAt": "2026-08-27T10:03:35.832Z"
     }
   ]
 }
