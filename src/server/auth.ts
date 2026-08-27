@@ -4,12 +4,48 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { db, UserRecord } from './db';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'origin-jwt-production-secret-auth-token-2026';
 const TOKEN_EXPIRY = '7d';
+
+/**
+ * Resolves the JWT secret.
+ * In production mode, fails fast if JWT_SECRET is missing or using an insecure default.
+ */
+export function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (process.env.NODE_ENV === 'production') {
+    if (!secret || secret.trim() === '' || secret === 'origin-jwt-production-secret-auth-token-2026') {
+      throw new Error('CRITICAL_SECURITY_ERROR: JWT_SECRET environment variable is required and must be configured in production.');
+    }
+    return secret;
+  }
+  // Development and test fallback strictly for non-production environments
+  return secret || 'origin-dev-test-jwt-secret-not-for-production-2026';
+}
 
 export interface AuthenticatedRequest extends Request {
   user?: UserRecord;
   userId?: string;
+}
+
+export interface SafePublicUser {
+  id: string;
+  email: string;
+  role: 'member' | 'admin' | 'guest';
+  emailVerified: boolean;
+  profile: UserRecord['profile'];
+  preferences: UserRecord['preferences'];
+  subscription?: UserRecord['subscription'];
+  lastLoginAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Strips sensitive credentials (passwordHash, verificationToken) from user records before returning to clients.
+ */
+export function toPublicUser(user: UserRecord): SafePublicUser {
+  const { passwordHash: _hash, verificationToken: _token, ...safeUser } = user;
+  return safeUser as SafePublicUser;
 }
 
 export function hashPassword(plainText: string): string {
@@ -18,6 +54,7 @@ export function hashPassword(plainText: string): string {
 }
 
 export function verifyPassword(plainText: string, hash: string): boolean {
+  if (!plainText || !hash) return false;
   try {
     return bcrypt.compareSync(plainText, hash);
   } catch {
@@ -26,20 +63,23 @@ export function verifyPassword(plainText: string, hash: string): boolean {
 }
 
 export function generateToken(user: UserRecord): string {
+  const secret = getJwtSecret();
   return jwt.sign(
     {
       userId: user.id,
       email: user.email,
       role: user.role,
     },
-    JWT_SECRET,
+    secret,
     { expiresIn: TOKEN_EXPIRY }
   );
 }
 
 export function verifyToken(token: string): { userId: string; email: string; role: string } | null {
+  if (!token || typeof token !== 'string') return null;
   try {
-    return jwt.verify(token, JWT_SECRET) as { userId: string; email: string; role: string };
+    const secret = getJwtSecret();
+    return jwt.verify(token, secret) as { userId: string; email: string; role: string };
   } catch {
     return null;
   }
@@ -57,8 +97,15 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
   }
 
   const token = authHeader.substring(7).trim();
-  const payload = verifyToken(token);
+  if (!token) {
+    res.status(401).json({
+      success: false,
+      error: { code: 'UNAUTHORIZED', message: 'Authentication token is missing.' },
+    });
+    return;
+  }
 
+  const payload = verifyToken(token);
   if (!payload) {
     res.status(401).json({
       success: false,
@@ -86,12 +133,14 @@ export function optionalAuth(req: AuthenticatedRequest, _res: Response, next: Ne
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7).trim();
-    const payload = verifyToken(token);
-    if (payload) {
-      const user = db.schema.users.find((u) => u.id === payload.userId);
-      if (user) {
-        req.user = user;
-        req.userId = user.id;
+    if (token) {
+      const payload = verifyToken(token);
+      if (payload) {
+        const user = db.schema.users.find((u) => u.id === payload.userId);
+        if (user) {
+          req.user = user;
+          req.userId = user.id;
+        }
       }
     }
   }

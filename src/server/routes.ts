@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import { db, TaskRecord, HabitRecord, HabitLogRecord, GoalRecord, TransactionRecord, BudgetRecord, ReflectionRecord, RelationshipRecord, ContactInteractionRecord, NoteRecord, AIMemoryRecord } from './db';
-import { requireAuth, AuthenticatedRequest, hashPassword, verifyPassword, generateToken, generateCryptoToken } from './auth';
+import { db, TaskRecord, HabitRecord, HabitLogRecord, GoalRecord, TransactionRecord, BudgetRecord, ReflectionRecord, RelationshipRecord, ContactInteractionRecord, NoteRecord, AIMemoryRecord, UserRecord } from './db';
+import { requireAuth, AuthenticatedRequest, hashPassword, verifyPassword, generateToken, generateCryptoToken, toPublicUser } from './auth';
 import { logAuditEvent } from './audit';
 import { checkUserEntitlements, createStripeCheckoutSession, PLAN_TIERS } from './billing';
 
@@ -8,7 +8,7 @@ export const apiRouter = express.Router();
 
 // Rate limiter helper in memory
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-function checkRateLimit(key: string, limit: number, windowMs: number): boolean {
+export function checkRateLimit(key: string, limit: number, windowMs: number): boolean {
   const now = Date.now();
   const entry = rateLimitMap.get(key);
   if (!entry || entry.resetAt < now) {
@@ -22,12 +22,26 @@ function checkRateLimit(key: string, limit: number, windowMs: number): boolean {
   return true;
 }
 
+export function resetRateLimitsForTesting(): void {
+  rateLimitMap.clear();
+}
+
 // -------------------------------------------------------------
 // AUTHENTICATION ROUTES
 // -------------------------------------------------------------
 
 apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
   try {
+    // Enforce rate limiting on signup (max 10 attempts per 10 minutes per IP)
+    const ip = req.ip || req.socket.remoteAddress || 'local';
+    if (!checkRateLimit(`signup_${ip}`, 10, 10 * 60 * 1000)) {
+      res.status(429).json({
+        success: false,
+        error: { code: 'RATE_LIMITED', message: 'Too many account creation attempts. Please wait a few minutes before trying again.' },
+      });
+      return;
+    }
+
     const { email, password, displayName } = req.body;
     const cleanEmail = email?.trim().toLowerCase();
     const cleanName = displayName?.trim();
@@ -47,7 +61,7 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
 
     const existing = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
     if (existing) {
-      res.status(409).json({ success: false, error: { code: 'EMAIL_IN_USE', message: 'An account with this email already exists.' } });
+      res.status(409).json({ success: false, error: { code: 'AUTH_EMAIL_EXISTS', message: 'An account with this email already exists.' } });
       return;
     }
 
@@ -55,11 +69,11 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
     const passwordHash = hashPassword(password);
     const verificationToken = generateCryptoToken('vtok');
 
-    const newUser = {
+    const newUser: UserRecord = {
       id: userId,
       email: cleanEmail,
       passwordHash,
-      role: 'member' as const,
+      role: 'member',
       emailVerified: true, // Auto-verify in development/preview with token tracked
       verificationToken,
       profile: {
@@ -69,10 +83,10 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
         primaryLifeFocus: 'Deep Work & Daily Focus',
       },
       preferences: {
-        theme: 'system' as const,
+        theme: 'system',
         timezone: 'UTC',
         locale: 'en-US',
-        weekStartDay: 1 as const,
+        weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
         dailyReflectionReminderTime: '21:00',
@@ -84,8 +98,8 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
         unlockedModules: ['tasks', 'habits', 'finances', 'goals'],
       },
       subscription: {
-        tier: 'free' as const,
-        status: 'active' as const,
+        tier: 'free',
+        status: 'active',
       },
       lastLoginAt: new Date().toISOString(),
       createdAt: new Date().toISOString(),
@@ -101,7 +115,7 @@ apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
     res.json({
       success: true,
       data: {
-        user: newUser,
+        user: toPublicUser(newUser),
         token,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       },
@@ -118,12 +132,12 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
     const cleanEmail = email?.trim().toLowerCase();
 
     if (!cleanEmail || !password) {
-      res.status(400).json({ success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Email and password are required.' } });
+      res.status(400).json({ success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Email and password are required.' } });
       return;
     }
 
-    // Rate limit login attempts (max 10 per minute per IP)
-    const ip = req.ip || 'local';
+    // Rate limit login attempts (max 15 per minute per IP)
+    const ip = req.ip || req.socket.remoteAddress || 'local';
     if (!checkRateLimit(`login_${ip}`, 15, 60000)) {
       res.status(429).json({ success: false, error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Please wait a minute.' } });
       return;
@@ -131,13 +145,13 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
 
     const user = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
     if (!user) {
-      res.status(401).json({ success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password.' } });
+      res.status(401).json({ success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Invalid email or password.' } });
       return;
     }
 
     const valid = verifyPassword(password, user.passwordHash);
     if (!valid) {
-      res.status(401).json({ success: false, error: { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password.' } });
+      res.status(401).json({ success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Invalid email or password.' } });
       return;
     }
 
@@ -151,7 +165,7 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
     res.json({
       success: true,
       data: {
-        user,
+        user: toPublicUser(user),
         token,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       },
@@ -166,56 +180,58 @@ apiRouter.get('/auth/session', requireAuth, (req: AuthenticatedRequest, res: Res
   res.json({
     success: true,
     data: {
-      user: req.user,
+      user: toPublicUser(req.user!),
       token: req.headers.authorization?.substring(7),
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
     },
   });
 });
 
-apiRouter.post('/auth/demo', async (_req: Request, res: Response) => {
+apiRouter.post('/auth/demo', async (req: Request, res: Response) => {
   try {
-    let demoUser = db.schema.users.find((u) => u.id === 'usr_origin_demo' || u.email === 'alex.vance@origin-os.internal');
-    if (!demoUser) {
-      demoUser = {
-        id: 'usr_origin_demo',
-        email: 'alex.vance@origin-os.internal',
-        passwordHash: hashPassword('demo1234'),
-        role: 'member',
-        emailVerified: true,
-        profile: {
-          displayName: 'Alex Vance',
-          headline: 'Lead Architect',
-          bio: 'Designing deliberate personal operating systems.',
-          primaryLifeFocus: 'Deep Work & Daily Focus',
-        },
-        preferences: {
-          theme: 'system',
-          timezone: 'America/New_York',
-          locale: 'en-US',
-          weekStartDay: 1,
-          reducedMotion: false,
-          compactDensity: false,
-          dailyReflectionReminderTime: '21:30',
-          notificationChannels: { inApp: true, email: false, dailyDigest: true },
-          unlockedModules: ['tasks', 'habits', 'finances', 'goals', 'notes', 'emotions', 'relationships'],
-        },
-        subscription: { tier: 'pro', status: 'active' },
-        lastLoginAt: new Date().toISOString(),
-        createdAt: '2026-01-01T08:00:00.000Z',
-        updatedAt: new Date().toISOString(),
-      };
-      db.schema.users.push(demoUser);
-    }
+    // Generate an isolated demo guest session so different visitors don't leak or mutate shared user data
+    const guestId = `usr_demo_${generateCryptoToken('gst')}`;
+    const demoUser: UserRecord = {
+      id: guestId,
+      email: `guest.${guestId.slice(-8)}@origin-os.internal`,
+      passwordHash: hashPassword(generateCryptoToken('pw')),
+      role: 'member',
+      emailVerified: true,
+      profile: {
+        displayName: 'Alex Vance',
+        headline: 'Lead Architect (Demo)',
+        bio: 'Designing deliberate personal operating systems in an isolated session.',
+        primaryLifeFocus: 'Deep Work & Daily Focus',
+      },
+      preferences: {
+        theme: 'system',
+        timezone: 'America/New_York',
+        locale: 'en-US',
+        weekStartDay: 1,
+        reducedMotion: false,
+        compactDensity: false,
+        dailyReflectionReminderTime: '21:30',
+        notificationChannels: { inApp: true, email: false, dailyDigest: true },
+        unlockedModules: ['tasks', 'habits', 'finances', 'goals', 'notes', 'emotions', 'relationships'],
+      },
+      subscription: { tier: 'pro', status: 'active' },
+      lastLoginAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
-    demoUser.lastLoginAt = new Date().toISOString();
+    db.schema.users.push(demoUser);
+    // Seed isolated demo dataset for this guest
+    db.seedUserStarterData(guestId);
     await db.save();
+
+    await logAuditEvent(demoUser.id, 'DEMO_SESSION_STARTED', 'auth');
 
     const token = generateToken(demoUser);
     res.json({
       success: true,
       data: {
-        user: demoUser,
+        user: toPublicUser(demoUser),
         token,
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       },
@@ -235,31 +251,32 @@ apiRouter.post('/auth/password-reset-request', async (req: Request, res: Respons
       return;
     }
 
-    const user = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
-    if (!user) {
-      // Return success to avoid email enumeration
-      res.json({ success: true, data: { success: true, message: 'If an account exists, instructions have been sent.' } });
+    const ip = req.ip || req.socket.remoteAddress || 'local';
+    if (!checkRateLimit(`reset_${ip}`, 10, 60000)) {
+      res.status(429).json({ success: false, error: { code: 'RATE_LIMITED', message: 'Too many reset requests. Please wait a minute.' } });
       return;
     }
 
-    const resetToken = generateCryptoToken('rst');
-    db.schema.passwordResetTokens.push({
-      token: resetToken,
-      email: cleanEmail,
-      expiresAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour
-      used: false,
-      createdAt: new Date().toISOString(),
-    });
-    await db.save();
+    const user = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
+    if (user) {
+      const resetToken = generateCryptoToken('rst');
+      db.schema.passwordResetTokens.push({
+        token: resetToken,
+        email: cleanEmail,
+        expiresAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour
+        used: false,
+        createdAt: new Date().toISOString(),
+      });
+      await db.save();
+      await logAuditEvent(user.id, 'PASSWORD_RESET_REQUESTED', 'auth', { email: cleanEmail });
+    }
 
-    await logAuditEvent(user.id, 'PASSWORD_RESET_REQUESTED', 'auth', { email: cleanEmail });
-
+    // Security: Never return resetToken in API response! Always return a generic success message to prevent user enumeration
     res.json({
       success: true,
       data: {
         success: true,
-        resetToken,
-        message: 'Password reset token generated. In a production mailbox, this is delivered securely via email.',
+        message: 'If an account exists with this email address, password reset instructions have been issued.',
       },
     });
   } catch (err: any) {
@@ -306,7 +323,7 @@ apiRouter.post('/auth/export-data', requireAuth, async (req: AuthenticatedReques
     await logAuditEvent(userId, 'DATA_EXPORTED', 'user_data');
 
     const exportPayload = {
-      user: req.user,
+      user: toPublicUser(req.user!),
       tasks: db.schema.tasks.filter((t) => t.userId === userId),
       habits: db.schema.habits.filter((h) => h.userId === userId),
       habitLogs: db.schema.habitLogs.filter((hl) => hl.userId === userId),
@@ -866,7 +883,7 @@ apiRouter.put('/users/profile', requireAuth, async (req: AuthenticatedRequest, r
     user.updatedAt = new Date().toISOString();
     await db.save();
 
-    res.json({ success: true, data: user });
+    res.json({ success: true, data: toPublicUser(user) });
   } catch (err: any) {
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update profile.' } });
   }
@@ -884,7 +901,7 @@ apiRouter.put('/users/preferences', requireAuth, async (req: AuthenticatedReques
     user.updatedAt = new Date().toISOString();
     await db.save();
 
-    res.json({ success: true, data: user });
+    res.json({ success: true, data: toPublicUser(user) });
   } catch (err: any) {
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update preferences.' } });
   }

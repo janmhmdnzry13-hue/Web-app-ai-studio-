@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 import { GoogleGenAI, Type } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
 import { generateLocalAIResponse, generateLocalDynamicInsights } from './src/services/ai/local-engine';
-import { apiRouter } from './src/server/routes';
-import { optionalAuth, AuthenticatedRequest } from './src/server/auth';
+import { apiRouter, checkRateLimit } from './src/server/routes';
+import { requireAuth, AuthenticatedRequest } from './src/server/auth';
 
 dotenv.config();
 
@@ -101,13 +101,22 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// Server-side AI Chat & Planning Endpoint
-app.post('/api/ai/chat', async (req, res) => {
+// Server-side AI Chat & Planning Endpoint (Authenticated & Rate-Limited)
+app.post('/api/ai/chat', requireAuth, async (req: AuthenticatedRequest, res) => {
   try {
+    const userId = req.userId!;
+    if (!checkRateLimit(`ai_chat_${userId}`, 30, 60000)) {
+      res.status(429).json({
+        success: false,
+        error: { code: 'RATE_LIMITED', message: 'Too many AI requests. Please wait a moment.' },
+      });
+      return;
+    }
+
     const { message, context, conversationHistory, memories, moduleContext } = req.body;
 
     if (!message || typeof message !== 'string') {
-      res.status(400).json({ error: 'Missing or invalid message string.' });
+      res.status(400).json({ success: false, error: { code: 'INVALID_PAYLOAD', message: 'Missing or invalid message string.' } });
       return;
     }
 
@@ -232,9 +241,18 @@ Return ONLY valid JSON.
   }
 });
 
-// Server-side AI Dynamic Insights Endpoint
-app.post('/api/ai/insights', async (req, res) => {
+// Server-side AI Dynamic Insights Endpoint (Authenticated & Rate-Limited)
+app.post('/api/ai/insights', requireAuth, async (req: AuthenticatedRequest, res) => {
   try {
+    const userId = req.userId!;
+    if (!checkRateLimit(`ai_insights_${userId}`, 20, 60000)) {
+      res.status(429).json({
+        success: false,
+        error: { code: 'RATE_LIMITED', message: 'Too many AI requests. Please wait a moment.' },
+      });
+      return;
+    }
+
     const { context, memories } = req.body;
     const ai = getGeminiClient();
 

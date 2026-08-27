@@ -25,7 +25,6 @@ export function LoginPage() {
   const [resetEmail, setResetEmail] = useState('');
   const [resetToken, setResetToken] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [issuedTokenHint, setIssuedTokenHint] = useState<string | null>(null);
   const [resetLoading, setResetLoading] = useState(false);
 
   const redirectPath = (location.state as { from?: { pathname: string } })?.from?.pathname || '/app';
@@ -71,15 +70,11 @@ export function LoginPage() {
     setResetLoading(true);
     try {
       const res = await requestPasswordReset({ email: resetEmail.trim() });
-      if (res.success && res.data) {
-        setIssuedTokenHint(res.data.resetToken || null);
+      if (res.success) {
         setResetStep('confirm');
-        if (res.data.resetToken) {
-          setResetToken(res.data.resetToken);
-        }
-        info('Reset Token Generated', 'Enter your token and new password to complete reset.');
+        info('Instructions Sent', res.data?.message || 'If an account exists, password reset instructions have been issued.');
       } else {
-        error('Reset Error', res.error || 'Failed to generate reset request.');
+        error('Reset Error', res.error || 'Failed to request password reset.');
       }
     } finally {
       setResetLoading(false);
@@ -247,15 +242,6 @@ export function LoginPage() {
           </form>
         ) : (
           <form onSubmit={handleConfirmReset} className="space-y-4 py-2">
-            {issuedTokenHint && (
-              <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 text-xs space-y-1">
-                <span className="font-semibold text-amber-800 dark:text-amber-200">Recovery Token Issued:</span>
-                <p className="font-mono text-[11px] text-amber-700 dark:text-amber-300 select-all break-all">
-                  {issuedTokenHint}
-                </p>
-              </div>
-            )}
-
             <Input
               label="Reset Token"
               placeholder="rst_..."

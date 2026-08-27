@@ -31,7 +31,10 @@ class ApiClient {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    const url = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    let url = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    if (typeof window === 'undefined' && !url.startsWith('http')) {
+      url = `http://localhost:3000${url}`;
+    }
 
     try {
       const response = await fetch(url, {

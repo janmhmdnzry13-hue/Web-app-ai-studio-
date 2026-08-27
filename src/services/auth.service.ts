@@ -1,6 +1,7 @@
 /**
  * Authentication Service Implementation
- * Communicates with the real server-side auth engine (/api/auth/*) with real bcrypt hashes and JWT tokens.
+ * Communicates strictly with the server-side auth engine (/api/auth/*) with real bcrypt hashes and JWT tokens.
+ * Plaintext passwords, mock JWTs, and local user credential stores are strictly prohibited.
  */
 import { APP_CONSTANTS } from '../config/constants';
 import { safeStorage } from '../lib/storage';
@@ -27,36 +28,6 @@ export interface IAuthService {
   confirmPasswordReset(payload: PasswordResetConfirmPayload): Promise<ServiceResult<{ success: boolean; message: string }>>;
 }
 
-export const DEFAULT_DEMO_USER: User = Object.freeze({
-  id: 'usr_origin_demo',
-  email: 'alex.vance@origin-os.internal',
-  role: 'member',
-  emailVerified: true,
-  createdAt: '2026-01-01T08:00:00.000Z',
-  updatedAt: '2026-08-21T08:00:00.000Z',
-  lastLoginAt: '2026-08-21T09:30:00.000Z',
-  profile: {
-    displayName: 'Alex Vance',
-    headline: 'Lead Architect',
-    bio: 'Designing deliberate personal operating systems.',
-    primaryLifeFocus: 'Deep Work & Daily Focus',
-  },
-  preferences: {
-    theme: 'system' as const,
-    timezone: 'America/New_York',
-    locale: 'en-US',
-    weekStartDay: 1 as const,
-    reducedMotion: false,
-    compactDensity: false,
-    dailyReflectionReminderTime: '21:30',
-    notificationChannels: {
-      inApp: true,
-      email: false,
-      dailyDigest: true,
-    },
-  },
-});
-
 export class AuthService extends BaseService implements IAuthService {
   async login(credentials: LoginCredentials): Promise<ServiceResult<AuthSession>> {
     try {
@@ -77,31 +48,9 @@ export class AuthService extends BaseService implements IAuthService {
         return this.success(res.data);
       }
 
-      // If backend responded with a non-network error code, respect it
-      if (res.error && res.error.code !== 'NETWORK_ERROR') {
-        return this.failure(res.error.code, res.error.message || 'Invalid email or password.');
-      }
-
-      // Offline / Local test fallback
-      const storedUsers = safeStorage.get<Record<string, { user: User; passwordHash: string }>>('origin_os_users_db', {});
-      const userRecord = storedUsers[email];
-      if (!userRecord) {
-        return this.failure('AUTH_INVALID_CREDENTIALS', 'Invalid email or password.');
-      }
-
-      if (userRecord.passwordHash !== password) {
-        return this.failure('AUTH_INVALID_CREDENTIALS', 'Invalid email or password.');
-      }
-
-      const session: AuthSession = {
-        token: `mock_jwt_${Date.now()}_${userRecord.user.id}`,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        user: userRecord.user,
-      };
-
-      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, session);
-      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, session.token);
-      return this.success(session);
+      const errorCode = res.error?.code || 'AUTH_INVALID_CREDENTIALS';
+      const errorMessage = res.error?.message || 'Invalid email or password.';
+      return this.failure(errorCode, errorMessage);
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Authentication failed unexpectedly', { err });
     }
@@ -130,48 +79,9 @@ export class AuthService extends BaseService implements IAuthService {
         return this.success(res.data);
       }
 
-      if (res.error && res.error.code !== 'NETWORK_ERROR') {
-        return this.failure(res.error.code, res.error.message || 'Signup failed.');
-      }
-
-      // Offline / Local test fallback
-      const storedUsers = safeStorage.get<Record<string, { user: User; passwordHash: string }>>('origin_os_users_db', {});
-      if (storedUsers[email]) {
-        return this.failure('AUTH_EMAIL_EXISTS', 'An account with this email address already exists.');
-      }
-
-      const newUser: User = {
-        id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-        email,
-        role: 'member',
-        emailVerified: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        lastLoginAt: new Date().toISOString(),
-        profile: {
-          displayName,
-          headline: 'Self-Actualizer',
-          bio: '',
-          primaryLifeFocus: 'Deep Work & Daily Focus',
-        },
-        preferences: { ...DEFAULT_DEMO_USER.preferences },
-      };
-
-      storedUsers[email] = {
-        user: newUser,
-        passwordHash: password,
-      };
-      safeStorage.set('origin_os_users_db', storedUsers);
-
-      const session: AuthSession = {
-        token: `mock_jwt_${Date.now()}_${newUser.id}`,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        user: newUser,
-      };
-
-      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, session);
-      safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, session.token);
-      return this.success(session);
+      const errorCode = res.error?.code || 'SIGNUP_FAILED';
+      const errorMessage = res.error?.message || 'Failed to create account.';
+      return this.failure(errorCode, errorMessage);
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Signup failed unexpectedly', { err });
     }
@@ -185,7 +95,9 @@ export class AuthService extends BaseService implements IAuthService {
 
   async getCurrentSession(): Promise<ServiceResult<AuthSession | null>> {
     const cachedSession = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
-    if (!cachedSession) return this.success(null);
+    if (!cachedSession || !cachedSession.token) {
+      return this.success(null);
+    }
 
     // Validate expiration
     if (new Date(cachedSession.expiresAt).getTime() < Date.now()) {
@@ -195,14 +107,21 @@ export class AuthService extends BaseService implements IAuthService {
     }
 
     try {
-      // Sync fresh session and user profile from real backend
+      // Validate session with the backend
       const res = await apiClient.get<AuthSession>('/api/auth/session');
       if (res.success && res.data) {
         safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, res.data);
         return this.success(res.data);
       }
+
+      // If backend explicitly rejected the token (401 / INVALID_TOKEN / USER_NOT_FOUND)
+      if (res.error && (res.error.code === 'UNAUTHORIZED' || res.error.code === 'INVALID_TOKEN' || res.error.code === 'USER_NOT_FOUND')) {
+        safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
+        safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
+        return this.success(null);
+      }
     } catch {
-      // Offline fallback: keep cached session if valid
+      // On network failure, retain valid unexpired session
     }
 
     return this.success(cachedSession);
@@ -216,7 +135,7 @@ export class AuthService extends BaseService implements IAuthService {
         safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, res.data.token);
         return this.success(res.data);
       }
-      return this.failure('AUTH_ERROR', 'Failed to create demo session.');
+      return this.failure('AUTH_ERROR', res.error?.message || 'Failed to create demo session.');
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Failed to create demo session');
     }
@@ -228,21 +147,7 @@ export class AuthService extends BaseService implements IAuthService {
       if (res.success && res.data) {
         return this.success(res.data);
       }
-      if (res.error && res.error.code !== 'NETWORK_ERROR') {
-        return this.failure(res.error.code, res.error.message || 'Password reset request failed.');
-      }
-
-      // Offline / test fallback
-      const token = `reset_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-      const resets = safeStorage.get<Record<string, { email: string; token: string }>>('origin_os_resets', {});
-      resets[token] = { email: payload.email, token };
-      safeStorage.set('origin_os_resets', resets);
-
-      return this.success({
-        success: true,
-        message: 'Password reset instructions have been issued.',
-        resetToken: token,
-      });
+      return this.failure(res.error?.code || 'RESET_REQUEST_FAILED', res.error?.message || 'Password reset request failed.');
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Password reset request failed.');
     }
@@ -254,27 +159,7 @@ export class AuthService extends BaseService implements IAuthService {
       if (res.success && res.data) {
         return this.success(res.data);
       }
-      if (res.error && res.error.code !== 'NETWORK_ERROR') {
-        return this.failure(res.error.code, res.error.message || 'Password reset failed.');
-      }
-
-      // Offline / test fallback
-      const resets = safeStorage.get<Record<string, { email: string; token: string }>>('origin_os_resets', {});
-      const resetRecord = resets[payload.token];
-      if (!resetRecord) {
-        return this.failure('AUTH_INVALID_TOKEN', 'Password reset token is invalid or expired.');
-      }
-
-      const storedUsers = safeStorage.get<Record<string, { user: User; passwordHash: string }>>('origin_os_users_db', {});
-      if (storedUsers[resetRecord.email]) {
-        storedUsers[resetRecord.email].passwordHash = payload.newPassword;
-        safeStorage.set('origin_os_users_db', storedUsers);
-      }
-
-      delete resets[payload.token];
-      safeStorage.set('origin_os_resets', resets);
-
-      return this.success({ success: true, message: 'Password has been reset successfully.' });
+      return this.failure(res.error?.code || 'RESET_CONFIRM_FAILED', res.error?.message || 'Password reset confirmation failed.');
     } catch (err: any) {
       return this.failure('AUTH_ERROR', err.message || 'Password reset confirmation failed.');
     }
