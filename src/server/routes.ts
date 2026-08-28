@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { db, TaskRecord, HabitRecord, HabitLogRecord, GoalRecord, TransactionRecord, BudgetRecord, ReflectionRecord, RelationshipRecord, ContactInteractionRecord, NoteRecord, AIMemoryRecord, UserRecord } from './db';
-import { requireAuth, AuthenticatedRequest, hashPassword, verifyPassword, generateToken, generateCryptoToken, toPublicUser } from './auth';
+import { requireAuth, optionalAuth, AuthenticatedRequest, hashPassword, verifyPassword, generateToken, generateCryptoToken, toPublicUser } from './auth';
 import { logAuditEvent } from './audit';
 import { checkUserEntitlements, createStripeCheckoutSession, PLAN_TIERS } from './billing';
 import { emailService } from './email';
@@ -169,6 +169,17 @@ apiRouter.get('/auth/session', requireAuth, (req: AuthenticatedRequest, res: Res
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
     },
   });
+});
+
+apiRouter.post('/auth/logout', optionalAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (req.userId) {
+      await logAuditEvent(req.userId, 'USER_LOGOUT', 'auth');
+    }
+    res.json({ success: true, message: 'Logged out successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to process logout.' } });
+  }
 });
 
 apiRouter.post('/auth/demo', async (req: Request, res: Response) => {

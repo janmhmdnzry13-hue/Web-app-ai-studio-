@@ -3,24 +3,36 @@ import request from 'supertest';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { apiRouter, resetRateLimitsForTesting } from '../routes';
-import { getJwtSecret, inspectToken } from '../auth';
+import { getJwtSecret, inspectToken, requireAuth, AuthenticatedRequest } from '../auth';
 import { authService } from '../../services/auth.service';
 import { safeStorage } from '../../lib/storage';
 import { APP_CONSTANTS } from '../../config/constants';
 import { apiClient } from '../../lib/api-client';
+import { db } from '../db';
 
 const app = express();
 app.use(express.json());
 app.use('/api', apiRouter);
 
-describe('Secure Session Restoration & Cached Authentication Authority Test Suite', () => {
+// Add a test-protected endpoint to verify authorization enforcement
+app.get('/api/test/protected', requireAuth, (req: AuthenticatedRequest, res) => {
+  res.json({
+    success: true,
+    message: 'Authorized access granted',
+    userId: req.userId,
+    userEmail: req.user?.email,
+  });
+});
+
+describe('Secure Session Restoration & Cached Authentication Authority Test Suite (Task 2)', () => {
   beforeEach(() => {
     resetRateLimitsForTesting();
     safeStorage.clear();
     vi.restoreAllMocks();
   });
 
-  it('1. Backend remains final authority: Valid token succeeds and restores session', async () => {
+  // TEST 1: Valid backend session → authenticated.
+  it('TEST 1: Valid backend session → authenticated', async () => {
     const signupRes = await request(app)
       .post('/api/auth/signup')
       .send({
@@ -51,9 +63,11 @@ describe('Secure Session Restoration & Cached Authentication Authority Test Suit
     expect(result.status).toBe('AUTHENTICATED');
     expect(result.session).not.toBeNull();
     expect(result.session?.user.email).toBe(session.user.email);
+    expect(result.session?.token).toBe(session.token);
   });
 
-  it('2. Expired token is rejected by backend with TOKEN_EXPIRED and removes stored credentials', async () => {
+  // TEST 2: Expired token → unauthenticated.
+  it('TEST 2: Expired token → unauthenticated', async () => {
     const secret = getJwtSecret();
     const expiredToken = jwt.sign(
       { userId: 'usr_expired_123', email: 'expired@origin-os.internal', role: 'user' },
@@ -87,7 +101,8 @@ describe('Secure Session Restoration & Cached Authentication Authority Test Suit
     expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBeNull();
   });
 
-  it('3. Invalid/tampered token is rejected with TOKEN_INVALID and removes stored credentials', async () => {
+  // TEST 3: Invalid token → authentication rejected.
+  it('TEST 3: Invalid token → authentication rejected', async () => {
     const forgedToken = jwt.sign(
       { userId: 'usr_hacker_999', email: 'hacker@origin-os.internal', role: 'user' },
       'wrong_secret_key_1234567890'
@@ -129,7 +144,8 @@ describe('Secure Session Restoration & Cached Authentication Authority Test Suit
     expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBeNull();
   });
 
-  it('4. Backend unavailable (NETWORK_ERROR) does NOT create fake authentication', async () => {
+  // TEST 4: Backend unavailable → NETWORK_ERROR, not fake authentication.
+  it('TEST 4: Backend unavailable → NETWORK_ERROR, not fake authentication', async () => {
     const validLookingSession = {
       user: { id: 'usr_offline_123', email: 'offline@origin-os.internal', role: 'user' },
       token: 'some_unverified_token_string',
@@ -158,19 +174,26 @@ describe('Secure Session Restoration & Cached Authentication Authority Test Suit
     expect(currentSessionRes.error?.code).toBe('NETWORK_ERROR');
   });
 
-  it('5. Cached session bypass prevention: Storage presence alone does not grant access', async () => {
-    // Attempting to bypass backend by directly injecting an arbitrary user into localStorage
+  // TEST 5: Cached session cannot bypass backend authentication.
+  it('TEST 5: Cached session cannot bypass backend authentication', async () => {
+    // Injecting arbitrary admin session directly into client cache
     safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, {
       user: { id: 'usr_admin_spoof', email: 'admin@origin-os.internal', role: 'admin' },
-      token: 'fake_jwt_payload_header.signature',
+      token: 'tampered.jwt.token',
       expiresAt: new Date(Date.now() + 86400000).toISOString(),
     });
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'tampered.jwt.token');
 
-    // Mock apiClient to query server
+    // Server verification fails on backend
+    const serverRes = await request(app)
+      .get('/api/test/protected')
+      .set('Authorization', 'Bearer tampered.jwt.token');
+    expect(serverRes.status).toBe(401);
+
     vi.spyOn(apiClient, 'get').mockImplementation(async (endpoint: string) => {
       const res = await request(app)
         .get(endpoint)
-        .set('Authorization', 'Bearer fake_jwt_payload_header.signature');
+        .set('Authorization', 'Bearer tampered.jwt.token');
       return {
         success: res.status === 200,
         data: res.body.data,
@@ -183,40 +206,121 @@ describe('Secure Session Restoration & Cached Authentication Authority Test Suit
     expect(result.session).toBeNull();
   });
 
-  it('6. Logout clears all stored state cleanly', async () => {
-    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, { token: 'mock' });
-    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'mock');
+  // TEST 6: Logout clears authentication state.
+  it('TEST 6: Logout clears authentication state', async () => {
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, { token: 'mock_active_token' });
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'mock_active_token');
 
     const logoutRes = await authService.logout();
     expect(logoutRes.success).toBe(true);
 
     expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null)).toBeNull();
     expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBeNull();
-
-    const check = await authService.restoreSession();
-    expect(check.status).toBe('UNAUTHENTICATED');
-    expect(check.session).toBeNull();
   });
 
-  it('7. inspectToken accurately differentiates valid, expired, and invalid signatures', () => {
-    const secret = getJwtSecret();
-    const valid = jwt.sign({ userId: 'u1', email: 'u1@origin.io', role: 'user' }, secret, { expiresIn: '1h' });
-    const expired = jwt.sign({ userId: 'u2', email: 'u2@origin.io', role: 'user' }, secret, { expiresIn: '-1m' });
-    const forged = jwt.sign({ userId: 'u3', email: 'u3@origin.io', role: 'user' }, 'other_secret');
+  // TEST 7: After logout + page refresh, the previous session is not restored.
+  it('TEST 7: After logout + page refresh, the previous session is not restored', async () => {
+    // 1. Initial valid login
+    const signupRes = await request(app)
+      .post('/api/auth/signup')
+      .send({
+        email: `logout_test_${Date.now()}@origin-os.internal`,
+        password: 'Password123!',
+        displayName: 'Logout User',
+      });
+    const session = signupRes.body.data;
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, session);
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, session.token);
 
-    const resValid = inspectToken(valid);
-    expect(resValid.valid).toBe(true);
-    expect(resValid.expired).toBe(false);
-    expect(resValid.payload?.userId).toBe('u1');
+    // 2. Perform logout
+    await authService.logout();
 
-    const resExpired = inspectToken(expired);
-    expect(resExpired.valid).toBe(false);
-    expect(resExpired.expired).toBe(true);
-    expect(resExpired.payload).toBeNull();
+    // 3. Emulate page refresh / cold start (restoring from storage)
+    const refreshedRestore = await authService.restoreSession();
+    expect(refreshedRestore.status).toBe('UNAUTHENTICATED');
+    expect(refreshedRestore.session).toBeNull();
 
-    const resForged = inspectToken(forged);
-    expect(resForged.valid).toBe(false);
-    expect(resForged.expired).toBe(false);
-    expect(resForged.payload).toBeNull();
+    const refreshedCurrent = await authService.getCurrentSession();
+    expect(refreshedCurrent.success).toBe(false);
+    expect(refreshedCurrent.data).toBeNull();
+    expect(refreshedCurrent.error?.code).toBe('UNAUTHENTICATED');
+  });
+
+  // TEST 8: Client-supplied userId cannot change the authenticated identity.
+  it('TEST 8: Client-supplied userId cannot change the authenticated identity', async () => {
+    // Create Alice and Bob
+    const aliceRes = await request(app)
+      .post('/api/auth/signup')
+      .send({
+        email: `alice_${Date.now()}@origin-os.internal`,
+        password: 'Password123!',
+        displayName: 'Alice',
+      });
+    const bobRes = await request(app)
+      .post('/api/auth/signup')
+      .send({
+        email: `bob_${Date.now()}@origin-os.internal`,
+        password: 'Password123!',
+        displayName: 'Bob',
+      });
+
+    const aliceToken = aliceRes.body.data.token;
+    const bobUserId = bobRes.body.data.user.id;
+
+    // Alice requests protected route attempting to pass Bob's userId in query and body
+    const testRes = await request(app)
+      .get(`/api/test/protected?userId=${bobUserId}`)
+      .set('Authorization', `Bearer ${aliceToken}`)
+      .send({ userId: bobUserId });
+
+    expect(testRes.status).toBe(200);
+    // Identity MUST be Alice, derived strictly from token signature
+    expect(testRes.body.userId).toBe(aliceRes.body.data.user.id);
+    expect(testRes.body.userId).not.toBe(bobUserId);
+    expect(testRes.body.userEmail).toBe(aliceRes.body.data.user.email);
+  });
+
+  // TEST 9: No mock JWT or fake authentication token is generated.
+  it('TEST 9: No mock JWT or fake authentication token is generated on client error or fallback', async () => {
+    // Ensure that failed login, missing session, or offline state never produces a fake token string
+    const failedLogin = await authService.login({
+      email: 'nonexistent@origin-os.internal',
+      password: 'WrongPassword',
+    });
+    expect(failedLogin.success).toBe(false);
+    expect(failedLogin.data).toBeUndefined();
+    expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBeNull();
+
+    // Verify token inspecting utility requires real signature and real structure
+    const inspectResult = inspectToken('fake.header.signature');
+    expect(inspectResult.valid).toBe(false);
+    expect(inspectResult.payload).toBeNull();
+  });
+
+  // TEST 10: Temporary network failure does not create an unauthorized access path.
+  it('TEST 10: Temporary network failure does not create an unauthorized access path', async () => {
+    // User has an unverified session in storage
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, {
+      user: { id: 'usr_unverified', email: 'unverified@origin.io', role: 'admin' },
+      token: 'unverified_token',
+      expiresAt: new Date(Date.now() + 3600000).toISOString(),
+    });
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'unverified_token');
+
+    // Simulate temporary network failure
+    vi.spyOn(apiClient, 'get').mockResolvedValueOnce({
+      success: false,
+      error: { code: 'NETWORK_ERROR', message: 'Network offline' },
+    });
+
+    const restoreResult = await authService.restoreSession();
+    expect(restoreResult.status).toBe('NETWORK_ERROR');
+    expect(restoreResult.session).toBeNull();
+
+    // Verify that protected API request to server directly fails with 401
+    const protectedReq = await request(app)
+      .get('/api/test/protected')
+      .set('Authorization', 'Bearer unverified_token');
+    expect(protectedReq.status).toBe(401);
   });
 });

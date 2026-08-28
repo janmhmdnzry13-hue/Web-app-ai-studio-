@@ -91,8 +91,14 @@ export class AuthService extends BaseService implements IAuthService {
   }
 
   async logout(): Promise<ServiceResult<void>> {
-    safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
-    safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
+    try {
+      await apiClient.post('/api/auth/logout').catch(() => null);
+    } catch {
+      // Ignore network errors during logout
+    } finally {
+      safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
+      safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
+    }
     return this.success(undefined);
   }
 
@@ -118,7 +124,9 @@ export class AuthService extends BaseService implements IAuthService {
     const token = safeStorage.get<string | null>(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null) || cachedSession?.token;
 
     // No active session or token stored
-    if (!token || !cachedSession) {
+    if (!token) {
+      safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
+      safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
       return {
         status: 'UNAUTHENTICATED',
         session: null,
@@ -126,8 +134,8 @@ export class AuthService extends BaseService implements IAuthService {
       };
     }
 
-    // Validate client-side expiration timestamp
-    if (cachedSession.expiresAt && new Date(cachedSession.expiresAt).getTime() < Date.now()) {
+    // Validate client-side expiration timestamp if present
+    if (cachedSession?.expiresAt && new Date(cachedSession.expiresAt).getTime() < Date.now()) {
       safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
       safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
       return {

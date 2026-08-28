@@ -12063,9 +12063,1480 @@
       "lastLoginAt": "2026-08-28T09:29:33.587Z",
       "createdAt": "2026-08-28T09:29:33.588Z",
       "updatedAt": "2026-08-28T09:29:33.588Z"
+    },
+    {
+      "id": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "email": "guest.2c236e67@origin-os.internal",
+      "passwordHash": "$2b$10$tUkPYYKTf7kFTgIxFMFqQeqB8.9GMZ9El2GCL4/Y6hw14swrbSOee",
+      "role": "member",
+      "emailVerified": true,
+      "profile": {
+        "displayName": "Alex Vance",
+        "headline": "Lead Architect (Demo)",
+        "bio": "Designing deliberate personal operating systems in an isolated session.",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "America/New_York",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:30",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals",
+          "notes",
+          "emotions",
+          "relationships"
+        ]
+      },
+      "subscription": {
+        "tier": "pro",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:53:48.495Z",
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
+    },
+    {
+      "id": "usr_5dcaed4e4cb3b17b4ca0bd884d7689b70c2ab80c80e385ae",
+      "email": "valid_session_1787911066441@origin-os.internal",
+      "passwordHash": "$2b$10$IhDo9uPFY.krUAdyuS5YduuojOaqLeLIPSJ0xy54Nt2CVUmqwIVoS",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_c40dbc2d8760f89b7f68ed7b96ae6e56827d8e2502b2e1f3",
+      "profile": {
+        "displayName": "Valid User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:46.575Z",
+      "createdAt": "2026-08-28T09:57:46.576Z",
+      "updatedAt": "2026-08-28T09:57:46.576Z"
+    },
+    {
+      "id": "usr_d2de30ddd5f6ca96670b5ff8c20b6bf3491c5eeef5dcde0e",
+      "email": "logout_test_1787911066764@origin-os.internal",
+      "passwordHash": "$2b$10$lllLT0arIwVVR8FkY5FsU.esA4KACBMKVtvYghW5pPHn77el40coC",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_4496fcef6d92e377985f723e0810c173d8ca521517013610",
+      "profile": {
+        "displayName": "Logout User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:46.875Z",
+      "createdAt": "2026-08-28T09:57:46.875Z",
+      "updatedAt": "2026-08-28T09:57:46.875Z"
+    },
+    {
+      "id": "usr_8bff52e367289a5125182bccf892e944eb2bffcde2b9b041",
+      "email": "alice_1787911066995@origin-os.internal",
+      "passwordHash": "$2b$10$cFobCUE.Vmq0xb3r2i6bD.QvqZM8vNfWCR6XN5XEaupOGGInZL5Aa",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_27295d345a428fe7a711e43c7afe712233d6d40b18fe91ab",
+      "profile": {
+        "displayName": "Alice",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:47.112Z",
+      "createdAt": "2026-08-28T09:57:47.112Z",
+      "updatedAt": "2026-08-28T09:57:47.112Z"
+    },
+    {
+      "id": "usr_e55a4a51e6edb068eba50910c01f4286d063b9046426756c",
+      "email": "bob_1787911067222@origin-os.internal",
+      "passwordHash": "$2b$10$xlct/p4r2wJoby7PeKx6TOhaKHalB30BEQ6IgcQWK6DNnPcmC4Fcq",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_abe6ec462c313264b55508527d1be20a13ff9c829311e9a7",
+      "profile": {
+        "displayName": "Bob",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:47.322Z",
+      "createdAt": "2026-08-28T09:57:47.322Z",
+      "updatedAt": "2026-08-28T09:57:47.322Z"
+    },
+    {
+      "id": "usr_6667173793803509a5cce9a89f968103c2a7a0f8aa0ff416",
+      "email": "test_dup_1787911077250@origin-os.internal",
+      "passwordHash": "$2b$10$gJ9k1Alr3xJIYX10UBEobOYeJWTP/FuSjwVF1YY07A/N7GAhDnDUC",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_59f11ba8ee4cff24a706ece7e1d4a83c76ac57d49ac91b45",
+      "profile": {
+        "displayName": "First User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:57.381Z",
+      "createdAt": "2026-08-28T09:57:57.382Z",
+      "updatedAt": "2026-08-28T09:57:57.382Z"
+    },
+    {
+      "id": "usr_b7e20f4c00ba7747d8e9024daf34a842b6bef44c9ea712d9",
+      "email": "test_jwt_1787911077509@origin-os.internal",
+      "passwordHash": "$2b$10$aQSw.h9Nr9Nhm9Uw77MI0egqMK1MI1yQORM0fI.0UfxLsE.ZBtD8i",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_8128fcd2685be6b55d71efd9cb06ce295f14d0c047a21fb8",
+      "profile": {
+        "displayName": "JWT Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:57.827Z",
+      "createdAt": "2026-08-28T09:57:57.614Z",
+      "updatedAt": "2026-08-28T09:57:57.827Z"
+    },
+    {
+      "id": "usr_2634eb2eb6789b9f9694f04214a44df63c63593d74bee474",
+      "email": "test_sanitize_1787911077938@origin-os.internal",
+      "passwordHash": "$2b$10$drGb8sVSHTq/dadSlnppOugnXP4Mnv0uNG/NvkzqmSrD2G7wx6CJu",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_a421a4027b18ef0f6e4c0b1652f450863b5f85e1bcfa67ad",
+      "profile": {
+        "displayName": "Sanitize Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:58.038Z",
+      "createdAt": "2026-08-28T09:57:58.038Z",
+      "updatedAt": "2026-08-28T09:57:58.038Z"
+    },
+    {
+      "id": "usr_16abf84ac559a179634332b78ec7e841691e9ea211fd73c5",
+      "email": "test_auth_fail_1787911078157@origin-os.internal",
+      "passwordHash": "$2b$10$OvA3D5z4JsnzT6wQsijSyemKPtrgMDeRIhyeAM8gMtSkXodk2nu2y",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_9abad01415901c2aea4c2a1a280884338edaf3fc5c7aed82",
+      "profile": {
+        "displayName": "Auth Fail Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:58.257Z",
+      "createdAt": "2026-08-28T09:57:58.258Z",
+      "updatedAt": "2026-08-28T09:57:58.258Z"
+    },
+    {
+      "id": "usr_0440c14fa30980ee5de611d7619e3c3cbefaff49f4de187d",
+      "email": "usera_1787911078503@origin-os.internal",
+      "passwordHash": "$2b$10$7s9VJMGVMHZH6NozbkmE4uaG1gWLozro13kojumq4mwj8TJc3pEsi",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_4fba4e6b182ec6d4c0a055938a49c8065325a9e093b9c06b",
+      "profile": {
+        "displayName": "User A",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:58.604Z",
+      "createdAt": "2026-08-28T09:57:58.604Z",
+      "updatedAt": "2026-08-28T09:57:58.604Z"
+    },
+    {
+      "id": "usr_c3614aa5e420e588dc30d914555d0a8f0f4cba286c7e24b8",
+      "email": "userb_1787911078715@origin-os.internal",
+      "passwordHash": "$2b$10$wxzmw6koPrwGXNSb1bR/YuhWOh/Sx6JLTnah3bksqz1W.QGyeoX.G",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_8dc68e18bdf7410d0380c2f5306689ff7e5418add8563cc6",
+      "profile": {
+        "displayName": "User B",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:58.814Z",
+      "createdAt": "2026-08-28T09:57:58.814Z",
+      "updatedAt": "2026-08-28T09:57:58.814Z"
+    },
+    {
+      "id": "usr_481bd7c50166450c3d21775337d27893ee1891168dfc7dab",
+      "email": "tamper_1787911079000@origin-os.internal",
+      "passwordHash": "$2b$10$4Av6uLkTOVRWQuuH79qwwuta8e.itFij//k5VVgd4BGwhB6qOQ3DS",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_c959e70b580c0f43e26a114b3503f82c6402f51a67f27ec9",
+      "profile": {
+        "displayName": "Tamper Tester",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:59.111Z",
+      "createdAt": "2026-08-28T09:57:59.111Z",
+      "updatedAt": "2026-08-28T09:57:59.111Z"
+    },
+    {
+      "id": "usr_c3647c1eb1f73f2e151b160b8925609620a460517e31942b",
+      "email": "ai_user_1787911079289@origin-os.internal",
+      "passwordHash": "$2b$10$lNwfWkka.5c7H5CTqkntZ.jP1a68493hktGfoF4p79wMEaaiKmkQu",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_d0ab9cc7d55414dc35e8dcdd601a91685fb8aa4f5c418835",
+      "profile": {
+        "displayName": "AI User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:59.388Z",
+      "createdAt": "2026-08-28T09:57:59.388Z",
+      "updatedAt": "2026-08-28T09:57:59.388Z"
+    },
+    {
+      "id": "usr_c63ac38fa6d57d34c4f7f0fb484201b2d2869252e518a864",
+      "email": "reset_safe_1787911079505@origin-os.internal",
+      "passwordHash": "$2b$10$ZArqC7U22kEj7Rb5OkxkGudmc.b//NV5a3n.ftR4yJ2F2l3s1hfk.",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_a183d96139444f1f22c070ec3fa48a839985f970601f6fa4",
+      "profile": {
+        "displayName": "Reset Safe User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:59.614Z",
+      "createdAt": "2026-08-28T09:57:59.614Z",
+      "updatedAt": "2026-08-28T09:57:59.614Z"
+    },
+    {
+      "id": "usr_ab25c48af4c26ad74ce88fe6164adfa22d0503911d086307",
+      "email": "iso_a_1787911079843@origin-os.internal",
+      "passwordHash": "$2b$10$D3r60epe1CLAUibAuBJaIubLzmUW/H.WwOadmi1SL0H15iWG0vQpe",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_e783101c57bc1ceac6afbc5334784b1f8b1cc4af1594fdc4",
+      "profile": {
+        "displayName": "Iso A",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:57:59.943Z",
+      "createdAt": "2026-08-28T09:57:59.943Z",
+      "updatedAt": "2026-08-28T09:57:59.943Z"
+    },
+    {
+      "id": "usr_bf0227bee7a85771e2c7cfd7c61de774334696ff16ca2a5f",
+      "email": "iso_b_1787911080055@origin-os.internal",
+      "passwordHash": "$2b$10$9g4CWW9bm7W.4csv9tBKI.q8onMvbsXgU9vE3egOQlIUA1c3Gt.2e",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_d3b105a97c175087ab0f276e35dad3bf830259bdb598e23e",
+      "profile": {
+        "displayName": "Iso B",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:00.162Z",
+      "createdAt": "2026-08-28T09:58:00.162Z",
+      "updatedAt": "2026-08-28T09:58:00.162Z"
+    },
+    {
+      "id": "usr_749bb62519f81a060fd3a40c09cc5c1d585c66a6997f468b",
+      "email": "normal_user_1787911081056@origin-os.internal",
+      "passwordHash": "$2b$10$7YsChrVbhTnQzHOCtgL.le9D9E3Sc37AlU/1XCQ2/yURsOeUqGzeO",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_52d62e4db1fd9e22699ab457811b78bf3545bc9475bf60f9",
+      "profile": {
+        "displayName": "Normal User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:01.430Z",
+      "createdAt": "2026-08-28T09:58:01.209Z",
+      "updatedAt": "2026-08-28T09:58:01.430Z"
+    },
+    {
+      "id": "usr_12512216f289b9d3102d76e4cb1c3795fc3e08fc1fbee5a6",
+      "email": "signup_burst_0_1787911081599@origin-os.internal",
+      "passwordHash": "$2b$10$gptQz9y8Cp3rQ2j.rfNmfOUpyKtWHcy0i7vWAEzpQTZLUTmq.9qnq",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_476f0bc2ff4ec01e933f475e55432ca54a45eb826ef1ca9d",
+      "profile": {
+        "displayName": "User 0",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:01.705Z",
+      "createdAt": "2026-08-28T09:58:01.705Z",
+      "updatedAt": "2026-08-28T09:58:01.705Z"
+    },
+    {
+      "id": "usr_01f5555aec9ae88f454cd347068b80748ea505b565ad0976",
+      "email": "signup_burst_1_1787911081817@origin-os.internal",
+      "passwordHash": "$2b$10$HAdAmX38sojOr7B9IC4VrO3cwneohtNZlEUVkK57nchnkPNprNg0u",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_8684f953abf903a51ce81a7be63656119bf096be17f15c55",
+      "profile": {
+        "displayName": "User 1",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:01.916Z",
+      "createdAt": "2026-08-28T09:58:01.916Z",
+      "updatedAt": "2026-08-28T09:58:01.916Z"
+    },
+    {
+      "id": "usr_4394f353ce270ff8ba348f57f8e80bcd028519a63e08b6ff",
+      "email": "signup_burst_2_1787911082026@origin-os.internal",
+      "passwordHash": "$2b$10$TRhmnfY2RWuPEDChBgVL9esVGgnFEzcwXFlVBfm1K9uuaCBCJAB6.",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_4ad1e35058a3717ac0783700a2501d9c1b3ea3ed4a423050",
+      "profile": {
+        "displayName": "User 2",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:02.128Z",
+      "createdAt": "2026-08-28T09:58:02.128Z",
+      "updatedAt": "2026-08-28T09:58:02.128Z"
+    },
+    {
+      "id": "usr_fe5d70cd318f55d3c6b99c967553aae9676f9be9b33f081d",
+      "email": "signup_burst_3_1787911082241@origin-os.internal",
+      "passwordHash": "$2b$10$q.LYdPdFbxy1S1EEQ79JO.0sKi128wX3FVIzu9DyiPjR7RqO44kje",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_5eb937c1867fffe3773107ebf0d1d807514c18adf15fb077",
+      "profile": {
+        "displayName": "User 3",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:02.341Z",
+      "createdAt": "2026-08-28T09:58:02.341Z",
+      "updatedAt": "2026-08-28T09:58:02.341Z"
+    },
+    {
+      "id": "usr_03ac676714a695fece72518907f0ea262711323c7f28c394",
+      "email": "signup_burst_4_1787911082453@origin-os.internal",
+      "passwordHash": "$2b$10$9PI3yGNDN2qb12vl2dHMK.rB2yj8J2qdjcNt2YrsT7C7vBnZZZpEG",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_697c7d47993931686968606cf281057eb7ecb121b0ff8cd8",
+      "profile": {
+        "displayName": "User 4",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:02.562Z",
+      "createdAt": "2026-08-28T09:58:02.562Z",
+      "updatedAt": "2026-08-28T09:58:02.562Z"
+    },
+    {
+      "id": "usr_24bab39cb920a1740dde68ae098db692dd1da3dc762c8d0d",
+      "email": "signup_burst_5_1787911082673@origin-os.internal",
+      "passwordHash": "$2b$10$6bArvB57/BGmHE6IvSPNK.VKYkBEic/ots7KsuhTvZWmuTRsrppv2",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_dd6ad0881713749f66c1ecc479af5b98b5b68977999ac08c",
+      "profile": {
+        "displayName": "User 5",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:02.772Z",
+      "createdAt": "2026-08-28T09:58:02.772Z",
+      "updatedAt": "2026-08-28T09:58:02.772Z"
+    },
+    {
+      "id": "usr_ef69db5f621721960a39066d5ea0f7dd7b571df939b0201b",
+      "email": "signup_burst_6_1787911082884@origin-os.internal",
+      "passwordHash": "$2b$10$1xSxnaIKzVoWAY2kQc2zzuz7L0gBbbYSDajgW33r9B8c2JEUv1Uc2",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_bc1d9a56d99265abed18a821e4a966dda06fcbeba94352d5",
+      "profile": {
+        "displayName": "User 6",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:02.986Z",
+      "createdAt": "2026-08-28T09:58:02.986Z",
+      "updatedAt": "2026-08-28T09:58:02.986Z"
+    },
+    {
+      "id": "usr_4f6e60e321d66ed109168a08c8e5315f5a5e4bbb3c1345bb",
+      "email": "signup_burst_7_1787911083098@origin-os.internal",
+      "passwordHash": "$2b$10$hp9GxdEOjqA2ZauBQvK5HegUn0.xZNfdOWB2XKucNzaFt/dy93ENW",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_255265f5ffa355305d061656a5de8b0120ec7087d917f115",
+      "profile": {
+        "displayName": "User 7",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:03.199Z",
+      "createdAt": "2026-08-28T09:58:03.199Z",
+      "updatedAt": "2026-08-28T09:58:03.199Z"
+    },
+    {
+      "id": "usr_e8e85d17c3a1e2824456363f61b7dd5373e93fc97a8024de",
+      "email": "signup_burst_8_1787911083310@origin-os.internal",
+      "passwordHash": "$2b$10$kSi173Z/S2efWuAneViUZOJgX77C9mRhMiXdhTtKon16SsjjFqb.G",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_3922ed9da5169bd319e8846083d01f9bb3c9a7774c52f43f",
+      "profile": {
+        "displayName": "User 8",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:03.408Z",
+      "createdAt": "2026-08-28T09:58:03.408Z",
+      "updatedAt": "2026-08-28T09:58:03.408Z"
+    },
+    {
+      "id": "usr_6021971abb9b2803623fa6731237296496a499daa66f797b",
+      "email": "signup_burst_9_1787911083519@origin-os.internal",
+      "passwordHash": "$2b$10$AfGdLyl37gD0bnZWC56sRO/W0TOsqrVyLOVITtJyGADkhtaZfcLNi",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_5089fa6d66ffbd5ce385defb5e4b7f5474fabe72fbafe129",
+      "profile": {
+        "displayName": "User 9",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:03.618Z",
+      "createdAt": "2026-08-28T09:58:03.618Z",
+      "updatedAt": "2026-08-28T09:58:03.618Z"
+    },
+    {
+      "id": "usr_a6822fa66f56bd6c081a8c0ed5094442ebb71a548abd5348",
+      "email": "existing_1787911084507@origin-os.internal",
+      "passwordHash": "$2b$10$a.QXNJhK2or2DX/uISIyCePytZzKqraSyKsT1spbJDABoDiEMarRi",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_06eac79bb74552bea2bd83d326db0ff845cfd988adc51732",
+      "profile": {
+        "displayName": "Existing User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:04.642Z",
+      "createdAt": "2026-08-28T09:58:04.642Z",
+      "updatedAt": "2026-08-28T09:58:04.642Z"
+    },
+    {
+      "id": "usr_35341999515ba1b0ec0c4df61f8722b7eac7dae700dbfa10",
+      "email": "reset_flow_1787911084887@origin-os.internal",
+      "passwordHash": "$2b$10$A3.IRAvBnEZqn2Vx1xgEK.jzAygAn7QAr475C1yqUsvmiVMHy5eLO",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_9bf339ffb5980fa648b90cee58f2a0539f17f84a6b28c696",
+      "profile": {
+        "displayName": "Flow User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:05.755Z",
+      "createdAt": "2026-08-28T09:58:04.988Z",
+      "updatedAt": "2026-08-28T09:58:05.755Z"
+    },
+    {
+      "id": "usr_929e86a2d4773934ff489695271b7614d9c5b7818482e1f4",
+      "email": "used_token_1787911085971@origin-os.internal",
+      "passwordHash": "$2b$10$wmud1lvsax.rkQ3hS5QZDuq00x5wd5xOiu7txekjcJ3cVJzEQE51e",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_795e7731ca9f9153363886204e25905e1dbae061c7e09aca",
+      "profile": {
+        "displayName": "Used Token User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:06.085Z",
+      "createdAt": "2026-08-28T09:58:06.085Z",
+      "updatedAt": "2026-08-28T09:58:06.411Z"
+    },
+    {
+      "id": "usr_1d8564ce5424d74cc27244c6c29ddc8bb40a911f064e4787",
+      "email": "expired_1787911086527@origin-os.internal",
+      "passwordHash": "$2b$10$BS3bLBbq1dgbju91DEHKEeP6/iBf7T0mkNd/6W4/Bo8NpPem4FnQ.",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_a9ff8ba8a1c013bd9a0680f57fe19515d0d15ccb6336a7ce",
+      "profile": {
+        "displayName": "Expired User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:06.627Z",
+      "createdAt": "2026-08-28T09:58:06.627Z",
+      "updatedAt": "2026-08-28T09:58:06.627Z"
+    },
+    {
+      "id": "usr_b2717fb0402116dc8d54b2b8c4fc3ea9cab410ccf1e4f6cb",
+      "email": "valid_session_1787911087531@origin-os.internal",
+      "passwordHash": "$2b$10$1.XuQxvp1bSOn/LxHhy.4eit4euEr0PmNVDowW.439VC94abDn2Nu",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_80a6f2e895b8f651ce963dfeb07f4dee3e40457fa9d6b50b",
+      "profile": {
+        "displayName": "Valid User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:07.661Z",
+      "createdAt": "2026-08-28T09:58:07.661Z",
+      "updatedAt": "2026-08-28T09:58:07.661Z"
+    },
+    {
+      "id": "usr_bcf55ffa9ed5f75c161c130b01cd06fe6001acf496913579",
+      "email": "logout_test_1787911087849@origin-os.internal",
+      "passwordHash": "$2b$10$nIEnNy2U5F1LMUQ2n6C5MeKPNzxu8VtL7zDBUzQBTkdbeSCb2yO6W",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_9fbb694a2cf6560f5f7bee141c80c6826b468461f7d5e09b",
+      "profile": {
+        "displayName": "Logout User",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:07.953Z",
+      "createdAt": "2026-08-28T09:58:07.953Z",
+      "updatedAt": "2026-08-28T09:58:07.953Z"
+    },
+    {
+      "id": "usr_a1e58c3ceb9da3b007fee61e8b24cdf04d85086845ec56d9",
+      "email": "alice_1787911088074@origin-os.internal",
+      "passwordHash": "$2b$10$2p3kGEKjrxP4u64cnGA/ueFObLwpPg8qxd9Ujd7f2hQAkDyytj6EW",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_277f0315f7d34744320007867f63198a57ead1532719f32a",
+      "profile": {
+        "displayName": "Alice",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:08.179Z",
+      "createdAt": "2026-08-28T09:58:08.179Z",
+      "updatedAt": "2026-08-28T09:58:08.179Z"
+    },
+    {
+      "id": "usr_a86f87aaeb0e419a221a8b5d535c2b6b16344448a84a116c",
+      "email": "bob_1787911088293@origin-os.internal",
+      "passwordHash": "$2b$10$qwIBOuunMXFI.sQjmQIiGelaJG2V9H9o35CmSC9h.Yvon6nnLjHZG",
+      "role": "member",
+      "emailVerified": true,
+      "verificationToken": "vtok_1c7598dae93c62d04f08fa3a30eac3d2a9bb6bb5473b9cf1",
+      "profile": {
+        "displayName": "Bob",
+        "headline": "Member",
+        "bio": "",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
+      },
+      "preferences": {
+        "theme": "system",
+        "timezone": "UTC",
+        "locale": "en-US",
+        "weekStartDay": 1,
+        "reducedMotion": false,
+        "compactDensity": false,
+        "dailyReflectionReminderTime": "21:00",
+        "notificationChannels": {
+          "inApp": true,
+          "email": false,
+          "dailyDigest": true
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals"
+        ]
+      },
+      "subscription": {
+        "tier": "free",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-08-28T09:58:08.393Z",
+      "createdAt": "2026-08-28T09:58:08.393Z",
+      "updatedAt": "2026-08-28T09:58:08.393Z"
     }
   ],
   "tasks": [
+    {
+      "id": "tsk_700961044b533fc0d4be9a133d216704e4dd23beb2c6c23c",
+      "userId": "usr_481bd7c50166450c3d21775337d27893ee1891168dfc7dab",
+      "title": "Task with spoofed userId",
+      "description": "",
+      "priority": "medium",
+      "status": "todo",
+      "dueDate": null,
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-28T09:57:59.225Z",
+      "updatedAt": "2026-08-28T09:57:59.225Z"
+    },
+    {
+      "id": "tsk_7f730baf96f396fecb190e1f43fbd771be14f228d3edc62a",
+      "userId": "usr_0440c14fa30980ee5de611d7619e3c3cbefaff49f4de187d",
+      "title": "User A Secret Project",
+      "description": "",
+      "priority": "high",
+      "status": "todo",
+      "dueDate": null,
+      "scheduledTime": null,
+      "estimatedMinutes": null,
+      "actualMinutes": null,
+      "tags": [],
+      "goalId": null,
+      "subtasks": [],
+      "createdAt": "2026-08-28T09:57:58.929Z",
+      "updatedAt": "2026-08-28T09:57:58.929Z"
+    },
     {
       "id": "tsk_4ede07088de6dc4d0351116754bb2a7c110e2551bcfd41b2",
       "userId": "usr_40d288f953a250b05d59bd541c56064b270f7c386a5ef395",
@@ -12847,9 +14318,72 @@
       "subtasks": [],
       "createdAt": "2026-08-28T09:18:19.549Z",
       "updatedAt": "2026-08-28T09:18:19.549Z"
+    },
+    {
+      "id": "task_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_1",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "title": "Review quarterly architecture roadmap",
+      "description": "Synthesize engineering priorities and key milestone deliverables.",
+      "priority": "high",
+      "status": "todo",
+      "dueDate": "2026-08-28",
+      "estimatedMinutes": 60,
+      "actualMinutes": null,
+      "tags": [
+        "strategy",
+        "deep_work"
+      ],
+      "subtasks": [
+        {
+          "id": "sub_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_1",
+          "title": "Outline core milestones",
+          "completed": true
+        },
+        {
+          "id": "sub_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_2",
+          "title": "Align resource capacity",
+          "completed": false
+        }
+      ],
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
+    },
+    {
+      "id": "task_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_2",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "title": "Publish weekly product synthesis",
+      "description": "Share cross-domain insights and key progress updates with the team.",
+      "priority": "medium",
+      "status": "completed",
+      "dueDate": "2026-08-28",
+      "estimatedMinutes": 45,
+      "actualMinutes": 40,
+      "tags": [
+        "communication"
+      ],
+      "subtasks": [],
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
     }
   ],
   "habits": [
+    {
+      "id": "hbt_08235930e79331768b2242843acec102973b96813c6de021",
+      "userId": "usr_ab25c48af4c26ad74ce88fe6164adfa22d0503911d086307",
+      "name": "Private Habit",
+      "description": "",
+      "category": "deep_work",
+      "frequency": "daily",
+      "targetDays": [],
+      "targetPerDay": 1,
+      "reminderTime": null,
+      "streakCount": 0,
+      "bestStreak": 0,
+      "totalCompletions": 0,
+      "archived": false,
+      "createdAt": "2026-08-28T09:58:00.276Z",
+      "updatedAt": "2026-08-28T09:58:00.276Z"
+    },
     {
       "id": "hbt_f606441a6cb6d9e552c96b0277adf701362ef14b9850646d",
       "userId": "usr_92134806284227015a3e802aa62581cc71e30653563e7df1",
@@ -13173,10 +14707,54 @@
       "archived": false,
       "createdAt": "2026-08-28T09:18:19.549Z",
       "updatedAt": "2026-08-28T09:18:19.549Z"
+    },
+    {
+      "id": "habit_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_1",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "name": "Morning Deep Work Block",
+      "description": "90 minutes of focused, distraction-free execution.",
+      "category": "deep_work",
+      "frequency": "daily",
+      "targetPerDay": 1,
+      "streakCount": 5,
+      "bestStreak": 14,
+      "totalCompletions": 28,
+      "archived": false,
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
+    },
+    {
+      "id": "habit_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_2",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "name": "Mindful Movement & Walk",
+      "description": "30 minutes outdoors to recharge cognitive energy.",
+      "category": "health",
+      "frequency": "daily",
+      "targetPerDay": 1,
+      "streakCount": 12,
+      "bestStreak": 21,
+      "totalCompletions": 42,
+      "archived": false,
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
     }
   ],
   "habitLogs": [],
   "goals": [
+    {
+      "id": "gol_680a29e174ce26b1aea714b53dca979f90d3ce33b1e8578d",
+      "userId": "usr_ab25c48af4c26ad74ce88fe6164adfa22d0503911d086307",
+      "title": "Private Goal",
+      "description": "",
+      "category": "career_craft",
+      "horizon": "quarterly",
+      "targetDate": "2026-11-26",
+      "progressPercentage": 0,
+      "status": "active",
+      "milestones": [],
+      "createdAt": "2026-08-28T09:58:00.342Z",
+      "updatedAt": "2026-08-28T09:58:00.342Z"
+    },
     {
       "id": "gol_c0fc07e9734b368e36d465b9a5081dcc08c9b2d0a8fea5ec",
       "userId": "usr_92134806284227015a3e802aa62581cc71e30653563e7df1",
@@ -13470,6 +15048,39 @@
       ],
       "createdAt": "2026-08-28T09:18:19.549Z",
       "updatedAt": "2026-08-28T09:18:19.549Z"
+    },
+    {
+      "id": "goal_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_1",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "title": "Architect Enterprise Co-Pilot OS",
+      "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
+      "category": "career",
+      "horizon": "quarterly",
+      "targetDate": "2026-10-27",
+      "progressPercentage": 65,
+      "status": "active",
+      "milestones": [
+        {
+          "id": "mil_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_1",
+          "title": "Security audit & JWT hardening",
+          "completed": true,
+          "order": 1
+        },
+        {
+          "id": "mil_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_2",
+          "title": "Offline-ready data synchronization",
+          "completed": true,
+          "order": 2
+        },
+        {
+          "id": "mil_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_3",
+          "title": "Enterprise RBAC verification",
+          "completed": false,
+          "order": 3
+        }
+      ],
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
     }
   ],
   "transactions": [
@@ -13606,9 +15217,449 @@
       "category": "preference",
       "createdAt": "2026-08-28T09:18:19.549Z",
       "updatedAt": "2026-08-28T09:18:19.549Z"
+    },
+    {
+      "id": "mem_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_1",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "key": "Preferred Deep Work Block",
+      "value": "Morning 9:00 AM - 11:30 AM for highest cognitive leverage",
+      "category": "routine",
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
+    },
+    {
+      "id": "mem_usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67_2",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "key": "Planning Cadence",
+      "value": "Daily 3-priority matrix with time-boxed sprints",
+      "category": "preference",
+      "createdAt": "2026-08-28T09:53:48.495Z",
+      "updatedAt": "2026-08-28T09:53:48.495Z"
     }
   ],
   "auditLogs": [
+    {
+      "id": "audit_58f89e39ec9020da6687ff4cd220ebd84deea4075843c11e",
+      "userId": "usr_a86f87aaeb0e419a221a8b5d535c2b6b16344448a84a116c",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "bob_1787911088293@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:08.447Z"
+    },
+    {
+      "id": "audit_7ab80be19db36fc47338aaf11f486298f97929927d025c84",
+      "userId": "usr_a1e58c3ceb9da3b007fee61e8b24cdf04d85086845ec56d9",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "alice_1787911088074@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:08.234Z"
+    },
+    {
+      "id": "audit_6c79a39cd5606818c8b9ff3e06f13a7f224fc9d12b02eded",
+      "userId": "usr_bcf55ffa9ed5f75c161c130b01cd06fe6001acf496913579",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "logout_test_1787911087849@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:08.008Z"
+    },
+    {
+      "id": "audit_6ea2207cd0f30c8f4e17b43ae175b22a10fd8cbefae9d96d",
+      "userId": "usr_b2717fb0402116dc8d54b2b8c4fc3ea9cab410ccf1e4f6cb",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "valid_session_1787911087531@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:07.718Z"
+    },
+    {
+      "id": "audit_c9ab6b33ea7e937cc46eec9d1079260a4a6ecc41ff75f49a",
+      "userId": "usr_1d8564ce5424d74cc27244c6c29ddc8bb40a911f064e4787",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "expired_1787911086527@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:06.682Z"
+    },
+    {
+      "id": "audit_381f965a8ae649454a1ad6fee1fc7ecabd92c1161015d914",
+      "userId": "usr_929e86a2d4773934ff489695271b7614d9c5b7818482e1f4",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "resource": "auth",
+      "timestamp": "2026-08-28T09:58:06.466Z"
+    },
+    {
+      "id": "audit_fdd5f23f047a2c0ac0a55dd6198c9c215b1f3a5399f93993",
+      "userId": "usr_929e86a2d4773934ff489695271b7614d9c5b7818482e1f4",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "used_token_1787911085971@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:06.256Z"
+    },
+    {
+      "id": "audit_add2cc766270f80de1bd8bfa4b3ee445e7677c373b75d9d0",
+      "userId": "usr_929e86a2d4773934ff489695271b7614d9c5b7818482e1f4",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "used_token_1787911085971@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:06.140Z"
+    },
+    {
+      "id": "audit_2c367d23a3df9e3b0d8ba335eb6eb387820c12d3d08ab73a",
+      "userId": "usr_35341999515ba1b0ec0c4df61f8722b7eac7dae700dbfa10",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-08-28T09:58:05.809Z"
+    },
+    {
+      "id": "audit_b1bc05496bcf7e49953c48785317775ed81bbc3ddf42d4aa",
+      "userId": "usr_35341999515ba1b0ec0c4df61f8722b7eac7dae700dbfa10",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "resource": "auth",
+      "timestamp": "2026-08-28T09:58:05.373Z"
+    },
+    {
+      "id": "audit_b661d8e3633a9f47c258615091e26ea39dbab9a5d3986157",
+      "userId": "usr_35341999515ba1b0ec0c4df61f8722b7eac7dae700dbfa10",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_flow_1787911084887@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:05.158Z"
+    },
+    {
+      "id": "audit_236756e455b3051d78f9d8e9cb6408bf09b6111c02550ecc",
+      "userId": "usr_35341999515ba1b0ec0c4df61f8722b7eac7dae700dbfa10",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_flow_1787911084887@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:05.042Z"
+    },
+    {
+      "id": "audit_4ae0229bbcc4b32430b6d410dc997360b8852e81dba31b21",
+      "userId": "usr_a6822fa66f56bd6c081a8c0ed5094442ebb71a548abd5348",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "existing_1787911084507@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:04.822Z"
+    },
+    {
+      "id": "audit_9209de42812c86725740b7845f94928a898f8a24c6086b40",
+      "userId": "usr_a6822fa66f56bd6c081a8c0ed5094442ebb71a548abd5348",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "existing_1787911084507@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:04.699Z"
+    },
+    {
+      "id": "audit_bd4f032c80685b0bd90766e71e829eb64d135e4a39d7f3f2",
+      "userId": "usr_6021971abb9b2803623fa6731237296496a499daa66f797b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_9_1787911083519@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:03.672Z"
+    },
+    {
+      "id": "audit_ddd3ed2840be440d5bec42b2dfe6d5ab2ab6bca6049b8220",
+      "userId": "usr_e8e85d17c3a1e2824456363f61b7dd5373e93fc97a8024de",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_8_1787911083310@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:03.463Z"
+    },
+    {
+      "id": "audit_f6dc556f6b355b8f151ade0fe15732c5b1e9f6be3b397d8d",
+      "userId": "usr_4f6e60e321d66ed109168a08c8e5315f5a5e4bbb3c1345bb",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_7_1787911083098@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:03.254Z"
+    },
+    {
+      "id": "audit_22eaa0f070f9575475c38585a1a84544006a5827baa0ba60",
+      "userId": "usr_ef69db5f621721960a39066d5ea0f7dd7b571df939b0201b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_6_1787911082884@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:03.040Z"
+    },
+    {
+      "id": "audit_9cf79ad88e7a2173fe4e4ecb32097fd84e158da89081fa51",
+      "userId": "usr_24bab39cb920a1740dde68ae098db692dd1da3dc762c8d0d",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_5_1787911082673@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:02.827Z"
+    },
+    {
+      "id": "audit_1e6ab84a9b7f5c0f1801dff6f44550ddfffc83f33f61e869",
+      "userId": "usr_03ac676714a695fece72518907f0ea262711323c7f28c394",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_4_1787911082453@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:02.617Z"
+    },
+    {
+      "id": "audit_a2cc8916575076c083a65a362d429756dfb4a2763adadf71",
+      "userId": "usr_fe5d70cd318f55d3c6b99c967553aae9676f9be9b33f081d",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_3_1787911082241@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:02.395Z"
+    },
+    {
+      "id": "audit_56b77c00d835ecc3bdd00a5aeb1a762926f1be977cff9702",
+      "userId": "usr_4394f353ce270ff8ba348f57f8e80bcd028519a63e08b6ff",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_2_1787911082026@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:02.185Z"
+    },
+    {
+      "id": "audit_5ffb8223a58880ebaf2489a0efc29f75b33d1901a322187a",
+      "userId": "usr_01f5555aec9ae88f454cd347068b80748ea505b565ad0976",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_1_1787911081817@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:01.970Z"
+    },
+    {
+      "id": "audit_8aa6cf390d70f32b046410b04667ad84f11ee26b341e5977",
+      "userId": "usr_12512216f289b9d3102d76e4cb1c3795fc3e08fc1fbee5a6",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_0_1787911081599@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:01.760Z"
+    },
+    {
+      "id": "audit_722fe47fc06adb5cecd055a5f75ab8de7a7af2fb3328a54e",
+      "userId": "usr_749bb62519f81a060fd3a40c09cc5c1d585c66a6997f468b",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-08-28T09:58:01.484Z"
+    },
+    {
+      "id": "audit_3c3eb5ef5c7c95ebb07da11436f2a65e92a4055ca0d631c8",
+      "userId": "usr_749bb62519f81a060fd3a40c09cc5c1d585c66a6997f468b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "normal_user_1787911081056@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:01.266Z"
+    },
+    {
+      "id": "audit_a49f49ba60eef870b9be1b62432ffdaf96f6d724a9bbff2a",
+      "userId": "usr_bf0227bee7a85771e2c7cfd7c61de774334696ff16ca2a5f",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "iso_b_1787911080055@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:58:00.217Z"
+    },
+    {
+      "id": "audit_2895863fe27d28d5f48d5f4673eebecc32a04d836897fc7f",
+      "userId": "usr_ab25c48af4c26ad74ce88fe6164adfa22d0503911d086307",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "iso_a_1787911079843@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:59.997Z"
+    },
+    {
+      "id": "audit_22bba472afbdf863d4dcd61bf53aa78421bdf4a1fc65809a",
+      "userId": "usr_c63ac38fa6d57d34c4f7f0fb484201b2d2869252e518a864",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1787911079505@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:59.782Z"
+    },
+    {
+      "id": "audit_92b82fb42825d761d8bb9207703040d7641cc0d9cf83276f",
+      "userId": "usr_c63ac38fa6d57d34c4f7f0fb484201b2d2869252e518a864",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1787911079505@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:59.669Z"
+    },
+    {
+      "id": "audit_74beda9673ca90ccf41b89598e691a08c283cf048044ff09",
+      "userId": "usr_c3647c1eb1f73f2e151b160b8925609620a460517e31942b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ai_user_1787911079289@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:59.442Z"
+    },
+    {
+      "id": "audit_57f3041397873d5b071b7196ec2c3e9f9c122b201bef2cb6",
+      "userId": "usr_481bd7c50166450c3d21775337d27893ee1891168dfc7dab",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "tamper_1787911079000@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:59.166Z"
+    },
+    {
+      "id": "audit_4c159aa5c52a93eba95798b95c97b56f2e7d7e5aba4b5d53",
+      "userId": "usr_c3614aa5e420e588dc30d914555d0a8f0f4cba286c7e24b8",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "userb_1787911078715@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:58.868Z"
+    },
+    {
+      "id": "audit_3c07d8116f6653e04aea05dbb05132d0300e3e093078d983",
+      "userId": "usr_0440c14fa30980ee5de611d7619e3c3cbefaff49f4de187d",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "usera_1787911078503@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:58.658Z"
+    },
+    {
+      "id": "audit_12f8d5a8be514901c274370b09ad79a59f43dfa93b7faa02",
+      "userId": "usr_16abf84ac559a179634332b78ec7e841691e9ea211fd73c5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_auth_fail_1787911078157@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:58.313Z"
+    },
+    {
+      "id": "audit_1aad0b7de4ef9fb9563fd7805d6b958ad26bb13a257a7720",
+      "userId": "usr_2634eb2eb6789b9f9694f04214a44df63c63593d74bee474",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_sanitize_1787911077938@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:58.092Z"
+    },
+    {
+      "id": "audit_738376ec2c11003c784d445c99a0c61e930db4945acecff9",
+      "userId": "usr_b7e20f4c00ba7747d8e9024daf34a842b6bef44c9ea712d9",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-08-28T09:57:57.881Z"
+    },
+    {
+      "id": "audit_74ddf28c24508eae6f25ec05c9c4c529777367ecd6bfddc7",
+      "userId": "usr_b7e20f4c00ba7747d8e9024daf34a842b6bef44c9ea712d9",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_jwt_1787911077509@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:57.669Z"
+    },
+    {
+      "id": "audit_83f1901e9a8ed3afa105d4f13c1b211fe99d10dd213388b1",
+      "userId": "usr_6667173793803509a5cce9a89f968103c2a7a0f8aa0ff416",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_dup_1787911077250@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:57.438Z"
+    },
+    {
+      "id": "audit_6b4e0ea7a84675777acf172bed70c3413fa7cf776df9a596",
+      "userId": "usr_e55a4a51e6edb068eba50910c01f4286d063b9046426756c",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "bob_1787911067222@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:47.377Z"
+    },
+    {
+      "id": "audit_bbd427265c9a96d19e850017215823895840ba3fc7023cb2",
+      "userId": "usr_8bff52e367289a5125182bccf892e944eb2bffcde2b9b041",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "alice_1787911066995@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:47.165Z"
+    },
+    {
+      "id": "audit_126a1523320bfb4583d3383eac0bb01f6e1edf9f381ba979",
+      "userId": "usr_d2de30ddd5f6ca96670b5ff8c20b6bf3491c5eeef5dcde0e",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "logout_test_1787911066764@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:46.930Z"
+    },
+    {
+      "id": "audit_3206f4a0698790b7bbc29ef6f2223fda3b796d1cde40351a",
+      "userId": "usr_5dcaed4e4cb3b17b4ca0bd884d7689b70c2ab80c80e385ae",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "valid_session_1787911066441@origin-os.internal"
+      },
+      "timestamp": "2026-08-28T09:57:46.634Z"
+    },
+    {
+      "id": "audit_fe56e7748b97c9d56ecd75f5207151c923ba0802c6ea8949",
+      "userId": "usr_demo_gst_5c78f9ca2d80e3065523bff0e565ed6e6c7b29602c236e67",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-08-28T09:53:48.551Z"
+    },
     {
       "id": "audit_41ed21322974b17e43fe7ef1380a190fdfad0b610d14ecf8",
       "userId": "usr_be6ee80e375ff2c3875e1a47650c0e07f0bbb680d98d26f0",
@@ -14647,1910 +16698,87 @@
     {
       "id": "audit_067818a86b9a9fa7b18cad0b7f64cfdba1dfcfda5dfef695",
       "userId": "usr_07c7d529784634f36ecefc6f16cc8eb81313a4c76e97ac3e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_9_1787909005501@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:25.656Z"
-    },
-    {
-      "id": "audit_a7557aabdec2cc3236cbf129f92a122c107b2092f4112cba",
-      "userId": "usr_3abcd408d1660185d89c8dd716f792128a591c028bb3c346",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_8_1787909005287@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:25.446Z"
-    },
-    {
-      "id": "audit_03c310b47f9015294af5607aafdd5e811cf28ccf0db7cb84",
-      "userId": "usr_8f5281387e90cfeba1721ef66ef80d04a96e6155d648d5d0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_7_1787909005066@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:25.230Z"
-    },
-    {
-      "id": "audit_edde2a501b388110761e504f1495bf2bd3a2f7c5c845cddb",
-      "userId": "usr_60dbc53b961ae8925d742600e38c04a969b1a633099c2522",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_6_1787909004855@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:25.009Z"
-    },
-    {
-      "id": "audit_e92849b0fa6dd937a21ca1c6d8af6a3591cff219a454613b",
-      "userId": "usr_8a63f251f444319997bc12fc460d7971788e9d9e74703fd1",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_5_1787909004646@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:24.799Z"
-    },
-    {
-      "id": "audit_8f918fbca40c2c375d2e4a24cfc1fcc1e4ab52e1d0b7bf7d",
-      "userId": "usr_60eb2f5bbc13c46f1199d5d081b8054876994b4c1b0cae6e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_4_1787909004436@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:24.590Z"
-    },
-    {
-      "id": "audit_cfc444002b157a6bbb343e595d29bd7cb7f241f1b159e014",
-      "userId": "usr_009f8983deada4d8b92bd8d379d1ee88fc4c55191f8c13eb",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_3_1787909004222@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:24.381Z"
-    },
-    {
-      "id": "audit_7388b9c10a0430a0729a32ea9b042fad5099f951a78528cd",
-      "userId": "usr_9531f3f8273825ddcf5b7f25d6acec3986d1876dad2fb08c",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_2_1787909003984@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:24.166Z"
-    },
-    {
-      "id": "audit_9b0871fff9db2c25182049f2ae246ebf733b72ae83c8d07a",
-      "userId": "usr_124d0303d990e40ad1a347a5d401814a05fbad103a4a068c",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_1_1787909003773@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:23.927Z"
-    },
-    {
-      "id": "audit_6f054100c5625276eef0d814e9be8711937515f9bb4dd950",
-      "userId": "usr_0049d0dc17708d11990d71c7f2f1559a2d0e6f43e4755404",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_0_1787909003561@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:23.717Z"
-    },
-    {
-      "id": "audit_8950e91b7bf51a80bf75b6f2b4021a066e3ebcb46b5e7522",
-      "userId": "usr_04242b7828ce036ae7694bb8bbb345922c10e59cb681b2e0",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-28T09:23:23.437Z"
-    },
-    {
-      "id": "audit_170c07fe70730cfc3a3dcf749b166b60a0727714fe669720",
-      "userId": "usr_04242b7828ce036ae7694bb8bbb345922c10e59cb681b2e0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "normal_user_1787909003005@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:23:23.211Z"
-    },
-    {
-      "id": "audit_e3cd13d0de9243fde55337ef848e19f7a0ece03da165c7e3",
-      "userId": "usr_demo_gst_ca1f211d38992e44f5deee14b1da77199f8d83c622b2623e",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-28T09:18:19.605Z"
-    },
-    {
-      "id": "audit_1c48b99d4e8efb684e0bb0e131799321870a203698a586fd",
-      "userId": "usr_0a79742bbfaefb40e04c9657139f0825b921896c3546562c",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787908661876@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:42.026Z"
-    },
-    {
-      "id": "audit_7e2679c2f9fafd0ab38784be297c1c5f949b923a0f0912fd",
-      "userId": "usr_e696981fd0e5134364cd5921f7ce26443d5407a118d6a0fa",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-28T09:17:41.817Z"
-    },
-    {
-      "id": "audit_058c657951baa0a3b8133d2ced105f1351c736c4eebca548",
-      "userId": "usr_e696981fd0e5134364cd5921f7ce26443d5407a118d6a0fa",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787908661350@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:41.615Z"
-    },
-    {
-      "id": "audit_2e764e4e82fc051edcc41e8b4a7e35483c80a64f99fbe4d1",
-      "userId": "usr_e696981fd0e5134364cd5921f7ce26443d5407a118d6a0fa",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787908661350@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:41.504Z"
-    },
-    {
-      "id": "audit_960989e9db85295a35e8509a2678102783996fd6122f05ca",
-      "userId": "usr_6613ec0da49d9fe7b21dc4baeafcf2f91b421ba4032931d1",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-28T09:17:41.196Z"
-    },
-    {
-      "id": "audit_7332360c72acf957c2aa2a9d2395284a6043064f3473f9b9",
-      "userId": "usr_6613ec0da49d9fe7b21dc4baeafcf2f91b421ba4032931d1",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-28T09:17:40.794Z"
-    },
-    {
-      "id": "audit_fb2702cf1eebe463744d2739cb5340588c37048df546ba48",
-      "userId": "usr_6613ec0da49d9fe7b21dc4baeafcf2f91b421ba4032931d1",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787908660322@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:40.588Z"
-    },
-    {
-      "id": "audit_271979c52777a8857f5c428e7371cf225674ba959055f267",
-      "userId": "usr_6613ec0da49d9fe7b21dc4baeafcf2f91b421ba4032931d1",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787908660322@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:40.475Z"
-    },
-    {
-      "id": "audit_216cc0ef2baaab65c7395697ed1d2454ece3fa1293ce975d",
-      "userId": "usr_d5c5e69d18142ccdd9d69852decd93af34384b4a228f0c19",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787908659939@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:40.259Z"
-    },
-    {
-      "id": "audit_08ee11886cd62bd56a9f0595be333a4851c4983811c15cb5",
-      "userId": "usr_d5c5e69d18142ccdd9d69852decd93af34384b4a228f0c19",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787908659939@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:40.141Z"
-    },
-    {
-      "id": "audit_e014e790062d8af24b3d4aad7aefb6c5adccbdda052a2ee5",
-      "userId": "usr_216d7806600cfb2cc11a6b62b6543db9a147cab1dd253647",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787908659016@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:39.212Z"
-    },
-    {
-      "id": "audit_25462a03f20b7e2e72a0d30f89689a2de3ef8d3a290bb05e",
-      "userId": "usr_4456abf69952884614e8d4becc4359958cac320f3f8e24c8",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_b_1787908657651@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:37.804Z"
-    },
-    {
-      "id": "audit_1a5a94fc2c1eaba737a058c7419837c169ecf57a75edd1f7",
-      "userId": "usr_bc04ab5baae4ff7c2025b365d7dd4bbc0dd65bf5c90c001a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787908657439@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:37.596Z"
-    },
-    {
-      "id": "audit_2e2cb05d1cf67cbbd777cbd3cc6cb0b7822c4fa637c5d10f",
-      "userId": "usr_233014a9c9393af14aa638523638afa972052f709f1dbaed",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787908657111@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:37.380Z"
-    },
-    {
-      "id": "audit_5e915b1ef4c2614d137d90a5b7d25210e088bc7ac82ce57a",
-      "userId": "usr_233014a9c9393af14aa638523638afa972052f709f1dbaed",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787908657111@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:37.268Z"
-    },
-    {
-      "id": "audit_cd48fb01eb09d0c7e15cd043466aab934d4da991dfd4159d",
-      "userId": "usr_832a606e90a9461dd113f0f3290d9a8c762823d8afa420cc",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787908656889@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:37.052Z"
-    },
-    {
-      "id": "audit_4a5bc5644822fda82c53b485e61b1e6c0b3d72057247dd58",
-      "userId": "usr_b63dd67f4f9fc5cc5db34ac5e9e88b6deb5897d43b6fcadf",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787908656615@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:36.768Z"
-    },
-    {
-      "id": "audit_010b804f771143208ee7c96e7a9d3f75e8002fb33f4d6fbf",
-      "userId": "usr_2ccc13c1aaa7ab2c142326d0d2d77785e7992e786855ab10",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787908656333@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:36.487Z"
-    },
-    {
-      "id": "audit_261b563c968af7d7e2ae619cdefbde0b3d3501a63f8e55f8",
-      "userId": "usr_aa76608051a1e8f5b854e81a3ce6297aa78af9953b90a74e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787908656115@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:36.278Z"
-    },
-    {
-      "id": "audit_755bdc65168838f646d7b7d7be913cf6bb8f97b807d08ddb",
-      "userId": "usr_76188d41eacef39d0bcacab108a777750287e6f068b2af0b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787908655771@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:35.927Z"
-    },
-    {
-      "id": "audit_0fb1fac3b0440f5934682a23a5b9d43dfd372a75b729d7a3",
-      "userId": "usr_05a768b3a7a9197d6576fa83b245b5855ac97b20a6c233f5",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787908655554@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:35.707Z"
-    },
-    {
-      "id": "audit_b2f5795f76d9883b8cc415d4cb85a5945ee4a5243a9fd2c8",
-      "userId": "usr_06f72249bcdfd561c007c652147646db39110d77378e0f06",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-28T09:17:35.498Z"
-    },
-    {
-      "id": "audit_dd8e924d455191e2ec52b6b280d7ff714e8fb6d5bc4fce1b",
-      "userId": "usr_06f72249bcdfd561c007c652147646db39110d77378e0f06",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787908655123@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:35.283Z"
-    },
-    {
-      "id": "audit_670a6263e384c16c0a49ae1b1560adc1ddeb46ef159a8bdd",
-      "userId": "usr_482d48d57eea3069f5875a017a1ed2ea9c008ede2235a21a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787908654851@origin-os.internal"
-      },
-      "timestamp": "2026-08-28T09:17:35.051Z"
-    },
-    {
-      "id": "audit_619406eeffb9382d735d1b12e6de11769b214aa932619356",
-      "userId": "usr_57637af21bbb0d4fab13be4f53041298cec99e6924b799c1",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846579686@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:03:00.139Z"
-    },
-    {
-      "id": "audit_8787a7ff7b519ed303732b2ee0f838343a75aa27331e307e",
-      "userId": "usr_ca9ad28fd8c4917b45fc383d350abeae5a701be9d6e7d012",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846577102@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:57.310Z"
-    },
-    {
-      "id": "audit_ef1eb446937a86b04cd0d8e4b008398a61f2a3fbea48b2a8",
-      "userId": "usr_b3f266744bddd032e539fbbd85961f82fbf688587821a7f2",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:02:57.040Z"
-    },
-    {
-      "id": "audit_863de7db1c690d145cd18d3f57c6d723d71c46ae7b9e84b1",
-      "userId": "usr_b3f266744bddd032e539fbbd85961f82fbf688587821a7f2",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846576472@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:56.807Z"
-    },
-    {
-      "id": "audit_f45bba1476f2df0a929955b9514623cc4609a1fce5bfe7b1",
-      "userId": "usr_b3f266744bddd032e539fbbd85961f82fbf688587821a7f2",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846576472@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:56.695Z"
-    },
-    {
-      "id": "audit_c0b19e04142c0ff8285e4465910cab587cab73bfc5f3a83f",
-      "userId": "usr_801057e20546db4efe17b211925485cc9f6b7c5ace0aa893",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:02:56.252Z"
-    },
-    {
-      "id": "audit_d8bd418240600c34588590f009400a98c4d9ec0bef169a04",
-      "userId": "usr_801057e20546db4efe17b211925485cc9f6b7c5ace0aa893",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:02:55.646Z"
-    },
-    {
-      "id": "audit_3a88e079493d552ae34ba0a6bd28e56a01bead78169881a3",
-      "userId": "usr_801057e20546db4efe17b211925485cc9f6b7c5ace0aa893",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846575045@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:55.411Z"
-    },
-    {
-      "id": "audit_300a0b91fe09e55d557a75d9a1e68ef96d11df4c86425bd7",
-      "userId": "usr_801057e20546db4efe17b211925485cc9f6b7c5ace0aa893",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846575045@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:55.294Z"
-    },
-    {
-      "id": "audit_1edd8104e73ffdb6912698e07f5e6ee1c0e1c12919cf7e36",
-      "userId": "usr_bba8a6a2977d6267d85f597846bc96980b94a9f54efd1a5b",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846574506@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:54.974Z"
-    },
-    {
-      "id": "audit_fd33771527267e1c1cc0bc75faf68f553fc4c7a4fddebc5d",
-      "userId": "usr_bba8a6a2977d6267d85f597846bc96980b94a9f54efd1a5b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846574506@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:54.840Z"
-    },
-    {
-      "id": "audit_fd8071932e2115aa198409685d7e7ac012af1c4b3f546e97",
-      "userId": "usr_5a476724ccd928db6da64e235b885754592d0e94b5630a1e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_b_1787846573078@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:53.247Z"
-    },
-    {
-      "id": "audit_ef8df70d38dc6a5dbbf568f4595b217d09a95e87c36a8154",
-      "userId": "usr_f7058caed902eb183a91c0fe1e982567c27d77e9fbc5fdc8",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787846572831@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:53.019Z"
-    },
-    {
-      "id": "audit_dec4e472c159653c57472595d8e4b1d58fed7bc163db9d6d",
-      "userId": "usr_8bf2411b610f2e858b441a5f7e4ff2a03a3afbb3c6291bb5",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846572493@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:52.771Z"
-    },
-    {
-      "id": "audit_206d0904433d9cb54114f7d3db749a63bcc96dd19d582175",
-      "userId": "usr_8bf2411b610f2e858b441a5f7e4ff2a03a3afbb3c6291bb5",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846572493@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:52.660Z"
-    },
-    {
-      "id": "audit_3e39fefcb4cbb5c5919928b48d48d2671ab4214dfd5e753e",
-      "userId": "usr_ba9ad67603742cf9b3eaa706067f5180b1ca511d100db82f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787846572268@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:52.431Z"
-    },
-    {
-      "id": "audit_70810fa008b1b9213d5595aef2473be2d629e8903d9590c4",
-      "userId": "usr_2989dcc88d8aaa4e71a5ef58968a4f0bbb548a50eb5083bd",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787846571967@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:52.147Z"
-    },
-    {
-      "id": "audit_40b8a5af22eb791b07a58fe3cfe5811d68a3dec3ee3377f9",
-      "userId": "usr_164ab3d8073c5f2f53e059744065a2653743ceab62363ebf",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787846571653@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:51.835Z"
-    },
-    {
-      "id": "audit_11aa0acecbbd0b47614c474d554d4f0dcabb4b02f3d67ec8",
-      "userId": "usr_4442bb168bbfa3ebc6c5fbdc0621834cf0cb9e15c153330d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787846571385@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:51.597Z"
-    },
-    {
-      "id": "audit_4cc2bfc55dc10cc881148dd4687819c025412fa85a426697",
-      "userId": "usr_2508113141175a36de39bdfeef322d8009b8186a265636ec",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846570865@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:51.137Z"
-    },
-    {
-      "id": "audit_c2975ad04b93d4a61cbbdcfcb64d2172dc6b9bcb70e2d85a",
-      "userId": "usr_79c3892ab809ded5c003f5ab3a500c0804a14df08006845b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846570549@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:50.790Z"
-    },
-    {
-      "id": "audit_8e1b2bca4a1f6cb53b071ae403a8efc03fe84a979870dbf9",
-      "userId": "usr_ee501215e37675ddd6cb1f17814d3ee5505c1ed8777f5fb0",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:02:50.490Z"
-    },
-    {
-      "id": "audit_b2bd1e473495cc54cc1dd9103ac54109ada65ea0c58e18f2",
-      "userId": "usr_ee501215e37675ddd6cb1f17814d3ee5505c1ed8777f5fb0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846570001@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:50.236Z"
-    },
-    {
-      "id": "audit_2358aee2a46a257b5560af9c72eca7988a4f317dd4e3f893",
-      "userId": "usr_253b83dcb58399f392dff29b08df9d775a6052a15a30abd8",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846569575@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:49.921Z"
-    },
-    {
-      "id": "audit_f2cfd1c0a32b81184d3fc59672c8f81280b8a7b4c5a66cf9",
-      "userId": "usr_0a77ac05926c3f2e86a6d6cb17e808a27e50a1a9da429c9e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846521528@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:01.727Z"
-    },
-    {
-      "id": "audit_f062538e26a102cb072c1d586b48c7821f45326835ed6cd4",
-      "userId": "usr_01958bdddb192d4f0577dc4e453e8bdeec8f7e39b8be943b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_b_1787846520377@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:00.533Z"
-    },
-    {
-      "id": "audit_3fcb7bb41cb23196f6d6c228c1fe86269b185afa91b23fa2",
-      "userId": "usr_19feb7ddb211724afb4d3091587d7d39a94a93498c620ac4",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787846520169@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:00.322Z"
-    },
-    {
-      "id": "audit_9d11b8f36eb43407ca0e130c881d0c6f6e19f14dad4eadfa",
-      "userId": "usr_56434e947a06e678d67ba3eba1a4719ed63e0209a1fea29e",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846519840@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:02:00.108Z"
-    },
-    {
-      "id": "audit_e7d53af17e7f0fd55e1441b6629ad1deec4a87765e0d10b9",
-      "userId": "usr_56434e947a06e678d67ba3eba1a4719ed63e0209a1fea29e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846519840@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:59.995Z"
-    },
-    {
-      "id": "audit_5c46212b2e30ed1ecd449ef4a2405f6d5e5d4f6b1d0710c4",
-      "userId": "usr_bbbeaf82e9c4baad00294d7f303411b238fdd037732c923a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787846519617@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:59.777Z"
-    },
-    {
-      "id": "audit_db6a53e97cab690bcd36c2deb5ac4d18c11716ae2e0f1eb9",
-      "userId": "usr_2e0024fd6e11b5ac8deae776067b8b2f7291ae1639a20827",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787846519335@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:59.494Z"
-    },
-    {
-      "id": "audit_81a4e3f568f3beb8d6c49fe11ad3c0ea250b62fbfa768961",
-      "userId": "usr_3079a662279100a7487b510dc7d4158aafaae8889828df2e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787846519025@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:59.202Z"
-    },
-    {
-      "id": "audit_23480edaf30269a8b29da2936028c7d2d3a15d105c05dce1",
-      "userId": "usr_36a2f2ee7e5e77fefe2ecd6167ccc0a8e446f2fbfee82d80",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787846518805@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:58.966Z"
-    },
-    {
-      "id": "audit_668323beb1a0097924863b873f39aa06207ad8f9b6f489b5",
-      "userId": "usr_b8c776f4da9012906a008a374dee9f138c9782b9eecdbcd8",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846518428@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:58.609Z"
-    },
-    {
-      "id": "audit_ac391a2c3f3facd147ca4759f8e3822be72a350c4c423e8c",
-      "userId": "usr_8323d572c5db04f5578ee07c188de11dc01a2eee5d1f5e14",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846518209@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:58.362Z"
-    },
-    {
-      "id": "audit_0a9853ef6c465f75460e614fe69066cdda782d00e899e206",
-      "userId": "usr_8985c978bbf0b10224fb1dfa0bddae7945c6c24de18facf5",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:58.152Z"
-    },
-    {
-      "id": "audit_1956101d6ecbb3a93ccab6203bb212983b9bad593c638c8d",
-      "userId": "usr_8985c978bbf0b10224fb1dfa0bddae7945c6c24de18facf5",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846517773@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:57.938Z"
-    },
-    {
-      "id": "audit_392b5e9172bc7da086fbce5c14251943f7b65c0b46364b40",
-      "userId": "usr_2897b60ca1f2284662267301321501e0903d2a2bfab0331a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846517493@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:57.701Z"
-    },
-    {
-      "id": "audit_16815dd1bbad1c3e0844c1e4d36ae001aeffef8cb2738009",
-      "userId": "usr_2b9770eb202507e2708a67174fb44522b8e6070462d4ac18",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846508839@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:49.063Z"
-    },
-    {
-      "id": "audit_2fa74d31ae51fdf86c1c864598a81d8b6d3943d68c1943e8",
-      "userId": "usr_a6fbb438e2a4d2f79584133be0cbb907c0c738cb6b9dcf2f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846507927@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:48.078Z"
-    },
-    {
-      "id": "audit_496ce65219d7929d3150e35126e16b83edb0ef86f346541a",
-      "userId": "usr_4b585009ae14de6f8d520a4132486fab6da5268e0f6f606d",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:47.867Z"
-    },
-    {
-      "id": "audit_c579f7ca4c251a5795cb6ca82b6c59a6e8df28c64c84cb27",
-      "userId": "usr_4b585009ae14de6f8d520a4132486fab6da5268e0f6f606d",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846507400@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:47.664Z"
-    },
-    {
-      "id": "audit_8c1e6d4689790b627b781b84024448a5fd4dd3f0a9a872be",
-      "userId": "usr_4b585009ae14de6f8d520a4132486fab6da5268e0f6f606d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846507400@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:47.552Z"
-    },
-    {
-      "id": "audit_ec219b37e7a8b97dd2bb1070467f5269a06554d430647613",
-      "userId": "usr_e04965dc89dec23fef3965b9189f725bcc2b8a7804841a90",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:47.246Z"
-    },
-    {
-      "id": "audit_71dffcccc2096131cd69866b77745c60a5d06163270bd82e",
-      "userId": "usr_e04965dc89dec23fef3965b9189f725bcc2b8a7804841a90",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:46.844Z"
-    },
-    {
-      "id": "audit_44070263b23fdf8bf9e1cf44adeccaac3f6017c140b322cc",
-      "userId": "usr_e04965dc89dec23fef3965b9189f725bcc2b8a7804841a90",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846506361@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:46.635Z"
-    },
-    {
-      "id": "audit_cb56ab7321fb9f09a241e04ba57cc679f1cf5ea9cc7a6c88",
-      "userId": "usr_e04965dc89dec23fef3965b9189f725bcc2b8a7804841a90",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846506361@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:46.520Z"
-    },
-    {
-      "id": "audit_3262a5f9e11a6200a91c996a9700685181a7292af4ad5bfb",
-      "userId": "usr_119bc1d252dc9244e1259fb29003ca9061409032fb94305d",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846505963@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:46.296Z"
-    },
-    {
-      "id": "audit_d0e50948e42fe3c82a1f5581477ffc73f193274052de5267",
-      "userId": "usr_119bc1d252dc9244e1259fb29003ca9061409032fb94305d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846505963@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:46.178Z"
-    },
-    {
-      "id": "audit_9b24e7e4d9a5b1147afa3c3913e04b53213b49f077225370",
-      "userId": "usr_3a0fedc6f5f4c729d8990b9a016453e7d48cf3e32c55cffe",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_b_1787846502148@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:42.309Z"
-    },
-    {
-      "id": "audit_ed3fb7c2ea79280da45f32c4408480a61b021f418a6152f0",
-      "userId": "usr_6f6994e76a1e8e6ce2566d675b10e6f4058b1e7ab02409c7",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787846501935@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:42.092Z"
-    },
-    {
-      "id": "audit_f108c51f986fef123e3c079a8b84be1a8bcb47cf5cece178",
-      "userId": "usr_42db676ca5538ff5a4cc04b033287e69755e4b2a4d990c7d",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846501619@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:41.874Z"
-    },
-    {
-      "id": "audit_2a018ee879e2092b3907f583779dc1baedcded5c7868eb17",
-      "userId": "usr_42db676ca5538ff5a4cc04b033287e69755e4b2a4d990c7d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846501619@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:41.763Z"
-    },
-    {
-      "id": "audit_f22d478e6575580ed0250ba15ae804676e328263f8b7766a",
-      "userId": "usr_89a9148a13331bc2c1f9bcd3a36432241ca25110a1428800",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787846501403@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:41.559Z"
-    },
-    {
-      "id": "audit_9d72841f67327f9af2bf14a5005b1ba02a936ad6e6b13b96",
-      "userId": "usr_c77950cb04ee320c102bdcf3dc2583f4344b90d5b2486fb1",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787846501139@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:41.284Z"
-    },
-    {
-      "id": "audit_9183d7ff37847dce2346ee6341245578d715e3229f16b6a7",
-      "userId": "usr_3eae3e1362b7506c2573d29f988cad4db38d85ef2d8a85be",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787846500866@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:41.008Z"
-    },
-    {
-      "id": "audit_ed0949b52d95a498806f0ddd3667f186219251eaeaf52c64",
-      "userId": "usr_835a82991bf9f47a416f4d4246c1155b82bb6cfda79dce9b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787846500670@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:40.811Z"
-    },
-    {
-      "id": "audit_aac1b4c141ae5a213c0a8880f9d69d69551d6bea122c8a02",
-      "userId": "usr_de91692239f27b3991bec4cbfd870e604a03e5a2967c65ac",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846500358@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:40.501Z"
-    },
-    {
-      "id": "audit_30aa5187fcb2065d6dfca8d8876f451243e2a2301cb9b9af",
-      "userId": "usr_8c41603d683eb25fecd2c94d316dda9d807925f90e5c466d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846500150@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:40.293Z"
-    },
-    {
-      "id": "audit_06f9ebccec1a0b7d2a35d9d656edd83f1399154390d71bbc",
-      "userId": "usr_62aab24d5fed7776e43f2808f19953cf1810a3c2fd4bd056",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:40.094Z"
-    },
-    {
-      "id": "audit_4c3b7e5970d10b38fabcfd075db33d9ec54d3bc6bc0e4c6e",
-      "userId": "usr_62aab24d5fed7776e43f2808f19953cf1810a3c2fd4bd056",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846499716@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:39.891Z"
-    },
-    {
-      "id": "audit_f2697edafaa6105d3de7d372e3b3aac4374d362ce3c6a8f1",
-      "userId": "usr_938e96b5f1b423b4cea764fbd0d5d94f762b57a4891cc52b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846499439@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:39.643Z"
-    },
-    {
-      "id": "audit_8a11cfdb2aafb576af16ec9e40c631dc9d07bbcb352fc460",
-      "userId": "usr_23ec2cfaca061b1c1ba78d64bdfd6dd8009cee00af3efcb7",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846481666@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:21.809Z"
-    },
-    {
-      "id": "audit_effddfa274f6aa58c46e37cb68c4cb135f46333c9863b25a",
-      "userId": "usr_11df6f952a150e9239e78890475894950d36f1c91c1c7be7",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:21.608Z"
-    },
-    {
-      "id": "audit_b33b74266655827ee768eeee3282b2875631ae6b4da6cf79",
-      "userId": "usr_11df6f952a150e9239e78890475894950d36f1c91c1c7be7",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846481156@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:21.411Z"
-    },
-    {
-      "id": "audit_a6004965b0170a6cbee43b1df4cf472e87e00e46e3692fe6",
-      "userId": "usr_11df6f952a150e9239e78890475894950d36f1c91c1c7be7",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846481156@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:21.300Z"
-    },
-    {
-      "id": "audit_1f67b9d73d34fe1f8183241fd8aafc00f1e60f1984d0b0c9",
-      "userId": "usr_43ad599397830e6ecb44b472966e17d61739b89290e46e3e",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:21.005Z"
-    },
-    {
-      "id": "audit_522ee4b556e6e0d32843ff1ac5e43b0e38283894d24aa6dd",
-      "userId": "usr_43ad599397830e6ecb44b472966e17d61739b89290e46e3e",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:20.605Z"
-    },
-    {
-      "id": "audit_e3023d3f1a46c63a0d241f27acd2985ac9f25e40375c60ca",
-      "userId": "usr_43ad599397830e6ecb44b472966e17d61739b89290e46e3e",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846480141@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:20.405Z"
-    },
-    {
-      "id": "audit_2bb2fa431d37464006d8171e124220f8c7e668188525d49e",
-      "userId": "usr_43ad599397830e6ecb44b472966e17d61739b89290e46e3e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846480141@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:20.294Z"
-    },
-    {
-      "id": "audit_2b31d96b696ba97341bb8ce16703241317e94d097c107e4e",
-      "userId": "usr_8856dbb3a73bf292211f0c58a9375ea96199c0986e19711e",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846479782@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:20.077Z"
-    },
-    {
-      "id": "audit_1d8815e623fb9d5021cc47b490919a7dc2bb26d07d45c801",
-      "userId": "usr_8856dbb3a73bf292211f0c58a9375ea96199c0986e19711e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846479782@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:19.958Z"
-    },
-    {
-      "id": "audit_76122080084143e04bff7feeebb88847dd2b8a76b4984a6b",
-      "userId": "usr_944f6363d1491e565ab68c3db0f4e1cceb8b5802ee70ef29",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_b_1787846478885@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:19.026Z"
-    },
-    {
-      "id": "audit_ba45c882d8702a6fc6d29e8c50c248edeb1f33e4412c88c7",
-      "userId": "usr_19263457c9f7cba769b457bc4edff863307c146860b16e60",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787846478687@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:18.830Z"
-    },
-    {
-      "id": "audit_60201919eff90e0709f01eabadf80e2a68132f75e1cb653c",
-      "userId": "usr_03ec2fc4d2b3ee74bbf55bc8dc9feaf15bfb00a2acbb27ab",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846478371@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:18.628Z"
-    },
-    {
-      "id": "audit_b575e358af65fb07b04dec2d9e2186807a374371ecd022b4",
-      "userId": "usr_03ec2fc4d2b3ee74bbf55bc8dc9feaf15bfb00a2acbb27ab",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846478371@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:18.517Z"
-    },
-    {
-      "id": "audit_76d14f80e5e57f1f7208b8a8adb6093296cb39a75f43f298",
-      "userId": "usr_b05f4f47509b612fee3f7297f30b7d97d62b8bdfef0928ef",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787846478168@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:18.311Z"
-    },
-    {
-      "id": "audit_737f27a7356b7f2f13e94f0ba71f4707ff4b4cc16b8889c7",
-      "userId": "usr_2f8a984485f167ac9fd7b756d61abc2372631d92e09a2472",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787846477891@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:18.039Z"
-    },
-    {
-      "id": "audit_53d71d323cc28e0c8f9c247c090b775be855cac3fb6a3e82",
-      "userId": "usr_e697c606c9b88907f8c1e8ba6624c04c1208f12287c2d5c2",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787846477612@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:17.757Z"
-    },
-    {
-      "id": "audit_1c1ae8ee2a19285532402dcb574e6e3ad64698120f69cdca",
-      "userId": "usr_3e43704b5cc6fde017c798732ff2eb27218daf165aac9124",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787846477413@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:17.557Z"
-    },
-    {
-      "id": "audit_b993e01bc65a66bf57311c06dc77b23385edb9b5908e9177",
-      "userId": "usr_d7c782f343b67602405d4ade273fc3a71c9184d67aa9059e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846477087@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:17.232Z"
-    },
-    {
-      "id": "audit_31fef1e56c659139c7075653a0534979d56b86f736bdb26a",
-      "userId": "usr_5ab6be1e7bc5a67d0f6a937ead3ffc60dfc900a00f88bd94",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846476876@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:17.024Z"
-    },
-    {
-      "id": "audit_9572180575056f45a13cbd440a7d0807938ebcdd87001b03",
-      "userId": "usr_28c6432e9f0665fbbd139d6e717f7cef37bdabe987159ffd",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T16:01:16.820Z"
-    },
-    {
-      "id": "audit_847ca8c34c169a2b083cb84861cb9ea6bbad51d8d095cb76",
-      "userId": "usr_28c6432e9f0665fbbd139d6e717f7cef37bdabe987159ffd",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846476469@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:16.614Z"
-    },
-    {
-      "id": "audit_177212ee3d5c72f8346fe284972977493772dc0f8b022f2d",
-      "userId": "usr_247ade756da2a6f095356a546be11cbd5b9da51a1b795296",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846476217@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:16.400Z"
-    },
-    {
-      "id": "audit_30f576182d7b192d0a24a3baaf5347038acb3cda0047915a",
-      "userId": "usr_01872913c242c07e1f43aab56cc78bc94c6881f698af9186",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846462695@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:01:02.890Z"
-    },
-    {
-      "id": "audit_05f2e5a085c068a4cc8b1ab8f08c3feb7d5258ebdf4f079f",
-      "userId": "usr_72894e46f8a79a753f22ca9db2fa58be734c4a3496f64ced",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846451528@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T16:00:51.705Z"
-    },
-    {
-      "id": "audit_14e7496a37fe546074f750a04a7855674dd75597a53e8b1c",
-      "userId": "usr_7b77dad4eb13a9189002e79da48288dd9a9411ab5ac0b341",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846387757@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:47.975Z"
-    },
-    {
-      "id": "audit_2d78db18c41619bf0b271dc61ca244b927c6a2ff7c0728c2",
-      "userId": "usr_c058a1eac59e687111811496406dfd3e4feea8c65cbc173f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846386522@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:46.688Z"
-    },
-    {
-      "id": "audit_e37b4af92d2e7526bec54abebe6949e9f0bab8af0000c8c1",
-      "userId": "usr_7e17491f6a5e547d32bbca7f70566896e896b2239240154b",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:46.466Z"
-    },
-    {
-      "id": "audit_1d458349135d0dfe237a55383556ca761753a5b48d6558ef",
-      "userId": "usr_7e17491f6a5e547d32bbca7f70566896e896b2239240154b",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846385969@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:46.252Z"
-    },
-    {
-      "id": "audit_7dccee114890eede1767b6ee443142ca89c7a185876edb46",
-      "userId": "usr_7e17491f6a5e547d32bbca7f70566896e896b2239240154b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846385969@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:46.141Z"
-    },
-    {
-      "id": "audit_3f5adea3bd5f0d4e6d4db73a6cfd8da7d5632eb2f5476969",
-      "userId": "usr_e8a9ececb567c77fcfc5720e6fe364992c2a992ca6e3e314",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:45.792Z"
-    },
-    {
-      "id": "audit_da71f14626e332a89701a4cdee9b3bf8382b094c5402d13f",
-      "userId": "usr_e8a9ececb567c77fcfc5720e6fe364992c2a992ca6e3e314",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:45.304Z"
-    },
-    {
-      "id": "audit_d256bffa3eeca034ebee9af1ba69592f391d337088e1c6ae",
-      "userId": "usr_e8a9ececb567c77fcfc5720e6fe364992c2a992ca6e3e314",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846384783@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:45.055Z"
-    },
-    {
-      "id": "audit_6a6cd6f6da3af375f93632318799c692757c37394c6622ef",
-      "userId": "usr_e8a9ececb567c77fcfc5720e6fe364992c2a992ca6e3e314",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846384783@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:44.942Z"
-    },
-    {
-      "id": "audit_baa18378d5daefa533b9bdc13bbbd26559bd73e07ee842f4",
-      "userId": "usr_68ea73bc199505c43173ffca5a68edadc5f3fbd07c1d5c8a",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846384411@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:44.719Z"
-    },
-    {
-      "id": "audit_f2e85800997d11582120828a2e259f9395067796d8862b08",
-      "userId": "usr_68ea73bc199505c43173ffca5a68edadc5f3fbd07c1d5c8a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846384411@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:44.598Z"
-    },
-    {
-      "id": "audit_e8a0bde6f085b1ec51570248b80fc2e7baa25d2ef457e95f",
-      "userId": "usr_8c7096f3a7174c9b9d4d0ffaadf1670dd4b27993ca1d6407",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846382825@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:43.005Z"
-    },
-    {
-      "id": "audit_45926982a2076ae9073760196865742960bf7314423d61ae",
-      "userId": "usr_c2b5607326be52b4c98164ed666afc44e5574b62ddcd73c6",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:42.767Z"
-    },
-    {
-      "id": "audit_18f17cadb40d31a6b3288d69a5ffe41887a669dda07b2957",
-      "userId": "usr_c2b5607326be52b4c98164ed666afc44e5574b62ddcd73c6",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846382284@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:42.560Z"
-    },
-    {
-      "id": "audit_9e92b1f28e749123fc74b30b9a3b5944dbcc3293a54a7622",
-      "userId": "usr_c2b5607326be52b4c98164ed666afc44e5574b62ddcd73c6",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846382284@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:42.447Z"
-    },
-    {
-      "id": "audit_dc4a4641cf115102512d209bf9e6b33b73d96e330d07f670",
-      "userId": "usr_a02efe3a4e572f2a95222d5b9c23a87075e17a3205b5a382",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:42.125Z"
-    },
-    {
-      "id": "audit_e18da679dabd0c000aaf79bd4eb96409eec28d9f7389c32b",
-      "userId": "usr_a02efe3a4e572f2a95222d5b9c23a87075e17a3205b5a382",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:41.670Z"
-    },
-    {
-      "id": "audit_de1fa280cc67ab332bde9037551bb1a8ed44046c3bbe3823",
-      "userId": "usr_a02efe3a4e572f2a95222d5b9c23a87075e17a3205b5a382",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846381158@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:41.444Z"
-    },
-    {
-      "id": "audit_a8e54963b60445df02c734c3c40356982082e3c5d287b6a8",
-      "userId": "usr_a02efe3a4e572f2a95222d5b9c23a87075e17a3205b5a382",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846381158@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:41.332Z"
-    },
-    {
-      "id": "audit_388a5d19d558b896d12da63dcf89843daba5dc18fde2f2bd",
-      "userId": "usr_e500f91d1caff828bdf2178b298cf02ee3a2e4fe1f206a12",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846380776@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:41.089Z"
-    },
-    {
-      "id": "audit_ded71302176bc7712e2142a467894965a9da3a77ca9c5eb6",
-      "userId": "usr_e500f91d1caff828bdf2178b298cf02ee3a2e4fe1f206a12",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846380776@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:40.968Z"
-    },
-    {
-      "id": "audit_d355fef43d151e831f3e9736baef0195a939fe6ad8758ca4",
-      "userId": "usr_49a395d4edfec175fa1ec1fcc5424bc1db724c62573e1c3b",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846380164@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:40.337Z"
-    },
-    {
-      "id": "audit_1cc5413300ac8a53f23c513bb239cd1f31f20c5664857137",
-      "userId": "usr_c7a58cbb19d5449db9009c456f9a0c983ff87d64bc3125f1",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846379893@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:40.093Z"
-    },
-    {
-      "id": "audit_4a7c09c7a8cc9580a2ed4acc5050f4b2c2edee65ed7fe739",
-      "userId": "usr_afb36024f633c699085d20c3062d5e6413ec380255d0179d",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:39.835Z"
-    },
-    {
-      "id": "audit_377eaa4df7b3ef680dd70ab1c68d4989bce5a1b1d09dfc1e",
-      "userId": "usr_afb36024f633c699085d20c3062d5e6413ec380255d0179d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846379412@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:39.603Z"
-    },
-    {
-      "id": "audit_fc8534ffa75eb865ffdac5a9ef574f9013d2d3ee922916c6",
-      "userId": "usr_b15f569318a38b2cb9d82a9a6882129ddbe3553f74e067f9",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846379087@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:39.337Z"
-    },
-    {
-      "id": "audit_b3590df920228ada7b94c51cba57eb1536704c20e3a51f80",
-      "userId": "usr_29306c1065f823c2a119156f34b9fe82ef42155c517dfe2c",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787846378378@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:38.574Z"
-    },
-    {
-      "id": "audit_bbf94ff5cdb6014b4feafc8cc03e289006f22a9b4d831ab4",
-      "userId": "usr_e40c6d3ba61a218999ad2c7298061591d06dcee0c305fe7a",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846378012@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:38.318Z"
-    },
-    {
-      "id": "audit_7fad264a3d7f2f6b236100b1869cee2bbcdbcdd7176a0262",
-      "userId": "usr_e40c6d3ba61a218999ad2c7298061591d06dcee0c305fe7a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846378012@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:38.207Z"
-    },
-    {
-      "id": "audit_acaafe6227d29fa955c4122e5883aaeadd3458c53e56bc41",
-      "userId": "usr_17a39a795a1a62e009e6f8c45f524195f5e13d29ccd5123d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787846377751@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:37.952Z"
-    },
-    {
-      "id": "audit_53c3dadac81806f7d9547ae1a3e15c96103779ea884d864a",
-      "userId": "usr_20001d96c1b23c509e14f48d442177c723ddafc1e6fd1b8e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787846377406@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:37.628Z"
-    },
-    {
-      "id": "audit_c51fe5f677670d961c3b08ea372d0e1e081b66e767eb009a",
-      "userId": "usr_04ac228001855719bb10df5d08be28d2027d5398b7c6d97c",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787846377102@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:37.269Z"
-    },
-    {
-      "id": "audit_319be9b90414288575da4b01d03ff754a7c2c1a0b5ce138f",
-      "userId": "usr_6a959c01d19a4f7baf251be956451a5ed600354f660e2f35",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787846376850@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:37.045Z"
-    },
-    {
-      "id": "audit_a070abc02e3274b325a027ac71edc259be8f04c669010ff0",
-      "userId": "usr_8b79c74efb76854041e7c4919aaf5f4391c99ac7709cdd8d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846376428@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:36.603Z"
-    },
-    {
-      "id": "audit_6967930714e12fa430b3d902eb502bde2d3f2f590888f809",
-      "userId": "usr_814e314774c842b576b94eb770952f1cf45d82966f2916f2",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846376197@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:36.363Z"
-    },
-    {
-      "id": "audit_3d8c9c5b2d3311a1266656f32d2dbedb6a63a9d231b74233",
-      "userId": "usr_72031f28f4fcf480ec225d2aa7fecdb4f7cf0f14ccb9ab96",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:59:36.140Z"
-    },
-    {
-      "id": "audit_37c12042c9940ccf8027840995f529d29f76d87f3703b9c9",
-      "userId": "usr_72031f28f4fcf480ec225d2aa7fecdb4f7cf0f14ccb9ab96",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846375759@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:35.915Z"
-    },
-    {
-      "id": "audit_0d6a15a73db09bdf8a432f23905e8310ed6404e1b113aca5",
-      "userId": "usr_886d2bdb8dd306a18d85755e591f634bc6774054ebc89032",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846375477@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:59:35.686Z"
-    },
-    {
-      "id": "audit_f79c75f5b3c8342d0587c424d7893c60d18fb384c8d69cf1",
-      "userId": "usr_5c01d831728780d12a187b2b7d69b7d414e9081d2af3a3ea",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1787846326626@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:46.830Z"
-    },
-    {
-      "id": "audit_64ed09db0d4abda1eea8a787b99ea264510120566e6b125b",
-      "userId": "usr_8b06f02b14ca018e036e81b63479f9a040d6627298736a14",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846325602@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:45.768Z"
-    },
-    {
-      "id": "audit_13eba8dc57d9dbf04046e51a924e24b8259cf3653cb36464",
-      "userId": "usr_af1cbe79e2d48119269f9350c55b12aa1fc543a9d24a368c",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:45.542Z"
-    },
-    {
-      "id": "audit_f53bbd6b885e497351bad94126f1e8d848b6a54b09b52a27",
-      "userId": "usr_af1cbe79e2d48119269f9350c55b12aa1fc543a9d24a368c",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846325032@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:45.310Z"
-    },
-    {
-      "id": "audit_43937e007c38c97670a87067bb345fcc33d356efe02b7347",
-      "userId": "usr_af1cbe79e2d48119269f9350c55b12aa1fc543a9d24a368c",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846325032@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:45.199Z"
-    },
-    {
-      "id": "audit_c467afe0f579af44df334b4656f113d87074e90674bf22c0",
-      "userId": "usr_6a3386d13f11fe2dfa2c0d69a173d30eb30644bdafa20bdc",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:44.866Z"
-    },
-    {
-      "id": "audit_cabe31085791e727d1abf813e0b9ea5f91c54a55ef636f8b",
-      "userId": "usr_6a3386d13f11fe2dfa2c0d69a173d30eb30644bdafa20bdc",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:44.439Z"
-    },
-    {
-      "id": "audit_311264209e2fc86fc756be010a642df5c93a97bfc3f75492",
-      "userId": "usr_6a3386d13f11fe2dfa2c0d69a173d30eb30644bdafa20bdc",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846323935@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:44.214Z"
-    },
-    {
-      "id": "audit_09f8495c89935ef6dcab0b96d6804495e81052fd09f5b76e",
-      "userId": "usr_6a3386d13f11fe2dfa2c0d69a173d30eb30644bdafa20bdc",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846323935@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:44.100Z"
-    },
-    {
-      "id": "audit_6987f946f0e6ea861fa13297eb890fb2798387b2102356c1",
-      "userId": "usr_9094a04d072c118f31cb62e062288adbb4152934913571de",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846323518@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:43.867Z"
-    },
-    {
-      "id": "audit_63d4edabf70af546d95df976bb717e062c106905c8bc626f",
-      "userId": "usr_9094a04d072c118f31cb62e062288adbb4152934913571de",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846323518@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:43.745Z"
-    },
-    {
-      "id": "audit_8254851c8fb7fa9249eff5d1d710494cd727e9d79bef2d4e",
-      "userId": "usr_fa44584fc83471a4c4f1cab1580af916fba5960d55d7818f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_b_1787846321533@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:41.686Z"
-    },
-    {
-      "id": "audit_5eb7655e82649b752a6727d0896bc056e3d4316ec4043ff0",
-      "userId": "usr_03372ad9f695b248d3a5bb90244885b3024b812c1b588e74",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "iso_a_1787846321328@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:41.479Z"
-    },
-    {
-      "id": "audit_31505f89394b3fe049520ecfe600d6d23edae76a3ae0485e",
-      "userId": "usr_6422c4e9da2eb83ea110e04521b4bb387945150a3c266552",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846321000@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:41.267Z"
-    },
-    {
-      "id": "audit_8ce72dd1844c984b97f93e0a847f02f0186cbad8a47fac71",
-      "userId": "usr_6422c4e9da2eb83ea110e04521b4bb387945150a3c266552",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_safe_1787846321000@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:41.158Z"
-    },
-    {
-      "id": "audit_c9cd64cb7e821a851ba91b4b1d4ae0bb3212fb7fb541d117",
-      "userId": "usr_a99380f1b80d64d6185b51f14a65f352336bbc2d0c4ee7a2",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "ai_user_1787846320791@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:40.940Z"
-    },
-    {
-      "id": "audit_1cca62fa84cce1e6dbf7b78a13b9d0abcea1c82147fa8b4a",
-      "userId": "usr_af49cdb6cdf9dfb7d557ac25f1b14238e18fb624cfad97f9",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "tamper_1787846320522@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:40.672Z"
-    },
-    {
-      "id": "audit_c4911f7511d3d409907b0d6c78dd09ac474d7689b950712d",
-      "userId": "usr_363f6834abff8ae5ffd489768d9cfa408209b26e87ddc89f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "userb_1787846320240@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:40.391Z"
-    },
-    {
-      "id": "audit_c4abd6f0393f365292ad93c8ebe02142c7f6c460f8262883",
-      "userId": "usr_17e4d0e8907958b9f524045fe47161a0da7d25f838e3b273",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "usera_1787846320032@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:40.186Z"
-    },
-    {
-      "id": "audit_d6dc5e5dbc31b858f28e89f45f9234da181ed27e33641ed8",
-      "userId": "usr_f2ae813340c4c612f6a03aafc81bebdecdbd17841148500f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_auth_fail_1787846319668@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:39.826Z"
-    },
-    {
-      "id": "audit_38c8f2465b79614b0e8cd7ec1bed7f37224d559359df632f",
-      "userId": "usr_299121bcae9c003e6fab2c8dbfdd3a44ec5441d15698aee0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_sanitize_1787846319444@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:39.606Z"
-    },
-    {
-      "id": "audit_674df5fe4e5615428734bd4e6a2bdca056bef23797c7530a",
-      "userId": "usr_2da288aee211255c7b04f693b3ac1b5ad2e2299ae720fdf9",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:39.389Z"
-    },
-    {
-      "id": "audit_2daddb8783b049b963f9be235801a86df0069f20878bb407",
-      "userId": "usr_2da288aee211255c7b04f693b3ac1b5ad2e2299ae720fdf9",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_jwt_1787846318972@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:39.169Z"
-    },
-    {
-      "id": "audit_653239168c2855d807c6ac4509d9e76fb92bd9812234764d",
-      "userId": "usr_6075ef6462bb8241a8cec204ec20f37483842557b72764a5",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "test_dup_1787846318680@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:38.886Z"
-    },
-    {
-      "id": "audit_afadb7c3cdd70c4616fc8ff8d07036edf53750a0f797eb8d",
-      "userId": "usr_14cc1760dd02cf1348b993f4a0c581d0962cfe9749fcd0a5",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1787846310901@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:31.073Z"
-    },
-    {
-      "id": "audit_d1009b221cbc19b0e339b5d68ba102a8528b705ca7b41dc0",
-      "userId": "usr_4f1a253b524a3fe144e06c2627e44d273ad2cfec05677cfd",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:30.840Z"
-    },
-    {
-      "id": "audit_988dff786e0b201d110d8b39a49fa9a7768319c14975d22d",
-      "userId": "usr_4f1a253b524a3fe144e06c2627e44d273ad2cfec05677cfd",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846310353@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:30.623Z"
-    },
-    {
-      "id": "audit_8fdd0b147e73f688373e770cf25ec0e760b6fdf3cc088c7e",
-      "userId": "usr_4f1a253b524a3fe144e06c2627e44d273ad2cfec05677cfd",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1787846310353@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:30.509Z"
-    },
-    {
-      "id": "audit_2f211fe00f197f4a406a0875edef4ff54dd6739405e38644",
-      "userId": "usr_10397ce5359b60d02b3f99ef75439ede2c18415883a5e1c0",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:30.182Z"
-    },
-    {
-      "id": "audit_368b382a1374d727cd66c5c64193d08169f2210fd3208a07",
-      "userId": "usr_10397ce5359b60d02b3f99ef75439ede2c18415883a5e1c0",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-08-27T15:58:29.727Z"
-    },
-    {
-      "id": "audit_5bfc99eeb8bf87f7c282bd136f62ff81c8ae814370453bb6",
-      "userId": "usr_10397ce5359b60d02b3f99ef75439ede2c18415883a5e1c0",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846309247@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:29.517Z"
-    },
-    {
-      "id": "audit_0dbe1c5006e803f6b668e2a55fd5a91f1d436a1f4b0216d5",
-      "userId": "usr_10397ce5359b60d02b3f99ef75439ede2c18415883a5e1c0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1787846309247@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:29.402Z"
-    },
-    {
-      "id": "audit_f4a17e8ee851b8211bdad9ff4770008ccf058be7bbaf546c",
-      "userId": "usr_784d6ca9aa31c6de4fbbbb5bc416d4e393da5d009beabd0f",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846308839@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:29.183Z"
-    },
-    {
-      "id": "audit_5ea2f105bd85fc0a6809db15075601658c22db1ca8ba8a48",
-      "userId": "usr_784d6ca9aa31c6de4fbbbb5bc416d4e393da5d009beabd0f",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1787846308839@origin-os.internal"
-      },
-      "timestamp": "2026-08-27T15:58:29.055Z"
-    },
-    {
-      "id": "audit_eb469e330212995cc282f3c72410a737017fbe29c825b1fb",
-      "userId": "usr_cc5466e9f322743b57325c382dfcc2f1bc3c0b7ac80674aa",
-xúƒ}]è\…ë›˚˛
-aû≠BDFdf$ü,XÉÖÄ]I÷å`¿∆Ç»Oô∂4#9÷¬∆˛wü®f≥ãd]ˆeUuÕ`Ü”ÏÆ æu22‚ú»»»_˝ ˇ˘¶ˆwo~¸·õWø˙Êœﬂ}˚ß◊ﬂ˝ÓüˇÁ?~Ûü˛ÈW?˛iæ˝ÒÁü˙Ù‘üﬂ˝œßü¸mæ´£æ´¯…ˇ{ˇ=|w˛≠æ˘´ø¯ˇ‘øæØﬂŒ∑o1¸kŒñMìPŒ*ˇ˘«üﬁ¸ÂÕø˛ÒÌ·ÕÔÊO?‘ø~Û~Ñˇ¯0¸ª7õoﬂ’ø˝›“Ø…~Ú˜_E{Ú°à˝˜á∑Ω”„S|Ûf<<ÌxÛÓ5Qèî[ªI¶¥z”÷(–J‹
-Û—–kíƒCsz˙|?øù?˝Ó8“œozΩxNô}’l)7[e≠%-î\Fõ≠XœÇ1%mìGoO„º¿oﬁ˛¯∫=õ≈[ õ9•¿ JìBÆîÅÇiÀ÷R- wégYΩnñáŒbñ7ÅMk∞Zàm·ÌëU1dN"kr¥J±è§#V©µè2Í}Ä≠'¿äÂ€ #Ô ∂r$N≠∆&ë+0éKiVGÎc¨bW2û
-òﬂ∞cÜVG⁄J'≈ôåjœΩZQbÎ	pèx≈’Œ˚«ﬂ|˜›˚√ü~˚˙Oﬂ~˜Ì˜¯Ûø˛˘€Ôæˇˆ∑7@oúÔ^ø≠kû@M1›j	{ú√
-2Õ∏‘V≈¥ ©¨yç†0g∏ˇKâÜYhC£‘¯íPﬂ÷Ü_›h∫•¨òvÂ‹÷≥÷)"≥ÑnçE·éIB^Çu≠$›BórL©€≤êÌLaå2a∂ÍLÆ=§LÑ‡2·ã◊À£[ﬂºˆG|Ç6›ƒGƒC)∫«G åﬂò…ùÆ‰îc$ÒjÄ£å!3∂åÈû9∞≈@[–ñœä◊ÆBkÙr•⁄`¶E
-ÂPäˇ?ÔˆZÔ’õèêç¡nÉl≤∏Ÿ©πñ™’ZÃ1„∂"ï2åh1≠√/¿‡Â¥ÈjH⁄WØ’æz©⁄¨>Ç("b6/<´tå#ÙÚ»˙ÛùÖÑn¨î=¿VñAäpnïèk~rÔäMW1ZÅsÍ∞ÿ%qç&unõa±$ciè}5x’"w¿+ï‹¯Ÿ£äåP√ „>¿û-˘Fæ ƒi∞°∑ﬁa‹N¡$ÂNÇ ìÒuNE⁄(‡R	Ê«⁄Ä.hÎ&∞%å)fY
-(m‰ô”åy÷°¯a_0˚⁄+ë≈”`¯bæ ºˆwº^¯Œ	¬—n‚Ùêu’Õ≥å∑))°‚kê—Y:òA\J`¿p`c)‚+€fd©ZMSz°b÷jƒ–#ÖÚH∂@‚ÄÁ¡À»ôù~[xÛÓÕˇ=a
-*È&ZB`´{xXnkŒŸRÄV.≈ ’¡\ì!5≥†£ó@ÀK7}√P<ÙàX¢U0_}YÆUË¥Ñ—åÆ 7˛ó?¸ÛÔ~øﬂg*; ‡h≠ÇDÇ9F[0  RÊÄxja%-Aa`)ÖM1u3 nkaˇÎÔûåK
-á€†⁄ÅÌ®¥ZûcpÌ1B˙«\Û+ïUÇÕGXö°˜⁄∑±jjq±•·)÷2˙DòóB∆¯=°«RK*3î;’#∂„Áøü`õîoÅ≠Jv`ÎvE5ØúÄEocåbΩÉœãE–ùò°ú2º|ÿÃÆå˘∑_ˇü1|∂1W]†≥
-…ﬂR‚ê¡¢*∑ëjÄ˜2âaFµR9Úoø˝◊?º˛Ó€Ôæ˚›~ˇ˙ªÔÛßùÇıKò»´®-{‚±”»@+è;òç¡‰ãéÅµú[CT?oîl¶∫Ö	B	^âW;ìlBÊ)*¨⁄DµV—»à@3∑f4¿&_ﬁﬁÊøˇ˝ÕOsº7∑X†úo {‰Ö‘©¢}òvÒáÿ§·Z\˜$ÛƒI]Ë#‰‡69ß&R=Ü•òûP¡W ¥‘K¡¬¥èîD·3€Ÿ•¸Ij‰ø¸·_ˇ¯/ﬂﬁƒ“à;‡–<DY‘l+÷aV§F∑ñWƒÍ
-π∞D_ü”Ú(wÑ„ñô"<Ïx˝Ó«ˇ=8±<…◊3î#‘I˜0¿\≤g2d®z
-òJn9@ƒç0I!DÚ‰ŒK:n:∫[@}sıÚÇËFŸÉnÜ—jÉ$Üí	q≈’EWÕp!ƒ+èjûêví¬¶ÀL9L¸‡ÂT;ÉOMËÎ52ñÜ≠ÃΩsÆÅ€ÑÓ/Àˇé ﬁ3ZñòcîUµƒ¡âsâi¥ˆ¬ëbåP±cRô`/	¿:6:Ô°l!´˙VÀ®u”*ÇÍ¿⁄
-°ñL9JÈ?ÜÏÚèπô9|8nü_˝ÒOKèDÆO“°Nv@çWu-∂l-µ :SlF&ÜãMzCíÑ÷#ÿo*èõ-Ωß¿_
-]Ë¸=Ü€\y-ﬂÅå	¬`ç©≤ qâ'yÅ©•u`ﬂBmõ⁄3Ç(S2CvàÁ±2ﬁrÖ∆!%†à)î¬Ÿ¨Úùy˛˚õ∑Ôﬁ¸ó@„ìÈıŸ≈#–!Ôâ àù{Î*)çè1ª+È5‚úÃ¨J´9Êc3Es†oM∫_[÷=F‚S·(Ñ&®ÇƒHlÖkÍ ≥Z$í@pïl€ÿÛ,í∞=è8»,Á.”wyá
-B`Åºˆ0»=ÑS±xè-t Î	˘´ÅØb9–.•hNŒy,ﬂ◊ñ>¸Ü!`rá2ÏÓT/á¨P6ïbú#1r∆ÄOŒI†ûÛÏ∞ﬂä_A¯fí∆‰%çÓ∞◊p∫ÖÓ¿fæ^'X;Xﬁìñàµß:u∂àÖ+Å†xõEòkmYE¢V#:›÷˙$-35xÓA`öJÁÖ¿≠QiÅRs•d=ctï_z›°ñr}n¸uäyè$%∆“ä’oπ¡º åk≠^%8Nôæ√> E°∞Ènıo°ﬂ]0˙=≤”%º≠Æôm’K_çÑA⁄ñ˘X\äB%µ„∂»¶0ä3A¶Zu–¿b	ØÜÍú`$¨]4-Ëuç-êj∏√Œ√«[Ë-¥ım†ï]Öaw0<wƒZ∞E'¨$0ÿPD·nã,Ö©ÜÓ	îÕ-Ùn‡Ω
-WÀñ\b©MR#êÜö§	hD¨îXµﬂ!™}¥ÖdA6ØO∏ëE⁄#fÃ?◊ò{Âÿª&∑TÉ†áX…ÖKòd
-jñ¥¶Kò%π?ëíßy6`RKÙ,PO^OÉÂä6¸∂ Ì\Ït›ÅE‘Ω∞˘êwÖ5H∞∏⁄PŒ®ú©ã˘Ü/T2Ãl*Â kËn±lV}ƒæ¿;ÅÊÊn≈†™¡jAÏdÑﬁc^1ıHí|önπ«∫´t"ñ1Ì)ßÈpûºÚ diÉ±ÚÙ∫C2e8_—Ú:%L/PÿÃ7¨dkˆ0K[2‹TE`Î‡0‰†-Uo,I#ÊÕz∏É>ªÖÓ√ˇﬂ·}	ÆûñR¬åP)1”® aÖÑ¯6VCÛÙ◊Ä@@¸iõTwÇ·ñ·9X,}êª·u°£.ºπ¶∞ÁE#»¨ø~o{f '„rÄ”°ÿû™——R@∞ZΩß ïÍÂäÉ¡¯çä2îq3ØiBDkÄ\`3è≥J AgÁÑ	Zp∫¶Ï˚y<◊æ°ÏÎÇ)ÀL¯&)‘# 9Ì±∞ÿ@è∞N±fÁÇP≠pè\f¿+ìòégïKÖ˛ü€€n∑‡•∂–›∏ƒÙ6∆uèqu<^õîL|”√Î	2"QóÖ¯Ω†Ë≈îô¨{ıañÕ›Õ©C§GäÄ¿æ∞Ä–ÕXÀX¬Q{V- >§Ó—?ŸBwlôn¬C”sóV’
->î«/Ó≤b.s÷⁄∫'^O@ÜƒiK∂∞≠∞Ù<1Mú´˚‘a≠dUÉÃÿ~j›DπKÊÍ„Ìb/∏IXg—=IA∂Å‰î∞(∑¢‘,ÜîZÏ-i,aÆEgNæ	«õiÄ2πAÅÃ÷˜È[u´Â∂jn+ÕÜŸ‹ã¬Â‹sWp–¡v≠bapí!eBÖîy=ÿÊJ#Âàx53brö•*oÔaæ /º]úIÙ˙ºˇÍ¥´Ù]’ãç2¬‰†âºãt§‹¬y<4Ê¸ÀÊ~ﬁ-†~ÒÌ‚¢wUÀ≠Ü èïÏ¡ò2åt∂I≥öhÂ4k
-&9a…™k[∫À∏&·3ëE-ce¶*—:«¨ò¥‚•¥9;∂—Ω◊°Ô*iK‰≈.a:Çr∆#ä†LëTï∫òc—˝Ex9«¶‘o~ƒñAyıô∆å÷¸√ #îéıOﬂr•
-Íëã◊ûﬂéﬁ.N%‰[‰v ıæ√iLà‚~^ØOÌTì?ƒ4KmÆ%ö'®Ú“–M∑”Ω7[z/π]|CtuWÑÊT‡»†◊
-#4N~ﬁ°Pö≥∑í|–70®ï≤Y _l!º«ã∑•…T§tçd÷A7√¨’$±A+ñ≈6~ÒÌ‚dvÉÇÛ#–Åˆ0CcO3x“ÙxŒ Ù\ÆmJh’´Á†n¥@6"§»väÚ@øvÒ±%€ìLÀ\pŸ∏ö˘:î¡(•Ç…d·ﬁ$í§ÂG%V⁄‹äó(>1“Àøë>{œ)≠YúyÅ£gíj-i*›!Ky≤]¸å.«+˜·È…+q•∏g«¢ç
-X˝ÄπKh8YÉmÂ⁄P·‘1’&¯{Xr3áF\cn∆1—˝KéÉ‡d«Ï±3÷ƒbß¶mA?Jèwÿj;Ÿ.v`„’è¿RŸìWgeEÁ‘)s¨ìV/À∆⁄ò’+âCô•@LKùa”b'iK‰´Ã©ìê&ì˚Út~»-DI=ç.!œ_Ñ?<mh°Üûπ‘Ò`ªú√(‡£°¥V”‰“*¡E@”Ä¨M?å=€X∞¿¨Êæ#»Ê∆-†~ŸÌ‚€¢ªoÉH∫ŒæƒD%ÜÍ9%P™VåêEàg ≠)Ä6˜1z¡≥è’zÒ=˜öÛÃp:	Àƒ§T√¿˜UféYÜ‹¡C|¥]|ÑV ï˘ıGhc⁄CÕ _¬⁄˜ìë4Bﬁ‘º1=, ?œ–„ﬁR$m˙äVÇIA2-Ø'c±¨ î("XK.mç›O-Èù∑ãè»Ú≠å6Ï⁄πÄz´V≤üô)!UOuBXZ+tØF»KπÉTTo∏≤ù∏gÄßÑG¬ uT#Êc.y†∫:π%ÉTXnw8øz≤]Ï¿™ÒMÄ’C±=ôÂ’x*∫ÿR˜íﬁ¶6·Ç»¿“≈äûF3œn£€LBjûøÚÇÎ8KŒú€∞aeJo{≥ï™∆pó÷7'€≈G`1È∑6Ô*p iÖMEË◊>ùi• U`¶SDøßa´5¬ö·<◊vv˙ñÜb:b¶—aÎfç(y û¶hﬁS§∑‘R§xã=∑]|D8§ôÆÓ⁄.6!Y≥ÇLïh^˙5¬T?◊˙k•VoÇ UuŒ∫} ∏ß4ûb`N táv 9X√ã— 6Ä–”%HñtØ3õo¶k≈>ÃeO
-UöWÛJ£ZΩÓ‹´reO8≥¢	·÷%w9Í¶”ı‹#b^Ûm@@=\MC5Á?Æ#(⁄ö!‚à‚Ìpv}
-ı 9î]{CY}[®¿î Cß-» («√ΩõåÃ	HÖ·ByÑ∂Mïn¿mªqI,7YΩr»∫ß&4qÀ¯Ã…Y<Ãa∑õ ∫„µ‚«’∑YAD«ºπ—Ñ@ﬂsMRÃ¸åX«ºp^:áRõ†îπ ˆÙ≥áÅ_rª¯à≠ï[ÒèÿFﬁCÒuî
-…#⁄∞°÷3—
-µxëùA˘V2á	*YAK◊¶›B,œRµ4j[ë•DòIi·}∫òºÇ*WØú~È“Ê†Üœ| OØTvn+Ã∏B–ßqØ»dêQﬂFŒ≠!&õÅ,Ô•@x…–Õ£Q∑Ä˙ÖµÍM—MªH‘0/∑eÊ>·ulVJ 6ª@{∏@MÖf¿ZÈR7€5·ºOàú	Ü9Û
-íéÿäEÅ»/µ›]´:¥°\‹è–Ó€FXÑX÷lvË)ÜÕ)Ç˝åÆ≥Ä®R"µçŸä∂e€=¨ximï€"±Æ†K¢aÌ5ƒÅ"kQ†ßÊ=˙’újUGñ¬ıﬁ˜à,Ô:fñ‚,µ„9∫B¡«Q ÜJ)T·â,pÂ∞"y#üMó‡]K øgX;œ≈L°,ƒ«ﬁŒ\Ω[≈;kU rºr”‡ÿp(ªé°P/©›ª[∆é_ÜwÒ∂!*´o4ö4« “f£Ì‡L-tçµC©ıÛ>cé·¶¡ÓHz.S!◊f≈Hòw0ŸS≠Í¿∆kk%ÅÕªÄÌúgÓ^@ﬁ"B•O`ÿkq`Ç(ÆL≈`é∂…¨èö·≤ß‰±¸lérÁ∞§6kôqãÁ*‚1∆ΩxÓßZ’Üø¬í˜§¥•∆^s¥öÂn«™≤‹»-∫@ez÷«OF¶⁄Í‹D∏./dYk¥hÜ˛ öVÍ •5Cî„§i@íƒ—Ωçƒ/£U`∫AÇ0Á=<∂:«LIjÚ”†˙†C,ƒ™˜ºàg+`Ωqlü‘ë¡
-*”Í°∞õbj§!F∏–èUA7<ãe|!›r≠
- ¯P“Æ›ÍÖO^¿Ω≥ã6ÖóÃ√&yW4	¥@ÙaÇ5Nù6ı‘Õ x)≠
-„¬‘^Y~˚àÌæ≤qƒÙ$GIöZÅìL}d¨Ui¢’
-^´V<⁄5ïÕ¿c<ItÄ3¡¬¡≤◊ﬁQYpØy`∆‡¿˜·FÛΩz˚=iU«üı6ÿ∆]}ù!#Ê$–´ `!îf“é¿‹¸|BGÌﬁ≤ì"úˆÛ›¡¿ÖdË‹Íá´$ Oçqø`–~ ±≠¶v∂jË÷›¡®ºäÂïÑÉñ=Ò‘ºœ NiIE‡ÁçLdÙæÇ‘‹Gà0]h|¬¥-*AÈ[å’:r≠ãO†!ﬁw?√å*µ9+˝“{Õπòù•Î»:çWîvA£«µ%´Sü] öEñÍãΩ]^˜¶ ô3hÁfö˛Pø®~ø1∫ƒ{hOJCéÙ¶–iT,lé©∑:¬*E°{gùƒ}{Ct@FY©ÉæA2»-B¨zat˜√K√7±“¯éoé;M~Ä6≈ÎŒ-ºá6lWuXÕ†87ıæáë°ΩΩ9F∞9sÒ§TÖˇX~ò´mûiòé≥QÜ∑Õ’éî…˚ŒÄ7Ñ‡çgÒòÅá∂Ù'˙˝Y±!¶Ωß“á”òıµâH±∫$‚ﬁÚp‰Âe áZLB33‚˜@˚ﬂEÈÄ“Ñøµ¥¥äöràFÁB€ùdf;ñ u7> ‚_ÀRõñR«Î€†UcJTñq*às^«À~d;±mü-Å$Õb£Ê≈òç’®Q©3ÙaÀ70]â†ÑÙ∑Å<È˜#∞U◊Ò”¿íÓÍÓ›B—ƒRM~ëBa<M£Ù^9YºÌÇ´L€-/°œów ˜k*ﬁB: ÍRû≠bÔV0¢r$o¸ãË˜Ñ„ï7ΩGXôˆ∞‘T™4ù3?’ßP«ÆﬁË0˛’s–R´MÔú<∑ÔR£èﬁ;Í»v«¨¡D–UÉ<≈Ç%…añæÍli§;t·˘\ø? ,WÍ˜ ÎÆ”*†^‡„~ìd±4¥çBR¶u†ÓD8‰.⁄ö73I}˚
-&`óÑÕ≈
-SfÀ)%Xuè÷†aŸ´àå8{ªÁ˛ÇGì? ˆµha≤œ}Éﬁ«⁄Çk¨Ú^ÈYu,\Ö›µa˘‡NõÁo¿ÀË˜£qâŸuÛ∂¥+¢Wû	¶îD3®Üúí;∑≤ÍÇS´–äc8I™RÒ≠ 1¢4À±Y“Go¬=®¡oÇ'¥Ÿ 6tßﬂTÓïy‘Ôÿ^{≈◊{lÂ`;ªíN/ø…VV)πT/äû^+^"{û~ÙVº,óMZ¿CöﬂÒïÿßÁI1C ^°BM•á√®±!Ãç_¯&*áö8»ı¸â=U¢ªnGQ8Å˘≠‡ã,`ÔàT)A}à«=≤†!©ÚÊ…ü[@˝‚ZıÜË¬›ÏID1’Í∂ -‰hh O¡®I¡9IF<öŸJÚÙÕ_˝»I»¨üCó•8¡ˆ¡t[Ë3Ì!©É˚kÈm›yØ˘Z∫≤Â¥Pé{¸/xπˇR/É#∂ëÃ[Éß÷Ï∂√kFÇ	±-“&?`±IZFdø&ÏW..„æËxk
-îB«íàw-∫ªV!◊{_ K+ªÆO´≥á‰uRÀπøÆ≤Ñ6ΩŸcÒja0π‘j-∞Ÿ;∂{]π¨lÖsmösQá4?™VO¶V˙Pø¡ÊﬁZï ÑÆßG`cŸS˙Ÿ
-*ƒ’dÕ	xrÙ€∏ íñoéΩyO:›æŒß4cÊ∑P%≠›€GyY/”X=Èµ:~—^ﬁı˝Nõ¯ıXHº€ +ª|A/°KµÍ÷â«LuÇﬂOõ≤LÒºsÖÈ«∞≥M≥/10„êB·Ëàx n¶π◊zÈ€0]∫öqãò¢_L´ÇÇÄﬂaí]çx¿<Yì«≤Ü≈õJ∆ˇ„LïÊÏ?‡bpúÂxQWŸÙ∂ Õ6`Ô›SÅFk^Ÿñ‡E∫[øØ9«ﬂdåHµKæ´V¿È ;+ ñ ªGNƒ»‚vgWµU*uT⁄÷JàC®Ö
-’ôU[⁄§º—˝é–ºóØŒ·⁄°€j6èmÊz∑Óô2ˆ[o˝‰€ˆ¡‡õh’# âv=wëZ[k%öíg1¡;Å TïÅ‰ÙU7-ﬁ´o2Ω /¶Ua\AÆ´˘Ä≠Ï⁄˚Kp_£FÚ„èPó%∞ﬂ˚†ﬁôM´&µñdyh∑ô8mb€SÈò…M˙d∏ ’˝eö^©Zh©ˆ⁄<q)|Ø<¿âV’‚@›[ﬁU¨µÊF%.ø∏T  5t@<+≠¥‚|·&‰Gn6±ìR¡UÖ ö‡u[‰ó%Ô2„Á≠aæ-E|is¸¬u—u“kÀK†&=ƒ∏Î/,ruïT÷Ú“1aå¡wP¿§Ç7 À/≥ÈSklõ	”[@˝“ZıñËÍÆ¢âƒn∑).»IıF‡)†<A–+"£Ï4†RŸ.ö®)Öo†îhÅ6îE¶X"°‰™y6Üd√ØÛ≥VrAıâVıïôÆﬂ˝;Bv±'ø‡4MÌ^ÄÒî- ¥X
-$ï5mÍ‘≤˜h‡F”oÂ‹åmP]‘ΩïWôAï§%˚¨çB•†Ê˜dÛKAÔ{Ü˜à,~ÛMåVe◊=Ä—7SSk]†t8.…u!§uÿ*	l5.<|Cõ–¨7]•(
-ˇ‚CöÖ’&LN¢∑◊Ö¿âIC¥≥©0È{Û§Ulº≤<Ì∞)Ì…\ÕrRr0-Àdﬁü"C©¶8ÁÍ≠VB®/àp+˜ÕÚ49vá¶c˛Ö@hÊóN3åº`vÇW_P’Ô˘Ω≥V∞·ï G`u◊UÇ^ó:∏'-ˆ√Ê¨≥vö√o´L58Ãå‡1é«¶≈¬'H>Ö´•^Gn÷MòrR[ÚöÄ“|€f‘%˜∏∑`C´z{‡[dÅ0Ì D?Lja<ÔŸª≈Nœ¶ò'…ÙsÅJ—$@sÙÕlÄ
-¬ÖŒ!Ê›eß∑‰∂fI≈˛©“ΩÉÇó¸RZ’o†ºÖV•p∞]˜Ú¥Xâ∆»9®w±-∆¡¸◊àVCZd|#Ä˘Z›æ∫ã£≈ûV∫—¶ü∑û6◊öÆ>ã_‘¨ÑFD3‹°€gR-Ωâú ∂Xª8.)ÌæÁïBá≥¥
-/kG¢P‡àΩhYÒãK∂∞5“D·[˝÷Çô["Æp≈ÍÕﬁv¬'Î:ª%πGWﬁœ§ZÚ˛∑¡VûÚØ¯Ûﬂ¸çﬂ¸Ωæ}˚èrn˝Ω7}ã∑ˇèè°?6=2p<\é«"^ô©ïA<  a*ÿ´ügôö’è˜”{¢."ÚOÔ>ˆ+~˚õwü~<yîG~‚Êt¢}öW˝Î€˘·õ˝ßYﬂÕÒ˘·tå≥Ê˜æÚ,œª»)	SÆ/‹æZq,·8≤7•©|⁄‚Ù¢ç∑ù¯v¶Íu<éÒ<1ó≤j∆G=v">Áö¿È’
-ÒPY97ﬂ†>€>6ewaP õ˘û∆xÉ ó´±˚5€r¨Ô~“%vÑ‘ÈßÚdÇ∆ }‚4>:J—aﬂg1`~<BÌùz/√‡Èˆf∑ﬂè0H∆∂,˚Ω∫±5.Úß_U…¿ÒŒÔ⁄·“g5ZK∆éµ≈Ê\ª0xhy&˚Éß∂i≤ÀdÜéÚ¥ÇÓ¯≠≈ØõØ‹jj`ˆ~Öd¨Ä\Aü¡`g»ÁHÔ;B≤ıæÅx:∆ÛÃaYñ)»är®÷äIØ~^)ä◊ŸE£Í}b¿]8ûôΩ®≈Î~¥úY	Ô~˙˘+ –Õû-A‡π∞bà◊D≠@Éñxß7B(LeÑƒœŒB°Ò*¢¬æ¶}˜Nºm∑kŸ+ xbá|zß √ˇù5ˆùw<ˇ!ı˝ù|Ö«ì”1vDˇ∏D8"¯Ω¿◊çÊ◊óPı"‡∆“íe…~wSÉRùaá«˚“Ìu{'⁄…+jØYÔèc<è¡(‹uzE~Ì›t¯Œ¶Y'ﬂ`áb!øªÅõAüå
-r@{<ﬁÊ’©ªx∏é6\ÓÛ„Èœ# ê≥yy_ÌV£ÔËïAá†}ô‘∞‰ e7S+©Ö∫œ„mﬁÅºÉ„›Ö/˜ß!ûá@≠UÓ∂ƒ#^kÃŒºrµ—ÿèÆ˙uhxÖw^Áú˛◊‹oø>ƒr&}Ôá¯zègêÛ∫√„∫åÎª«ósÃs}˜xOcÏmàﬂ¡⁄j`˘Å÷»lIVZ)‘©…ÿYÛÛaU1˜Á\˛g/	%:_>∞k¢ÌUHáêØÚxOcÏ˙-S@‡û‘Asá_Zk#(¿ò«ö¬N˚gYíaÍ2Œ≠˜O<0;ø«Ω≥py‹ãßcÏ`˙√õ$Ò¬“ÜŒÛ”Ê?í-0©æ≠Q}ı¬'ÊîO;.m{<`PÇ^∏1–tf%Ï^ÓOCÏ0Çôcmk’êÇ8ïf…Oö; PÔÑÍ7<’H˙πÖô«KıœÊœvB ÿ˘ßˇ4ƒ◊zº‰=¢N/íÿx˛!Ø·xxB≥pÜ»Ó˜xOcÏàÓ!K‘¸$G¢!xMMI«ˆÓ‡8=hå…ªyß·”€Mø‰Ò]ŒpÃ≥3ê◊≠˜«1û«†keˆ+åºÈØôˆ.òDh]øhBFÁX0vËΩ'∏«„âÁoe›ã¿˚”W!•! é´ŸÔ…ˆÊ∂Röü72◊8(ßñ‘îÇÔñ4Ú>ù˚<^ê"ó<ø8ù…q}≈rbGËuê?ü_Er◊·ıçZL≥˜“≤Q jÉwv€≈Òíüæ;_Uº?˘zç™}‚Î=ﬁûÁx˛∫t˛jÁùOà_tù«{cè≠7mbì´ﬂ±[¨√∆ß˜<á3∆°2FK`;Uy'«Ûª/.üËÚJÏ“UÔiåÁ1ààÍdpg#2ËÕJsxsgkàıÊ}∏ªüáC4øı]vq<£|æ
-y'◊$W±‹ß1ûG ¢v`˛˙Ë’œÇ∆©"π‰û!+=j∆œ-Y•°_`˙y<øy˝rØ|˛cÁ≈À˝iàÁ!∂å~ñ“6GÍG¸laMÉZ3ÈÊQ Rue˙®ó⁄ó<ûÅA\∂±ÒÇpàîØÉ‡˝_ÔÒÃµ⁄èg¡Œü¬ŸÂÒäGfJgàÏ~è˜4∆éÏX6{È”´¯;{Dni“;&ﬂèÜ§8!ÙŒÂÒ>_Ì™|!À}òf=§k˝›„œ#êΩVæwLZ˜ñƒŸÎ	X≥PˆªìØE®¯réc⁄ﬁ√˚xµk∂ÀÂLÒòEÁˆrø∆‘ﬂÒ<öù¸ÚYwlR3˘ÒÌ\ha˛€4zòΩÇ˝O®‹]Y{@‡{◊@ê:≈_A˙B≥˘/ØˆÒ˛˘Î‚˘L{W{zËX~’jO_Ëz˛1ø’•Z
-ÊΩ`;¢∫¯πª∂S!ÏZ!,Û{Œ´µ6œMÙÁ¸∆-=_∏ﬁÛ+‚Wl–›óØ˜t:∆éıÆTk°Ë[Y…®W
-6˜±@y¸Ê÷È\/Ø[<õ≥˛‘„¡SnT≥ÓD –ÅÆ`πÈtå	ú—'Ò≤0ÑÍX-ÇòÄú‘:r‰Y| ÷<ß’Ç˘çª<ûÇ‰Í5VÄÁóx±«KßCÏPti’∞+%UòÇÕ`S„t€/©˜:¸à˚¢TΩ«˙.èßé‚Ö4˜≥À]:‚´=ﬁ“Eá◊•t·áåÔü–ŒÂ*w⁄∫ûé±Éﬂx7<vg÷Jæ”!«Z∂$©ãü1F¨Ø¡zK~q_Îx≥‚Ö°Ì8— ‚X`◊≠˜«1û«@Àòë‡Ë;h^q5⁄JLê∑ﬁ˚*}¯yMπÚŸM˘O=^§∏qzj/È.Ø”zè¿˚1vÿz»±Û≤=Ãw…3±Ùò8ÎÑzYˇE%[÷h÷∂kü¯ó◊aÌ‚V:bá®≈ØH.¢æÒÊ{ﬁ⁄g®∆V@˙B—ŸB-∫b‰*ª<§î^öÃ}Ä _	¡˚!æ⁄„ ñ≤ÑwgéOÌ¿r•«{„˘OiﬁÜYFD‰Nk˘eu´/—A‚ÂΩÖ}üÆÄπÃA⁄Œp∆„q±KÎ0—¡7‘)^µﬁü∆ÿﬁµˆÿe å]€¢’A˚`Ê⁄º˛Ä3†VõE(üÃ;Í2Ô≤vπœØb8dæ|˜&ùé±ÉÎ∑n…ÔxXﬁÏÄ¸⁄ë>≤_™WEƒÛJ
-ﬁKØ‘â πáÁ∆5|9¡¡”Î°\±wìN«ÿ·ÚfN±≥_∞ZùÈïsF“KY¡Oæ∏åLoX*yª*Û#Øü#ÈÖ˘ù"⁄vªºß!v8J=Sã·xG•_$O Õü›õªA¡Œ4ã	Më∂/è3œÂrœüÆ1ºÇÙÖõøËısñº#èá◊Ò•;Ò¯Ñ˘ Á6§˜{˝ß1v§p2[/4rË+˚9”dX)∞¯:&˘%SÛå{*—@‡ã2yÊ’√òk¡ÛáÛˆÊ}ÀO∆ÿ·ÒãŸÔ∂U•‚∑¥ÚóÉ˝Ãf-pﬁD´)µQ˘ŸΩ⁄#‡Kó0˝Gî·“äƒG«xÅˆ–·_˝*/JT:k!¿˜UÖ€
-≠åQ◊(Ï˜|=ÔÒÉDrQéÎÉxéˇÏXÓ'l∑O˛8Ω„wÈ4ı€#óÑL‰7K{K\ÌC¸ˆL}lÀ∆Íq=güxº#,Ò˙Û>ƒtô«˚ ¡˚!æŒ„>êù„ÛüΩé7z=˚!…éO¯E€z>c«Dá0’ú≥BøÆT"∫oÎ∫Í6€Ü–Ÿ’˛ô«+ƒF˘í]∫„DÒ}Vπ¥6„8”'c<èÅWö)@}9É’<∫¶f?zV+æêj”/´Îiù›Ø˛ƒ„A
-_¥I˜àÄﬂóÆÒx'c<è@‚fàqíƒØÄ√Ú&Ún¯‘‰æBıØêeÒH’ª!—v˙â«s‚˘É≤˚18ˆ—øtπüÒ<KÍË)uÑ|ÃsıbÖg	~Á=‰¶U< Ú≥˜ †ü´S˚Ã„ÑKhÓÙ|öÔk –ΩYæè=ô'7ÙŸzºá◊∫,∫√„˘∆É^ZèwÙx'c<ˇ)e&coèé∞.M;e®˘%P’5’ãÛr.p!¿;Ó»e/’ºx¢Õ9™ù€îﬂøﬁü∆ÿ°Ï;S	‘Ió◊0 s≈ráõ#?¿∆´ì[l3=ø{„hπ¨ÎÅÚä¸x‘U<ç±ÉÂÆÏ§ö\≥µ∆~ˇöf*√@˛!Ó$ï≈!Îú<∂˜N=û¯E?◊`¿t æl˜ÊÇ«!ûá ¥âèÏáD+‹y\.ﬂ[ΩÄ¶Ö∆ÏÁ'´7¡ù°ßıxAdñÀûü*óÂ2?@~àØˆxx¯RûÀe>º.€e¸∆=ﬁÒ	ÒãÆÒxOcÏPµ—Î¶$™_pF’Ú5#ÿÁZBüY¬!®ÀXÀ⁄‹Æ∂ˇ»„%∑À9^ÒmFMWÆ˜«1v`ÇM='1G§T8Ô  S/+Z—JÁ6Âÿqè«À§Âb]èß:dΩÃ≈#èc<èÄıYqI+◊
-˘;∏õ7Œ∞ÁÑË∫&”õY˘=ó˚<ûo_í’ˇÄüW;_±‹áÿ±‹k¿/CÇ©WZÖ 5Gx9ıûsvÒ˛……/ÚC‰?Á	ŒxºÃ%\e·¿Á6ÒæÇ˜C|Ω«À!Â=/É…^6œOòÚïÔqåáOâ?ˇÌü˛„ˇ  ˇˇ r…∆‚
+      "action": "USER_SIGxúƒΩ[œd◊ë¯>ø¬–≥;∑}	>π1M‹Rè®ÜøˆUS3Ÿ )€`˛ªWd©ƒØ»:Ï‰…,B§™æØæ¨ÃubG¨µ„ˆª˝óﬂ¸«ˇ„?‹ˇ˘Õ˜ÎáÔ˛˙˝Xø˘Í?¸¶˝ı«ˇ˚ßÔ¸e˝ÿf˚±·;ˇﬂﬂæÜØÆø¥˜é?¸√˚?}˚◊{◊ˇ˙˝?æÛw\jqr¢îàˇ”wﬂøˇ”˚oˇ·ªnÔø˝q}ˇm˚Ûo˛ˆˇˇﬂ_ˇ«˜Y?¸ÿ˛ÚoÒjBíˇÅÍ?H˝#˘W¢_I∫Âîˇ€á˚€}|øy??º›˘˛«w≠§TZÎsCEÛËõ≈∑Kcë¡T∫êÀ6fΩ˝Ùˇ˙√˙˛∑˜W˙Îﬂø”÷«4™ìs&ÆiVuŒ¬yñ⁄íÛ ©ΩÎPÀ?ΩN?æˇÓ€xù˝ÊÎ?º˚Ê∑ˇ˘w◊#\ﬂ ,µ\É∞ŸÑ	üó©[ŸNúƒ≠Ìî	òÔ9”™ÃcKc”ÏeÙjG◊çwŒZÀr{ı∆ExÌú◊Æ4…öÁï9•ô≠Œ4È≈ó7SŒ◊ ,J'^s.i88]+§íy%≤ÕÊ©oÈSõÏ2“®ñ∆ú˝·åG0ívœ‹VuI≥òd¢•u‹ÒıŒ-´í˚ê$ÚbÑÛO[MÈÑâ¸¬.’º”nyN◊“ÑG„ëgm;7ç£Ω∑∞7KñYÆÄoK‚mf Ó^˙`Ÿ√ }ÒÇœWóO_≈
+Èû¸bÑ”Ñ≥]b√v+~·∫ùÎÓ£¡kISñ5±±Ô1øÈIOÍ•Ô2èmxuŸ©W¨õÅrxÉ ΩR≤Z≤ªu‹i¥ï◊ã∂7õ^ÑpÚ3^H¬Íà§3"^ÓD¶+9êˆ>·zÀ„Õ¯∂/‚C?å≥´Wùü⁄fÌSßüºV≠¯kFJÏº+û¡Í/FXﬂ ,"◊ ¨ïO \‡~ªÉ242≈äxSYé√d∑ô‡8∑'n•"îçCˆ§ºuW¡¬	œ{∆√Adkcıö'√êgõ≤;’ÒbÑÂ'ÑÒ^ÏÑAõN $k·Ω∑œ.àA\ÖÃ∑¥%ñ¸Çj/¯]Uê/på#ÑYlííNwZFmrS+-Å¡qekîv«I~ù_é0øA∏ΩaΩπîÁ/…D#eÑ¯í◊1$À˚Ùå‡ó8mÔ›	{	ÛIsp)Aä·Ö·x¿å78ö7ô¥ÚÜ2p#{1¬Ù·î/QzC¸>ÈÄ⁄ré0WP	VõzM3ÜµÂß9∫ÂûV˘Ñe˝aì^*<…"Õm!¥YÔıÓÿìﬂµ‹˚Ë±O÷1˛/øˇœø˝›Äˇ] Lœ ¿ÖïΩ
+ì⁄.ÆÄ_¡	Ù|wú•∞Ìï≥96±´ ∏Ãƒæ˝Ó˚ø¥?øã∑˘∆æ Æ±/·3QhÈò¨8{ ≠πRR-IV˚.çV‡5Á4 “#xÁ˙ÀwÔ˛Ñ≥¶nÀS´;HôÌ4◊Zlùg√sBL´7ãt…¢ü•TˇÙı?ˇ˛›7_ÛÕoˇªwﬂ¸Òˇ«ØˇÈAì„˙˚-S:cr√ô}⁄™k√lQÔ¥XÏT—îö¿Ü2ΩÊ}ô©Å•√Ë˙nx£E6<ß¬Íõ´¡Ö∏z
+ ˙Ç∏±˛ÁøΩˇ~Õøô[Õ9ò¡£Ê∆Â+ìætÜÙ,…zp˚Ü¢ßZ™ı%^D
+úkm¥…!u°]˙≤2^b%3Õ6&1C∏‚o Yû•1W– ±œA˚/ˇ¯Õ7ˇı˜¯ßw¯˙õØˇ¯Óˇ¸˝?ˇÀ˘˙K|´ßº;•:``yΩ5j⁄+´Nl"m÷Ñ®yÿÇèo–#/Ñ„_ˇ_ˇ˙ı7'·¯wÃovæ˚Òªˇw}˚∆Ú4—ñ«∑Ãgµ¿·€¬ëÜÄ¶ƒkéaºj∑Øh¡©e€pP}Ÿ[1}=‘◊ÍÁ¢õ»ŒPÌL^}ÅhC¨xjöVÖÄi8ÌïIJUwx Ã"†å„êj«;_É }:Ç~û√z[mêA!ú#W˛ï+è+h  ÿO96ç€`–™≠iMöOQáz≥ñC‰¡º |ÿü	¿›äü±á›•êåçè”îµòMT–´§ØWá≤:7B>Õ°c{W:6¸‡¬á˝Ûwˇ„ß£á∑Ú=¬®”«RÖê
+˘UJ´5ïùÜI]EK\ñK ÄyrJi„<>˝Ë]Êÿûã.§‰t9èAÇ´µ÷É„@Ch BO±d`«∫í±º§C¬2”H3.d®·â0ídÆ1]¸ÇÇY©õ˚ãy˝œ˜?¸¯˛€?˝Ë¶Î◊ -ÈÃï.U®Æ5èô•œîHrÚ‘ó™¬CÄ
+ôWç'∏ëg}5È~∂lßD±-¸’î%rb]ßµ6KËí<RÍs6J“d≠Clqf©ÑS%ﬁÅ.sÉúûÓç≠å•7%ÅïÁc˚ﬂ€üﬂœw?¨~¿Àøò¯
+Y£-gº¬ò4“-‘!qX M•uW„ˆj)u$÷<îdZG õ¡Ó˚Œ§°Z∆c´Ú\Ua5Pm®P\˜.±Qü˚æ{◊∂‰ÙıW [nıØ‰ñö€2xµﬁ”Zh¶b_ …ò}çùJ+iÕ	~lèîdOp‚À6®:ﬁQÍö”,¯‚ªsÊ‘9ùøÄµ∞Ì∞vâK ∞È_ï%ñ8ArΩO∞¯ #„ÎqO&√vs¯C¥]Ç*úKÛóÔä_‚g‡nˇmª≈ç\í]»7Opâ˘E⁄mØ7P3_d√Zœ§““rNù◊∂!8—ìµLßñzÅõ¶EµˆQ⁄®˛È8q‘œ hœBWÚ˙;¶’›âW'ü–_Ï`BlYŒ lÆ6m6wû{'?$hU"-/<á„Ö7a›¥pŸ”\Nñ*·≥ô–x¡e]{ˇˆn–ÊZ/Ú0î–lt§lg∞gÉy&Ì`b+3Ã9ç£+bp£ÈPƒı¨pØe€ˆ=“ÄCÈj4Õ,?œ’Sı2M{ﬁ£Õ˝|hõOêÕ¸≠{ õoÂî—SG ‹ß≈–¡}ÀºJÛ©¡¨…Ó™€fﬁ˝ÿ˚éïmR(ØJû4%¸9ûTâK¯RsM	ºÏIçxo¯ByøX´g.T·`;˛R`âÉZ&∏XÉµ˙ò ∫sÖ¡j¢(KÅÇ>4Y‡	ñ[)q„UwÍRØrÉ À‚ﬂ∆ÎÉêiáø(ˆÇ¬êxo¯BÊ´,V ã-)ı9¿˛‡Ñ¥ÓlP`•#∏)8DÔu{ÅQóIıW™∆JÜ∆É'^m¨≠ÿî6L≥6XlI$µ¨º)◊.m”ÍA~<Ô‚'ﬁm|Â'ÑÁßìπt⁄ù7Ë}'3⁄	ë+W»1Öv¯Fƒ/Ö¨(†‚Pnáô8J∞›⁄¡n5H˚nUªXÇ£Ö#U™-0äù^ÑÌ€˜?æˇ_oò˛y∏‰¿ÖŒ ï^≈”.y:å∏◊» §iáª%∑¥"ûò6ﬂS∆°o†ºãàyx&8à'C ~„XtufÇˇ’R¡íü}G Ãœú·9kdyß›Æ SGÇtÔRÒn!äBlnÑc}(Æ≈ág¯2 Æµ∞ˇÁ¸¯∆∏X.	<È&UœT¬(…∫¥dÈ†fﬁVî«ejsÄOÆnymP–V˚<§°‡Z3*íÀZM)˚Nµ§F\áfTáÏ∫Ê—‘‰BıéÌ¸Îø˝Ñm\∆]É-‚ÎlŸç¢∂hÉœü¢ê§ùeÅ:2óÏ]B9®ª¶|Ñ-°ñ∂Ö{Ô4°n;k_∂ìí±xk∏Øå#“¡õ∆n∏y}U-Ú¡π>r}U˛»˘+“Øàn¨ß iÒ∑péaM%-*]N/ÇΩ¬#¬õU^JÂ˙j4oSÍûuòsÈñˆ¿œÁj}µÖ»D∆0¡t'ÒJ¬ﬂ<‹°-Lè‰>@+_%à>Umø°LÕrîÅ◊åÿq
+7l«XΩ∂Ã[ön†c¡xé5în…πò¡wLRYI}˜>krºDÖXÿ`fpN°ÏœB{}^dg‡®êÇxˆùGÜÆÊË0‡
+…ì@†%5™˛,ä≥:¥°ı√,¸‡xb¡√›Ú≤ïK,/ﬂÍ)∫≥A˜z‹»Á-sSsÅ^óLlYtDÅ7F†O=≤}OÖ˙©£õ˝L^pPá´D‹0¥ƒ6éyr&»†ÅˇÌ{§≠ ﬂá
+æÇΩP
+Êdk/éÃ+ªDò√!≠  g_‘Zu}ô|Äú∫ö`1∆UôâÜZÇ8ÿ!V√ÿ¶/†òΩ—q£÷ <—±•[>’∑Üá≤[‹\gJ“ñZo†ÑÒp•‹"ÓµY*¿®qèB8ûXp?zâÏë´à7P€©íUÖ}Qwﬁã|•4”=ˇ3·ÃVÆk{ûÃs€®Ÿ$ıyò∫ÏË=´‡·btÂTÂd∆¨L∂äÓ={vò,L{ß±á¡ñŸ«.K…6bÿM/eBƒãù<>SQAá'h⁄	∏OnÈ≥=Ø*x∏mâ'› ⁄n^NïHMU–—$Ë¶ﬁrî¥‚ÈNI£5™4€!«qe…@?±‡·blÎ)ö	BZPŒ3§;~™*Õ≤JêmÉhÇ⁄‡Ï/?t©Å>±1¶K≈iò-€ÇÙÓQhï¢o`“rã;gÇˇye>˛,‘XΩXΩâù!ïQ∆∞M≠s‰ñfÔ;¡Z-
+uÑ!ÍºyZ`?ö[ÂtıÒQÃ∞¶ì¨ŒU[Ùª√/ØQ±6§ÃRà&‘|U°C˚	X©˙»«`âœHπÜ-pÿ¡†’IŒLëh∑≠»3’Ωf¥ˇÊ®≥ô˘8çŸ£/ì{f⁄≤@À!>qÍ·™mÔ(Qi⁄vL»p·Ωˆˆ˜u˘¯PÉ3]µ‹‡Nœ‰à(√N££Vg§.€eÿbﬁ≤vÑ˛<';PáMVC]ıSÛÒ£õÛ◊´ÚpÌ—m‡3"áÎÏV„Z·â[‘ëZ‹ØíÙ.©«]R.ô¥@bmÔ∫Z+LÑ’x¥¢«D≥CÖæ6ˇZ…ó8_πôûÍ&≥›àjÁË
+•·©-ò!§ÊÑ_’£QRl:_ÒÍsåZgm≠ÅÈ¡j◊NQ¨∫AœÕjK¥z¢™˝Ö$oÚÒwdŸÛ#SGﬁ Àß¬öQ«n[å
++ïW«^©¬» å¬CÎZ¡Ÿˆaı>gk]É|¿ÉoŸ∞o3à‰‘~Ωòé’zé¢ù’_`¥?Â„? ã˜p∞|´z™ïé£Øi¨®0ã©.ômX1ÆMò⁄≠wÎ$[q÷◊qŒÕ,˙Ë8◊h¶ãé◊|˚î‰¡∆¶—=J8©*Ω¿d « VÎ%2ço∞ó3;ÜƒÌRöÉ)Œ2ÇXù”2ﬁ§A√≤ÏV¡`%c}é8≥2YIMÛÑ˚ÓsØµUÜLﬁ+◊∆õ5Øî=}&G82O◊ ÃßèUjì¨{TKglŸ&hÅÄ wÔ£ÇÁŒá>¥∫¥^…ÁöiAv¿M¿√“†J÷"‚î´ΩBü˝2ˇ‡dèîó˝‡Ë:ïX‹%f∏4ﬁ9É‡vπ-q™ @iU(◊‚Ç£;›µß•–jiŒâ„çèX·±S"∏Ö5kÅÁÜ”xZk˚ Ï ¯ÙìA˙’<™‚p§yNè9#¶*Äˇ¥úV£ë U›áΩ˝óú|¸„¢á&µΩ¡°Û…◊T€Z“æ+ïû"ø}Y£¡§ÇÈ(Gı˜“˝…Âﬁœ˝£ˆ™Ê-å[!¯AÓc≤»‹âöZéÆ	ÜÔ§÷ÁÑÍ'˘¯¿6{*WxFÛHÂô€Ò	πﬁT∏¬ â@Ÿd‘]Yj∞© pÚ8>∏‘J\∆$ó<4$Tn˘nªeU™M
+Ï∫qÛâÊ√_pªÚ˘|<éñ\AÙâoÂT)ÿ≠IZó‰∆u˙q/ 5ö!£F‰Ÿ∂%Ö¯–¥Ä◊<æƒû¢ÿdvÜ›Ço•Rf‹3Äó‚ÎÑ+Óp‚˚r”ÑûOØØ$÷\,›@˚ŒàSÑÔ∆âX.
+ë±√ﬁDÍ`ƒö,1≤ë|7H —›=.C‚v8èH@aCÊ„ês™eñ©ﬁ‚ nΩB˚É˛æ`^Õß◊WBúØàÂ 4Lˇ˜dÓuÉ!vS£2ZÃÀ†‡•ìpéa"G˛∂Õ}HñR∆è√K£ºr©P=¯>‹Äï®MÅl"π'ÆWìœªÑ◊^_›ØñØÅöÈLﬂ*3E˚GYe”ÜíZl∆=C¸∑…q®≠!‘É9–d:Ó4øÍß__]É.ï€NÂı”0H (~RZ`gÆÊk«pAJpi%8“‹a÷ÖÂé•˜æ⁄Æ≤<z®!#H‹fŸJwÜ¢uG5E)*#ûº˛˙
+ÓèwæwhA,œ\q˜‹x<J#≤SS·|£˚r2ú0Œm…¢(ö:4\|üƒˆÑO·¯Ÿ:W[0xÇ◊.ªàCFpÜ™ÚÇ.‘ü]_±´>N»Ó»⁄©úm≈ëççLåˆ’qîá!B1∑©ÉpzıÖ:Qé«~Ñ¨RqP6ë}5*iéΩSµ!2∂Ukı*†øÚ¢Æá˛XíãÄ≈◊N©´p«‰†¡∫@F≈58Cô2Ã?fıÄ≈Œ±éÅÖ^åñ∫◊é‚Îô9ó1¿£kîÌx@k’∏uyıı◊˙–ÿ±ø[o~j4cyï∞UnDê¯b5ChÖ¬jHB•Õ∫ΩÁm’èª˝;C¡üôÕ!Åùr‹é7-Ü8¬°u8¯rwD≈	áÛ*yˆÀÎ+®§4ƒ·|jq
+7(V ≤cﬁ;Û≠$ﬂuiÈ—£Æ	lò@å#Ñ„9Õíf'€)ï∫^¥Ò¿√ÃA3y˘R◊W1‹Ûq {XÛﬂEngæ6ß]íeZ˘>áfU6,qU˜%tX(oö¬J{ﬂ‘!˜⁄¿.v£ò»∞ä[ì0hÆxêø“Øs…ı’ >UqôôqxÙÆ–;#;4]á,Ø⁄Ω∑ôıåsXèS÷WºÎ+.èV˝;∂ÂÊzÜ‰´KèæÒ"q¶QÕªèï¢¡Q–tóòEC›≤fÎv8ıR™„O“}(£‡ì ∂Á¢ƒ*úàE≤PöÄtR}y;…lØ»Pﬂ±-tÊ˙äsE–û‹chÔÄ»©f12|∆T–˛∞6"t=&*#:b€Ωî RBeIA‰…gw≥[W¶B–”¸Âó∫æ¢Zö-Ò`ÛÂ3∑,û	4d‚=wÕÉ£3ymïgt|+Lxf0~¸ˇ:n¬Ö—wã{∞fºﬁS5V∞Ç√qƒ xB£ÁÓ3FTΩ¢≤Ì”veπBCYΩ—©6\Û<V‹H˙ƒ_Ì 9—“ƒ1î{’Ö €Õ[ÒÓåÔY,:Aa€–Ip¨y◊ôÑ–"gêgKí£}/o´3c;.´∫ÂVÛ©]*æÉÿƒtÔ›ù∞Ü—¿¯ÚHê2+dJŸFµ8œ/Ñ„…Ì$TåÆ∏‘9ü“òpë9ÚÀ`Î°&K/±%¡ ≈-™Eˆ¥95˙LZE‘:qt‘Oo'π›täK≠Å#›5™S+¬ úQÌpeßêûîÔ%1C≤d>LW-ÇáÄ≠+ätGè}N›π‚úHÍQ5PAL…‡J°ôûM&ÄúÍü(`|bxÄ≈„ÛÒà©m9wØ‡‘“$ËeEîÌ≥ °y]¿[æÅlúÒÛÜá/êƒ¯à†}˚‚±Õ>’h–v8f‘Ud™∑'¿Ò‰vPåá&ÏøÅ:ü*Q=fÆ0‚›}«ÃZ1∂ép2FF|)ØGiy‘„ÃWΩg∂ì\à.‹ˆ!#Y<.#°)Íº›sÛÂ.PÌ‹ä∏¥”N}Œ`∏«¡10kG»Y,…wóô?Ä&îwà¡3ÑìLØé–øhy†‰˘
+U†Â‘@∑òGMnuôD·bHæî*[)p¨Ew¥C ¨≈$ÃÙ+c`Ø ˙…Ì$bÀßX∑w±U†Ω•ŒÄ¥Ì¶qø¶·(\ávÉÔ(E$i9T„1◊~Õëw⁄6båKup)wŒëí/”Íÿ∫TFJ"Ù’˘x∂+.)MnznSc/CVÉö©1{8m|zDøj1éù;E±Gü|í}léëôxD9¶5-H$I9œ\¥Óãc(’Œ‡Vx9XÔxAJË”|<≈\äkÄ%?√'7SPﬂ‡PD,0™…ù⁄c€„ˇG∑Ç¿6÷Xxóál]fœí*%≠{'(≠ì'’˚ú&/)-Î°œa…£|·Òé†Œ|…mﬂÍ©>>¡Ò≠k’∑º.]=z%´ñ‚spb˜≤œò¬∂:k–†~z>˛BtÀ©ª§-2≠‡L'|˛»≈≈e[èzªUCexÀ*1œR!Á√èÍ`–©¨™‹cûÏé˘E⁄4¥Òhíò©±I≠ÙvˆÛ|<!∞^’öÛåÛıYTtgpﬂ≤ΩmÈ1T‚n≥7íÊö€Ã+«ú?L`Xz¢—…&âBiùCp∂©Ywªª+¸˛Ç±:?À«Û5†|`gêÂ™1RKÒ◊óâh§ñ◊ j,	¥Y¢XW⁄"˜‹]ÇÆ∂t±fÈ‘xù±m∏÷—¶ÕÆu÷¥vLıÆ©ø<O1ëˇ`È\Ì”§ÿnÍèÄÅÚ¶9ßÊ\6◊,—ºœ+v$˘xËÑ¶V≈ù!¨7Ëúq‰êM,ÊîzïﬁÛÿ≥Ö_˛Ç¬»OÛÒ–FÂí˚'∫’S3ZC®≤¡óˆ|6™ ÔéÈ˘¯_J<s_˜%◊Æ·ÿπú≥ã®o)Ö@x}œZ¿ƒ»i¸ûcb\˚rÌ$±…Ô™K∑t*Î§‘‰nŸ£Â4Û‹£·¯÷(_Hp∫b⁄#ÒËIp<0f¿X)≤'∫∫§Ω∆î·ën…s6èﬁ3úÅÌêÉ√Ú+ÓO?üè'‚áVΩX¸SÄ+’-7äŸ⁄MS,H9&Z@ˇÜ5&”˚j…ﬁØÃ≤¥ÜP5St\ÉS,”mR!†=ÈÄõK–!{Züîû6ﬁÒ t™
+ÃÜˆ≤íó{›'8dÎpaTb‹≤∆0û+È#˜AÀF>ºBΩÄßÂ„ÕΩ<¥‡·#∂Í∑ÍÁZÓ;_¢ .3•yüb¶EñvÖÔ¥®8BòêYπ©#l]ÎÚ‹”ém:
+èÂõm«	cµ]Í‚ﬁ’àÈúØœ«€«Vº¡‘˙Lf©1√P!m⁄∆áœ¨h_F#+œ·∞aú◊ÆÈ√ÓÛ√|º.˙›F£P⁄+™öa§ﬁˆﬁÀ8÷"j[£?˝ó ?K[Â|	_h”s˜+{œπõ€·±z©ƒé” ¨i[LË’wr‹√ï‡^ÔçN¥·}ïZù¨§
+Bñ∆øyxL±)}}⁄ÁeU G>E{,|é~ÿ-)e≠Iæ÷]Bv®Ïî£h!wõÏØ∑y_«s”≈∞<NYﬁπ!]-”=“âc2ÓËa§ﬂÁrÅpÀ™'qÖ9Ç.Óu(.ØÄ˙ŸÈ‚+—U:ìU	—ﬁ°ﬂu™Ì≈ªBp
+§|tÿÉ¢~>„?^mRßqh»¶Q†ÁÍ•*Ë˘Zè«s^\fÊÕa.˛·QÃã∏éÑ<’¶!ÉäÆNºkÿ tπÓÕ±TfFQ‚Z2%∂§¸ ∏Â x¢c£ìãóí¿  l÷F3¨AJÉ8ﬂ∑§Ë¨.ëK?^ø˘8ûõ.∂J–¨W=∫Ÿ)®•wŸÕ@L¿˘≤A©œ ÖúÌ:  Á±&I”¸∏Ê™£˜ƒtÒïËûõ>(¿Ç g¸€º®A©’±8
+ß\5≈∂h*À—¸yFUrÃ`aﬁ—GﬂG`5œ–2É@{CJ|~p€”≈V¢M·†ÈT3œZ9≠,∫H"Û7ÜïnNŒﬁ aÁÃ{Z0Ég˝‹tÒeÿ≤ﬂ<ù⁄ïkécûG5∂{äxÔ≤¡3aÀ5nÑÁΩ<”c3aÕÉhªfùlŒ+Â‘Ç∏ÎÏ¥m·y≠^{™}E±°Ù´,?IàÿCoÓ¿û€ﬂ[ctHíñ˜»3&^çDC,∂"tﬁ™Àål◊8∏dµTFèB%fÔ¯]∂ÊﬁêB˝-ñk¶)ö_ê˙$]lë*º¢¨òÎ¡ÂL;	1>Ù"‚≈9∫/\úª“‘ïUb/C;&=º;£ê‡È0pÖUZåáL}Tà¯Ω†Î£¬\⁄Äw)Ì’C_ô–‘˙–öü7Pg9•A`å·$;«,ñ“…¢^l˙∆cß›kxOkLÈ«≥.Ä˙ŸÈ‚+—M|&¨ïg6õV*õwÅÜØ≠mˆLÆ`W£+‚[⁄q©È«ÎB5ëwxs8oçæ‚ËﬂÓe∆V%∏òìµ…•Æ◊O¥%~E–Í)E_¥Ñ¢(ör«Ø6+®ÿ&∏OPTˆ#⁄ –èùØlêÉjV”≠iõƒ¿"2∑>Dãƒ≠üÀ∫óbñÏ¯4]l•Tø»hÈ‘˙ïk/†auÿç∫Ò¨Ä6¡ÿJÍ´¶ãwœMW=ûï¡ã3Â·P£
+%jˆkèéndÉ%.ÒEjÅøI„5õæ√Ç]lπïtä‰n´∆(D|Ä	A≥úäAqAÄeÀ^ÀŒ>Ê±,•–ï~c‰=WT^«T2Ñƒ-ﬁû{∆≠uj0g¡ßã,§—5¿¶S¿vW¿–#áõ3"OÅê¬£î.™5≠ŸΩ'ßMåáæ`ñg;Ÿ£Ù)äÛ†ô€\Rthä∏ÿ´6·&öSz≈íœßãÅ0]√» MÙLür‘ÌÅÙèÿ)¢ßô¥QRÛ…?õw—‹'Ñ⁄Ò@hÜæxÅ›‚Qï	Si∂⁄‘˛Lsè}
+¥+‚ô©ˆm+`ºW\°`ò—ôù«ñb¡Bä|c}öQãñT"S◊«©Cß„q—^¶≤¿òs0∫>Ò¥b¡àãµµÙŸ˙Çª‡‰{Á„/∫BÂ|´ß*ÛkLÄúåuuà¥ù* ®Vc–•/»“hﬁÊY'EW]9º°øÄÁ•ãc-·)M`õ˘‘ç„Ç.◊®˚·QÀ{I≈¡ç5ÜÛCqÊ:8˛ñ√Îi∞ x√ G-Ù.ûÿWKGèi∆j–;j{Ò$˛™T¸€tq…r…!`kßrJ7ôc‡}¨4é5Ì≠mx∆BZ°xtL∏4+Œ«9M‚ìÇTKï´≠ux\ƒ§>‹FÆï¡b”/§ŸÛ±˝l˚∂≈X∫+nYHnı‘XRHY©QMàË5 êk5Øõ‡-ÓsÔí$8«	Ö?yX©T§∫-X~m%$óåÊ3ÓœSÌ´¿ı‡…Yå·≥Òä}ıü8]2ﬁëb≤p9ïB`É^wp˘≤Wå)∂ÖY+ ©πÿú%%/Ì>¶ëo[ õ }¢^ÁÿüÅßK≤JåÀ¨RÎú1ÜêÒ‰RãUÌˆ•ˆYjÖày–E§ØíG3©óS9öYÍÏ|/ïcè±"Å5ryG1≤@&5êwH,È8TÉRm±™‘¸ÑôcÃ∂g”›™`ØÖö}˝ ≠9…ÉíÍ¥àlıT.¬π¡! Ñ©%A …ﬁ;ƒßyêÄW—6·üQ«aﬁ ˛g Óµ%úÅı€˚h%ˆ¬‰òQ∂oè:RhNvÊ¶öƒÎG8Ï‘+ûñ›F“ó^¢Âﬁø°8«¯8ô·ˆZäÌQr≤é}Âıp<∑¢Dc˝„ÉúÍ#‘Áñ9∆Z1Êﬁi≠	¿rÈy-3ç%å-Óú«" Òiá|ı
+®ü]Qr%∫lß ìw”èöiBJéˆÇ¢Q	 Mî≤∆]«dÔÌ™6_±Ô!ñ8ï≤«Z—Ñ∑4jeHãˇ∂»iÎØå{\}  › ©éπ˜ò±oL÷Tà¡}bé\◊{ê!ë@
+S\!ÒÒBœ+ x¢cK7•3
+fJ }«Æç5)8Ähõ{uŸÍ˚Î®÷≈¶«ÛÆá„π%Z#kq≈—ãıÊgÿJ∆!õ1ä:ˆEiI€gM!O‹GYIeh—$Y‰8Ü\vÙûXQr∫vs;sÆ!π*¯`ömAxhå•õÉµ˜>Qø+∫  W5Ÿá˘∂\W‘8å(Çß4tbAÊh©·;`·±Ë7Í∏KLjı≥ì‘^XQ†¡˝Ø∫ú⁄`˜aë{ôÃ±:-¶Ô÷&+∏∂\äÁYké€¶g˝‹äí+±M~äu◊òÜàìQﬁîõS!±⁄+Ì"#óFæ-ïÂÈWöá
+An«Õz±·›Â	^æÕ»≈—ú•‰Æ£ÒÑ y}â|‘m>:‚˜¥z≤í4vxfØ“Ñ
+‚òS—íâ=◊ÿ[*û©Ôoi¢ë°<tC‡wÒ√!âít†[9€ö9Á∂áŸJxπûeŒ3>{ùÙƒ∏/∑rj¢◊Õe4hä	~πk\%doiÔe\ki9˚úçJOáôù'¿ÒlA2Ø∞<π•Sõ°ñ•Ûñ∑A,∫—ò¢=πÅè°‚–è%)«∑@˝|As∫vj•ﬂ÷,èç`ƒ$âe
+yL“ ˜>ùTüIv>ûŸ“nuiåE6Të∏x¢≠FVz≤©PÍ©i=N™_%h‰∆r™&<í“9Æ,µ∂»®|‹`≈Hl©”·‹†úU´Ø ‡âéçoxxßÏÚnR)fz5Ä ûzƒ'Óù®ÖY‡Ö—=pòÔ{œ4¡∆Æ8zå£wF;Ãdûµg2Ksìå∏Î◊a§)b-x·“¬RKœÌx˛ÎUGÔ©ÇÊ:tı\e@≠-›∑'?i8∂ñué]Ωö‚∏∑X
+Y˜\ ≠ÊW"⁄PÒ<⁄ﬁ†]}n¡áBTØcGQ±Ç∫ﬂªãÑr„WÚ/I7ïG+>Mı‹JÓYX	†‰=Õ±Lﬁb°\âŒ≥úb1ò4ÿíè¥˙·Ö„@?[–\Ö-›@úœ`´)m»ùŒ´*ÔX£πC£«÷≤Ê±E:∑YKÏâ?TÂ≤‰iF·ˆ\“nPGºcõ¢XÃ±ÎEl‰ú≤xºb√ŸÁàÄ08Ÿ5Î©ı•—?”≤˜!í#˘
+è∑¢>&s)g´±Ωˆò»«*‰Å	ácÊ≥{ÙQ[ €ÅjBõ◊]÷C¡Kˆ+¶˚|ÆÄHã◊G«»òNÕõ )1KÆ’1<U¬!é9Ô#Q¢]>◊ 	^dØ¢á7Êm˜ÿ'≠ ÁÓê¯ ™C	å=-0X]Ê#)Mb–πgÃòâpjp™ñ≤Z≥πKè5ïÊ,‘:è\ß·iƒ¬Ç∆±)ÀÁ|®ú/‡iD0.{¥rı#∂ôNç=5©Ì›¿qzÕﬂ≥x≈µ°Â∂k,ZPê‚ú«aÏÈú6(órAÇMvüD™Â˜s–Ò ª	Œ°ÿ¢¸…bÛW€áK+?b{Œ3vMNs;^A*ﬁjÈë÷· S
+BàÀâw=TÜêÊîûÙ¬ê∆ÏúbÙ~GÏ™q'ú^∫Df¯≥é>È"“hæ∏ÇôjΩ•Sì;ƒ5l6çh∂`Îç(ÓëtITß‰-0ænø∑∂‹'LÌ-sÆÓﬁ¶ƒº‘JôòTØ.$¢º˙™˝ó}.¿ôÆÒ—åq™≈píl-∆Ã…ŒÍôâ:◊3N"£ÎÆ¿_KÜä «-@˝Ï.¢+—:„!⁄h¯˚c^L€ÉÓL˛_V™U[[mN5ê¢§+AÿaëK®Sot6Ü_/ßXx Ú¥ìXn,ÃäÅ~cÃƒ¢/àl?Î"B/ÈäLÜñõü™‚H: QÃ*«æ2=Yiã¯y+é¡©´’
+/?tæ±P|:¸obdŸ∂Åx¿ÁBí†9[∞éº'˜˙äŒÅO∫à)åÆêT@ˆ\caå˚]ig(πB@&‰’’¥»§≈ãj,â]¯ÓÍ±„YâE`º5Ax,¢ò‹´vxq03â¥^{ÅÁÚÇ∞ˆIÄe∫ƒîõ‰3˜ 
+ñC˜ÿ}6l*i6Î∞>Çˆ)q9„dı4púÎaÚ-√ë¯¿œ±7in[„ïSî†∂XÂC	AÉ3-Ÿ˙Ç=güti…ı—â}Å%;# Ö^$+&”wïÑXU⁄(ºbv,PØõ¢Í|óˆÒÙoò"tò≠›„#û”*√béAãIÎz_9Äó-êks÷W	à_^î¸»Áì2"{.`©ÖcåL-°Æ”xO1§wACÄ>DõV≠`∫áµ‚4V	ƒ"•òPó¡ôWDìƒÇK–ûA Gˆ+z6?	êŸ/—˘¶ß∆SÎ¨√GÍ RôﬂgãA‰Y_±Ò8kÛ) 1xL≥
+E(.dÍ∂0+-∏`®‡÷J¯ì.c”fPp≠ˇJ£«Uó Q7x™£D[©	N®‰Ä	ûyêËK–ßíg-[i˜„ITóƒK x˛+j25›†œ4bÃÉŒKL¸>w≈ñ-Íî‚ îV‘h‡dwfe=\í[kû8ÌΩÇ∑∆sçéiÚ)™`°VG≤íp†Gç’_‚ ,íÉõnπû)‹ﬁ2`£]GUCJ1ClñKir›]+¸›Ñ§:Ëô"†„a¡¡O	‡-]z¡èıXõmﬁïa…[¡q_ †>ﬂÉ«$è”—zﬂ`un§à≈∞nXÓ¥÷g„Ëîhx3›¡Ó%(D]î\«xyIáÈÁ⁄c∆∑t˝˚¢“ºÇ…™è+h√)…äµ(l˚Uç?/Yíî/ §ı^™|*y¬∫z´s$®ßŸAë»ÚÖt±%÷+®”ÿsZ∫f;ûÇﬁπ˚äΩ3FF‘ˆÿ	ùIkºG≤{¯≤¶π~ñÈ?+≥á#ù™‹I{ü1v"-Û¢ ’m∆Ömﬁº‡Î¨ˆËôö§/Å|O.Yío}çÂ!úú…yhÙéïqﬂ¨°y¯\zWK{’©)ØΩp`NË3°~z…“ÖË≤üö√ri¿nß‚mõÕ≠àŒÑ>:—KDì≠≠î«€êö*B>+~l‚›á£Üèc`(≠[$≠«4k°>è—ΩÑL÷(s≠ß∫©FÎêv‚êpR&∑æklŸäéÙ¥!‰ ∑¡\b,⁄Æá1„
+ ûËÿÏfßÊ¬@Q P
+·òÏQÛa…}A7|uÓ4G§Ù=4Æ!¸í˜	p<πd	˜—}Y°ñS˚‰ªö'_¸≈0Ø	SÑ—Âô+æ AP∫`4†åÂWfÁ_uÙûY≤t!∫|™e?Éúm7∏ïA3Ô∆*^VáﬁÿQr^5X3ì |7ç:πÅÒM*2]cù, "5F|ucàŒÌòÖÁóûÍ	†?~ﬂS£ò˝‹>Ï¨Q
+ßâ¿ºìÂÈinƒÈﬁó¿)“ïêè£BÙÅ=Ë'ó,]àm9u[	Zm5ÒÄ.,;∏vLKLìga2∑1∞V¨eÔ±êÈx4Ìnf©⁄›Y¢≈–@ÜZÁ(!Ÿq{÷[r–î†Eπæ†©¸ì©û*úÙÒBözØÃ=%≈”ÇGEPØv–Ã‡Ë9b?EÓÄB\0jçï–9˙+◊¿§ZÃgøÔõ—y›=îC¿ÛÜ6btO5jÓ_ùè¯ºK,ño–æß¯C¢¥´´[◊˚âì–{eBLö¢p±3SæÒt‘lÃs6Å«÷’ò	?ëÑªÅ˘◊‚1C„æ&6+|ôíÁO2∆à$èÓoˇµúrºuÄØŒ…’¢˝¬∫#ﬁÅ∂∂jeìl‚öTim¯}$8û	ı”ÛÒ¢Àß*3€Ë>Ç[ÅÔOÉÈa	Ø‹ìÒ‰„õÏÆ“Ê^aˇ63√-§Ë˙n9mM¢äH9d¡*ÌË˛</Tù=˘Z∫˘©˚{£eŸ0‘1Ø<¡zâ=ô›gdÁ`Ç®á›÷~úèá^ı®˚‡s«å†T⁄àÇ–Œ&ZW‹ß∆ ˝öB≥OÛÒBWLJπ#ãtJÕ;4@IÃå‹c÷ÔÃ£‘	—Üõ%WÔû®Ò0Õ∫3∏X›ÆmE)†Up∫:`’Ëjíºjô±|˛|·”|ºƒÿ∆kÄ’Sª∏F\(CK@≈ƒ-glèüÆ£.h„®–eÁÿµA(@WsnΩi≈§TOµ{Â¿’ÓZñπQLΩÄCö,ÖF—◊ ˚Ü/–E˜Ot„SDú`§ïfîr˜öj¥&¬† âã⁄l\yMê\∏I√Ø˚v∂4ËeUÉ1=97“XLSπØ>#ü7Ò!-fπDoƒÀ«≥ÁGg(ﬂéíÈSÏµB>àÂ‘ãg∂ÎÉnX†§Q%˙k˜‘9|(‡Pü≈ÍRPÇ—ñX… ªuŒ{Çıö≈P¶Ö—m’÷z¡ ˚œÁ„ŸÕÔz®Í¶œ √”v·ï2'ìZ‘¢Â1∑ÿI‹(.–∂hÒ2JR:./´ù0KJ#∆¥CWƒ∂ø–m <–g°=%ú]tÖ≈Õßöñ∆ÁÏ@_Òé[< H!ñ+Å9Âπâ≤o!¸	®x:û“} œÀ«3¢‡˛ÿÚ©B∞ú‚Íås1L:6≠éå8û»ßCGÌÓ0≤ò'oY¿/I~t.ÓòÏÿ{√skY¸N¿qòÉá	^¶Ω†Ï˘¯˚*Ç+∞≠∑z*ˆ4¬^ÜF—2¬FÊåp¬3©D∆áZÔ3wπ_b"\2Åc…ÿ¨VcVı∂Ki¢%„ÀÀã˘‡∑/¿ˆÁÈb&ß+(æÚç ô•	πÜ(S
+=ñ£©˜4sÌçI ß§ˆBi¥“3é”J∂πI“û")∑[Ùå@áÇòÅhîéÔW6•åœ˙}^VEÈVO)ØuÓ]jÜrî®∆dö5ñBXîz∑fç∏5ÿº§)«º¸	p<9]Ã§Èäõ=@ùÂ‘fW–Ç˛+´ÑÜ©ZtÔXF7.ìzF–1(÷ıÔJª Íßßã/D7ùZÓ*;ñm≠ÿˆEmêÇ‡Ÿ°eÆm86gé±aîñ÷láe x„†C+Åuv8NíŒ‡+räÍx1Æ~Ô}à@«dÚ*ÆzÂT'<\òVi€ó+«Ãy§q‚:©ra–H©⁄éπŒ <œ±âﬂŸŒ‹£˜=∂c+ÿÆ1{=∂⁄N÷º≥ íÚ®!ÀÓõ,¢bÊxÂÍıp<9]L.ˆxı‡ÍskÜhv|rh◊º*¡µuË»%-•=Ssﬁ<-ä—6ûpûáïôóΩg¶ã/D◊ËTAó5.±∑%nz+ú\üë÷Ÿ±ÖÉ®é±È>?º˜{íÛx>v¨àÈMy‰πlw¸ì¢c+C*ºDK3»—ä9üΩáxe∫A—ÕÎÅÊz&>ß’d3•>k⁄É8øœŒ)VçÁ°#¯˝h†äµŸ·Öœ@?9]|!∂Á¶zÆnŸcæTÙY{ä’N¶S†˜®8a.¬‹Gï‘y÷2≈áúóo)TT“@ÿõØππC3Q/m‘(k_¨¿ò
+ﬁ› óõÎô§A—≈DIUÆ—ë#£ÿÊƒ›„⁄]c.t÷w|ºødÛZ∫∆nê•◊G≥µKÏÿÈ´;x©‚56eÉœü„#D>Õ«SŒtEµé‰[9UÖáx∂¢Î>·ØZ/Q?Î w≈ı0tÛàé 2ur—Zi’é÷KÛﬁ1!¨Ω≈òü¿«R$ı/µµ1}æ¿r?Õ«Sl&∏ÿîŒ$.bÖ=ÁﬁR◊ƒ'KÓ=
+j∆ú;·\hÎ™‚<?tÒ≥≠YKzõcZ˜Aqﬂ…T©ç˚:ü	.—h0œ,º”Lo›ˆó «L¯äÓ@≠ßöa∑Ë™ïΩı¶’<ÚVˆåÌn!~„	Ù·»bBˇ3°~z>˛BtÂ‘Í(˜ùr‰˝∏◊∏]C†”Âõb‘‡éI•ÏhÈN’èÇg‰QwçI/LÉIÊLRO´≠»W…‡|.æ¯ı[6Dì.ÒÈÊß†7Ä·çÖ˙}Q[.)å¯û<˜9u•∏¨À+∂ó%9º¨Ûœä?ª˙¨£$µŒ≥ì´Sπ_›ßíﬁﬁ^±ˆg˘x∞®K™°$:æN2+`®.õJíYπÔDÓ≥mä^$÷˚,–M%∫Ñh^{¥Væzõ’’.|FéîKô6ØºöBß}Åf˚4OIÙä´{ ´~™çõuíEQi„˚ô_ú¡ªR∑Ìïb÷]éõπ≠P«]è'(X,È‹6“ÿ}«f˙ƒ¬Jµå~∂Ál™S [ kn˘ﬁ‰„…¸Ç≈;∞|Í‚^F#:⁄A¡4óAä Sb¨O$‚¶ÉKeò[èil˚xπåÀ\P’™£î–UV…+≈H√7«ﬁ±ä∑A]ßóÂõ~ôè'Kıü`∑bg®nY^aº›ËC€±ŒòÔMñ8m#0`8ÑhiO¯U=fdÚ8/N^°ïÀ$ÜY(TfÆƒ!Õ*öÇ	©|<ôÊK¥Ñ›“©!ƒªÙΩ÷)π;ØÄjä‘–dDΩV±9\b˝ôMO√[à’≤5”v<Ø±kRÆÌ3∆:E9 çÿ¸
+Ÿw‘ @O]“ÛÄÙﬁ@"¡Ç-•h‹Óïò»∂sç∂n—«˙t ûóè'ı∆4›±TßVˆ–ÓeÕ…-;Bp-ãbéÔXÃÓqÑ£)c¥√{¬Û¨Bƒ•ûg§òÌ:¬ºN2∆ﬂ##yÛÏK¸Bı˘xäí´+∞’B…ô‘›}≈ÑS,∆ä`£œ9Ωé>Ø5ÅÓ§ÂT‡’‡ÂveÆø|˜ÓO¯4à·Q˚µ[là3H˛û3Kãj‹gn#›mÍ≠—gJ˛ÈÎ˛˝ªoæ˛Êõﬂ˛˛wÔæ˘„?˛·Çã~ïÏfß&~≠Å¨æs˚≥©0y∑Î∆d¬πuDUÛNπÆ„ùÃ%5‚ˆ`í]©∆Nm¶÷öZbD†∏›Æ&1A‹¸”Ö‰PŒ»çù£t™¬ªô⁄ò’ÜFÜCÏÍ¢‹<tOÆqq“∂JéVúÖCrÛm ’ìl√„âùπxL)fá∂8‚F˙!O®üŸœåº,ï8¯—p¶œ∫DÁsOVjÏe´’;§∆®,œµ∂-%ZØ‚|F›Ô·Tï'¿Ò‘Ö∞<-è3î;‘˘T[`ˆ∏î/:Õ‚
+ò<
+Ø bBCÑHY<x·HßCGw‘OÆQ∏›tjFpÅ—Zá$Üíë¥”à"à´ôVó˚—∆”•ïï´«s*{.≤`ìwPÌ¢Q®¥†ØwlÅ^ué∫Ø&‹ì[⁄Ô üâΩhÃ⁄—›Ã”‰Ã≈Sé
+k(ÖîrJ	
+a!v,ÚÜÒL ûËÿËVOêêb—⁄–våÏAu‚l≈`ÿÿË†1QªÃ{ªI;æ9|O≠Q¿—#’«/iÔPÁSYt¸©a^w›€@-(Vi‘uª≥msÉﬁàEÉ=år‹4uŸ—{^ç¬•Ë⁄π:Î‘◊.{G2≈B‘=Wtß'^õAcΩ`ﬂ•ıCÌÅ'Ç(„Ö!;4Óq2ﬁrKèar@ìx·Ïµ}vº˛ÎjíóòÛv–rjó7‚«à U”úß•Ü∑±F(Èíbló\km⁄[L‡⁄˚äÊ
+†üZ£p)∂lgåƒß¡PöM6´Pâ—‘ù[∆´’D$1Ω∂„ïçiîÂö£jg–QhõRÜÆ»ÚNSÑ@∑˚»9Â!"/ﬁ˜6Ö`„B˛a`Â´‰'wC‘ Á<w‰µuLøaò2†«Ç;U¸äw@ØQæzÏä&Uk/H‰úÍπ¨˚m¯+_Ã∫$ñ[iß‰ﬁ¶–ÿ¬èÎD [oµúö–bŸ∞m¿ñppUä0∆‰¨ µ&òkÎ≈TìµJ‘´j Ø 0sáÁûÊaŸo Ó1'Lÿ 5wŒuº∫}∂˜Ôï)ÙÄZ˝ÒªÒ;‘9ùÇ.û“ˆÿ≈çŸa^Õß{4ÕéSWdÿ'§§$áŒ·
+®üúBø]0˙3≤3$|›√
+◊›RLÏÎ§“6qÃÁf	)
+ï‘ÔiëCaîVÜL≠—ˆE1Óf¸i®ŒF¬6T†iAØ[ÍBfÚÇÃ√ß)ÙÄ⁄˙hıTaò¬ƒÓRgã˝ó5a%Ö¡∆»∏€ËöŒ‘dƒ a
+}T^É´çŒUKˆ‰≠kÓ“–≤∆⁄ZàïööΩbØÊ')t ≤˘¯Ö˚Yƒ°3b÷¢k£•2ß1,á•VzhÄüÏÏ≤®®Y6ÁCó∞<á?Q/´∆m¿§57–3°ë£û«C<˙cãh{õB`Û≥Ö lπïSa,Ì>º3ŸgZ#·ï3õ •Òû∫É—´>“ÿ‡õ@sÀ®^°™Ô#0E,vÇ§∆ºSâJå‘y¡Äã∑)Ù ÷.Ë}ªõÚôröÁ…ªL!À{V+Ø®;D 3ÜÛU ØKeEÅ¬·}√ŒuØ!À˚÷¶™
+[◊à…÷sÉÒ&œñ‹Íx≈Æüœ¶–a¯ˇk>w¡5ÚéBJ8Ç)çrt”5Ä∞%#æ≈$¢∏˛öà?˝êÍ.0\üqã£rªÒ˘7~ÿ'ìÏ…eS-jø˛™‡?K°ßº¡èí‡|Ûz¶jtˆ,V{å,P©QÆ+?!V› ∏◊®iBDÎÄ\‡g{.bkp∆⁄p∫#¶◊WœºˆíH(«π`J≈Ú+&|…ÍÄrj∆~Í1!Ê§Ì◊‹#˚*s‡DeÚ”â[eo–ˇÎ8Ìv œJ°áqÈ[≤Ôÿ&;5KoØ/ U#Èı%˘ÍF¸ﬁPÙ;Z*ôÍàÍ√¢áŸ+y@‰GäÄ#|_é*@∑‡,„'≈b[gïú‰U["J°∂Ló–|√<•U≠Åïπ,V!X’-àπÃ≈ZqÒ≤yi,‡‘¥Í>ﬁ8K/è)˙⁄Ô’}é∞5™Õ§N<7∞˝‹GÕP˛íõ´O”≈Âíñv@À'õk∏6…í„≤)ˆ˜QØIrÓiÙl∑Ñ•π≠íÁ}…Œ!≈_‹°ç@f€ﬂÆo-¨^Uç˚n•Ôº:û∂pÉÀyeVpDK˚ôS¨N2’TàO»Î…uÌ\0rIàW´3#&ÁÂÕ¯8á˘8ûú..§ˆ¯ΩˇÍ|™Ù=ñƒßÍ4} b±LQåE6sÈaà¢ sM˛~òœªÍßßã/D˜\K˚Ó8…åc∫J–ŸVI{môv…´≈dUáø[n∂è•{€ã+SMÊs«î ïËÉS1<4èRZÜúù«Ë^≈u¢•˝‘§däb¯0õb<¶EG±Z‘òª’åF4¨πiÕÒT ûÁÿÃA˝Œ¿M uW(Ø±Ú\©ˆhaò`Ñ:p>‡È{i‘@=äGÌ˘·xr∫8ª\0‹ËıπÊ4&DÒË◊ª7´Z?âı√LÀÀÏkoµ≤@ï∑IÏ ;º€πÏË=3]|!∫v*BsˆÀÏ±”	°aré~Ø@i≠—Ω0¯`$0®ªÊÆ·=9,ænÀ’Tc{åO›î’Z’ÃZ—7◊˘≈”≈π÷
+ŒÔ@ùö“ÕqÕóÜ†«+&qsé≈Ä¢.ΩEı‘ç9d#Bä_Q^Ùì”≈bKıÃeZ·∂ÅÀ,Q¿’kúc°F©L¶ƒêxM§yG´ƒŒ«Mì∆É—·¸F«£‰Ri/8ä«∏IjÕÛ2z¡-Âõt±Dè.?∫ìæ"Ωo<µÕπœÿ¢¡<$4úlÖm≈¸‹X}úáƒŒèòº'≤;‰·qK%Üú#&Ü))fúÕπFå3±9®iﬂ–è:“Rmo“≈lz∏¿·#∞‰gÓ’ŸD18u.ú⁄¢=|„ÿ‘>WãäDbÒÂ1≠mœ˙Zd=»óØeãc&-æÔÁ€iCÁKÈí4è<áJyı‚âü'4ÔPCœ\u∫’SŒaz,mıﬁ[^ÏΩ\4»Z‹\´œ,V«}]˘a
+„
+®üõ.æ›s	"∂∆÷™¶IZ‹˘ (ÅRuŸ)A!ûÅ<ƒ^¯rò«é˜>wè’A;∑RVÅ”…8[j*Œ æn∫JäÖ5/ü§ãÔ–™?xø˛⁄îœP3¿óqˆ£3íV≤âÖq∆Ù∞Dp |ø@è«H©tË#(Uó™±Ïµ–ézÇhãe†DÈ>˝Œ˚vK#∫ñÏ≈È‚;≤|ï— ©Ã‘[´^¢g∆%∑∏ÍÑ0®yoâqßVéÚ ©h1pÂ¯‚ûslÉ·QôDû#]Í[bù’=(,§¢ñ˛¢≈Ÿo¯ÇUæXª˘©¡wªÛ2t%∞•%Ω›ÍBÑ’â£ãΩ*≠≤Fe›·%‘§˜WQp=gÁXÆ^˙¨≥˙“—9ç^w®ñ‰%£oﬁ§ãÔ¿‚°_l9U‡ “
+õJ–Øc” îÀa¶1A—˜àık≈ZÇ5√yÓ„€ΩÀ`c·s*4≈öN˜˘åçñÚÏ1SdÙ‹s¢Ù
+ã˝\∫¯é∞‰ãL◊N•ã´íÓ’*ÇL”T£Ùk ≤Ëk˝≠ﬁZAÄj∂V;n1Ôb‚ô ËòÈr∞g£l †W ê,˘U=õü¶ãÔ ”£M±>∑DR{TÛjß÷¢Ó<.v„∆q·Ã-∑°e»Èx°G‹=!ÊıHÍj™πL¯q≥î@—ˆíÑ_@?s#˘ ÙÊßrC≈"-‰0%»–U7de“{s/ßÆ≥p2e∏Pû“è©“U <)]∆•…/9Ω±Ì‘~9Óü9ãáô!Ï˙øë´äj∫ü^∏Õ":˜‰√Dx¸(-÷°H±=bœÖÀ∂5ç˙Ç•¬éÿ3^5]˛ÔÈ‚;∂ ¶‚?bõ¯≈∑ÈíGmƒíbÍ£miEv¢(R…,T≤ÅñÓCªÖÿqK’s,L¨.à0ãbGDî7pØá†*ƒ´‰/]⁄,VÒô/†¸t_Âw*≠∞“±[=G S@F#ç\zGLÆQ≤cñ·èÃ„5∆W@˝d≠z)∫˘âö5 môy,x›õµX¿õ›†=ÏPS“´‘Xc4¥èÚü∂{¡#ƒúêh\	œ,*HæQ˜4
+D~m˝ÂZ5†<∏ﬂ°=óFÿÑX÷Î–Sõ3˚ïÆ”AT)ë÷ß'Æn}◊„Vº≠ı∆}ì÷Æ`é#—Å∞ÅˆŒ&i‚	QÌI°ß÷+Ê’º’™Å,…„ﬁ˜é,üj3ÀÇ∏KıKéÜA¡ßÈCÓNûx√wëù(˘∫ÑòÍËB0˛∏aº<9≈ ‚€&Ò}∂E0◊òñGÈ≈Z¿JI&> +7?’Ü´R¥çònÎïáœò$cCL∑œ4ö≠§X8∑:wÄ3uñ⁄ÄRù˝>sÕñ‡¶¡ÓHGÒeêk´·ï0_`≤oµj õ≠ï¯l9Ï‡≤ àö ä)	*}√—<Ä…K„ó.ö^aéıê/‘1[ÅÀ^ZÊéﬁ„¡1™ò`∞%∂‹÷∫y≈jZ¯ñ˘*û˚s≠Cã_É∞ñ3W⁄⁄b)J™-ïQÔUe•SX¥Ce∆≠Oeº3™fΩ≠CÑ€éBñΩgçEÿ–_≈r¨®€ÏΩWD9Œñc«mö#∆H|≠ ”ÑwÄπú·a∞’5WŒ⁄rt7ÄÍÉ.Lù∞\´‹À&^›¡z”<Ó‘—…*ëÚ‚≈¶x4⁄#ÆÙc7–√aôør›râV•XlÍ˘T∂z„ì;XbLv±níe÷E1MÖvè}çí·<ËPO]¿≥¥*åèˆ¡Ú€èÿû+'ELœzó§π;úd≥‡¨jWk’yÚﬁ≠≈¢hiŸOE‡…˜ıáñ£ˆàÍÜ{-O|n0øj∂ﬂOZ5∞≈gΩ€tjnb∞!cƒúz% BieÃ=˙√:⁄àëù±u’ˇ˝È`‡B∫&tnãÊ≈¶πNêßNÑ∏éÉèø`R,cj≥Ônı≥UCWO#ˇ*˘W*7Û3Ò‘|,ßI±y/ª¬œW™™så-⁄ òí`∫–.¯Ñ˘XTÇ“˜1ßuñ.Ωk¥'–Tº|d?e%ñF}≠F_:◊\ºÇŸ’¸Y'A–¯äÚçÂ‘0
+π'‘∂ÓAcıΩ\w4	≈÷7ú˝CA
+–Œ√k˙+†~™~ø]‚3¥'Á©w˙„b :œÜÉÕÈæ√\∂ªA˜Æ∂
+à˚qBtBFUoìæA2»kÇXç¬ËÕK3íXyF|˜Xë¸Z˝˛⁄úÎ[¯¥ÈVOUß˘}°aB‡Ë‹-Ê&Üˆé·R◊*óR-VmF3W?$<´‚qÄ_¢Eﬁ∂¥zßL1wºA$7.èò;g_™ﬂ? ´ı"d¡¥œT˙pûã°~†6)ˆ–L<zôNÇ¢º‡Po¬±‹]oFbO ¥ˇå,  ÑêF ¸ΩÁmM’i5»!öÉ7UÍ/íô˝∞‰èM‹¯;∞íŒ¯Z÷÷Õ›«€€†›RüF‰«8;‚\‘Òr¥lˇo‚Æe7ñ\9Ó˝˛ÄI2yv˛√;„.¯\∞qÁ^xÂwDµZjU´©*ç83££iQUA2A&3£’«wK`Iì◊ûY›¢7f5’‰2\Î:y`ÄÓRX,'$?Q‰Õøo¿Ç´ŒÈ”W`ç,e˜Æ.Kb±DR(LO°(ôk KNÚLD;AïÒq K¯Û…‡<±6ô)ÑÀHô"ùªUñŸ
+zÀZ€˘'2˝ÙÔWÑ√…
+A/À%≠ÉŒ≈W#t^èj√õ‘∑¨ﬁX–1¯'ã1ÂRt0sÚx\KÅWô;jSª}zÃ¡h‡´∫·¶§uΩ[ﬂf5ˆ¯óT€æÏO˙˜WÄeÈ∂
+§Ù8K0˘!ª‘ûçœCPßv©y©ï…Lb{\Ç	ÿEoßéCŸjä1bT∑†÷2äHçML˜‹˛ƒ´…Ø ∏µÙ’ÀæØ˚ò[†∆#o°+π´éâ+w5å|hßá˜øÄ?«øoÉÀ´ûÛòØÿö•Ωÿ1î¢Bh:ó¢¬rßögô µØÿ;ERI∞äü§n»€äR5Ö™é°èL¬∏®Å7°Í® æìµÅÚOW€æb{∂ƒ◊∂˛¢ãYIõù,é§3âœ)E∆äÁ`πOﬂ[ÕK˘°-X¿*√W÷¯äXÿ˜I—C^,Ã:„ı2j®XÊ˙_\âäPÎ¸y˝dπU"K’Q‰‡1¸ft ≈Ï;&03"·><◊ŸTP∞TÈ·ÕüÔÄ˙O˜™ﬂà.Ëfe# ö“ ›&†Öu‚…©©ﬁıå≈9˙Ñıh$ÕŒ∆†?\‚Øú∏de‚=djjJ∑∫÷–”â⁄_r´ÛáœöØ–öìÒ(Ø–¬9Æ/t9)C≈@ƒ⁄£2ï1tjI{xUMÇa¬⁄ÃC}Í†b£Ø	+£g	 añ\dA‚i∂™)PPkºg÷¢˜™ÑÓ<˚Ys—ºT>≠åÊ"„§&¶sÈ,Wô]Lˆòπáö-î\¨%vÖxò;∂1Æú+k∂âÖUKÇE_îÓ+Ø™ïjá55∑.¨`Û”^’¿ùó∞!ØÑG@~6ÖÉraV?;´£ûXç+O†Úïÿ+s“…„r>π™ß¨B•4¶èbXöù*°p”k6¸¢Œ\Ã˙˛Cá¯ÂXXºÔ÷/qAÀÆ˘¢Ö£èÀÄæw‹6µ~x&‡”^√N:T?Yƒ†å]tÖeØ±‚Ö≠æµLjÅº‰1LÛMTmË¢øÃ´BBÄ¬∆/%‚ÅÚ¥πñULﬁò˛F,F0úÒ-‚Ã[°Æ¸∏¢8s«xo‹p¶◊ »∂i˝⁄séø˘ﬁÉyó.˘GΩ* é'kV^ˆíw≈NÑ`=«ùjòEg.¶I7πˆÆ5ª–Ω©Æ@A5kEj|(y/˝vWôÀWFßwh:´é-Õ\k⁄∏SfYıñ7ﬂ_˛Ø∫ÕR–£±Õ˚Rj≠9®ÓbBw∏*Ö»˜W⁄439V{x…Ù€ ¯”º*ó;YÏ˚[øtˆA_Ω√ÎèpóŸY÷}ffì"Q¥C%iÍ“tDb€¢Îq€…w’∑aAï≥±ä≤åTÕfä¥RπŸúÌOÌ‹yU…, ı=ÿ⁄•`› %Uì√d·Rüg*Æ‚XÕN≤«:ümá‚ïõáÿzıπ@´z”fîëuäÃ2√˚÷æ5|©£ˇ≈q—Ñ: Ÿ“+‘F.!,›·≈»Ç]ù9ñäπ<•F«()«Ñn≤òMRB}∏a˙PˇŸ^ı;—ï•†âh9ncò∞ì¬DÍ¿pûË+øÎΩ Ïÿ·b~4Qbtl &ö	Ÿê;ô`
+xÔr*íFµ∞l¯uºkÂ¿P˝ÊU93„˘”øZ∑§ûX‡4i¿ÄyJ¸–ê3,ïV©BiŸZPh£¡™ú◊6∏.”ò +'à˙(9±◊zÑ†»eÉ§,
+˙≥wx7dÒõøe–˙K^™xòkmN«ÜÈSôX“∆™Ò´a‚π¿u¿≥JxH	&/‡¬kÊfÍ 	òﬁV&NtV;Ç!˝¡¸Ôº*Ä'√”^ÅçqeÁjLà#àràÉ°…Î;ÛS$8’∆ò≠ñb∞‘g¨p3µá·i~Àm∂<¸°*ãN[Úåﬁqå2»úpÖu~ÿ´X˜ë ∞≤TJê±p±A{öiyŸ‹ (ÕåŒjï±8Ba≠≈pç≥˝·à'{à
+º›R+=UmÍ≠IQ lcrÂ±M/”ˇD›Ç^ïÈÅøcgõ•›Ä¿À§Í&¿SË~óò-vp∑0Ü4åº(&®wÌ·nÄx,s∆5´0bÃ.;òíﬂÈ9fÌ¯)R|cÜ¸U^ï(ø√´w—•∫<5czO)u∏Rl¡(ˇŸÉñla-æ·†|µ<.›eÉÜg∫AÔ[Öö´Ufô•¿ùÖ4ÀÆcÜ˚Å\l¨ZtÚ-vÿb,i\”=Di„ôWtd©,´õP» b∆bööY∏‰∂j§8/‡VV-(¡⁄ç-†ba≤7¸∏¡õµü]£ˇâ¨º¨Zd~åÔ¡÷øÌø‚ﬂ„˛Îˇî?˛¯ﬂˇ˛{ˇwjÎˇ`‚–?„ˇ˘˙-°Ë¶¿Òp)lA
+÷12%òöª± tÖˆ¬˚,CíjqªØuH»ø˝ÙñØ¯è˚«ÔØÁoˆà7nÓ;ö›<À˝1^øŸ˛> ?FˇÿÜªocw¯Ω√Ä3/b‰1ãúèÖ),/∂V|5CüﬁgÉeRöbÔSú:x[ƒÄ«ô"Á0∏µÒÉêrû%·U∑Lé}Ó]ı ΩR`äõ™Ì	ﬂ0m‘5 .apêMˆom<«¿År%4ñŸˆ[Dx„Mó–∞§ﬁVH√x»'˚ª´Ùá.˚>≈¿⁄€jfÍ=Ü¡€5ÏáŸ~ﬂa’Í‘ƒ∫∫°Võπ‰ñ™¥¿ÎkÌÿ‹FQ3ßÔs·”‰\K\Sû˘√|ñ6Õ/ÒA≤Q‹Ä»V%»,7_l-±BŸ≥Ñl, Æ`¯w0Xœ˘Å¯í“Ú™˜A¬}œ∆2Oà±ÆhÕÍ[·}•‡g‘ÊâÅv±·˛ Ï°ØÎHﬁô	ˇ¯˚?ø Å<ÃŸÚÓÖe≈z ‘2Ï1d	3Ω,Ö1w-Ã3U(<^¡™∞¡W“w/B¿¥›Ù≤' ∏5±0
+~Ø)`¡ªÉ}±ˆ¿Ûóîóöˆ„˘˚6Vˇ0'L4"ÙΩ◊ı Ú%¶0∏Z_£&üXª©¬©∑¿xüUØ[ÌhΩDF‘ûôÔ∑6ûc–≥m2ë_ZSÈ<ŸTmÜÏp,ÜµlU¯ì^ Ã
+„=,ù∫Ñ¿µ≠;Œ˘·æçÁxÿŸ4ôWªñ†ùÉX»!x_k“0'g7bÕ±∫≤∆xk Øc∞’.<<›ﬂöxÅh-∂ÈÙ\Òjü}4ÎC!gÌ’ÚÍ*À°·Ã*<˜Hˇ+ıÌW!∞óêwæØ@“ƒ◊OaÁeÅÒ‘fsLÎìÒ<Ìúµáµ>Ô≠çÖ•Î∑#°Õ
+ïÔÃÏ…jÙ3ŒË ê»vZy?¨˙~èÚ?0^Ù&ö˝Å•é÷_.^\:≈xom,∞~M∆a·¶AÊv≠’Ó2`H}o)˚Gû>a®˚æ7ﬂc< †∫∆Ωä Ùô;æÓÖ˚6î~gí$;1µ·ÛX0›°ˇÉ—	•„è5
+g/81≈tüqÈ1„ÉÏ‰‡L∏a qg&,O˜∑&¡H°‘9ããŒébÜcÁGI 3°≤¬S	∆ª∂7>0^Ùpawˇl∆NgHˇ≠âØ2^dé®˚Bè/yF„·	°œ‹éê]gº∑6Vw#kLÂMÁº8«òö∑ÙÓ–8ÕIëYÜòi¯æ∫ÈgåÁ¨1«érwˆ‚‹|øµÒÉb¨kY¬àIU•5èNÑ◊e°}b∞√ÔMê‡
+„9ˆ´≤Æ"r;‚ü›∞xá 4Æ$÷…frù1éÅ˜÷ñ–Mä5ääq<-©Üy:◊œ˘Ïè<ø\l‹Ÿ„˙¬tø5±∞Ù;,uqºü_ºOM:„%´$Ê““ûaj3ª-iº»€w˚Q≈´ÊÎW˚÷ƒ◊?Êûk<~.Óóv^d<<!~—9∆ªµ±2÷´TØ√÷ÿÕöΩ≈Ãyp#Ñ.æ˜°väÿEç«⁄«;:ˇÚzqÒ„ΩµÒÉÄU›(Ë¨y3„ËLÓ¨kΩ2w„≠q¢≤Íª_“xj“~Ú"‡k„O©‹∑6û# S€—≠∑¬ª†!¿™¯îSK∞
+äô$·ˇk‘b∫|¢Ùﬂ1+Øg˝Ì˘∑Œ√”˝≠âÁ0-#Ôr¬⁄¶`⁄Ä¡Òº[Xb7µ™o	√#√§ LÊ].µœO° élº@‡.¡§sº4Òu∆Szµ∆Sß˚∑pñ/se6qG»Æ3ﬁ[+œÈ6Zn›+¯ªeLnÆæ5t>ØÜƒ0`ÙˆˆÒ>Œv{PÂ^ªY.Ò,ﬂ›⁄xé@b¨|kË¥∆îƒâÒVí7âµ£le
+˛¿ŒŸü·ΩüÌíÙ∏ù…\≥ÃﬁYÓWÜ˙Kœ!ËÏÜ≈gIlæ$√Î€)õâ˛Ø–àkn¥ı?‡róvÌœ.Œ@Øô‚œ@?I6ˇ˘l`ﬁ?~.Ïﬂ`ZùÌÒö±¸‘lèüd=Øoz°UãNô∂aU˜ºwW°v
+å]Õ”<Öñ“¨µéΩé˛®o8“”¡˘û~˚À*|˜Ò˘Ô€XòÔbJ…&p«÷œ®¶„¥O€˙Ñ‰aÂ÷A≠;„w˜¨g<0ÂÉh÷Eúπò*7ﬁ∑±∞Å”€0v™Îﬁî>kÄ0Å8)•ß`Gq‡ Ãygu äKå'πrf‡˘}8ÃxÒæâGgq◊S˘‡c¡P–·tH˚9∂V:Ø∏Os¨/1û≈É2˜
+ÙŸqGÔõ¯2„··5.8:|.∆É/^ûP˜ˆ*«∫‹∑±†oòœíÏ‹úë0v¨&ç>6œ;∆XÎã”V#o#ÆÌamï.m[GCàcÇùõÔ∑6ûc πè`@Ù2/”ç÷∫5∞∑Ã}≥Ù÷y_S{*v˜P˛w∆&<∏=µä@º∏„qZ/º¥±0÷]
+µ+√ˆ–ﬂ9¡ÃÑ‹B¥I‹À¯'à—©’åRóŒ)Å+\û√ Ë·=¨xﬂƒÇ©EgF$g/<x„ôS˚tëP3DüÀ2™+Yf∂¯%∆Éïí£õπW“%⁄ìº4Òe∆ ÷/0^2ªÉß3„â^¨?…x∑6ûø•2≥Ô+wúì≈Ífõ^∫ÒÔÕñÁ‘†kÛËFÍ ;åg≥çK@G;®õpjæøµ±∞ºKi°˘·GhRá7f6»>si¨ﬂA¶ñ™Œ'ŸÖ∏Lb¿,k«9œ˝
+ÓíÏÒ”õxﬂ∆Ç÷ØM#k<L&;0,;“zbQΩ‚ΩÁe^sÈÂ2∞@ÆË‹ê‡Üè<Ω\Úâ≥õxﬂ∆ÂçC≥,∞Z®Ùr¿p`"ﬂrûé7_¥åLXÍ”„®Ãw¨üÇëÉ˚;W⁄Àî˜÷ƒòÿí©¡m5*Y–9Xô?ìª¡¡é8≤z3ºØk˚x!¡Ò∑;x˛x-cxÇ¯I%ƒOY?%üˆÒ9{Ù‰"lOò.~Ô@zùıﬂ⁄Xÿ¬I ∂ñMOÆÕƒrÍÜ˙Æ9´√‰∑1ë%JÜ§V"—≥QÄ`Ì‰)£á—◊œÔÓ€+Ûñﬂµ±¿xÇ…Ã⁄ˆ^DLfïV;°ez∑º≥Y2ËÄI¥™ò⁄ã}zVª! ΩtDÈﬂsqG#o‹⁄xé@Ωf¯ñRaP¢@◊iu‹W¥ÂjÓ=G[Ç∑¨ÛıúÒàA4˛–◊aOˇ,L˜;ßO~øΩ√Z:UX=rzóåaei¶ƒï÷=´G†ÎCù⁄g£Àﬁ ¯çÒ6¨G‰œ+ˆ‚1∆{Ö‡•âØ1ﬁˆŒËûûˇ9˚ W–”ó4∫=°ª‡ÎÈæçÖévŒ°´mJˇ:cqX—’1≠;‰*«lÌ^m« Ä⁄ùÌ/´&9•€:⁄yû≥˙£±[OﬂµÒFö	@`E_õ ¯JÍæ¶$^=+_¯¢É≈ÍZúªÁ’ø1å°∑áÈn∞\<√xwm<G ⁄™X„|Ù,áÈm≥·õ¶˜Æ∫‰ßÌ±0íyá~«xƒ Ï_î]«`À£t∫ﬂ5ÒÇÈKo16,˘ËÁ¬`Ö≤Ñæcπ°E∫ÌyÚÓ= h{qj¿ ëπØ»˛6ﬂW ê’]æ˜L∆Õyèw˝ú3«Vw0ü0\‰h<ﬁ∆xwm<K?¢Z¶G«≤Ó´4ì‡Ê]°C™Œ!ŒK)Éú;.ÏeÔ™y∏£ïU˜Â◊Á˚[ŒæYìùiF¶(&◊asΩ¶ö3º¿≈+√÷PG|~zC$ƒ∫"ê^è:Ö¿[*w&fê™j@m÷j≠ñı◊$ô‹‚ÊŒ«<≠K2ÜÌèœÓœ≥–œ¨π{ÏÙÊ¡≠âÁ∏: º$Z‡‘q)w|o∂ôÊ™µº?Yòw∏‚ÒA∞÷üx~{l/ÛÇó&æÃxx¯úüÌe^?óÙòæ!„mOà_tÜÒﬁ⁄XpµÅqS>úô¢©ªí∞ÿßí]…ªŸù^ÀòSÎxmˇéÒ"∑„/ÛòQ‚…˘~kcÁºì^Ö{£≥uùY0‘ÛŸÃ†πŸ:¸ñqÖÒíë|ÿ◊„ÈΩπ$9xÁ‚Ü¿≠çÁheõ„L•¿æá≠gïâÛ:∆sƒÍπÊìY±ŒÂ„1x˚»Æ˛+vﬂÌ|a∫ﬂöXòÓsÄ≈ê0‘ãôŸbî¿r¬úc4œ¸…ëÖ¸∞ÚÔ1¡„%õ›©a‡.vÔÔ+º4Òu∆K.¶∆KP≤«˙˘ xx¬òN2ﬁ≠çÁoYjùÃ~]„ñr±bêcMõf®Éœi‘7Òu`∫º∆≥B1Ï◊eXÈËê~Ö|IÓ„›µ±ÇA3πBïÇÎJÔ’ƒ¡‹uÇ!Æ∞∫~8®ó l,ggü3P∞Â·Ÿt´’säÛÔ⁄xé@≠…˜ÅŒ¢ß5ò÷`ÊÇ)∆∆4V=~aluÇ‚¬yı’SÑã5'ÔÆâ“˜”PÀu≈Tu∆÷‚mô¿úwÃ}’R 2√a»{⁄ø3!‡}¸3ƒã;ñ˘
+¡K_d<><z¸Y&ÅÎÁ¬°ÛÍçÒÆOà_tÇÒÓ⁄∏æ%˛˝∑˘øˇ  ˇˇ h¸¿
