@@ -307,21 +307,9 @@ Return JSON array with items matching:
 
 // Start Server with Vite Middleware
 async function startServer() {
-  // Ensure secure secrets exist for container deployments; generate runtime keys if not provided in environment
-  if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'origin-jwt-production-secret-auth-token-2026') {
-    process.env.JWT_SECRET = crypto.randomBytes(32).toString('hex');
-  }
-  if (!process.env.ENCRYPTION_SECRET || process.env.ENCRYPTION_SECRET === 'origin-aes-256-gcm-master-key-prod-2026') {
-    process.env.ENCRYPTION_SECRET = crypto.randomBytes(32).toString('hex');
-  }
-
-  // Validate security secrets
-  try {
-    getJwtSecret();
-    getEncryptionKey();
-  } catch (err: any) {
-    console.warn('Security Secret initialization notice:', err.message);
-  }
+  // Validate required security secrets (in production, strictly requires configured JWT_SECRET and ENCRYPTION_SECRET)
+  getJwtSecret();
+  getEncryptionKey();
 
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({

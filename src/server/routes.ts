@@ -16,12 +16,24 @@ export const apiRouter = express.Router();
 
 apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
   try {
-    // Enforce rate limiting on signup (max 10 attempts per 10 minutes per IP)
+    // Enforce strict server-side rate limiting on signup (max 10 attempts per 10 minutes per IP)
+    // Rate limit identity is derived strictly from server-extracted client IP, never trusting client-supplied userId
     const ip = getClientIp(req);
-    if (!checkRateLimit(`signup_${ip}`, 10, 10 * 60 * 1000)) {
+    const rateCheck = rateLimiter.consume(`signup_${ip}`, 10, 10 * 60 * 1000);
+
+    // Standard non-sensitive RateLimit headers
+    res.setHeader('RateLimit-Limit', '10');
+    res.setHeader('RateLimit-Remaining', rateCheck.remaining.toString());
+    res.setHeader('RateLimit-Reset', Math.ceil(rateCheck.resetAt / 1000).toString());
+
+    if (!rateCheck.allowed) {
+      res.setHeader('Retry-After', rateCheck.retryAfterSeconds.toString());
       res.status(429).json({
         success: false,
-        error: { code: 'RATE_LIMITED', message: 'Too many account creation attempts. Please wait a few minutes before trying again.' },
+        error: {
+          code: 'RATE_LIMITED',
+          message: 'Too many account creation attempts. Please wait a few minutes before trying again.',
+        },
       });
       return;
     }

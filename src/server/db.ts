@@ -260,10 +260,21 @@ const DB_FILE = path.join(DATA_DIR, 'origin_db.json');
 export function getEncryptionKey(): Buffer {
   const secret = process.env.ENCRYPTION_SECRET;
   if (process.env.NODE_ENV === 'production') {
-    if (!secret || secret.trim() === '' || secret === 'origin-aes-256-gcm-master-key-prod-2026') {
+    const trimmed = secret ? secret.trim() : '';
+    const isWeakOrPlaceholder =
+      !trimmed ||
+      trimmed.length < 16 ||
+      trimmed === 'origin-aes-256-gcm-master-key-prod-2026' ||
+      trimmed === 'origin-dev-test-encryption-key-not-for-production-2026' ||
+      trimmed.toLowerCase().includes('dev-test') ||
+      trimmed.toLowerCase().includes('test-dev') ||
+      trimmed === 'default_secret' ||
+      trimmed === 'secret';
+
+    if (isWeakOrPlaceholder) {
       throw new Error('CRITICAL_SECURITY_ERROR: ENCRYPTION_SECRET environment variable is required and must be configured in production.');
     }
-    return crypto.scryptSync(secret, 'origin_salt_secure_2026', 32);
+    return crypto.scryptSync(secret!, 'origin_salt_secure_2026', 32);
   }
   const devSecret = secret || 'origin-dev-test-encryption-key-not-for-production-2026';
   return crypto.scryptSync(devSecret, 'origin_salt_secure_2026', 32);
@@ -409,27 +420,61 @@ export class DatabaseEngine {
       updatedAt: now,
     });
 
-    // Seed memories
-    this.db.aiMemories.push(
-      {
-        id: `mem_${userId}_1`,
-        userId,
-        key: 'Preferred Deep Work Block',
-        value: 'Morning 9:00 AM - 11:30 AM for highest cognitive leverage',
-        category: 'routine',
-        createdAt: now,
-        updatedAt: now,
-      },
-      {
-        id: `mem_${userId}_2`,
-        userId,
-        key: 'Planning Cadence',
-        value: 'Daily 3-priority matrix with time-boxed sprints',
-        category: 'preference',
-        createdAt: now,
-        updatedAt: now,
-      }
-    );
+    // Seed finances (transactions & budgets)
+    this.db.transactions.push({
+      id: `tx_${userId}_1`,
+      userId,
+      title: 'Cloud Infrastructure & Dedicated Servers',
+      amount: 45.0,
+      minorUnits: 4500,
+      type: 'expense',
+      category: 'Software & Tools',
+      date: today,
+      isRecurring: true,
+      notes: 'Monthly isolated container hosting',
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    this.db.budgets.push({
+      id: `b_${userId}_1`,
+      userId,
+      category: 'Software & Tools',
+      limitAmount: 150.0,
+      limitMinorUnits: 15000,
+      period: 'monthly',
+      alertThresholdPercentage: 80,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    // Seed relationships
+    this.db.relationships.push({
+      id: `rel_${userId}_1`,
+      userId,
+      name: 'Sarah Chen',
+      relationType: 'friend',
+      cadenceDays: 14,
+      lastInteractionDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+      nextDueReminderDate: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+      notes: 'Great conversation about deliberate life engineering.',
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    // Seed notes
+    this.db.notes.push({
+      id: `note_${userId}_1`,
+      userId,
+      title: 'Principles for Deliberate Living',
+      content: '1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.',
+      tags: ['principles', 'philosophy'],
+      isPinned: true,
+      isArchived: false,
+      linkedNoteIds: [],
+      createdAt: now,
+      updatedAt: now,
+    });
   }
 
   private ensureInitialized(): void {
@@ -468,228 +513,23 @@ export class DatabaseEngine {
     if (!this.db.aiMemories) this.db.aiMemories = [];
     if (!this.db.auditLogs) this.db.auditLogs = [];
     if (!this.db.passwordResetTokens) this.db.passwordResetTokens = [];
-
-    // Ensure demo user exists with real bcrypt hash
-    const demoUser = this.db.users.find((u) => u.id === 'usr_origin_demo' || u.email === 'alex.vance@origin-os.internal');
-    if (!demoUser) {
-      this.db.users.push(this.getDemoUser());
-    }
-  }
-
-  private getDemoUser(): UserRecord {
-    const salt = bcrypt.genSaltSync(10);
-    const passwordHash = bcrypt.hashSync('demo1234', salt);
-
-    return {
-      id: 'usr_origin_demo',
-      email: 'alex.vance@origin-os.internal',
-      passwordHash,
-      role: 'member',
-      emailVerified: true,
-      profile: {
-        displayName: 'Alex Vance',
-        headline: 'Lead Architect',
-        bio: 'Designing high-leverage habits, deep work sprints, and intentional life systems.',
-        primaryLifeFocus: 'Deep Work & Daily Focus',
-      },
-      preferences: {
-        theme: 'system',
-        timezone: 'America/New_York',
-        locale: 'en-US',
-        weekStartDay: 1,
-        reducedMotion: false,
-        compactDensity: false,
-        dailyReflectionReminderTime: '21:30',
-        notificationChannels: {
-          inApp: true,
-          email: false,
-          dailyDigest: true,
-        },
-        unlockedModules: ['tasks', 'habits', 'finances', 'goals', 'notes', 'emotions', 'relationships'],
-      },
-      subscription: {
-        tier: 'pro',
-        status: 'active',
-        currentPeriodEnd: '2027-01-01T00:00:00.000Z',
-      },
-      lastLoginAt: new Date().toISOString(),
-      createdAt: '2026-01-01T08:00:00.000Z',
-      updatedAt: new Date().toISOString(),
-    };
   }
 
   private getInitialSchema(): DatabaseSchema {
-    const demoUser = this.getDemoUser();
-
     return {
       version: 1,
-      users: [demoUser],
-      tasks: [
-        {
-          id: 'task_demo_1',
-          userId: 'usr_origin_demo',
-          title: 'Review quarterly architecture roadmap',
-          description: 'Synthesize engineering priorities and key milestone deliverables.',
-          priority: 'high',
-          status: 'todo',
-          dueDate: new Date().toISOString().slice(0, 10),
-          estimatedMinutes: 60,
-          actualMinutes: null,
-          tags: ['strategy', 'deep_work'],
-          subtasks: [
-            { id: 'sub_1', title: 'Outline core milestones', completed: true },
-            { id: 'sub_2', title: 'Align resource capacity', completed: false },
-          ],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: 'task_demo_2',
-          userId: 'usr_origin_demo',
-          title: 'Publish weekly product synthesis',
-          description: 'Share cross-domain insights and key progress updates with the team.',
-          priority: 'medium',
-          status: 'completed',
-          dueDate: new Date().toISOString().slice(0, 10),
-          estimatedMinutes: 45,
-          actualMinutes: 40,
-          tags: ['communication'],
-          subtasks: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
-      habits: [
-        {
-          id: 'habit_demo_1',
-          userId: 'usr_origin_demo',
-          name: 'Morning Deep Work Block',
-          description: '90 minutes of focused, distraction-free execution.',
-          category: 'deep_work',
-          frequency: 'daily',
-          targetPerDay: 1,
-          streakCount: 5,
-          bestStreak: 14,
-          totalCompletions: 28,
-          archived: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: 'habit_demo_2',
-          userId: 'usr_origin_demo',
-          name: 'Mindful Movement & Walk',
-          description: '30 minutes outdoors to recharge cognitive energy.',
-          category: 'health',
-          frequency: 'daily',
-          targetPerDay: 1,
-          streakCount: 7,
-          bestStreak: 21,
-          totalCompletions: 35,
-          archived: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
+      users: [],
+      tasks: [],
+      habits: [],
       habitLogs: [],
-      goals: [
-        {
-          id: 'goal_demo_1',
-          userId: 'usr_origin_demo',
-          title: 'Establish a Calmer, More Intentional Daily Rhythm',
-          description: 'Balance intense deep work sprints with restorative evening wind-downs.',
-          category: 'personal',
-          horizon: 'quarterly',
-          targetDate: '2026-12-31',
-          progressPercentage: 60,
-          status: 'active',
-          milestones: [
-            { id: 'm_1', title: 'Consistent 9:00 AM start time', completed: true, order: 1 },
-            { id: 'm_2', title: 'Zero screens after 9:30 PM for 14 straight days', completed: false, order: 2 },
-          ],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
-      transactions: [
-        {
-          id: 'tx_demo_1',
-          userId: 'usr_origin_demo',
-          title: 'Cloud Infrastructure & Servers',
-          amount: 45.0,
-          minorUnits: 4500,
-          type: 'expense',
-          category: 'Software & Tools',
-          date: new Date().toISOString().slice(0, 10),
-          isRecurring: true,
-          notes: 'Monthly dedicated container hosting',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
-      budgets: [
-        {
-          id: 'b_demo_1',
-          userId: 'usr_origin_demo',
-          category: 'Software & Tools',
-          limitAmount: 150.0,
-          limitMinorUnits: 15000,
-          period: 'monthly',
-          alertThresholdPercentage: 80,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
+      goals: [],
+      transactions: [],
+      budgets: [],
       reflections: [],
-      relationships: [
-        {
-          id: 'rel_demo_1',
-          userId: 'usr_origin_demo',
-          name: 'Sarah Chen',
-          relationType: 'friend',
-          cadenceDays: 14,
-          lastInteractionDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-          nextDueReminderDate: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-          notes: 'Great conversation about deliberate life engineering.',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
+      relationships: [],
       interactions: [],
-      notes: [
-        {
-          id: 'note_demo_1',
-          userId: 'usr_origin_demo',
-          title: 'Principles for Deliberate Living',
-          content: '1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.',
-          tags: ['principles', 'philosophy'],
-          isPinned: true,
-          isArchived: false,
-          linkedNoteIds: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
-      aiMemories: [
-        {
-          id: 'mem_demo_1',
-          userId: 'usr_origin_demo',
-          key: 'Preferred Deep Work Block',
-          value: 'Morning 9:00 AM - 11:30 AM for highest cognitive leverage',
-          category: 'routine',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: 'mem_demo_2',
-          userId: 'usr_origin_demo',
-          key: 'Planning Cadence',
-          value: 'Daily 3-priority matrix with time-boxed sprints',
-          category: 'preference',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ],
+      notes: [],
+      aiMemories: [],
       auditLogs: [],
       passwordResetTokens: [],
     };

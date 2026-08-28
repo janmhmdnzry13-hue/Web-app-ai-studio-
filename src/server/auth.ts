@@ -13,10 +13,19 @@ const TOKEN_EXPIRY = '7d';
 export function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
   if (process.env.NODE_ENV === 'production') {
-    if (!secret || secret.trim() === '' || secret === 'origin-jwt-production-secret-auth-token-2026') {
+    const trimmed = secret ? secret.trim() : '';
+    const isWeakOrPlaceholder =
+      !trimmed ||
+      trimmed.length < 16 ||
+      trimmed === 'origin-jwt-production-secret-auth-token-2026' ||
+      trimmed === 'origin-dev-test-jwt-secret-not-for-production-2026' ||
+      trimmed.toLowerCase().includes('dev-test') ||
+      trimmed.toLowerCase().includes('test-dev');
+
+    if (isWeakOrPlaceholder) {
       throw new Error('CRITICAL_SECURITY_ERROR: JWT_SECRET environment variable is required and must be configured in production.');
     }
-    return secret;
+    return secret!;
   }
   // Development and test fallback strictly for non-production environments
   return secret || 'origin-dev-test-jwt-secret-not-for-production-2026';
