@@ -75,14 +75,30 @@ export function generateToken(user: UserRecord): string {
   );
 }
 
-export function verifyToken(token: string): { userId: string; email: string; role: string } | null {
-  if (!token || typeof token !== 'string') return null;
+export interface TokenVerificationResult {
+  valid: boolean;
+  expired: boolean;
+  payload: { userId: string; email: string; role: string } | null;
+}
+
+export function inspectToken(token: string): TokenVerificationResult {
+  if (!token || typeof token !== 'string') {
+    return { valid: false, expired: false, payload: null };
+  }
   try {
     const secret = getJwtSecret();
-    return jwt.verify(token, secret) as { userId: string; email: string; role: string };
-  } catch {
-    return null;
+    const payload = jwt.verify(token, secret) as { userId: string; email: string; role: string };
+    return { valid: true, expired: false, payload };
+  } catch (err: any) {
+    if (err instanceof jwt.TokenExpiredError || err?.name === 'TokenExpiredError') {
+      return { valid: false, expired: true, payload: null };
+    }
+    return { valid: false, expired: false, payload: null };
   }
+}
+
+export function verifyToken(token: string): { userId: string; email: string; role: string } | null {
+  return inspectToken(token).payload;
 }
 
 // Authentication Middleware enforcing valid bearer session token
@@ -105,16 +121,20 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
     return;
   }
 
-  const payload = verifyToken(token);
-  if (!payload) {
+  const verification = inspectToken(token);
+  if (!verification.valid) {
+    const errorCode = verification.expired ? 'TOKEN_EXPIRED' : 'INVALID_TOKEN';
+    const message = verification.expired
+      ? 'Session has expired. Please sign in again.'
+      : 'Session has expired or is invalid. Please sign in again.';
     res.status(401).json({
       success: false,
-      error: { code: 'INVALID_TOKEN', message: 'Session has expired or is invalid. Please sign in again.' },
+      error: { code: errorCode, message },
     });
     return;
   }
 
-  const user = db.schema.users.find((u) => u.id === payload.userId);
+  const user = db.schema.users.find((u) => u.id === verification.payload!.userId);
   if (!user) {
     res.status(401).json({
       success: false,

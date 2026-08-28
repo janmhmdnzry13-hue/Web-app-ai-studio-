@@ -124,7 +124,151 @@ describe('AuthService Client State and Storage Suite', () => {
     });
 
     const sessionRes = await authService.getCurrentSession();
+    expect(sessionRes.success).toBe(false);
     expect(sessionRes.data).toBeNull();
+    expect(sessionRes.error?.code).toBe('TOKEN_EXPIRED');
     expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBeNull();
+    expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null)).toBeNull();
+  });
+
+  it('restores valid session when backend validates token successfully', async () => {
+    const validServerSession = {
+      token: 'jwt.valid.active123',
+      expiresAt: new Date(Date.now() + 86400000).toISOString(),
+      user: {
+        id: 'usr_active_1',
+        email: 'active@origin-os.internal',
+        role: 'member' as const,
+        emailVerified: true,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        lastLoginAt: new Date().toISOString(),
+        profile: { displayName: 'Active User' },
+        preferences: {
+          theme: 'dark' as const,
+          timezone: 'UTC',
+          locale: 'en-US',
+          weekStartDay: 1 as const,
+          reducedMotion: false,
+          compactDensity: false,
+          dailyReflectionReminderTime: null,
+          notificationChannels: { inApp: true, email: false, dailyDigest: false },
+        },
+      },
+    };
+
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'jwt.valid.active123');
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, validServerSession);
+
+    vi.spyOn(apiClient, 'get').mockResolvedValueOnce({
+      success: true,
+      data: validServerSession,
+    });
+
+    const sessionRes = await authService.getCurrentSession();
+    expect(sessionRes.success).toBe(true);
+    expect(sessionRes.data?.user.id).toBe('usr_active_1');
+    expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBe('jwt.valid.active123');
+  });
+
+  it('clears client authentication state when backend rejects token as invalid or expired', async () => {
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'invalid_stale_token');
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, {
+      token: 'invalid_stale_token',
+      expiresAt: new Date(Date.now() + 86400000).toISOString(),
+      user: { id: 'usr_invalid' },
+    });
+
+    vi.spyOn(apiClient, 'get').mockResolvedValueOnce({
+      success: false,
+      error: { code: 'INVALID_TOKEN', message: 'Token signature invalid.' },
+    });
+
+    const sessionRes = await authService.getCurrentSession();
+    expect(sessionRes.success).toBe(false);
+    expect(sessionRes.data).toBeNull();
+    expect(sessionRes.error?.code).toBe('TOKEN_INVALID');
+    expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null)).toBeNull();
+    expect(safeStorage.get(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null)).toBeNull();
+  });
+
+  it('handles network error without creating fake authentication or treating cache as authority', async () => {
+    const cachedSession = {
+      token: 'cached_token_unverified',
+      expiresAt: new Date(Date.now() + 86400000).toISOString(),
+      user: { id: 'usr_offline', email: 'offline@origin-os.internal' },
+    };
+
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, 'cached_token_unverified');
+    safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, cachedSession);
+
+    vi.spyOn(apiClient, 'get').mockResolvedValueOnce({
+      success: false,
+      error: { code: 'NETWORK_ERROR', message: 'Unable to reach authentication server.' },
+    });
+
+    const sessionRes = await authService.getCurrentSession();
+    // CRITICAL: Must be false, cache must NEVER act as authentication authority
+    expect(sessionRes.success).toBe(false);
+    expect(sessionRes.data).toBeNull();
+    expect(sessionRes.error?.code).toBe('NETWORK_ERROR');
+  });
+
+  it('returns UNAUTHENTICATED when no token exists in storage', async () => {
+    const sessionRes = await authService.getCurrentSession();
+    expect(sessionRes.success).toBe(false);
+    expect(sessionRes.data).toBeNull();
+    expect(sessionRes.error?.code).toBe('UNAUTHENTICATED');
+  });
+
+  it('requestPasswordReset issues request without writing resetToken to browser storage', async () => {
+    vi.spyOn(apiClient, 'post').mockResolvedValueOnce({
+      success: true,
+      data: {
+        success: true,
+        message: 'If an account exists with this email address, password reset instructions have been issued.',
+      },
+    });
+
+    const res = await authService.requestPasswordReset({ email: 'user@origin-os.internal' });
+    expect(res.success).toBe(true);
+    expect(res.data?.message).toContain('password reset instructions have been issued');
+
+    // Security assertions: browser storage must never contain reset tokens
+    expect(safeStorage.get('resetToken', null)).toBeNull();
+    expect(safeStorage.get('token', null)).toBeNull();
+    if (typeof localStorage !== 'undefined') {
+      expect(localStorage.getItem('resetToken')).toBeNull();
+    }
+    if (typeof sessionStorage !== 'undefined') {
+      expect(sessionStorage.getItem('resetToken')).toBeNull();
+    }
+  });
+
+  it('confirmPasswordReset sends reset payload without persisting token to storage', async () => {
+    vi.spyOn(apiClient, 'post').mockResolvedValueOnce({
+      success: true,
+      data: {
+        success: true,
+        message: 'Password has been successfully updated. You can now sign in.',
+      },
+    });
+
+    const res = await authService.confirmPasswordReset({
+      token: 'rst_test_security_token_sample',
+      newPassword: 'BrandNewPassword123!',
+    });
+
+    expect(res.success).toBe(true);
+    expect(res.data?.message).toContain('successfully updated');
+
+    // Security assertions
+    expect(safeStorage.get('resetToken', null)).toBeNull();
+    if (typeof localStorage !== 'undefined') {
+      expect(localStorage.getItem('resetToken')).toBeNull();
+    }
+    if (typeof sessionStorage !== 'undefined') {
+      expect(sessionStorage.getItem('resetToken')).toBeNull();
+    }
   });
 });

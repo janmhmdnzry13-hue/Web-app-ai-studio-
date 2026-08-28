@@ -9,10 +9,12 @@ import { apiClient } from '../lib/api-client';
 import { ServiceResult } from '../types/common.types';
 import {
   AuthSession,
+  AuthState,
   LoginCredentials,
   PasswordResetConfirmPayload,
   PasswordResetRequestPayload,
   PasswordResetResponse,
+  SessionRestorationResult,
   SignupPayload,
   User,
 } from '../types/user.types';
@@ -23,6 +25,7 @@ export interface IAuthService {
   signup(payload: SignupPayload): Promise<ServiceResult<AuthSession>>;
   logout(): Promise<ServiceResult<void>>;
   getCurrentSession(): Promise<ServiceResult<AuthSession | null>>;
+  restoreSession(): Promise<SessionRestorationResult>;
   createDemoSession(): Promise<ServiceResult<AuthSession>>;
   requestPasswordReset(payload: PasswordResetRequestPayload): Promise<ServiceResult<PasswordResetResponse>>;
   confirmPasswordReset(payload: PasswordResetConfirmPayload): Promise<ServiceResult<{ success: boolean; message: string }>>;
@@ -94,37 +97,130 @@ export class AuthService extends BaseService implements IAuthService {
   }
 
   async getCurrentSession(): Promise<ServiceResult<AuthSession | null>> {
+    return this.restoreSession().then((res) => {
+      if (res.status === 'AUTHENTICATED' && res.session) {
+        return { success: true, data: res.session };
+      }
+      return {
+        success: false,
+        data: null,
+        error: {
+          code: res.status,
+          message: res.error || 'Session verification failed.',
+          timestamp: new Date().toISOString(),
+        },
+      };
+    });
+  }
+
+  async restoreSession(): Promise<SessionRestorationResult> {
     const cachedSession = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
-    if (!cachedSession || !cachedSession.token) {
-      return this.success(null);
+    const token = safeStorage.get<string | null>(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, null) || cachedSession?.token;
+
+    // No active session or token stored
+    if (!token || !cachedSession) {
+      return {
+        status: 'UNAUTHENTICATED',
+        session: null,
+        error: 'No active session found.',
+      };
     }
 
-    // Validate expiration
-    if (new Date(cachedSession.expiresAt).getTime() < Date.now()) {
+    // Validate client-side expiration timestamp
+    if (cachedSession.expiresAt && new Date(cachedSession.expiresAt).getTime() < Date.now()) {
       safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
       safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
-      return this.success(null);
+      return {
+        status: 'TOKEN_EXPIRED',
+        session: null,
+        error: 'Session has expired. Please sign in again.',
+      };
     }
 
     try {
-      // Validate session with the backend
+      // Validate session strictly with the server authority (/api/auth/session)
       const res = await apiClient.get<AuthSession>('/api/auth/session');
-      if (res.success && res.data) {
+      if (res.success && res.data && res.data.token && res.data.user) {
         safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, res.data);
-        return this.success(res.data);
+        safeStorage.set(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN, res.data.token);
+        return {
+          status: 'AUTHENTICATED',
+          session: res.data,
+        };
       }
 
-      // If backend explicitly rejected the token (401 / INVALID_TOKEN / USER_NOT_FOUND)
-      if (res.error && (res.error.code === 'UNAUTHORIZED' || res.error.code === 'INVALID_TOKEN' || res.error.code === 'USER_NOT_FOUND')) {
-        safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
-        safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
-        return this.success(null);
+      if (res.error) {
+        const code = res.error.code;
+
+        // Server confirmed that session/token is invalid or expired
+        if (
+          code === 'UNAUTHORIZED' ||
+          code === 'INVALID_TOKEN' ||
+          code === 'TOKEN_INVALID' ||
+          code === 'TOKEN_EXPIRED' ||
+          code === 'USER_NOT_FOUND' ||
+          code.startsWith('HTTP_401') ||
+          code.startsWith('HTTP_403')
+        ) {
+          safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
+          safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
+
+          const status: AuthState =
+            code === 'TOKEN_EXPIRED'
+              ? 'TOKEN_EXPIRED'
+              : code === 'INVALID_TOKEN' || code === 'TOKEN_INVALID' || code === 'USER_NOT_FOUND'
+              ? 'TOKEN_INVALID'
+              : 'UNAUTHENTICATED';
+
+          return {
+            status,
+            session: null,
+            error: res.error.message || 'Session is invalid or expired on server authority.',
+          };
+        }
+
+        // Backend unreachable / network error:
+        // CRITICAL: The browser cache MUST NOT act as an authentication authority.
+        if (code === 'NETWORK_ERROR') {
+          return {
+            status: 'NETWORK_ERROR',
+            session: null,
+            error: 'Authentication server is unreachable. Cannot verify session authenticity.',
+          };
+        }
+
+        return {
+          status: 'UNAUTHENTICATED',
+          session: null,
+          error: res.error.message || 'Session verification failed.',
+        };
       }
-    } catch {
-      // On network failure, retain valid unexpired session
+
+      return {
+        status: 'UNAUTHENTICATED',
+        session: null,
+        error: 'Unable to verify session with server authority.',
+      };
+    } catch (err: any) {
+      return {
+        status: 'NETWORK_ERROR',
+        session: null,
+        error: err.message || 'Network error during session verification.',
+      };
     }
+  }
 
-    return this.success(cachedSession);
+  /**
+   * Helper for read-only UI continuity only (e.g. displaying username while offline).
+   * Note: This does NOT grant authentication authority or allow protected mutations.
+   */
+  getCachedUserForUI(): User | null {
+    const cachedSession = safeStorage.get<AuthSession | null>(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION, null);
+    if (!cachedSession || !cachedSession.user) return null;
+    if (cachedSession.expiresAt && new Date(cachedSession.expiresAt).getTime() < Date.now()) {
+      return null;
+    }
+    return cachedSession.user;
   }
 
   async createDemoSession(): Promise<ServiceResult<AuthSession>> {

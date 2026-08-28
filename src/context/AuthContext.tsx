@@ -3,6 +3,7 @@ import { authService } from '../services/auth.service';
 import { userService } from '../services/user.service';
 import {
   AuthSession,
+  AuthStatus,
   LoginCredentials,
   PasswordResetConfirmPayload,
   PasswordResetRequestPayload,
@@ -16,6 +17,7 @@ import {
 interface AuthContextValue {
   session: AuthSession | null;
   user: User | null;
+  status: AuthStatus;
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
@@ -34,22 +36,50 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<AuthSession | null>(null);
+  const [status, setStatus] = useState<AuthStatus>('UNAUTHENTICATED');
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function initSession() {
       try {
         const res = await authService.getCurrentSession();
+        if (!isMounted) return;
+
         if (res.success && res.data) {
           setSession(res.data);
+          setStatus('AUTHENTICATED');
+        } else {
+          setSession(null);
+          const code = res.error?.code;
+          if (code === 'TOKEN_EXPIRED') {
+            setStatus('TOKEN_EXPIRED');
+          } else if (code === 'TOKEN_INVALID') {
+            setStatus('TOKEN_INVALID');
+          } else if (code === 'NETWORK_ERROR') {
+            setStatus('NETWORK_ERROR');
+          } else {
+            setStatus('UNAUTHENTICATED');
+          }
         }
       } catch {
-        // Fallback gracefully
+        if (isMounted) {
+          setSession(null);
+          setStatus('NETWORK_ERROR');
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     }
+
     initSession();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = useCallback(async (credentials: LoginCredentials) => {
@@ -58,10 +88,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await authService.login(credentials);
       if (res.success && res.data) {
         setSession(res.data);
+        setStatus('AUTHENTICATED');
         return { success: true };
       }
+      setSession(null);
+      setStatus(res.error?.code === 'NETWORK_ERROR' ? 'NETWORK_ERROR' : 'UNAUTHENTICATED');
       return { success: false, error: res.error?.message || 'Login failed' };
     } catch {
+      setSession(null);
+      setStatus('NETWORK_ERROR');
       return { success: false, error: 'An unexpected error occurred during login' };
     } finally {
       setIsLoading(false);
@@ -74,10 +109,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await authService.signup(payload);
       if (res.success && res.data) {
         setSession(res.data);
+        setStatus('AUTHENTICATED');
         return { success: true };
       }
+      setSession(null);
+      setStatus(res.error?.code === 'NETWORK_ERROR' ? 'NETWORK_ERROR' : 'UNAUTHENTICATED');
       return { success: false, error: res.error?.message || 'Signup failed' };
     } catch {
+      setSession(null);
+      setStatus('NETWORK_ERROR');
       return { success: false, error: 'An unexpected error occurred during signup' };
     } finally {
       setIsLoading(false);
@@ -90,7 +130,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const res = await authService.createDemoSession();
       if (res.success && res.data) {
         setSession(res.data);
+        setStatus('AUTHENTICATED');
+      } else {
+        setSession(null);
+        setStatus('UNAUTHENTICATED');
       }
+    } catch {
+      setSession(null);
+      setStatus('NETWORK_ERROR');
     } finally {
       setIsLoading(false);
     }
@@ -100,8 +147,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true);
     try {
       await authService.logout();
-      setSession(null);
     } finally {
+      setSession(null);
+      setStatus('UNAUTHENTICATED');
       setIsLoading(false);
     }
   }, []);
@@ -200,7 +248,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () => ({
       session,
       user: session?.user ?? null,
-      isAuthenticated: !!session?.token,
+      status,
+      isAuthenticated: status === 'AUTHENTICATED' && !!session?.token,
       isLoading,
       login,
       signup,
@@ -215,6 +264,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }),
     [
       session,
+      status,
       isLoading,
       login,
       signup,

@@ -12,6 +12,7 @@ import { AppShell } from './components/layout/AppShell';
 import { LandingPage } from './pages/public/LandingPage';
 import { LoginPage } from './pages/public/LoginPage';
 import { SignupPage } from './pages/public/SignupPage';
+import { ResetPasswordPage } from './pages/public/ResetPasswordPage';
 import { AppOverviewPage } from './pages/app/AppOverviewPage';
 import { TasksPage } from './pages/app/TasksPage';
 import { GoalsPage } from './pages/app/GoalsPage';
@@ -42,6 +43,7 @@ export default function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/reset-password" element={<ResetPasswordPage />} />
                   </Route>
 
                   {/* Protected Application Workspace */}

@@ -3,28 +3,12 @@ import { db, TaskRecord, HabitRecord, HabitLogRecord, GoalRecord, TransactionRec
 import { requireAuth, AuthenticatedRequest, hashPassword, verifyPassword, generateToken, generateCryptoToken, toPublicUser } from './auth';
 import { logAuditEvent } from './audit';
 import { checkUserEntitlements, createStripeCheckoutSession, PLAN_TIERS } from './billing';
+import { emailService } from './email';
+import { checkRateLimit, resetRateLimitsForTesting, cleanupExpiredRateLimits, getRateLimitEntryCount, getClientIp, rateLimiter } from './rate-limiter';
+
+export { checkRateLimit, resetRateLimitsForTesting, cleanupExpiredRateLimits, getRateLimitEntryCount, getClientIp, rateLimiter };
 
 export const apiRouter = express.Router();
-
-// Rate limiter helper in memory
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
-export function checkRateLimit(key: string, limit: number, windowMs: number): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(key);
-  if (!entry || entry.resetAt < now) {
-    rateLimitMap.set(key, { count: 1, resetAt: now + windowMs });
-    return true;
-  }
-  if (entry.count >= limit) {
-    return false;
-  }
-  entry.count++;
-  return true;
-}
-
-export function resetRateLimitsForTesting(): void {
-  rateLimitMap.clear();
-}
 
 // -------------------------------------------------------------
 // AUTHENTICATION ROUTES
@@ -33,7 +17,7 @@ export function resetRateLimitsForTesting(): void {
 apiRouter.post('/auth/signup', async (req: Request, res: Response) => {
   try {
     // Enforce rate limiting on signup (max 10 attempts per 10 minutes per IP)
-    const ip = req.ip || req.socket.remoteAddress || 'local';
+    const ip = getClientIp(req);
     if (!checkRateLimit(`signup_${ip}`, 10, 10 * 60 * 1000)) {
       res.status(429).json({
         success: false,
@@ -137,7 +121,7 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
     }
 
     // Rate limit login attempts (max 15 per minute per IP)
-    const ip = req.ip || req.socket.remoteAddress || 'local';
+    const ip = getClientIp(req);
     if (!checkRateLimit(`login_${ip}`, 15, 60000)) {
       res.status(429).json({ success: false, error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Please wait a minute.' } });
       return;
@@ -251,7 +235,7 @@ apiRouter.post('/auth/password-reset-request', async (req: Request, res: Respons
       return;
     }
 
-    const ip = req.ip || req.socket.remoteAddress || 'local';
+    const ip = getClientIp(req);
     if (!checkRateLimit(`reset_${ip}`, 10, 60000)) {
       res.status(429).json({ success: false, error: { code: 'RATE_LIMITED', message: 'Too many reset requests. Please wait a minute.' } });
       return;
@@ -269,6 +253,12 @@ apiRouter.post('/auth/password-reset-request', async (req: Request, res: Respons
       });
       await db.save();
       await logAuditEvent(user.id, 'PASSWORD_RESET_REQUESTED', 'auth', { email: cleanEmail });
+
+      // Dispatch reset email through configured email delivery abstraction
+      const originHeader = (req.headers.origin || req.headers.host) as string | undefined;
+      await emailService.sendPasswordResetEmail(cleanEmail, resetToken, originHeader).catch((mailErr) => {
+        console.error('[Auth] Failed to dispatch password reset email:', mailErr?.message || mailErr);
+      });
     }
 
     // Security: Never return resetToken in API response! Always return a generic success message to prevent user enumeration

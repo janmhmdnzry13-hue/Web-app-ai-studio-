@@ -42,11 +42,15 @@ class ApiClient {
         headers,
       });
 
-      const json = await response.json();
+      const json = await response.json().catch(() => null);
       if (!response.ok) {
+        if (response.status === 401) {
+          safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.AUTH_TOKEN);
+          safeStorage.remove(APP_CONSTANTS.STORAGE_KEYS.USER_SESSION);
+        }
         return {
           success: false,
-          error: json.error || { code: `HTTP_${response.status}`, message: response.statusText || 'Request failed.' },
+          error: json?.error || { code: `HTTP_${response.status}`, message: response.statusText || 'Request failed.' },
         };
       }
 

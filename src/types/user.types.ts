@@ -5,6 +5,13 @@ import { BaseEntity, EntityId, ISODateString, ThemePreference } from './common.t
 
 export type UserRole = 'member' | 'admin' | 'guest';
 
+export type AuthStatus =
+  | 'AUTHENTICATED'
+  | 'UNAUTHENTICATED'
+  | 'TOKEN_EXPIRED'
+  | 'TOKEN_INVALID'
+  | 'NETWORK_ERROR';
+
 export interface UserPreferences {
   readonly theme: ThemePreference;
   readonly timezone: string;
@@ -65,6 +72,18 @@ export interface PasswordResetConfirmPayload {
 
 export interface PasswordResetResponse {
   readonly success: boolean;
-  readonly resetToken?: string;
   readonly message: string;
+}
+
+export type AuthState =
+  | 'AUTHENTICATED'
+  | 'UNAUTHENTICATED'
+  | 'TOKEN_EXPIRED'
+  | 'TOKEN_INVALID'
+  | 'NETWORK_ERROR';
+
+export interface SessionRestorationResult {
+  readonly status: AuthState;
+  readonly session: AuthSession | null;
+  readonly error?: string;
 }

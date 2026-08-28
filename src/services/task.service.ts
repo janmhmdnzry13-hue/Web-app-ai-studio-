@@ -185,7 +185,6 @@ export class TaskService extends BaseService implements ITaskService {
         return this.success(res.data);
       }
 
-      // Offline / error handling fallback
       if (res.error?.code === 'PLAN_LIMIT_REACHED') {
         return this.failure('PLAN_LIMIT_REACHED', res.error.message);
       }
@@ -266,7 +265,12 @@ export class TaskService extends BaseService implements ITaskService {
       const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const taskId = maybeId || userIdOrId;
 
-      await apiClient.delete(`/api/tasks/${taskId}`);
+      const res = await apiClient.delete(`/api/tasks/${taskId}`);
+      if (!res.success && res.error) {
+        if (res.error.code === 'UNAUTHORIZED' || res.error.code === 'INVALID_TOKEN' || res.error.code === 'USER_NOT_FOUND' || res.error.code === 'TOKEN_EXPIRED') {
+          return this.failure(res.error.code, res.error.message || 'Authentication required to delete task.');
+        }
+      }
 
       const tasks = this.getStoredTasks(userId);
       const filtered = tasks.filter((t) => t.id !== taskId);

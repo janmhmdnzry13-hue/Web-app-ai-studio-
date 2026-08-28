@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -7,10 +7,10 @@ import { Input } from '../../components/ui/Input';
 import { Card, CardContent } from '../../components/ui/Card';
 import { Dialog } from '../../components/ui/Dialog';
 import { validateSchema, Validators } from '../../lib/validation';
-import { ArrowRight, Lock, Mail, Sparkles, KeyRound } from 'lucide-react';
+import { ArrowRight, Lock, Mail, Sparkles, CheckCircle2 } from 'lucide-react';
 
 export function LoginPage() {
-  const { login, loginAsDemo, requestPasswordReset, confirmPasswordReset, isLoading } = useAuth();
+  const { login, loginAsDemo, requestPasswordReset, isLoading } = useAuth();
   const { success, error, info } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,11 +21,18 @@ export function LoginPage() {
 
   // Password Reset Dialog State
   const [isResetOpen, setIsResetOpen] = useState(false);
-  const [resetStep, setResetStep] = useState<'request' | 'confirm'>('request');
+  const [resetStep, setResetStep] = useState<'request' | 'sent'>('request');
   const [resetEmail, setResetEmail] = useState('');
-  const [resetToken, setResetToken] = useState('');
-  const [newPassword, setNewPassword] = useState('');
   const [resetLoading, setResetLoading] = useState(false);
+
+  // If a reset token is passed via query string to /login, redirect cleanly to /reset-password
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token') || params.get('resetToken');
+    if (token) {
+      navigate(`/reset-password?token=${encodeURIComponent(token)}`, { replace: true });
+    }
+  }, [location.search, navigate]);
 
   const redirectPath = (location.state as { from?: { pathname: string } })?.from?.pathname || '/app';
 
@@ -71,38 +78,10 @@ export function LoginPage() {
     try {
       const res = await requestPasswordReset({ email: resetEmail.trim() });
       if (res.success) {
-        setResetStep('confirm');
+        setResetStep('sent');
         info('Instructions Sent', res.data?.message || 'If an account exists, password reset instructions have been issued.');
       } else {
         error('Reset Error', res.error || 'Failed to request password reset.');
-      }
-    } finally {
-      setResetLoading(false);
-    }
-  };
-
-  // Password reset confirmation handler
-  const handleConfirmReset = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!resetToken.trim() || !newPassword.trim()) {
-      error('Validation Error', 'Reset token and new password are required.');
-      return;
-    }
-    if (newPassword.length < 6) {
-      error('Validation Error', 'New password must be at least 6 characters.');
-      return;
-    }
-
-    setResetLoading(true);
-    try {
-      const res = await confirmPasswordReset({ token: resetToken.trim(), newPassword: newPassword.trim() });
-      if (res.success) {
-        success('Password Reset', 'Your password has been updated. Please sign in.');
-        setIsResetOpen(false);
-        setResetStep('request');
-        setPassword('');
-      } else {
-        error('Reset Failed', res.error || 'Invalid or expired reset token.');
       }
     } finally {
       setResetLoading(false);
@@ -212,11 +191,11 @@ export function LoginPage() {
       <Dialog
         isOpen={isResetOpen}
         onClose={() => setIsResetOpen(false)}
-        title="Password Reset Architecture"
+        title="Reset Your Password"
         description={
           resetStep === 'request'
-            ? 'Enter your registered email address to generate a secure recovery token.'
-            : 'Enter your verification token and define your new secure password.'
+            ? 'Enter your registered email address to receive password reset instructions.'
+            : 'Check your email for instructions to reset your password.'
         }
       >
         {resetStep === 'request' ? (
@@ -236,41 +215,36 @@ export function LoginPage() {
                 Cancel
               </Button>
               <Button type="submit" isLoading={resetLoading}>
-                Generate Recovery Token
+                Send Reset Link
               </Button>
             </div>
           </form>
         ) : (
-          <form onSubmit={handleConfirmReset} className="space-y-4 py-2">
-            <Input
-              label="Reset Token"
-              placeholder="rst_..."
-              value={resetToken}
-              onChange={(e) => setResetToken(e.target.value)}
-              required
-              leftIcon={<KeyRound className="h-4 w-4" />}
-            />
+          <div className="space-y-4 py-2">
+            <div className="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200 dark:border-neutral-800 flex items-start gap-3">
+              <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+              <div className="space-y-1 text-xs">
+                <p className="font-semibold text-neutral-900 dark:text-neutral-100">
+                  Password Reset Instructions Dispatched
+                </p>
+                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed">
+                  If an account exists with this email address, we have dispatched a single-use recovery link valid for 1 hour. Please check your inbox and click the link to set your new password.
+                </p>
+              </div>
+            </div>
 
-            <Input
-              label="New Password"
-              type="password"
-              placeholder="••••••••"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-              hint="Minimum 6 characters"
-              leftIcon={<Lock className="h-4 w-4" />}
-            />
-
-            <div className="mt-6 flex items-center justify-end gap-2 pt-3 border-t border-neutral-100 dark:border-neutral-800">
-              <Button type="button" variant="outline" onClick={() => setResetStep('request')}>
-                Back
-              </Button>
-              <Button type="submit" isLoading={resetLoading}>
-                Confirm Password Reset
+            <div className="mt-6 flex items-center justify-end pt-3 border-t border-neutral-100 dark:border-neutral-800">
+              <Button
+                type="button"
+                onClick={() => {
+                  setIsResetOpen(false);
+                  setResetStep('request');
+                }}
+              >
+                Back to Sign In
               </Button>
             </div>
-          </form>
+          </div>
         )}
       </Dialog>
     </div>
