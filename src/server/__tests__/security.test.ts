@@ -70,24 +70,80 @@ describe('Phase 1 Security & Authentication Hardening Test Suite', () => {
   });
 
   // Test 3: Password hash is never returned in API responses
-  it('3. Never exposes passwordHash or verificationToken in user responses', async () => {
+  it('3. Never exposes passwordHash or verificationToken in any user/session API response', async () => {
     const email = `test_sanitize_${Date.now()}@origin-os.internal`;
+    const password = 'SecurePassword123!';
+
+    // 1. Signup Response
     const signupRes = await request(app)
       .post('/api/auth/signup')
-      .send({ email, password: 'SecurePassword123!', displayName: 'Sanitize Tester' });
+      .send({ email, password, displayName: 'Sanitize Tester' });
 
+    expect(signupRes.status).toBe(200);
     expect(signupRes.body.data.user.passwordHash).toBeUndefined();
     expect(signupRes.body.data.user.verificationToken).toBeUndefined();
     expect(JSON.stringify(signupRes.body)).not.toContain('passwordHash');
 
     const token = signupRes.body.data.token;
+
+    // 2. Login Response
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({ email, password });
+
+    expect(loginRes.status).toBe(200);
+    expect(loginRes.body.data.user.passwordHash).toBeUndefined();
+    expect(loginRes.body.data.user.verificationToken).toBeUndefined();
+    expect(JSON.stringify(loginRes.body)).not.toContain('passwordHash');
+
+    // 3. Current Session Response
     const sessionRes = await request(app)
       .get('/api/auth/session')
       .set('Authorization', `Bearer ${token}`);
 
+    expect(sessionRes.status).toBe(200);
     expect(sessionRes.body.data.user.passwordHash).toBeUndefined();
     expect(sessionRes.body.data.user.verificationToken).toBeUndefined();
     expect(JSON.stringify(sessionRes.body)).not.toContain('passwordHash');
+
+    // 4. Demo Session Response
+    const demoRes = await request(app)
+      .post('/api/auth/demo')
+      .send({});
+
+    expect(demoRes.status).toBe(200);
+    expect(demoRes.body.data.user.passwordHash).toBeUndefined();
+    expect(JSON.stringify(demoRes.body)).not.toContain('passwordHash');
+
+    // 5. Profile Update Response
+    const profileRes = await request(app)
+      .put('/api/users/profile')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ headline: 'Security Expert' });
+
+    expect(profileRes.status).toBe(200);
+    expect(profileRes.body.data.passwordHash).toBeUndefined();
+    expect(JSON.stringify(profileRes.body)).not.toContain('passwordHash');
+
+    // 6. Preferences Update Response
+    const prefRes = await request(app)
+      .put('/api/users/preferences')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ theme: 'dark' });
+
+    expect(prefRes.status).toBe(200);
+    expect(prefRes.body.data.passwordHash).toBeUndefined();
+    expect(JSON.stringify(prefRes.body)).not.toContain('passwordHash');
+
+    // 7. Export Data Response
+    const exportRes = await request(app)
+      .post('/api/auth/export-data')
+      .set('Authorization', `Bearer ${token}`)
+      .send({});
+
+    expect(exportRes.status).toBe(200);
+    expect(exportRes.body.data.user.passwordHash).toBeUndefined();
+    expect(JSON.stringify(exportRes.body)).not.toContain('passwordHash');
   });
 
   // Test 4: Rejects login with incorrect password

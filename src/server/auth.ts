@@ -41,11 +41,37 @@ export interface SafePublicUser {
 }
 
 /**
- * Strips sensitive credentials (passwordHash, verificationToken) from user records before returning to clients.
+ * Strips sensitive credentials (passwordHash, verificationToken, resetPasswordToken)
+ * by constructing an explicit safe public user object with strict property whitelisting.
  */
 export function toPublicUser(user: UserRecord): SafePublicUser {
-  const { passwordHash: _hash, verificationToken: _token, ...safeUser } = user;
-  return safeUser as SafePublicUser;
+  return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    emailVerified: Boolean(user.emailVerified),
+    profile: {
+      displayName: user.profile?.displayName || '',
+      headline: user.profile?.headline || '',
+      bio: user.profile?.bio || '',
+      avatarUrl: user.profile?.avatarUrl,
+      primaryLifeFocus: user.profile?.primaryLifeFocus || '',
+    },
+    preferences: {
+      theme: user.preferences?.theme || 'system',
+      timezone: user.preferences?.timezone || 'UTC',
+      locale: user.preferences?.locale || 'en-US',
+      weekStartDay: user.preferences?.weekStartDay ?? 1,
+      reducedMotion: Boolean(user.preferences?.reducedMotion),
+      compactDensity: Boolean(user.preferences?.compactDensity),
+      dailyReflectionReminderTime: user.preferences?.dailyReflectionReminderTime ?? null,
+      notificationChannels: user.preferences?.notificationChannels || { inApp: true, email: false, dailyDigest: false },
+    },
+    subscription: user.subscription,
+    lastLoginAt: user.lastLoginAt || null,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
 }
 
 export function hashPassword(plainText: string): string {
