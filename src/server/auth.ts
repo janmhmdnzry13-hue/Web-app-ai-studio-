@@ -36,50 +36,114 @@ export interface AuthenticatedRequest extends Request {
   userId?: string;
 }
 
+export interface SafePublicSubscription {
+  tier: 'free' | 'pro' | 'lifetime';
+  status: 'active' | 'trialing' | 'canceled' | 'past_due';
+  currentPeriodEnd?: string;
+  cancelAtPeriodEnd?: boolean;
+}
+
+export interface SafePublicProfile {
+  displayName: string;
+  headline?: string;
+  bio?: string;
+  avatarUrl?: string;
+  primaryLifeFocus?: string;
+}
+
+export interface SafePublicPreferences {
+  theme: 'system' | 'light' | 'dark';
+  timezone: string;
+  locale: string;
+  weekStartDay: 0 | 1 | 6;
+  reducedMotion: boolean;
+  compactDensity: boolean;
+  dailyReflectionReminderTime: string | null;
+  notificationChannels: {
+    inApp: boolean;
+    email: boolean;
+    dailyDigest: boolean;
+  };
+  unlockedModules?: string[];
+}
+
 export interface SafePublicUser {
   id: string;
   email: string;
   role: 'member' | 'admin' | 'guest';
   emailVerified: boolean;
-  profile: UserRecord['profile'];
-  preferences: UserRecord['preferences'];
-  subscription?: UserRecord['subscription'];
+  profile: SafePublicProfile;
+  preferences: SafePublicPreferences;
+  subscription?: SafePublicSubscription;
   lastLoginAt: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
 /**
- * Strips sensitive credentials (passwordHash, verificationToken, resetPasswordToken)
+ * Safely transforms a subscription object, omitting private stripe customer/subscription identifiers.
+ */
+export function toPublicSubscription(sub?: UserRecord['subscription']): SafePublicSubscription | undefined {
+  if (!sub) return undefined;
+  return {
+    tier: sub.tier || 'free',
+    status: sub.status || 'active',
+    currentPeriodEnd: sub.currentPeriodEnd,
+    cancelAtPeriodEnd: sub.cancelAtPeriodEnd,
+  };
+}
+
+/**
+ * Strips sensitive credentials (passwordHash, verificationToken, resetPasswordToken, private stripe IDs)
  * by constructing an explicit safe public user object with strict property whitelisting.
  */
-export function toPublicUser(user: UserRecord): SafePublicUser {
+export function toPublicUser(user: UserRecord | any): SafePublicUser {
+  if (!user || typeof user !== 'object') {
+    throw new Error('Invalid user object provided for serialization');
+  }
+
+  const safeProfile: SafePublicProfile = {
+    displayName: typeof user.profile?.displayName === 'string' ? user.profile.displayName : '',
+    headline: typeof user.profile?.headline === 'string' ? user.profile.headline : '',
+    bio: typeof user.profile?.bio === 'string' ? user.profile.bio : '',
+    avatarUrl: typeof user.profile?.avatarUrl === 'string' ? user.profile.avatarUrl : undefined,
+    primaryLifeFocus: typeof user.profile?.primaryLifeFocus === 'string' ? user.profile.primaryLifeFocus : '',
+  };
+
+  const safePreferences: SafePublicPreferences = {
+    theme: user.preferences?.theme === 'light' || user.preferences?.theme === 'dark' ? user.preferences.theme : 'system',
+    timezone: typeof user.preferences?.timezone === 'string' ? user.preferences.timezone : 'UTC',
+    locale: typeof user.preferences?.locale === 'string' ? user.preferences.locale : 'en-US',
+    weekStartDay: user.preferences?.weekStartDay === 0 || user.preferences?.weekStartDay === 6 ? user.preferences.weekStartDay : 1,
+    reducedMotion: Boolean(user.preferences?.reducedMotion),
+    compactDensity: Boolean(user.preferences?.compactDensity),
+    dailyReflectionReminderTime:
+      typeof user.preferences?.dailyReflectionReminderTime === 'string'
+        ? user.preferences.dailyReflectionReminderTime
+        : user.preferences?.dailyReflectionReminderTime === null
+        ? null
+        : '21:00',
+    notificationChannels: {
+      inApp: user.preferences?.notificationChannels?.inApp !== false,
+      email: Boolean(user.preferences?.notificationChannels?.email),
+      dailyDigest: Boolean(user.preferences?.notificationChannels?.dailyDigest),
+    },
+    unlockedModules: Array.isArray(user.preferences?.unlockedModules)
+      ? user.preferences.unlockedModules
+      : ['tasks', 'habits', 'finances', 'goals'],
+  };
+
   return {
-    id: user.id,
-    email: user.email,
-    role: user.role,
+    id: String(user.id || ''),
+    email: String(user.email || ''),
+    role: user.role === 'admin' ? 'admin' : user.role === 'guest' ? 'guest' : 'member',
     emailVerified: Boolean(user.emailVerified),
-    profile: {
-      displayName: user.profile?.displayName || '',
-      headline: user.profile?.headline || '',
-      bio: user.profile?.bio || '',
-      avatarUrl: user.profile?.avatarUrl,
-      primaryLifeFocus: user.profile?.primaryLifeFocus || '',
-    },
-    preferences: {
-      theme: user.preferences?.theme || 'system',
-      timezone: user.preferences?.timezone || 'UTC',
-      locale: user.preferences?.locale || 'en-US',
-      weekStartDay: user.preferences?.weekStartDay ?? 1,
-      reducedMotion: Boolean(user.preferences?.reducedMotion),
-      compactDensity: Boolean(user.preferences?.compactDensity),
-      dailyReflectionReminderTime: user.preferences?.dailyReflectionReminderTime ?? null,
-      notificationChannels: user.preferences?.notificationChannels || { inApp: true, email: false, dailyDigest: false },
-    },
-    subscription: user.subscription,
-    lastLoginAt: user.lastLoginAt || null,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    profile: safeProfile,
+    preferences: safePreferences,
+    subscription: toPublicSubscription(user.subscription),
+    lastLoginAt: typeof user.lastLoginAt === 'string' ? user.lastLoginAt : null,
+    createdAt: typeof user.createdAt === 'string' ? user.createdAt : new Date().toISOString(),
+    updatedAt: typeof user.updatedAt === 'string' ? user.updatedAt : new Date().toISOString(),
   };
 }
 

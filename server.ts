@@ -8,7 +8,9 @@ import { generateLocalAIResponse, generateLocalDynamicInsights } from './src/ser
 import { apiRouter, checkRateLimit } from './src/server/routes';
 import { requireAuth, AuthenticatedRequest, getJwtSecret } from './src/server/auth';
 import { getEncryptionKey } from './src/server/db';
+import { startNotificationScheduler } from './src/server/notifications';
 import { buildServerAuthorizedAIContext, buildSecureAIPrompt } from './src/server/ai-context';
+import { validateBody, aiChatSchema, aiInsightsSchema } from './src/server/validation';
 
 dotenv.config();
 
@@ -106,7 +108,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 // Server-side AI Chat & Planning Endpoint (Authenticated, Rate-Limited & Server-Authoritative)
-app.post('/api/ai/chat', requireAuth, async (req: AuthenticatedRequest, res) => {
+app.post('/api/ai/chat', requireAuth, validateBody(aiChatSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }), async (req: AuthenticatedRequest, res) => {
   try {
     // Identity is derived STRICTLY from verified authentication (JWT), never from request body/headers
     const userId = req.userId!;
@@ -119,11 +121,6 @@ app.post('/api/ai/chat', requireAuth, async (req: AuthenticatedRequest, res) => 
     }
 
     const { message, conversationHistory, moduleContext } = req.body;
-
-    if (!message || typeof message !== 'string' || !message.trim()) {
-      res.status(400).json({ success: false, error: { code: 'INVALID_PAYLOAD', message: 'Missing or invalid message string.' } });
-      return;
-    }
 
     // Retrieve authorized user data directly from server database with strict ownership check
     const trustedContext = buildServerAuthorizedAIContext(userId);
@@ -231,7 +228,7 @@ Return ONLY valid JSON.
 });
 
 // Server-side AI Dynamic Insights Endpoint (Authenticated, Rate-Limited & Server-Authoritative)
-app.post('/api/ai/insights', requireAuth, async (req: AuthenticatedRequest, res) => {
+app.post('/api/ai/insights', requireAuth, validateBody(aiInsightsSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }), async (req: AuthenticatedRequest, res) => {
   try {
     // Identity is derived STRICTLY from verified authentication (JWT), never from request body/headers
     const userId = req.userId!;
@@ -324,6 +321,9 @@ async function startServer() {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
+
+  // Initialize server-authoritative notification scheduling engine
+  startNotificationScheduler();
 
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`ORIGIN Life OS Server active at http://0.0.0.0:${PORT}`);

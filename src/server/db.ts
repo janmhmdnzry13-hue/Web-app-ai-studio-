@@ -231,6 +231,45 @@ export interface PasswordResetRecord {
   createdAt: string;
 }
 
+export interface NotificationRecord {
+  id: string;
+  userId: string;
+  type: 'task_reminder' | 'habit_reminder' | 'goal_deadline' | 'relationship_reminder' | 'budget_alert' | 'system_update' | 'system_alert' | 'custom_reminder';
+  title: string;
+  message: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  isRead: boolean;
+  readAt?: string | null;
+  actionUrl?: string | null;
+  entityReference?: {
+    type: 'task' | 'habit' | 'goal' | 'relationship' | 'budget' | 'system';
+    id: string;
+  } | null;
+  scheduledNotificationId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ScheduledNotificationRecord {
+  id: string;
+  userId: string;
+  type: 'task_reminder' | 'habit_reminder' | 'goal_deadline' | 'relationship_reminder' | 'budget_alert' | 'system_update' | 'system_alert' | 'custom_reminder';
+  title: string;
+  message: string;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  scheduledFor: string; // ISO 8601 string
+  status: 'scheduled' | 'delivered' | 'canceled' | 'failed';
+  deliveredAt?: string | null;
+  actionUrl?: string | null;
+  entityReference?: {
+    type: 'task' | 'habit' | 'goal' | 'relationship' | 'budget' | 'system';
+    id: string;
+  } | null;
+  metadata?: Record<string, any>;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface DatabaseSchema {
   version: number;
   users: UserRecord[];
@@ -247,6 +286,8 @@ export interface DatabaseSchema {
   aiMemories: AIMemoryRecord[];
   auditLogs: AuditLogRecord[];
   passwordResetTokens: PasswordResetRecord[];
+  notifications: NotificationRecord[];
+  scheduledNotifications: ScheduledNotificationRecord[];
 }
 
 // Durable database storage path
@@ -513,6 +554,8 @@ export class DatabaseEngine {
     if (!this.db.aiMemories) this.db.aiMemories = [];
     if (!this.db.auditLogs) this.db.auditLogs = [];
     if (!this.db.passwordResetTokens) this.db.passwordResetTokens = [];
+    if (!this.db.notifications) this.db.notifications = [];
+    if (!this.db.scheduledNotifications) this.db.scheduledNotifications = [];
   }
 
   private getInitialSchema(): DatabaseSchema {
@@ -532,6 +575,8 @@ export class DatabaseEngine {
       aiMemories: [],
       auditLogs: [],
       passwordResetTokens: [],
+      notifications: [],
+      scheduledNotifications: [],
     };
   }
 
