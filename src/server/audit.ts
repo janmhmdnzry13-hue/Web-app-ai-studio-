@@ -1,4 +1,4 @@
-import { db } from './db';
+import { auditLogRepository } from './repositories';
 import { generateCryptoToken } from './auth';
 
 export async function logAuditEvent(
@@ -21,12 +21,7 @@ export async function logAuditEvent(
       timestamp: new Date().toISOString(),
     };
 
-    db.schema.auditLogs.unshift(entry);
-    // Keep last 1000 logs per instance
-    if (db.schema.auditLogs.length > 1000) {
-      db.schema.auditLogs = db.schema.auditLogs.slice(0, 1000);
-    }
-    await db.save();
+    await auditLogRepository.create(entry);
   } catch (err) {
     console.error('Failed to write audit log:', err);
   }

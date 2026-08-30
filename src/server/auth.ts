@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import { db, UserRecord } from './db';
+import { UserRecord } from './db';
+import { userRepository } from './repositories';
 
 const TOKEN_EXPIRY = '7d';
 
@@ -201,7 +202,7 @@ export function verifyToken(token: string): { userId: string; email: string; rol
 }
 
 // Authentication Middleware enforcing valid bearer session token
-export function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
+export async function requireAuth(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     res.status(401).json({
@@ -233,7 +234,7 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
     return;
   }
 
-  const user = db.schema.users.find((u) => u.id === verification.payload!.userId);
+  const user = await userRepository.findById(verification.payload!.userId);
   if (!user) {
     res.status(401).json({
       success: false,
@@ -248,14 +249,14 @@ export function requireAuth(req: AuthenticatedRequest, res: Response, next: Next
 }
 
 // Optional Auth Middleware for endpoints that can adapt to logged-in users
-export function optionalAuth(req: AuthenticatedRequest, _res: Response, next: NextFunction): void {
+export async function optionalAuth(req: AuthenticatedRequest, _res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7).trim();
     if (token) {
       const payload = verifyToken(token);
       if (payload) {
-        const user = db.schema.users.find((u) => u.id === payload.userId);
+        const user = await userRepository.findById(payload.userId);
         if (user) {
           req.user = user;
           req.userId = user.id;

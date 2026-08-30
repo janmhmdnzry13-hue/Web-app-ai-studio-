@@ -6,8 +6,7 @@ import { GoogleGenAI, Type } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
 import { generateLocalAIResponse, generateLocalDynamicInsights } from './src/services/ai/local-engine';
 import { apiRouter, checkRateLimit } from './src/server/routes';
-import { requireAuth, AuthenticatedRequest, getJwtSecret } from './src/server/auth';
-import { getEncryptionKey } from './src/server/db';
+import { requireAuth, AuthenticatedRequest } from './src/server/auth';
 import { startNotificationScheduler } from './src/server/notifications';
 import { buildServerAuthorizedAIContext, buildSecureAIPrompt } from './src/server/ai-context';
 import { validateBody, aiChatSchema, aiInsightsSchema } from './src/server/validation';
@@ -304,10 +303,6 @@ Return JSON array with items matching:
 
 // Start Server with Vite Middleware
 async function startServer() {
-  // Validate required security secrets (in production, strictly requires configured JWT_SECRET and ENCRYPTION_SECRET)
-  getJwtSecret();
-  getEncryptionKey();
-
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },

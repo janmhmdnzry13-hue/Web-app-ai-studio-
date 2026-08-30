@@ -1,10 +1,59 @@
 import express, { Request, Response } from 'express';
-import { db, TaskRecord, HabitRecord, HabitLogRecord, GoalRecord, TransactionRecord, BudgetRecord, ReflectionRecord, RelationshipRecord, ContactInteractionRecord, NoteRecord, AIMemoryRecord, UserRecord, NotificationRecord, ScheduledNotificationRecord } from './db';
-import { requireAuth, optionalAuth, AuthenticatedRequest, hashPassword, verifyPassword, generateToken, generateCryptoToken, toPublicUser, toPublicSubscription } from './auth';
+import {
+  TaskRecord,
+  HabitRecord,
+  GoalRecord,
+  TransactionRecord,
+  RelationshipRecord,
+  NoteRecord,
+  UserRecord,
+  NotificationRecord,
+  db,
+} from './db';
+import {
+  repositories,
+  userRepository,
+  taskRepository,
+  habitRepository,
+  habitLogRepository,
+  goalRepository,
+  transactionRepository,
+  reflectionRepository,
+  relationshipRepository,
+  noteRepository,
+  auditLogRepository,
+  passwordResetRepository,
+  notificationRepository,
+  scheduledNotificationRepository,
+} from './repositories';
+import {
+  requireAuth,
+  optionalAuth,
+  AuthenticatedRequest,
+  hashPassword,
+  verifyPassword,
+  generateToken,
+  generateCryptoToken,
+  toPublicUser,
+  toPublicSubscription,
+} from './auth';
 import { logAuditEvent } from './audit';
-import { checkUserEntitlements, createStripeCheckoutSession, PLAN_TIERS } from './billing';
+import {
+  checkUserEntitlements,
+  createStripeCheckoutSession,
+  PLAN_TIERS,
+  StripeConfigurationError,
+  constructStripeWebhookEvent,
+} from './billing';
 import { emailService } from './email';
-import { checkRateLimit, resetRateLimitsForTesting, cleanupExpiredRateLimits, getRateLimitEntryCount, getClientIp, rateLimiter } from './rate-limiter';
+import {
+  checkRateLimit,
+  resetRateLimitsForTesting,
+  cleanupExpiredRateLimits,
+  getRateLimitEntryCount,
+  getClientIp,
+  rateLimiter,
+} from './rate-limiter';
 import {
   scheduleNotificationServer,
   processDueScheduledNotifications,
@@ -20,12 +69,16 @@ import {
   updateTaskSchema,
   updateTaskStatusSchema,
   createHabitSchema,
+  updateHabitSchema,
   logHabitSchema,
   createGoalSchema,
+  updateGoalSchema,
   createTransactionSchema,
   createReflectionSchema,
   createRelationshipSchema,
+  updateRelationshipSchema,
   createNoteSchema,
+  updateNoteSchema,
   updateProfileSchema,
   updatePreferencesSchema,
   billingCheckoutSchema,
@@ -34,7 +87,14 @@ import {
   updateScheduledNotificationSchema,
 } from './validation';
 
-export { checkRateLimit, resetRateLimitsForTesting, cleanupExpiredRateLimits, getRateLimitEntryCount, getClientIp, rateLimiter };
+export {
+  checkRateLimit,
+  resetRateLimitsForTesting,
+  cleanupExpiredRateLimits,
+  getRateLimitEntryCount,
+  getClientIp,
+  rateLimiter,
+};
 
 export const apiRouter = express.Router();
 
@@ -42,100 +102,106 @@ export const apiRouter = express.Router();
 // AUTHENTICATION ROUTES
 // -------------------------------------------------------------
 
-apiRouter.post('/auth/signup', validateBody(signupSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }), async (req: Request, res: Response) => {
-  try {
-    // Enforce strict server-side rate limiting on signup (max 10 attempts per 10 minutes per IP)
-    // Rate limit identity is derived strictly from server-extracted client IP, never trusting client-supplied userId
-    const ip = getClientIp(req);
-    const rateCheck = rateLimiter.consume(`signup_${ip}`, 10, 10 * 60 * 1000);
+apiRouter.post(
+  '/auth/signup',
+  validateBody(signupSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: Request, res: Response) => {
+    try {
+      // Enforce strict server-side rate limiting on signup (max 10 attempts per 10 minutes per IP)
+      const ip = getClientIp(req);
+      const rateCheck = rateLimiter.consume(`signup_${ip}`, 10, 10 * 60 * 1000);
 
-    // Standard non-sensitive RateLimit headers
-    res.setHeader('RateLimit-Limit', '10');
-    res.setHeader('RateLimit-Remaining', rateCheck.remaining.toString());
-    res.setHeader('RateLimit-Reset', Math.ceil(rateCheck.resetAt / 1000).toString());
+      // Standard non-sensitive RateLimit headers
+      res.setHeader('RateLimit-Limit', '10');
+      res.setHeader('RateLimit-Remaining', rateCheck.remaining.toString());
+      res.setHeader('RateLimit-Reset', Math.ceil(rateCheck.resetAt / 1000).toString());
 
-    if (!rateCheck.allowed) {
-      res.setHeader('Retry-After', rateCheck.retryAfterSeconds.toString());
-      res.status(429).json({
-        success: false,
-        error: {
-          code: 'RATE_LIMITED',
-          message: 'Too many account creation attempts. Please wait a few minutes before trying again.',
+      if (!rateCheck.allowed) {
+        res.setHeader('Retry-After', rateCheck.retryAfterSeconds.toString());
+        res.status(429).json({
+          success: false,
+          error: {
+            code: 'RATE_LIMITED',
+            message: 'Too many account creation attempts. Please wait a few minutes before trying again.',
+          },
+        });
+        return;
+      }
+
+      const { email, password, displayName } = req.body;
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanName = displayName.trim();
+
+      const existing = await userRepository.findByEmail(cleanEmail);
+      if (existing) {
+        res.status(409).json({
+          success: false,
+          error: { code: 'AUTH_EMAIL_EXISTS', message: 'An account with this email already exists.' },
+        });
+        return;
+      }
+
+      const userId = generateCryptoToken('usr');
+      const passwordHash = hashPassword(password);
+      const verificationToken = generateCryptoToken('vtok');
+
+      const newUser: UserRecord = {
+        id: userId,
+        email: cleanEmail,
+        passwordHash,
+        role: 'member',
+        emailVerified: true, // Auto-verify in development/preview with token tracked
+        verificationToken,
+        profile: {
+          displayName: cleanName,
+          headline: 'Member',
+          bio: '',
+          primaryLifeFocus: 'Deep Work & Daily Focus',
+        },
+        preferences: {
+          theme: 'system',
+          timezone: 'UTC',
+          locale: 'en-US',
+          weekStartDay: 1,
+          reducedMotion: false,
+          compactDensity: false,
+          dailyReflectionReminderTime: '21:00',
+          notificationChannels: {
+            inApp: true,
+            email: false,
+            dailyDigest: true,
+          },
+          unlockedModules: ['tasks', 'habits', 'finances', 'goals'],
+        },
+        subscription: {
+          tier: 'free',
+          status: 'active',
+        },
+        lastLoginAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      await userRepository.create(newUser);
+      await userRepository.seedStarterData(userId);
+
+      await logAuditEvent(userId, 'USER_SIGNUP', 'auth', { email: cleanEmail });
+
+      const token = generateToken(newUser);
+      res.json({
+        success: true,
+        data: {
+          user: toPublicUser(newUser),
+          token,
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         },
       });
-      return;
+    } catch (err: any) {
+      console.error('Signup error:', err);
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create account.' } });
     }
-
-    const { email, password, displayName } = req.body;
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanName = displayName.trim();
-
-    const existing = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
-    if (existing) {
-      res.status(409).json({ success: false, error: { code: 'AUTH_EMAIL_EXISTS', message: 'An account with this email already exists.' } });
-      return;
-    }
-
-    const userId = generateCryptoToken('usr');
-    const passwordHash = hashPassword(password);
-    const verificationToken = generateCryptoToken('vtok');
-
-    const newUser: UserRecord = {
-      id: userId,
-      email: cleanEmail,
-      passwordHash,
-      role: 'member',
-      emailVerified: true, // Auto-verify in development/preview with token tracked
-      verificationToken,
-      profile: {
-        displayName: cleanName,
-        headline: 'Member',
-        bio: '',
-        primaryLifeFocus: 'Deep Work & Daily Focus',
-      },
-      preferences: {
-        theme: 'system',
-        timezone: 'UTC',
-        locale: 'en-US',
-        weekStartDay: 1,
-        reducedMotion: false,
-        compactDensity: false,
-        dailyReflectionReminderTime: '21:00',
-        notificationChannels: {
-          inApp: true,
-          email: false,
-          dailyDigest: true,
-        },
-        unlockedModules: ['tasks', 'habits', 'finances', 'goals'],
-      },
-      subscription: {
-        tier: 'free',
-        status: 'active',
-      },
-      lastLoginAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    db.schema.users.push(newUser);
-    await db.save();
-
-    await logAuditEvent(userId, 'USER_SIGNUP', 'auth', { email: cleanEmail });
-
-    const token = generateToken(newUser);
-    res.json({
-      success: true,
-      data: {
-        user: toPublicUser(newUser),
-        token,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-      },
-    });
-  } catch (err: any) {
-    console.error('Signup error:', err);
-    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create account.' } });
   }
-});
+);
 
 apiRouter.post(
   '/auth/login',
@@ -151,33 +217,43 @@ apiRouter.post(
       // Rate limit login attempts (max 15 per minute per IP)
       const ip = getClientIp(req);
       if (!checkRateLimit(`login_${ip}`, 15, 60000)) {
-        res.status(429).json({ success: false, error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Please wait a minute.' } });
+        res.status(429).json({
+          success: false,
+          error: { code: 'RATE_LIMITED', message: 'Too many login attempts. Please wait a minute.' },
+        });
         return;
       }
 
-      const user = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
+      const user = await userRepository.findByEmail(cleanEmail);
       if (!user) {
-        res.status(401).json({ success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Invalid email or password.' } });
+        res.status(401).json({
+          success: false,
+          error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Invalid email or password.' },
+        });
         return;
       }
 
       const valid = verifyPassword(password, user.passwordHash);
       if (!valid) {
-        res.status(401).json({ success: false, error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Invalid email or password.' } });
+        res.status(401).json({
+          success: false,
+          error: { code: 'AUTH_INVALID_CREDENTIALS', message: 'Invalid email or password.' },
+        });
         return;
       }
 
-      user.lastLoginAt = new Date().toISOString();
-      user.updatedAt = new Date().toISOString();
-      await db.save();
+      const updatedUser = await userRepository.update(user.id, {
+        lastLoginAt: new Date().toISOString(),
+      });
 
       await logAuditEvent(user.id, 'USER_LOGIN', 'auth');
 
-      const token = generateToken(user);
+      const userToTokenize = updatedUser || user;
+      const token = generateToken(userToTokenize);
       res.json({
         success: true,
         data: {
-          user: toPublicUser(user),
+          user: toPublicUser(userToTokenize),
           token,
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
         },
@@ -244,10 +320,9 @@ apiRouter.post('/auth/demo', async (req: Request, res: Response) => {
       updatedAt: new Date().toISOString(),
     };
 
-    db.schema.users.push(demoUser);
+    await userRepository.create(demoUser);
     // Seed isolated demo dataset for this guest
-    db.seedUserStarterData(guestId);
-    await db.save();
+    await userRepository.seedStarterData(guestId);
 
     await logAuditEvent(demoUser.id, 'DEMO_SESSION_STARTED', 'auth');
 
@@ -279,28 +354,36 @@ apiRouter.post(
 
       const ip = getClientIp(req);
       if (!checkRateLimit(`reset_${ip}`, 10, 60000)) {
-        res.status(429).json({ success: false, error: { code: 'RATE_LIMITED', message: 'Too many reset requests. Please wait a minute.' } });
+        res.status(429).json({
+          success: false,
+          error: { code: 'RATE_LIMITED', message: 'Too many reset requests. Please wait a minute.' },
+        });
         return;
       }
 
-      const user = db.schema.users.find((u) => u.email.toLowerCase() === cleanEmail);
+      const user = await userRepository.findByEmail(cleanEmail);
       if (user) {
         const resetToken = generateCryptoToken('rst');
-        db.schema.passwordResetTokens.push({
+        await passwordResetRepository.create({
           token: resetToken,
           email: cleanEmail,
           expiresAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour
           used: false,
           createdAt: new Date().toISOString(),
         });
-        await db.save();
+
         await logAuditEvent(user.id, 'PASSWORD_RESET_REQUESTED', 'auth', { email: cleanEmail });
 
         // Dispatch reset email through configured email delivery abstraction
         const originHeader = (req.headers.origin || req.headers.host) as string | undefined;
-        await emailService.sendPasswordResetEmail(cleanEmail, resetToken, originHeader).catch((mailErr) => {
-          console.error('[Auth] Failed to dispatch password reset email:', mailErr?.message || mailErr);
-        });
+        try {
+          const mailResult = await emailService.sendPasswordResetEmail(cleanEmail, resetToken, originHeader);
+          if (!mailResult.success) {
+            console.error('[Auth] Failed to dispatch password reset email: delivery provider reported failure');
+          }
+        } catch (mailErr: any) {
+          console.error('[Auth] Failed to dispatch password reset email: delivery exception caught');
+        }
       }
 
       // Security: Never return resetToken in API response! Always return a generic success message to prevent user enumeration
@@ -326,26 +409,32 @@ apiRouter.post(
     try {
       const { token, newPassword } = req.body;
 
-      const record = db.schema.passwordResetTokens.find((r) => r.token === token && !r.used);
+      const record = await passwordResetRepository.findByToken(token);
       if (!record || new Date(record.expiresAt).getTime() < Date.now()) {
-        res.status(400).json({ success: false, error: { code: 'TOKEN_EXPIRED', message: 'Reset token has expired or is invalid.' } });
+        res.status(400).json({
+          success: false,
+          error: { code: 'TOKEN_EXPIRED', message: 'Reset token has expired or is invalid.' },
+        });
         return;
       }
 
-      const user = db.schema.users.find((u) => u.email.toLowerCase() === record.email.toLowerCase());
+      const user = await userRepository.findByEmail(record.email);
       if (!user) {
         res.status(404).json({ success: false, error: { code: 'USER_NOT_FOUND', message: 'Account not found.' } });
         return;
       }
 
-      user.passwordHash = hashPassword(newPassword);
-      user.updatedAt = new Date().toISOString();
-      record.used = true;
-      await db.save();
+      await userRepository.update(user.id, {
+        passwordHash: hashPassword(newPassword),
+      });
+      await passwordResetRepository.markUsed(token);
 
       await logAuditEvent(user.id, 'PASSWORD_RESET_COMPLETED', 'auth');
 
-      res.json({ success: true, data: { success: true, message: 'Password has been successfully updated. You can now sign in.' } });
+      res.json({
+        success: true,
+        data: { success: true, message: 'Password has been successfully updated. You can now sign in.' },
+      });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Password reset confirmation failed.' } });
     }
@@ -357,21 +446,7 @@ apiRouter.post('/auth/export-data', requireAuth, async (req: AuthenticatedReques
     const userId = req.userId!;
     await logAuditEvent(userId, 'DATA_EXPORTED', 'user_data');
 
-    const exportPayload = {
-      user: toPublicUser(req.user!),
-      tasks: db.schema.tasks.filter((t) => t.userId === userId),
-      habits: db.schema.habits.filter((h) => h.userId === userId),
-      habitLogs: db.schema.habitLogs.filter((hl) => hl.userId === userId),
-      goals: db.schema.goals.filter((g) => g.userId === userId),
-      transactions: db.schema.transactions.filter((tx) => tx.userId === userId),
-      budgets: db.schema.budgets.filter((b) => b.userId === userId),
-      reflections: db.schema.reflections.filter((r) => r.userId === userId),
-      relationships: db.schema.relationships.filter((rel) => rel.userId === userId),
-      interactions: db.schema.interactions.filter((i) => i.userId === userId),
-      notes: db.schema.notes.filter((n) => n.userId === userId),
-      exportedAt: new Date().toISOString(),
-    };
-
+    const exportPayload = await userRepository.exportAllUserData(userId);
     res.json({ success: true, data: exportPayload });
   } catch (err: any) {
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to export data.' } });
@@ -383,22 +458,13 @@ apiRouter.delete('/auth/delete-account', requireAuth, async (req: AuthenticatedR
     const userId = req.userId!;
     await logAuditEvent(userId, 'ACCOUNT_DELETED', 'user_account');
 
-    // Purge all user rows across all tables
-    db.schema.users = db.schema.users.filter((u) => u.id !== userId);
-    db.schema.tasks = db.schema.tasks.filter((t) => t.userId !== userId);
-    db.schema.habits = db.schema.habits.filter((h) => h.userId !== userId);
-    db.schema.habitLogs = db.schema.habitLogs.filter((hl) => hl.userId !== userId);
-    db.schema.goals = db.schema.goals.filter((g) => g.userId !== userId);
-    db.schema.transactions = db.schema.transactions.filter((tx) => tx.userId !== userId);
-    db.schema.budgets = db.schema.budgets.filter((b) => b.userId !== userId);
-    db.schema.reflections = db.schema.reflections.filter((r) => r.userId !== userId);
-    db.schema.relationships = db.schema.relationships.filter((rel) => rel.userId !== userId);
-    db.schema.interactions = db.schema.interactions.filter((i) => i.userId !== userId);
-    db.schema.notes = db.schema.notes.filter((n) => n.userId !== userId);
-    db.schema.aiMemories = db.schema.aiMemories.filter((m) => m.userId !== userId);
+    // Purge all user rows across all tables via repository
+    await userRepository.purgeAllUserData(userId);
 
-    await db.save();
-    res.json({ success: true, data: { success: true, message: 'Account and associated records successfully deleted.' } });
+    res.json({
+      success: true,
+      data: { success: true, message: 'Account and associated records successfully deleted.' },
+    });
   } catch (err: any) {
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete account.' } });
   }
@@ -408,8 +474,8 @@ apiRouter.delete('/auth/delete-account', requireAuth, async (req: AuthenticatedR
 // TASKS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/tasks', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const tasks = db.schema.tasks.filter((t) => t.userId === req.userId);
+apiRouter.get('/tasks', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const tasks = await taskRepository.findByUserId(req.userId!);
   res.json({ success: true, data: tasks });
 });
 
@@ -427,7 +493,10 @@ apiRouter.post(
       if (!entitlements.canCreateTask) {
         res.status(403).json({
           success: false,
-          error: { code: 'PLAN_LIMIT_REACHED', message: `Free plan limit reached (${entitlements.plan.limits.maxTasks} tasks). Upgrade to Pro for unlimited tasks.` },
+          error: {
+            code: 'PLAN_LIMIT_REACHED',
+            message: `Free plan limit reached (${entitlements.plan.limits.maxTasks} tasks). Upgrade to Pro for unlimited tasks.`,
+          },
         });
         return;
       }
@@ -452,10 +521,8 @@ apiRouter.post(
         updatedAt: new Date().toISOString(),
       };
 
-      db.schema.tasks.unshift(newTask);
-      await db.save();
-
-      res.json({ success: true, data: newTask });
+      const created = await taskRepository.create(newTask);
+      res.json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create task.' } });
     }
@@ -471,21 +538,15 @@ apiRouter.put(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const { id } = req.params;
-      const task = db.schema.tasks.find((t) => t.id === id && t.userId === req.userId);
-      if (!task) {
+      const updates = req.body;
+
+      const updated = await taskRepository.update(id, req.userId!, updates);
+      if (!updated) {
         res.status(404).json({ success: false, error: { code: 'TASK_NOT_FOUND', message: 'Task not found.' } });
         return;
       }
 
-      const updates = req.body;
-      Object.assign(task, {
-        ...updates,
-        userId: req.userId, // Prevent tampering with ownership
-        updatedAt: new Date().toISOString(),
-      });
-
-      await db.save();
-      res.json({ success: true, data: task });
+      res.json({ success: true, data: updated });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update task.' } });
     }
@@ -502,17 +563,14 @@ apiRouter.patch(
     try {
       const { id } = req.params;
       const { status } = req.body;
-      const task = db.schema.tasks.find((t) => t.id === id && t.userId === req.userId);
-      if (!task) {
+
+      const updated = await taskRepository.updateStatus(id, req.userId!, status);
+      if (!updated) {
         res.status(404).json({ success: false, error: { code: 'TASK_NOT_FOUND', message: 'Task not found.' } });
         return;
       }
 
-      task.status = status;
-      task.updatedAt = new Date().toISOString();
-      await db.save();
-
-      res.json({ success: true, data: task });
+      res.json({ success: true, data: updated });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update task status.' } });
     }
@@ -522,15 +580,12 @@ apiRouter.patch(
 apiRouter.delete('/tasks/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const initialLen = db.schema.tasks.length;
-    db.schema.tasks = db.schema.tasks.filter((t) => !(t.id === id && t.userId === req.userId));
-
-    if (db.schema.tasks.length === initialLen) {
+    const deleted = await taskRepository.delete(id, req.userId!);
+    if (!deleted) {
       res.status(404).json({ success: false, error: { code: 'TASK_NOT_FOUND', message: 'Task not found.' } });
       return;
     }
 
-    await db.save();
     res.json({ success: true, data: { success: true } });
   } catch (err: any) {
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete task.' } });
@@ -541,8 +596,8 @@ apiRouter.delete('/tasks/:id', requireAuth, async (req: AuthenticatedRequest, re
 // HABITS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/habits', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const habits = db.schema.habits.filter((h) => h.userId === req.userId);
+apiRouter.get('/habits', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const habits = await habitRepository.findByUserId(req.userId!);
   res.json({ success: true, data: habits });
 });
 
@@ -556,15 +611,6 @@ apiRouter.post(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const entitlements = checkUserEntitlements(req.user!);
-      if (!entitlements.canCreateHabit) {
-        res.status(403).json({
-          success: false,
-          error: { code: 'PLAN_LIMIT_REACHED', message: `Free tier allows up to ${entitlements.plan.limits.maxActiveHabits} habits. Upgrade to Pro for unlimited habits.` },
-        });
-        return;
-      }
-
       const { name, description, category, frequency, targetDays, targetPerDay, reminderTime } = req.body;
 
       const newHabit: HabitRecord = {
@@ -585,10 +631,8 @@ apiRouter.post(
         updatedAt: new Date().toISOString(),
       };
 
-      db.schema.habits.unshift(newHabit);
-      await db.save();
-
-      res.json({ success: true, data: newHabit });
+      const created = await habitRepository.create(newHabit);
+      res.json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create habit.' } });
     }
@@ -606,72 +650,159 @@ apiRouter.post(
       const userId = req.userId!;
       const { habitId, date, completed, value, notes } = req.body;
 
-      const habit = db.schema.habits.find((h) => h.id === habitId && h.userId === userId);
-      if (!habit) {
+      const result = await habitLogRepository.logHabit(userId, habitId, {
+        date,
+        completed,
+        value,
+        notes,
+      });
+
+      if (!result) {
         res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
         return;
       }
 
-      const logDate = date || new Date().toISOString().slice(0, 10);
-      let existingLog = db.schema.habitLogs.find((l) => l.habitId === habitId && l.date === logDate && l.userId === userId);
-
-      if (existingLog) {
-        existingLog.completed = completed;
-        existingLog.value = value ?? (completed ? 1 : 0);
-        existingLog.notes = notes;
-      } else {
-        existingLog = {
-          id: generateCryptoToken('hlg'),
-          userId,
-          habitId,
-          date: logDate,
-          completed: Boolean(completed),
-          value: value ?? 1,
-          notes,
-          createdAt: new Date().toISOString(),
-        };
-        db.schema.habitLogs.push(existingLog);
-      }
-
-      // Recalculate streak
-      const userLogs = db.schema.habitLogs.filter((l) => l.habitId === habitId && l.userId === userId && l.completed);
-      habit.totalCompletions = userLogs.length;
-      habit.streakCount = Math.min(userLogs.length, habit.streakCount + (completed ? 1 : 0));
-      habit.bestStreak = Math.max(habit.bestStreak, habit.streakCount);
-      habit.updatedAt = new Date().toISOString();
-
-      await db.save();
-      res.json({ success: true, data: { log: existingLog, habit } });
+      res.json({ success: true, data: result });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to log habit.' } });
     }
   }
 );
 
-apiRouter.get('/habits/logs', requireAuth, (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/habits/logs', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   const { habitId, startDate, endDate } = req.query;
-  let logs = db.schema.habitLogs.filter((l) => l.userId === req.userId);
-
-  if (habitId) {
-    logs = logs.filter((l) => l.habitId === habitId);
-  }
-  if (startDate) {
-    logs = logs.filter((l) => l.date >= String(startDate));
-  }
-  if (endDate) {
-    logs = logs.filter((l) => l.date <= String(endDate));
-  }
+  const logs = await habitLogRepository.findByUserId(req.userId!, {
+    habitId: habitId ? String(habitId) : undefined,
+    startDate: startDate ? String(startDate) : undefined,
+    endDate: endDate ? String(endDate) : undefined,
+  });
 
   res.json({ success: true, data: logs });
+});
+
+apiRouter.get('/habits/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const habit = await habitRepository.findById(req.params.id, req.userId!);
+  if (!habit) {
+    res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
+    return;
+  }
+  res.json({ success: true, data: habit });
+});
+
+apiRouter.put(
+  '/habits/:id',
+  requireAuth,
+  validateBody(updateHabitSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await habitRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update habit.' } });
+    }
+  }
+);
+
+apiRouter.patch(
+  '/habits/:id',
+  requireAuth,
+  validateBody(updateHabitSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await habitRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update habit.' } });
+    }
+  }
+);
+
+apiRouter.delete('/habits/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const deleted = await habitRepository.delete(req.params.id, req.userId!);
+    if (!deleted) {
+      res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
+      return;
+    }
+    res.json({ success: true, message: 'Habit deleted successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete habit.' } });
+  }
 });
 
 // -------------------------------------------------------------
 // GOALS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/goals', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const goals = db.schema.goals.filter((g) => g.userId === req.userId);
+apiRouter.get('/goals', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const goals = await goalRepository.findByUserId(req.userId!);
   res.json({ success: true, data: goals });
+});
+
+apiRouter.get('/goals/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const goal = await goalRepository.findById(req.params.id, req.userId!);
+  if (!goal) {
+    res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
+    return;
+  }
+  res.json({ success: true, data: goal });
+});
+
+apiRouter.put(
+  '/goals/:id',
+  requireAuth,
+  validateBody(updateGoalSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await goalRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update goal.' } });
+    }
+  }
+);
+
+apiRouter.patch(
+  '/goals/:id',
+  requireAuth,
+  validateBody(updateGoalSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await goalRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update goal.' } });
+    }
+  }
+);
+
+apiRouter.delete('/goals/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const deleted = await goalRepository.delete(req.params.id, req.userId!);
+    if (!deleted) {
+      res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
+      return;
+    }
+    res.json({ success: true, message: 'Goal deleted successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete goal.' } });
+  }
 });
 
 apiRouter.post(
@@ -684,15 +815,6 @@ apiRouter.post(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const entitlements = checkUserEntitlements(req.user!);
-      if (!entitlements.canCreateGoal) {
-        res.status(403).json({
-          success: false,
-          error: { code: 'PLAN_LIMIT_REACHED', message: `Free plan allows up to ${entitlements.plan.limits.maxActiveGoals} active goal. Upgrade to Pro for unlimited goals.` },
-        });
-        return;
-      }
-
       const { title, description, category, horizon, targetDate, milestones } = req.body;
 
       const newGoal: GoalRecord = {
@@ -710,10 +832,8 @@ apiRouter.post(
         updatedAt: new Date().toISOString(),
       };
 
-      db.schema.goals.unshift(newGoal);
-      await db.save();
-
-      res.json({ success: true, data: newGoal });
+      const created = await goalRepository.create(newGoal);
+      res.json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create goal.' } });
     }
@@ -724,8 +844,8 @@ apiRouter.post(
 // FINANCES ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/finances/transactions', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const txs = db.schema.transactions.filter((t) => t.userId === req.userId);
+apiRouter.get('/finances/transactions', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const txs = await transactionRepository.findByUserId(req.userId!);
   res.json({ success: true, data: txs });
 });
 
@@ -760,49 +880,47 @@ apiRouter.post(
         updatedAt: new Date().toISOString(),
       };
 
-      db.schema.transactions.unshift(newTx);
-      await db.save();
-
-      res.json({ success: true, data: newTx });
+      const created = await transactionRepository.create(newTx);
+      res.json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to record transaction.' } });
     }
   }
 );
 
-apiRouter.get('/finances/summary', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const txs = db.schema.transactions.filter((t) => t.userId === req.userId);
-  let totalIncome = 0;
-  let totalExpense = 0;
+apiRouter.get('/finances/summary', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const summary = await transactionRepository.getSummary(req.userId!);
+  res.json({ success: true, data: summary });
+});
 
-  for (const t of txs) {
-    if (t.type === 'income') totalIncome += t.amount;
-    else totalExpense += t.amount;
+apiRouter.get('/finances/transactions/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const tx = await transactionRepository.findById(req.params.id, req.userId!);
+  if (!tx) {
+    res.status(404).json({ success: false, error: { code: 'TRANSACTION_NOT_FOUND', message: 'Transaction not found.' } });
+    return;
   }
+  res.json({ success: true, data: tx });
+});
 
-  res.json({
-    success: true,
-    data: {
-      totalIncome,
-      totalExpense,
-      netBalance: totalIncome - totalExpense,
-      savingsRatePercentage: totalIncome > 0 ? Math.round(((totalIncome - totalExpense) / totalIncome) * 100) : 0,
-      transactionCount: txs.length,
-    },
-  });
+apiRouter.delete('/finances/transactions/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const deleted = await transactionRepository.delete(req.params.id, req.userId!);
+    if (!deleted) {
+      res.status(404).json({ success: false, error: { code: 'TRANSACTION_NOT_FOUND', message: 'Transaction not found.' } });
+      return;
+    }
+    res.json({ success: true, message: 'Transaction deleted successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete transaction.' } });
+  }
 });
 
 // -------------------------------------------------------------
 // EMOTIONS & REFLECTIONS
 // -------------------------------------------------------------
 
-apiRouter.get('/emotions/reflections', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const refs = db.schema.reflections.filter((r) => r.userId === req.userId);
-  // Decrypt journal entries if encrypted
-  const clean = refs.map((r) => ({
-    ...r,
-    journalEntry: r.isEncrypted ? db.decrypt(r.journalEntry) : r.journalEntry,
-  }));
+apiRouter.get('/emotions/reflections', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const clean = await reflectionRepository.findByUserId(req.userId!);
   res.json({ success: true, data: clean });
 });
 
@@ -818,47 +936,18 @@ apiRouter.post(
       const { date, energyLevel, clarityLevel, stressLevel, primaryEmotion, journalEntry, wins, gratitudes, learnings } = req.body;
 
       const refDate = date || new Date().toISOString().slice(0, 10);
-      const existing = db.schema.reflections.find((r) => r.userId === userId && r.date === refDate);
+      const saved = await reflectionRepository.upsert(userId, refDate, {
+        energyLevel,
+        clarityLevel,
+        stressLevel,
+        primaryEmotion,
+        journalEntry,
+        wins,
+        gratitudes,
+        learnings,
+      });
 
-      const encryptedJournal = journalEntry ? db.encrypt(journalEntry) : '';
-
-      if (existing) {
-        existing.energyLevel = energyLevel ?? existing.energyLevel;
-        existing.clarityLevel = clarityLevel ?? existing.clarityLevel;
-        existing.stressLevel = stressLevel ?? existing.stressLevel;
-        existing.primaryEmotion = primaryEmotion || existing.primaryEmotion;
-        existing.journalEntry = encryptedJournal;
-        existing.wins = wins || existing.wins;
-        existing.gratitudes = gratitudes || existing.gratitudes;
-        existing.learnings = learnings || existing.learnings;
-        existing.isEncrypted = true;
-        existing.updatedAt = new Date().toISOString();
-        await db.save();
-        res.json({ success: true, data: { ...existing, journalEntry } });
-        return;
-      }
-
-      const newRef: ReflectionRecord = {
-        id: generateCryptoToken('ref'),
-        userId,
-        date: refDate,
-        energyLevel: energyLevel ?? 7,
-        clarityLevel: clarityLevel ?? 7,
-        stressLevel: stressLevel ?? 3,
-        primaryEmotion: primaryEmotion || 'Calm & Grounded',
-        journalEntry: encryptedJournal,
-        wins: wins || [],
-        gratitudes: gratitudes || [],
-        learnings: learnings || [],
-        isEncrypted: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      db.schema.reflections.unshift(newRef);
-      await db.save();
-
-      res.json({ success: true, data: { ...newRef, journalEntry } });
+      res.json({ success: true, data: saved });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to record reflection.' } });
     }
@@ -869,8 +958,8 @@ apiRouter.post(
 // RELATIONSHIPS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/relationships', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const rels = db.schema.relationships.filter((r) => r.userId === req.userId);
+apiRouter.get('/relationships', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const rels = await relationshipRepository.findByUserId(req.userId!);
   res.json({ success: true, data: rels });
 });
 
@@ -900,23 +989,101 @@ apiRouter.post(
         updatedAt: new Date().toISOString(),
       };
 
-      db.schema.relationships.unshift(newRel);
-      await db.save();
-
-      res.json({ success: true, data: newRel });
+      const created = await relationshipRepository.create(newRel);
+      res.json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to save contact.' } });
     }
   }
 );
 
+apiRouter.get('/relationships/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const rel = await relationshipRepository.findById(req.params.id, req.userId!);
+  if (!rel) {
+    res.status(404).json({ success: false, error: { code: 'RELATIONSHIP_NOT_FOUND', message: 'Contact not found.' } });
+    return;
+  }
+  res.json({ success: true, data: rel });
+});
+
+apiRouter.put(
+  '/relationships/:id',
+  requireAuth,
+  validateBody(updateRelationshipSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await relationshipRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'RELATIONSHIP_NOT_FOUND', message: 'Contact not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update contact.' } });
+    }
+  }
+);
+
+apiRouter.delete('/relationships/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const deleted = await relationshipRepository.delete(req.params.id, req.userId!);
+    if (!deleted) {
+      res.status(404).json({ success: false, error: { code: 'RELATIONSHIP_NOT_FOUND', message: 'Contact not found.' } });
+      return;
+    }
+    res.json({ success: true, message: 'Contact deleted successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete contact.' } });
+  }
+});
+
 // -------------------------------------------------------------
 // NOTES ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/notes', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const notes = db.schema.notes.filter((n) => n.userId === req.userId);
+apiRouter.get('/notes', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const notes = await noteRepository.findByUserId(req.userId!);
   res.json({ success: true, data: notes });
+});
+
+apiRouter.get('/notes/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const note = await noteRepository.findById(req.params.id, req.userId!);
+  if (!note) {
+    res.status(404).json({ success: false, error: { code: 'NOTE_NOT_FOUND', message: 'Note not found.' } });
+    return;
+  }
+  res.json({ success: true, data: note });
+});
+
+apiRouter.put(
+  '/notes/:id',
+  requireAuth,
+  validateBody(updateNoteSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await noteRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'NOTE_NOT_FOUND', message: 'Note not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update note.' } });
+    }
+  }
+);
+
+apiRouter.delete('/notes/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const deleted = await noteRepository.delete(req.params.id, req.userId!);
+    if (!deleted) {
+      res.status(404).json({ success: false, error: { code: 'NOTE_NOT_FOUND', message: 'Note not found.' } });
+      return;
+    }
+    res.json({ success: true, message: 'Note deleted successfully.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete note.' } });
+  }
 });
 
 apiRouter.post(
@@ -944,10 +1111,8 @@ apiRouter.post(
         updatedAt: new Date().toISOString(),
       };
 
-      db.schema.notes.unshift(newNote);
-      await db.save();
-
-      res.json({ success: true, data: newNote });
+      const created = await noteRepository.create(newNote);
+      res.json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create note.' } });
     }
@@ -977,14 +1142,8 @@ apiRouter.put(
       const user = req.user!;
       const updates = req.body;
 
-      user.profile = {
-        ...user.profile,
-        ...updates,
-      };
-      user.updatedAt = new Date().toISOString();
-      await db.save();
-
-      res.json({ success: true, data: toPublicUser(user) });
+      const updated = await userRepository.updateProfile(user.id, updates);
+      res.json({ success: true, data: toPublicUser(updated || user) });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update profile.' } });
     }
@@ -1006,14 +1165,8 @@ apiRouter.put(
       const user = req.user!;
       const updates = req.body;
 
-      user.preferences = {
-        ...user.preferences,
-        ...updates,
-      };
-      user.updatedAt = new Date().toISOString();
-      await db.save();
-
-      res.json({ success: true, data: toPublicUser(user) });
+      const updated = await userRepository.updatePreferences(user.id, updates);
+      res.json({ success: true, data: toPublicUser(updated || user) });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update preferences.' } });
     }
@@ -1051,14 +1204,51 @@ apiRouter.post(
       const sessionResult = await createStripeCheckoutSession(user, interval || 'monthly', appUrl);
       res.json({ success: true, data: sessionResult });
     } catch (err: any) {
-      console.error('Checkout error:', err);
-      res.status(500).json({ success: false, error: { code: 'CHECKOUT_ERROR', message: 'Failed to initiate upgrade.' } });
+      if (err instanceof StripeConfigurationError) {
+        res.status(err.statusCode).json({
+          success: false,
+          error: {
+            code: err.code,
+            message: err.message,
+          },
+        });
+        return;
+      }
+      console.error('Checkout error:', err?.message || 'Unknown error');
+      res.status(500).json({ success: false, error: { code: 'CHECKOUT_ERROR', message: 'Failed to initiate checkout.' } });
     }
   }
 );
 
-apiRouter.get('/audit/logs', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const logs = db.schema.auditLogs.filter((l) => l.userId === req.userId);
+apiRouter.post('/billing/webhook', async (req: Request, res: Response) => {
+  const sig = req.headers['stripe-signature'] as string | undefined;
+  try {
+    const payload = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
+    const event = constructStripeWebhookEvent(payload, sig);
+    res.json({ success: true, received: true, eventType: event.type });
+  } catch (err: any) {
+    if (err instanceof StripeConfigurationError) {
+      res.status(err.statusCode).json({
+        success: false,
+        error: {
+          code: err.code,
+          message: err.message,
+        },
+      });
+      return;
+    }
+    res.status(400).json({
+      success: false,
+      error: {
+        code: 'WEBHOOK_FAILED',
+        message: 'Webhook signature verification or processing failed.',
+      },
+    });
+  }
+});
+
+apiRouter.get('/audit/logs', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const logs = await auditLogRepository.findByUserId(req.userId!);
   res.json({ success: true, data: logs });
 });
 
@@ -1067,16 +1257,14 @@ apiRouter.get('/audit/logs', requireAuth, (req: AuthenticatedRequest, res: Respo
 // -------------------------------------------------------------
 
 // List in-app notifications for authenticated user
-apiRouter.get('/notifications', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const userNotifs = db.schema.notifications
-    .filter((n) => n.userId === req.userId)
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+apiRouter.get('/notifications', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const userNotifs = await notificationRepository.findByUserId(req.userId!);
   res.json({ success: true, data: userNotifs });
 });
 
 // Get unread notification count
-apiRouter.get('/notifications/unread-count', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const unreadCount = db.schema.notifications.filter((n) => n.userId === req.userId && !n.isRead).length;
+apiRouter.get('/notifications/unread-count', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const unreadCount = await notificationRepository.countUnreadByUserId(req.userId!);
   res.json({ success: true, data: { count: unreadCount } });
 });
 
@@ -1110,10 +1298,8 @@ apiRouter.post(
         updatedAt: now,
       };
 
-      db.schema.notifications.unshift(newNotif);
-      await db.save();
-
-      res.status(201).json({ success: true, data: newNotif });
+      const created = await notificationRepository.create(newNotif);
+      res.status(201).json({ success: true, data: created });
     } catch (err: any) {
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create notification.' } });
     }
@@ -1122,60 +1308,35 @@ apiRouter.post(
 
 // Mark a single notification as read (Strict ownership verification)
 apiRouter.put('/notifications/:id/read', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const notif = db.schema.notifications.find((n) => n.id === req.params.id && n.userId === req.userId);
-  if (!notif) {
+  const updated = await notificationRepository.markAsRead(req.params.id, req.userId!);
+  if (!updated) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Notification not found.' } });
     return;
   }
 
-  const now = new Date().toISOString();
-  notif.isRead = true;
-  notif.readAt = now;
-  notif.updatedAt = now;
-  await db.save();
-
-  res.json({ success: true, data: notif });
+  res.json({ success: true, data: updated });
 });
 
 // Mark all notifications as read for authenticated user
 apiRouter.post('/notifications/mark-all-read', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const now = new Date().toISOString();
-  let updatedCount = 0;
-  for (const n of db.schema.notifications) {
-    if (n.userId === req.userId && !n.isRead) {
-      n.isRead = true;
-      n.readAt = now;
-      n.updatedAt = now;
-      updatedCount++;
-    }
-  }
-  if (updatedCount > 0) {
-    await db.save();
-  }
+  const updatedCount = await notificationRepository.markAllAsRead(req.userId!);
   res.json({ success: true, data: { updatedCount } });
 });
 
 // Delete a single in-app notification (Strict ownership verification)
 apiRouter.delete('/notifications/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const index = db.schema.notifications.findIndex((n) => n.id === req.params.id && n.userId === req.userId);
-  if (index === -1) {
+  const deleted = await notificationRepository.delete(req.params.id, req.userId!);
+  if (!deleted) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Notification not found.' } });
     return;
   }
-
-  db.schema.notifications.splice(index, 1);
-  await db.save();
 
   res.json({ success: true, message: 'Notification deleted successfully.' });
 });
 
 // Clear all notifications for authenticated user
 apiRouter.delete('/notifications', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const beforeCount = db.schema.notifications.length;
-  db.schema.notifications = db.schema.notifications.filter((n) => n.userId !== req.userId);
-  if (db.schema.notifications.length !== beforeCount) {
-    await db.save();
-  }
+  await notificationRepository.deleteAllByUserId(req.userId!);
   res.json({ success: true, message: 'All notifications cleared.' });
 });
 
@@ -1183,9 +1344,7 @@ apiRouter.delete('/notifications', requireAuth, async (req: AuthenticatedRequest
 apiRouter.post('/notifications/evaluate', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const created = await evaluateServerNotificationRules(req.userId!);
-    const userNotifs = db.schema.notifications
-      .filter((n) => n.userId === req.userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    const userNotifs = await notificationRepository.findByUserId(req.userId!);
     res.json({ success: true, data: userNotifs, newlyCreatedCount: created.length });
   } catch (err: any) {
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to evaluate notifications.' } });
@@ -1232,16 +1391,14 @@ apiRouter.post(
 );
 
 // List scheduled notifications for authenticated user
-apiRouter.get('/notifications/scheduled', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const list = db.schema.scheduledNotifications
-    .filter((n) => n.userId === req.userId)
-    .sort((a, b) => new Date(a.scheduledFor).getTime() - new Date(b.scheduledFor).getTime());
+apiRouter.get('/notifications/scheduled', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const list = await scheduledNotificationRepository.findByUserId(req.userId!);
   res.json({ success: true, data: list });
 });
 
 // Get a single scheduled notification (Strict ownership verification)
-apiRouter.get('/notifications/scheduled/:id', requireAuth, (req: AuthenticatedRequest, res: Response) => {
-  const item = db.schema.scheduledNotifications.find((n) => n.id === req.params.id && n.userId === req.userId);
+apiRouter.get('/notifications/scheduled/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const item = await scheduledNotificationRepository.findById(req.params.id, req.userId!);
   if (!item) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
     return;
@@ -1258,43 +1415,42 @@ apiRouter.put(
     fieldCodeMap: { scheduledFor: 'INVALID_TIMESTAMP' },
   }),
   async (req: AuthenticatedRequest, res: Response) => {
-    const item = db.schema.scheduledNotifications.find((n) => n.id === req.params.id && n.userId === req.userId);
+    const item = await scheduledNotificationRepository.findById(req.params.id, req.userId!);
     if (!item) {
       res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
       return;
     }
 
     if (item.status === 'delivered') {
-      res.status(400).json({ success: false, error: { code: 'ALREADY_DELIVERED', message: 'Delivered notifications cannot be modified.' } });
+      res.status(400).json({
+        success: false,
+        error: { code: 'ALREADY_DELIVERED', message: 'Delivered notifications cannot be modified.' },
+      });
       return;
     }
 
     const { title, message, scheduledFor, priority, actionUrl, metadata } = req.body;
-    const now = new Date().toISOString();
+    const updates: Partial<any> = {};
 
-    if (title !== undefined) item.title = title.trim();
-    if (message !== undefined) item.message = message.trim();
-    if (scheduledFor !== undefined) item.scheduledFor = new Date(scheduledFor).toISOString();
-    if (priority !== undefined) item.priority = priority;
-    if (actionUrl !== undefined) item.actionUrl = actionUrl;
-    if (metadata !== undefined) item.metadata = { ...item.metadata, ...metadata };
-    item.updatedAt = now;
+    if (title !== undefined) updates.title = title.trim();
+    if (message !== undefined) updates.message = message.trim();
+    if (scheduledFor !== undefined) updates.scheduledFor = new Date(scheduledFor).toISOString();
+    if (priority !== undefined) updates.priority = priority;
+    if (actionUrl !== undefined) updates.actionUrl = actionUrl;
+    if (metadata !== undefined) updates.metadata = { ...item.metadata, ...metadata };
 
-    await db.save();
-    res.json({ success: true, data: item });
+    const updated = await scheduledNotificationRepository.update(req.params.id, req.userId!, updates);
+    res.json({ success: true, data: updated });
   }
 );
 
 // Cancel / delete a scheduled notification (Strict ownership verification)
 apiRouter.delete('/notifications/scheduled/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
-  const index = db.schema.scheduledNotifications.findIndex((n) => n.id === req.params.id && n.userId === req.userId);
-  if (index === -1) {
+  const removed = await scheduledNotificationRepository.delete(req.params.id, req.userId!);
+  if (!removed) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
     return;
   }
-
-  const [removed] = db.schema.scheduledNotifications.splice(index, 1);
-  await db.save();
 
   res.json({ success: true, message: 'Scheduled notification cancelled.', data: removed });
 });

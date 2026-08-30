@@ -211,6 +211,8 @@ export const createGoalSchema = z.object({
   userId: z.string().max(100).optional(),
 });
 
+export const updateGoalSchema = createGoalSchema.partial();
+
 // -------------------------------------------------------------
 // FINANCE SCHEMAS
 // -------------------------------------------------------------
@@ -284,6 +286,8 @@ export const createRelationshipSchema = z.object({
   userId: z.string().max(100).optional(),
 });
 
+export const updateRelationshipSchema = createRelationshipSchema.partial();
+
 // -------------------------------------------------------------
 // NOTE SCHEMAS
 // -------------------------------------------------------------
@@ -299,6 +303,8 @@ export const createNoteSchema = z.object({
   linkedTaskId: z.string().max(100).optional().nullable(),
   userId: z.string().max(100).optional(),
 });
+
+export const updateNoteSchema = createNoteSchema.partial();
 
 // -------------------------------------------------------------
 // USER PROFILE & PREFERENCES SCHEMAS

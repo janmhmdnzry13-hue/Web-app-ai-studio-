@@ -1,3 +1,5 @@
+import nodemailer, { Transporter, SendMailOptions, SentMessageInfo } from 'nodemailer';
+
 /**
  * ORIGIN Secure Email Delivery Abstraction
  * 
@@ -112,30 +114,169 @@ export class WebhookEmailProvider implements EmailProvider {
 }
 
 /**
- * SMTP Email Provider (Abstraction for configured SMTP transport)
+ * Sanitizes error messages to prevent leaking SMTP credentials, passwords, or reset tokens
+ */
+export function sanitizeEmailError(errorMessage?: string): string {
+  if (!errorMessage) return 'Email delivery failed.';
+  let sanitized = String(errorMessage);
+  
+  const smtpPass = process.env.SMTP_PASS;
+  if (smtpPass && smtpPass.trim()) {
+    sanitized = sanitized.split(smtpPass.trim()).join('[REDACTED_PASSWORD]');
+  }
+  
+  const smtpUser = process.env.SMTP_USER;
+  if (smtpUser && smtpUser.trim()) {
+    sanitized = sanitized.split(smtpUser.trim()).join('[REDACTED_USER]');
+  }
+  
+  const sendgridKey = process.env.SENDGRID_API_KEY;
+  if (sendgridKey && sendgridKey.trim()) {
+    sanitized = sanitized.split(sendgridKey.trim()).join('[REDACTED_KEY]');
+  }
+  
+  // Mask any reset tokens that might inadvertently appear in error payloads
+  sanitized = sanitized.replace(/rst_[a-zA-Z0-9_-]+/gi, '[REDACTED_TOKEN]');
+  return sanitized;
+}
+
+export interface SmtpConfig {
+  host: string;
+  port: number;
+  user?: string;
+  pass?: string;
+  from: string;
+  secure?: boolean;
+}
+
+/**
+ * SMTP Email Provider (Real SMTP transport powered by Nodemailer)
  */
 export class SmtpEmailProvider implements EmailProvider {
   readonly name = 'smtp';
-  private config: {
-    host: string;
-    port: number;
-    user?: string;
-    pass?: string;
-    from: string;
-  };
+  private config: SmtpConfig;
+  private transporter: Transporter | null = null;
 
-  constructor(config: { host: string; port: number; user?: string; pass?: string; from: string }) {
-    this.config = config;
+  constructor(config: SmtpConfig, customTransporter?: Transporter) {
+    this.config = {
+      ...config,
+      host: (config.host || '').trim(),
+      port: Number(config.port) || 587,
+      from: config.from || 'ORIGIN Security <noreply@origin-os.internal>',
+    };
+    if (customTransporter) {
+      this.transporter = customTransporter;
+    }
+  }
+
+  public getTransporter(): Transporter | null {
+    if (this.transporter) {
+      return this.transporter;
+    }
+
+    if (!this.config.host) {
+      return null;
+    }
+
+    const transportOptions: any = {
+      host: this.config.host,
+      port: this.config.port,
+      secure: this.config.secure ?? (this.config.port === 465),
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
+    };
+
+    if (this.config.user && this.config.pass) {
+      transportOptions.auth = {
+        user: this.config.user,
+        pass: this.config.pass,
+      };
+    }
+
+    this.transporter = nodemailer.createTransport(transportOptions);
+    return this.transporter;
+  }
+
+  public setTransporterForTesting(transporter: Transporter | null): void {
+    this.transporter = transporter;
+  }
+
+  public async verifyConnection(): Promise<{ success: boolean; error?: string }> {
+    try {
+      const transporter = this.getTransporter();
+      if (!transporter) {
+        return { success: false, error: 'SMTP host is not configured' };
+      }
+      await transporter.verify();
+      return { success: true };
+    } catch (err: any) {
+      const sanitized = sanitizeEmailError(err?.message || 'SMTP connection verification failed');
+      return { success: false, error: sanitized };
+    }
   }
 
   async sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId?: string; error?: string }> {
-    // In container runtime without external SMTP daemons, gracefully dispatch through configured endpoint
     if (!this.config.host) {
       return { success: false, error: 'SMTP host is not configured' };
     }
-    // SMTP transport record
-    const messageId = `smtp_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    return { success: true, messageId };
+
+    if (isNaN(this.config.port) || this.config.port <= 0 || this.config.port > 65535) {
+      return { success: false, error: 'SMTP port is invalid' };
+    }
+
+    try {
+      const transporter = this.getTransporter();
+      if (!transporter) {
+        return { success: false, error: 'Failed to initialize SMTP transporter' };
+      }
+
+      const mailOptions: SendMailOptions = {
+        from: message.from || this.config.from,
+        to: message.to,
+        subject: message.subject,
+        text: message.text,
+        html: message.html,
+      };
+
+      const info: SentMessageInfo = await transporter.sendMail(mailOptions);
+
+      // Verify that the SMTP server accepted the delivery
+      if (Array.isArray(info.rejected) && info.rejected.length > 0) {
+        const acceptedCount = Array.isArray(info.accepted) ? info.accepted.length : 0;
+        if (acceptedCount === 0) {
+          return {
+            success: false,
+            error: 'Message was rejected by the SMTP server for all recipients',
+          };
+        }
+      }
+
+      if (Array.isArray(info.accepted) && info.accepted.length === 0) {
+        return {
+          success: false,
+          error: 'No recipients were accepted by the SMTP server',
+        };
+      }
+
+      if (!info.messageId) {
+        return {
+          success: false,
+          error: 'SMTP server did not acknowledge message delivery',
+        };
+      }
+
+      return {
+        success: true,
+        messageId: info.messageId,
+      };
+    } catch (err: any) {
+      const sanitized = sanitizeEmailError(err?.message || 'SMTP delivery failed');
+      return {
+        success: false,
+        error: sanitized,
+      };
+    }
   }
 }
 
@@ -166,20 +307,21 @@ export class EmailService {
   }
 
   private resolveProvider(): EmailProvider {
-    if (process.env.SENDGRID_API_KEY) {
-      return new SendGridEmailProvider(process.env.SENDGRID_API_KEY, this.defaultFrom);
-    }
-    if (process.env.EMAIL_WEBHOOK_URL) {
-      return new WebhookEmailProvider(process.env.EMAIL_WEBHOOK_URL, this.defaultFrom);
-    }
-    if (process.env.SMTP_HOST) {
+    const smtpHost = process.env.SMTP_HOST?.trim();
+    if (smtpHost) {
       return new SmtpEmailProvider({
-        host: process.env.SMTP_HOST,
+        host: smtpHost,
         port: parseInt(process.env.SMTP_PORT || '587', 10),
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
         from: this.defaultFrom,
       });
+    }
+    if (process.env.SENDGRID_API_KEY?.trim()) {
+      return new SendGridEmailProvider(process.env.SENDGRID_API_KEY.trim(), this.defaultFrom);
+    }
+    if (process.env.EMAIL_WEBHOOK_URL?.trim()) {
+      return new WebhookEmailProvider(process.env.EMAIL_WEBHOOK_URL.trim(), this.defaultFrom);
     }
     return new DevelopmentEmailProvider();
   }
@@ -193,6 +335,7 @@ export class EmailService {
   }
 
   public resetProvider(): void {
+    this.defaultFrom = process.env.EMAIL_FROM || 'ORIGIN Security <noreply@origin-os.internal>';
     this.provider = this.resolveProvider();
   }
 
@@ -203,7 +346,7 @@ export class EmailService {
     toEmail: string,
     resetToken: string,
     requestOrigin?: string
-  ): Promise<{ success: boolean; error?: string }> {
+  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
     const envAppUrl = process.env.APP_URL;
     let baseUrl = 'http://localhost:3000';
     if (envAppUrl) {
