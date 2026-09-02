@@ -76,7 +76,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     const repos = createPostgresRepositoryContainer();
 
     // Create User
-    const user = await repos.user.create({
+    const user = await repos.users.create({
       id: 'usr_test_alpha',
       email: 'alpha@origin.test',
       passwordHash: '$2b$10$hashedpw',
@@ -94,6 +94,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: true,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: ['tasks', 'habits', 'finances', 'goals'],
       },
@@ -101,6 +102,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         tier: 'pro',
         status: 'active',
       },
+      lastLoginAt: null,
       createdAt: '2026-08-30T10:00:00.000Z',
       updatedAt: '2026-08-30T10:00:00.000Z',
     });
@@ -112,17 +114,17 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(user.subscription?.tier).toBe('pro');
 
     // Read by ID
-    const foundUser = await repos.user.findById('usr_test_alpha');
+    const foundUser = await repos.users.findById('usr_test_alpha');
     expect(foundUser).not.toBeNull();
     expect(foundUser?.id).toBe('usr_test_alpha');
 
     // Read by Email
-    const foundByEmail = await repos.user.findByEmail('ALPHA@origin.test');
+    const foundByEmail = await repos.users.findByEmail('ALPHA@origin.test');
     expect(foundByEmail).not.toBeNull();
     expect(foundByEmail?.id).toBe('usr_test_alpha');
 
     // Create Task with Subtasks
-    const task = await repos.task.create({
+    const task = await repos.tasks.create({
       id: 'task_alpha_001',
       userId: 'usr_test_alpha',
       title: 'Deploy PostgreSQL Layer',
@@ -148,7 +150,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(task.subtasks[1].completed).toBe(false);
 
     // Read Task by ID
-    const foundTask = await repos.task.findById('task_alpha_001', 'usr_test_alpha');
+    const foundTask = await repos.tasks.findById('task_alpha_001', 'usr_test_alpha');
     expect(foundTask).not.toBeNull();
     expect(foundTask?.title).toBe('Deploy PostgreSQL Layer');
     expect(foundTask?.subtasks).toHaveLength(2);
@@ -158,7 +160,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     const repos = createPostgresRepositoryContainer();
 
     // Create User & Task
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_update_test',
       email: 'update@origin.test',
       passwordHash: '$2b$10$hash',
@@ -172,15 +174,17 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
     // Update Profile
-    const updatedUser = await repos.user.updateProfile('usr_update_test', {
+    const updatedUser = await repos.users.updateProfile('usr_update_test', {
       displayName: 'Updated Name',
       headline: 'Senior Lead',
     });
@@ -188,7 +192,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(updatedUser?.profile.headline).toBe('Senior Lead');
 
     // Create Goal
-    const goal = await repos.goal.create({
+    const goal = await repos.goals.create({
       id: 'goal_001',
       userId: 'usr_update_test',
       title: 'Initial Goal Title',
@@ -203,7 +207,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     });
 
     // Update Goal with new progress and updated milestones
-    const updatedGoal = await repos.goal.update('goal_001', 'usr_update_test', {
+    const updatedGoal = await repos.goals.update('goal_001', 'usr_update_test', {
       title: 'Upgraded Goal Title',
       progressPercentage: 80,
       milestones: [
@@ -220,7 +224,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
   it('3. Delete & Cascading Foreign Keys: Deleting a parent user or entity cascades appropriately', async () => {
     const repos = createPostgresRepositoryContainer();
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_to_delete',
       email: 'delete_me@origin.test',
       passwordHash: '$2b$10$hash',
@@ -234,14 +238,16 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
-    await repos.task.create({
+    await repos.tasks.create({
       id: 'task_cascade_1',
       userId: 'usr_to_delete',
       title: 'Child Task',
@@ -254,14 +260,14 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     });
 
     // Delete single task
-    const taskDeleted = await repos.task.delete('task_cascade_1', 'usr_to_delete');
+    const taskDeleted = await repos.tasks.delete('task_cascade_1', 'usr_to_delete');
     expect(taskDeleted).toBe(true);
 
-    const taskLookup = await repos.task.findById('task_cascade_1', 'usr_to_delete');
+    const taskLookup = await repos.tasks.findById('task_cascade_1', 'usr_to_delete');
     expect(taskLookup).toBeNull();
 
     // Create another task & habit
-    await repos.task.create({
+    await repos.tasks.create({
       id: 'task_cascade_2',
       userId: 'usr_to_delete',
       title: 'Second Child Task',
@@ -273,11 +279,11 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
       updatedAt: new Date().toISOString(),
     });
 
-    await repos.habit.create({
+    await repos.habits.create({
       id: 'habit_cascade_1',
       userId: 'usr_to_delete',
       name: 'Daily Reading',
-      category: 'intellectual',
+      category: 'learning',
       frequency: 'daily',
       targetPerDay: 1,
       streakCount: 3,
@@ -289,13 +295,13 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     });
 
     // Delete user -> triggers ON DELETE CASCADE across all tables
-    const userDeleted = await repos.user.delete('usr_to_delete');
+    const userDeleted = await repos.users.delete('usr_to_delete');
     expect(userDeleted).toBe(true);
 
-    const remainingTasks = await repos.task.findByUserId('usr_to_delete');
+    const remainingTasks = await repos.tasks.findByUserId('usr_to_delete');
     expect(remainingTasks).toHaveLength(0);
 
-    const remainingHabits = await repos.habit.findByUserId('usr_to_delete');
+    const remainingHabits = await repos.habits.findByUserId('usr_to_delete');
     expect(remainingHabits).toHaveLength(0);
   });
 
@@ -303,7 +309,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     const repos = createPostgresRepositoryContainer();
 
     // Seed User A and User B
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_alice',
       email: 'alice@origin.test',
       passwordHash: '$2b$10$hash',
@@ -317,14 +323,16 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_bob',
       email: 'bob@origin.test',
       passwordHash: '$2b$10$hash',
@@ -338,15 +346,17 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
     // Create Alice's private note & transaction
-    await repos.note.create({
+    await repos.notes.create({
       id: 'note_alice_secret',
       userId: 'usr_alice',
       title: "Alice's Private Thoughts",
@@ -360,7 +370,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
       updatedAt: new Date().toISOString(),
     });
 
-    await repos.transaction.create({
+    await repos.transactions.create({
       id: 'tx_alice_private',
       userId: 'usr_alice',
       title: 'Consulting Income',
@@ -376,25 +386,25 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     });
 
     // Bob attempts to find Alice's note
-    const bobNoteLookup = await repos.note.findById('note_alice_secret', 'usr_bob');
+    const bobNoteLookup = await repos.notes.findById('note_alice_secret', 'usr_bob');
     expect(bobNoteLookup).toBeNull();
 
     // Bob queries all notes for Bob
-    const bobNotes = await repos.note.findByUserId('usr_bob');
+    const bobNotes = await repos.notes.findByUserId('usr_bob');
     expect(bobNotes).toHaveLength(0);
 
     // Bob attempts to update Alice's note
-    const bobUpdateAttempt = await repos.note.update('note_alice_secret', 'usr_bob', {
+    const bobUpdateAttempt = await repos.notes.update('note_alice_secret', 'usr_bob', {
       title: 'Hacked Title',
     });
     expect(bobUpdateAttempt).toBeNull();
 
     // Bob attempts to delete Alice's transaction
-    const bobDeleteTx = await repos.transaction.delete('tx_alice_private', 'usr_bob');
+    const bobDeleteTx = await repos.transactions.delete('tx_alice_private', 'usr_bob');
     expect(bobDeleteTx).toBe(false);
 
     // Verify Alice's transaction is completely intact
-    const aliceTx = await repos.transaction.findById('tx_alice_private', 'usr_alice');
+    const aliceTx = await repos.transactions.findById('tx_alice_private', 'usr_alice');
     expect(aliceTx).not.toBeNull();
     expect(aliceTx?.amount).toBe(5000);
   });
@@ -402,7 +412,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
   it('5. SQL Injection Prevention: Parameterized queries safely store malicious payloads as literal text', async () => {
     const repos = createPostgresRepositoryContainer();
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_sec_test',
       email: 'sec@origin.test',
       passwordHash: '$2b$10$hash',
@@ -416,15 +426,17 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
     // Create a task with SQL injection strings in title and description
-    const maliciousTask = await repos.task.create({
+    const maliciousTask = await repos.tasks.create({
       id: "task_sqli_1' OR '1'='1",
       userId: 'usr_sec_test',
       title: "'; DROP TABLE tasks; SELECT * FROM users WHERE 'a'='a",
@@ -441,7 +453,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(maliciousTask.title).toBe("'; DROP TABLE tasks; SELECT * FROM users WHERE 'a'='a");
 
     // Verify tasks and habits tables still exist and are completely intact
-    const allTasks = await repos.task.findByUserId('usr_sec_test');
+    const allTasks = await repos.tasks.findByUserId('usr_sec_test');
     expect(allTasks).toHaveLength(1);
     expect(allTasks[0].title).toBe("'; DROP TABLE tasks; SELECT * FROM users WHERE 'a'='a");
   });
@@ -449,7 +461,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
   it('6. Habit Logging & Streak Calculation: Correctly logs habits and updates streak metrics', async () => {
     const repos = createPostgresRepositoryContainer();
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_habit_streak',
       email: 'habits@origin.test',
       passwordHash: '$2b$10$hash',
@@ -463,14 +475,16 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
-    await repos.habit.create({
+    await repos.habits.create({
       id: 'habit_streak_1',
       userId: 'usr_habit_streak',
       name: 'Hydration 2L',
@@ -486,7 +500,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     });
 
     // Log completion on Day 1
-    const resultDay1 = await repos.habitLog.logHabit('usr_habit_streak', 'habit_streak_1', {
+    const resultDay1 = await repos.habitLogs.logHabit('usr_habit_streak', 'habit_streak_1', {
       date: '2026-08-29',
       completed: true,
       value: 1,
@@ -500,7 +514,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(resultDay1?.habit.bestStreak).toBe(1);
 
     // Log completion on Day 2
-    const resultDay2 = await repos.habitLog.logHabit('usr_habit_streak', 'habit_streak_1', {
+    const resultDay2 = await repos.habitLogs.logHabit('usr_habit_streak', 'habit_streak_1', {
       date: '2026-08-30',
       completed: true,
       value: 1,
@@ -514,7 +528,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
   it('7. Financial Summaries: Correctly computes monthly income, expenses, and net balance', async () => {
     const repos = createPostgresRepositoryContainer();
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_fin_test',
       email: 'fin@origin.test',
       passwordHash: '$2b$10$hash',
@@ -528,9 +542,11 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
@@ -538,7 +554,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     const currentMonthPrefix = new Date().toISOString().slice(0, 7); // YYYY-MM
 
     // Income
-    await repos.transaction.create({
+    await repos.transactions.create({
       id: 'tx_inc_1',
       userId: 'usr_fin_test',
       title: 'Salary',
@@ -553,7 +569,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     });
 
     // Expenses
-    await repos.transaction.create({
+    await repos.transactions.create({
       id: 'tx_exp_1',
       userId: 'usr_fin_test',
       title: 'Rent',
@@ -567,7 +583,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
       updatedAt: new Date().toISOString(),
     });
 
-    await repos.transaction.create({
+    await repos.transactions.create({
       id: 'tx_exp_2',
       userId: 'usr_fin_test',
       title: 'Groceries',
@@ -581,18 +597,18 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
       updatedAt: new Date().toISOString(),
     });
 
-    const summary = await repos.transaction.getSummary('usr_fin_test');
+    const summary = await repos.transactions.getSummary('usr_fin_test');
     expect(summary.monthlyIncome).toBe(4500.5);
     expect(summary.monthlyExpenses).toBe(1850.25);
     expect(summary.netBalance).toBe(2650.25);
-    expect(summary.byCategory['Housing']).toBe(1500.0);
-    expect(summary.byCategory['Food']).toBe(350.25);
+    expect(summary.byCategory?.['Housing']).toBe(1500.0);
+    expect(summary.byCategory?.['Food']).toBe(350.25);
   });
 
   it('8. Reflections Upsert: Upserts daily reflections safely with energy metrics and gratitude lists', async () => {
     const repos = createPostgresRepositoryContainer();
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_ref_test',
       email: 'ref@origin.test',
       passwordHash: '$2b$10$hash',
@@ -606,15 +622,17 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
     // First upsert on date
-    const ref1 = await repos.reflection.upsert('usr_ref_test', '2026-08-30', {
+    const ref1 = await repos.reflections.upsert('usr_ref_test', '2026-08-30', {
       energyLevel: 8,
       clarityLevel: 9,
       stressLevel: 2,
@@ -630,7 +648,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(ref1.journalEntry).toBe('Great day of clean architectural execution.');
 
     // Second upsert on same date -> updates existing record without duplicate ID
-    const ref2 = await repos.reflection.upsert('usr_ref_test', '2026-08-30', {
+    const ref2 = await repos.reflections.upsert('usr_ref_test', '2026-08-30', {
       clarityLevel: 10,
       journalEntry: 'Updated reflection note.',
     });
@@ -644,7 +662,7 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
   it('9. Notifications & Scheduled Delivery: Correctly queues and manages notifications', async () => {
     const repos = createPostgresRepositoryContainer();
 
-    await repos.user.create({
+    await repos.users.create({
       id: 'usr_notif_test',
       email: 'notif@origin.test',
       passwordHash: '$2b$10$hash',
@@ -658,15 +676,17 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
         weekStartDay: 1,
         reducedMotion: false,
         compactDensity: false,
+        dailyReflectionReminderTime: null,
         notificationChannels: { inApp: true, email: true, dailyDigest: false },
         unlockedModules: [],
       },
+      lastLoginAt: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
 
     // Create Notification
-    const notif = await repos.notification.create({
+    const notif = await repos.notifications.create({
       id: 'notif_001',
       userId: 'usr_notif_test',
       type: 'task_reminder',
@@ -686,14 +706,14 @@ describe('PostgreSQL Repository Layer & Integration Test Suite', () => {
     expect(notif.isRead).toBe(false);
 
     // Check Unread count
-    const unreadCount = await repos.notification.countUnreadByUserId('usr_notif_test');
+    const unreadCount = await repos.notifications.countUnreadByUserId('usr_notif_test');
     expect(unreadCount).toBe(1);
 
     // Mark as read
-    const readResult = await repos.notification.markAsRead('notif_001', 'usr_notif_test');
+    const readResult = await repos.notifications.markAsRead('notif_001', 'usr_notif_test');
     expect(readResult?.isRead).toBe(true);
 
-    const updatedUnreadCount = await repos.notification.countUnreadByUserId('usr_notif_test');
+    const updatedUnreadCount = await repos.notifications.countUnreadByUserId('usr_notif_test');
     expect(updatedUnreadCount).toBe(0);
   });
 

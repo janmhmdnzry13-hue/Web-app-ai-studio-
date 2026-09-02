@@ -2,34 +2,63 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
-import { UserRecord } from './db';
+import { UserRecord, getEncryptionKey } from './db';
 import { userRepository } from './repositories';
 
 const TOKEN_EXPIRY = '7d';
 
+const KNOWN_INSECURE_JWT_SECRETS = new Set([
+  'origin-jwt-production-secret-auth-token-2026',
+  'origin-dev-test-jwt-secret-not-for-production-2026',
+  'default_secret',
+  'secret',
+  'test-dev-secret',
+  'jwt_secret',
+  'jwt-secret',
+  'changeme',
+  'change-me',
+  'placeholder',
+]);
+
 /**
  * Resolves the JWT secret.
  * In production mode, fails fast if JWT_SECRET is missing or using an insecure default.
+ * In non-production, provides a stable development fallback key (never auto-generating random secrets).
  */
 export function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
   if (process.env.NODE_ENV === 'production') {
     const trimmed = secret ? secret.trim() : '';
+    const lower = trimmed.toLowerCase();
     const isWeakOrPlaceholder =
       !trimmed ||
       trimmed.length < 16 ||
-      trimmed === 'origin-jwt-production-secret-auth-token-2026' ||
-      trimmed === 'origin-dev-test-jwt-secret-not-for-production-2026' ||
-      trimmed.toLowerCase().includes('dev-test') ||
-      trimmed.toLowerCase().includes('test-dev');
+      KNOWN_INSECURE_JWT_SECRETS.has(trimmed) ||
+      KNOWN_INSECURE_JWT_SECRETS.has(lower) ||
+      lower.includes('dev-test') ||
+      lower.includes('test-dev') ||
+      lower.includes('changeme') ||
+      lower.includes('change-me') ||
+      lower.includes('placeholder');
 
     if (isWeakOrPlaceholder) {
       throw new Error('CRITICAL_SECURITY_ERROR: JWT_SECRET environment variable is required and must be configured in production.');
     }
     return secret!;
   }
-  // Development and test fallback strictly for non-production environments
+  // Stable development and test fallback strictly for non-production environments
   return secret || 'origin-dev-test-jwt-secret-not-for-production-2026';
+}
+
+/**
+ * Validates startup secrets (JWT_SECRET and ENCRYPTION_SECRET).
+ * In production, fails fast during startup if either secret is missing or insecure.
+ * Ensures secrets are stable and never randomly regenerated across restarts.
+ */
+export function validateProductionSecrets(): { jwtSecret: string; encryptionKey: Buffer } {
+  const jwtSecret = getJwtSecret();
+  const encryptionKey = getEncryptionKey();
+  return { jwtSecret, encryptionKey };
 }
 
 export interface AuthenticatedRequest extends Request {
@@ -269,4 +298,19 @@ export async function optionalAuth(req: AuthenticatedRequest, _res: Response, ne
 
 export function generateCryptoToken(prefix = 'tok'): string {
   return `${prefix}_${crypto.randomBytes(24).toString('hex')}`;
+}
+
+/**
+ * Generates a cryptographically unpredictable password reset token (256 bits of entropy)
+ */
+export function generatePasswordResetToken(): string {
+  return `rst_${crypto.randomBytes(32).toString('hex')}`;
+}
+
+/**
+ * Computes a secure SHA-256 hash representation of a reset token for server-side persistence
+ */
+export function hashResetToken(token: string): string {
+  if (!token || typeof token !== 'string') return '';
+  return crypto.createHash('sha256').update(token.trim()).digest('hex');
 }

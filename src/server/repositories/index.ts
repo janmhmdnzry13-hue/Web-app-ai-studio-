@@ -67,12 +67,12 @@ export function resetRepositories(): void {
 }
 
 export function determineActiveEngine(): StorageEngineType {
+  if (isProductionEnvironment()) {
+    // Production MUST use PostgreSQL unconditionally
+    return 'postgres';
+  }
   if (storageEngineOverride) {
     return storageEngineOverride;
-  }
-  if (isProductionEnvironment()) {
-    // Production MUST use PostgreSQL
-    return 'postgres';
   }
   if (isPostgresConfigured()) {
     return 'postgres';
@@ -82,6 +82,12 @@ export function determineActiveEngine(): StorageEngineType {
 }
 
 function getJsonContainer(): RepositoryContainer {
+  if (isProductionEnvironment()) {
+    throw new Error(
+      'CRITICAL_DATABASE_ERROR: JSON repository storage is disabled in production. PostgreSQL is the mandatory persistence engine.'
+    );
+  }
+
   if (!cachedJsonContainer) {
     const user = new JsonUserRepository();
     const task = new JsonTaskRepository();
@@ -124,41 +130,28 @@ function getJsonContainer(): RepositoryContainer {
 
 function getPostgresContainer(): RepositoryContainer {
   if (!cachedPostgresContainer) {
-    const pg = createPostgresRepositoryContainer();
-    cachedPostgresContainer = {
-      users: pg.user,
-      tasks: pg.task,
-      habits: pg.habit,
-      habitLogs: pg.habitLog,
-      goals: pg.goal,
-      transactions: pg.transaction,
-      budgets: pg.budget,
-      reflections: pg.reflection,
-      relationships: pg.relationship,
-      interactions: pg.interaction,
-      notes: pg.note,
-      aiMemories: pg.aiMemory,
-      auditLogs: pg.auditLog,
-      passwordResets: pg.passwordReset,
-      notifications: pg.notification,
-      scheduledNotifications: pg.scheduledNotification,
-    };
+    cachedPostgresContainer = createPostgresRepositoryContainer();
   }
   return cachedPostgresContainer;
 }
 
 export function getActiveRepositories(): RepositoryContainer {
-  if (customRepositoryContainerOverride) {
-    return customRepositoryContainerOverride;
-  }
-
-  const engine = determineActiveEngine();
-  if (engine === 'postgres') {
-    if (isProductionEnvironment() && !isPostgresConfigured()) {
+  if (isProductionEnvironment()) {
+    if (!isPostgresConfigured()) {
       throw new Error(
         'CRITICAL_DATABASE_ERROR: PostgreSQL connection configuration (DATABASE_URL) is required in production environment. Silent fallback to JSON storage is strictly prohibited.'
       );
     }
+    return getPostgresContainer();
+  }
+
+  if (customRepositoryContainerOverride) {
+    const base = isProductionEnvironment() ? getPostgresContainer() : (determineActiveEngine() === 'postgres' ? getPostgresContainer() : getJsonContainer());
+    return { ...base, ...customRepositoryContainerOverride };
+  }
+
+  const engine = determineActiveEngine();
+  if (engine === 'postgres') {
     return getPostgresContainer();
   }
 

@@ -106,12 +106,12 @@ export function buildServerAuthorizedAIContext(authenticatedUserId: string): Aut
 
   const user = {
     id: authenticatedUserId,
-    displayName: userRecord?.profile.displayName || 'Member',
-    headline: userRecord?.profile.headline || '',
-    bio: userRecord?.profile.bio || '',
-    primaryLifeFocus: userRecord?.profile.primaryLifeFocus || 'Personal Sovereignty & Intentional Living',
-    timezone: userRecord?.preferences.timezone || 'UTC',
-    locale: userRecord?.preferences.locale || 'en-US',
+    displayName: userRecord?.profile?.displayName || (userRecord as any)?.displayName || 'Member',
+    headline: userRecord?.profile?.headline || '',
+    bio: userRecord?.profile?.bio || '',
+    primaryLifeFocus: userRecord?.profile?.primaryLifeFocus || 'Personal Sovereignty & Intentional Living',
+    timezone: userRecord?.preferences?.timezone || 'UTC',
+    locale: userRecord?.preferences?.locale || 'en-US',
     tier: userRecord?.subscription?.tier || 'free',
   };
 

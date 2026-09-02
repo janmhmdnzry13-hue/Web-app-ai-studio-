@@ -34,6 +34,8 @@ import {
   verifyPassword,
   generateToken,
   generateCryptoToken,
+  generatePasswordResetToken,
+  hashResetToken,
   toPublicUser,
   toPublicSubscription,
 } from './auth';
@@ -45,7 +47,7 @@ import {
   StripeConfigurationError,
   constructStripeWebhookEvent,
 } from './billing';
-import { emailService } from './email';
+import { emailService, sanitizeEmailError } from './email';
 import {
   checkRateLimit,
   resetRateLimitsForTesting,
@@ -53,6 +55,8 @@ import {
   getRateLimitEntryCount,
   getClientIp,
   rateLimiter,
+  AI_RATE_LIMIT_CONFIG,
+  SIGNUP_RATE_LIMIT_CONFIG,
 } from './rate-limiter';
 import {
   scheduleNotificationServer,
@@ -85,7 +89,31 @@ import {
   createNotificationSchema,
   scheduleNotificationSchema,
   updateScheduledNotificationSchema,
+  aiChatSchema,
+  aiInsightsSchema,
 } from './validation';
+import {
+  handleAiChat,
+  handleAiInsights,
+  setGeminiClientForTesting,
+  setMockGeminiCaller,
+  setDisableLocalFallbackForTesting,
+  setAITimeoutForTesting,
+  AIProviderError,
+  PRIMARY_GEMINI_MODEL,
+  SECONDARY_GEMINI_MODEL,
+  logAiDiagnostic,
+  sanitizeAiLogMessage,
+  SafeAIDiagnosticLog,
+} from './ai-controller';
+import {
+  handleDatabaseError,
+  isDatabaseError,
+  centralErrorHandler,
+  asyncHandler,
+  sanitizeLogContent,
+} from './db/error-handler';
+import { isProductionEnvironment } from './db/postgres';
 
 export {
   checkRateLimit,
@@ -94,9 +122,46 @@ export {
   getRateLimitEntryCount,
   getClientIp,
   rateLimiter,
+  AI_RATE_LIMIT_CONFIG,
+  SIGNUP_RATE_LIMIT_CONFIG,
+  handleDatabaseError,
+  isDatabaseError,
+  centralErrorHandler,
+  asyncHandler,
+  sanitizeLogContent,
+  handleAiChat,
+  handleAiInsights,
+  setGeminiClientForTesting,
+  setMockGeminiCaller,
+  setDisableLocalFallbackForTesting,
+  setAITimeoutForTesting,
+  AIProviderError,
+  PRIMARY_GEMINI_MODEL,
+  SECONDARY_GEMINI_MODEL,
+  logAiDiagnostic,
+  sanitizeAiLogMessage,
 };
+export type { SafeAIDiagnosticLog };
 
 export const apiRouter = express.Router();
+
+// -------------------------------------------------------------
+// AI ENDPOINTS (Strictly Authenticated & Server-Authoritative)
+// -------------------------------------------------------------
+
+apiRouter.post(
+  '/ai/chat',
+  requireAuth,
+  validateBody(aiChatSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  handleAiChat
+);
+
+apiRouter.post(
+  '/ai/insights',
+  requireAuth,
+  validateBody(aiInsightsSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  handleAiInsights
+);
 
 // -------------------------------------------------------------
 // AUTHENTICATION ROUTES
@@ -107,12 +172,16 @@ apiRouter.post(
   validateBody(signupSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
   async (req: Request, res: Response) => {
     try {
-      // Enforce strict server-side rate limiting on signup (max 10 attempts per 10 minutes per IP)
+      // Enforce strict server-side rate limiting on signup
       const ip = getClientIp(req);
-      const rateCheck = rateLimiter.consume(`signup_${ip}`, 10, 10 * 60 * 1000);
+      const rateCheck = rateLimiter.consume(
+        `signup_${ip}`,
+        SIGNUP_RATE_LIMIT_CONFIG.limit,
+        SIGNUP_RATE_LIMIT_CONFIG.windowMs
+      );
 
       // Standard non-sensitive RateLimit headers
-      res.setHeader('RateLimit-Limit', '10');
+      res.setHeader('RateLimit-Limit', SIGNUP_RATE_LIMIT_CONFIG.limit.toString());
       res.setHeader('RateLimit-Remaining', rateCheck.remaining.toString());
       res.setHeader('RateLimit-Reset', Math.ceil(rateCheck.resetAt / 1000).toString());
 
@@ -183,7 +252,6 @@ apiRouter.post(
       };
 
       await userRepository.create(newUser);
-      await userRepository.seedStarterData(userId);
 
       await logAuditEvent(userId, 'USER_SIGNUP', 'auth', { email: cleanEmail });
 
@@ -197,6 +265,9 @@ apiRouter.post(
         },
       });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Auth Signup');
+      }
       console.error('Signup error:', err);
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create account.' } });
     }
@@ -259,6 +330,9 @@ apiRouter.post(
         },
       });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Auth Login');
+      }
       console.error('Login error:', err);
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to sign in.' } });
     }
@@ -283,12 +357,25 @@ apiRouter.post('/auth/logout', optionalAuth, async (req: AuthenticatedRequest, r
     }
     res.json({ success: true, message: 'Logged out successfully.' });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Auth Logout');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to process logout.' } });
   }
 });
 
 apiRouter.post('/auth/demo', async (req: Request, res: Response) => {
   try {
+    if (isProductionEnvironment() && process.env.ALLOW_DEMO_IN_PRODUCTION !== 'true' && process.env.ENABLE_DEMO_ENVIRONMENT !== 'true') {
+      return res.status(403).json({
+        success: false,
+        error: {
+          code: 'DEMO_DISABLED',
+          message: 'Demo environment is disabled in production.',
+        },
+      });
+    }
+
     // Generate an isolated demo guest session so different visitors don't leak or mutate shared user data
     const guestId = `usr_demo_${generateCryptoToken('gst')}`;
     const demoUser: UserRecord = {
@@ -336,6 +423,9 @@ apiRouter.post('/auth/demo', async (req: Request, res: Response) => {
       },
     });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Auth Demo');
+    }
     console.error('Demo auth error:', err);
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create demo session.' } });
   }
@@ -361,13 +451,30 @@ apiRouter.post(
         return;
       }
 
+      // Check if email delivery is configured in production
+      const isProduction = process.env.NODE_ENV === 'production';
+      if (isProduction && !emailService.isConfigured()) {
+        console.error('[Auth] Password reset request failed: No production email provider configured.');
+        res.status(503).json({
+          success: false,
+          error: {
+            code: 'EMAIL_SERVICE_UNCONFIGURED',
+            message: 'Password reset service is temporarily unavailable. Please contact support.',
+          },
+        });
+        return;
+      }
+
       const user = await userRepository.findByEmail(cleanEmail);
       if (user) {
-        const resetToken = generateCryptoToken('rst');
+        const rawResetToken = generatePasswordResetToken();
+        const tokenHash = hashResetToken(rawResetToken);
+        const expiresAt = new Date(Date.now() + 3600000).toISOString(); // Strict 1-hour expiration
+
         await passwordResetRepository.create({
-          token: resetToken,
+          token: tokenHash,
           email: cleanEmail,
-          expiresAt: new Date(Date.now() + 3600000).toISOString(), // 1 hour
+          expiresAt,
           used: false,
           createdAt: new Date().toISOString(),
         });
@@ -376,13 +483,26 @@ apiRouter.post(
 
         // Dispatch reset email through configured email delivery abstraction
         const originHeader = (req.headers.origin || req.headers.host) as string | undefined;
+        let mailResult;
         try {
-          const mailResult = await emailService.sendPasswordResetEmail(cleanEmail, resetToken, originHeader);
-          if (!mailResult.success) {
-            console.error('[Auth] Failed to dispatch password reset email: delivery provider reported failure');
-          }
+          mailResult = await emailService.sendPasswordResetEmail(cleanEmail, rawResetToken, originHeader);
         } catch (mailErr: any) {
-          console.error('[Auth] Failed to dispatch password reset email: delivery exception caught');
+          const safeErr = sanitizeEmailError(mailErr?.message);
+          console.error('[Auth] Failed to dispatch password reset email (exception):', safeErr);
+          mailResult = { success: false, error: safeErr };
+        }
+
+        if (!mailResult.success) {
+          const safeErr = sanitizeEmailError(mailResult.error);
+          console.error('[Auth] Failed to dispatch password reset email (delivery failure):', safeErr);
+          res.status(503).json({
+            success: false,
+            error: {
+              code: 'EMAIL_DELIVERY_FAILED',
+              message: 'Unable to deliver password reset email. Please try again later or contact support.',
+            },
+          });
+          return;
         }
       }
 
@@ -395,6 +515,9 @@ apiRouter.post(
         },
       });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Password Reset Request');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Reset request failed.' } });
     }
   }
@@ -408,9 +531,25 @@ apiRouter.post(
   async (req: Request, res: Response) => {
     try {
       const { token, newPassword } = req.body;
+      if (!token || typeof token !== 'string' || !token.trim()) {
+        res.status(400).json({
+          success: false,
+          error: { code: 'INVALID_PAYLOAD', message: 'Reset token is required.' },
+        });
+        return;
+      }
 
-      const record = await passwordResetRepository.findByToken(token);
-      if (!record || new Date(record.expiresAt).getTime() < Date.now()) {
+      const cleanToken = token.trim();
+      const tokenHash = hashResetToken(cleanToken);
+
+      // Lookup by token hash first, with fallback to cleanToken for backward compatibility
+      let record = await passwordResetRepository.findByToken(tokenHash);
+      if (!record) {
+        record = await passwordResetRepository.findByToken(cleanToken);
+      }
+
+      // Reject if record doesn't exist, is marked used, or has expired
+      if (!record || record.used || new Date(record.expiresAt).getTime() <= Date.now()) {
         res.status(400).json({
           success: false,
           error: { code: 'TOKEN_EXPIRED', message: 'Reset token has expired or is invalid.' },
@@ -420,14 +559,21 @@ apiRouter.post(
 
       const user = await userRepository.findByEmail(record.email);
       if (!user) {
-        res.status(404).json({ success: false, error: { code: 'USER_NOT_FOUND', message: 'Account not found.' } });
+        // Uniform error response avoids leaking user existence
+        res.status(400).json({
+          success: false,
+          error: { code: 'TOKEN_EXPIRED', message: 'Reset token has expired or is invalid.' },
+        });
         return;
       }
 
+      // Immediately invalidate the token (single-use enforcement)
+      await passwordResetRepository.markUsed(record.token);
+
+      // Securely update password using existing bcrypt password hashing
       await userRepository.update(user.id, {
         passwordHash: hashPassword(newPassword),
       });
-      await passwordResetRepository.markUsed(token);
 
       await logAuditEvent(user.id, 'PASSWORD_RESET_COMPLETED', 'auth');
 
@@ -436,6 +582,9 @@ apiRouter.post(
         data: { success: true, message: 'Password has been successfully updated. You can now sign in.' },
       });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Password Reset Confirm');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Password reset confirmation failed.' } });
     }
   }
@@ -449,6 +598,9 @@ apiRouter.post('/auth/export-data', requireAuth, async (req: AuthenticatedReques
     const exportPayload = await userRepository.exportAllUserData(userId);
     res.json({ success: true, data: exportPayload });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Export Data');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to export data.' } });
   }
 });
@@ -466,6 +618,9 @@ apiRouter.delete('/auth/delete-account', requireAuth, async (req: AuthenticatedR
       data: { success: true, message: 'Account and associated records successfully deleted.' },
     });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Account');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete account.' } });
   }
 });
@@ -474,10 +629,10 @@ apiRouter.delete('/auth/delete-account', requireAuth, async (req: AuthenticatedR
 // TASKS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/tasks', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/tasks', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const tasks = await taskRepository.findByUserId(req.userId!);
   res.json({ success: true, data: tasks });
-});
+}));
 
 apiRouter.post(
   '/tasks',
@@ -524,6 +679,9 @@ apiRouter.post(
       const created = await taskRepository.create(newTask);
       res.json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Task');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create task.' } });
     }
   }
@@ -548,6 +706,9 @@ apiRouter.put(
 
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Task');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update task.' } });
     }
   }
@@ -572,6 +733,9 @@ apiRouter.patch(
 
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Task Status');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update task status.' } });
     }
   }
@@ -588,6 +752,9 @@ apiRouter.delete('/tasks/:id', requireAuth, async (req: AuthenticatedRequest, re
 
     res.json({ success: true, data: { success: true } });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Task');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete task.' } });
   }
 });
@@ -596,10 +763,10 @@ apiRouter.delete('/tasks/:id', requireAuth, async (req: AuthenticatedRequest, re
 // HABITS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/habits', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/habits', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const habits = await habitRepository.findByUserId(req.userId!);
   res.json({ success: true, data: habits });
-});
+}));
 
 apiRouter.post(
   '/habits',
@@ -634,6 +801,9 @@ apiRouter.post(
       const created = await habitRepository.create(newHabit);
       res.json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Habit');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create habit.' } });
     }
   }
@@ -664,12 +834,15 @@ apiRouter.post(
 
       res.json({ success: true, data: result });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Log Habit');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to log habit.' } });
     }
   }
 );
 
-apiRouter.get('/habits/logs', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/habits/logs', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { habitId, startDate, endDate } = req.query;
   const logs = await habitLogRepository.findByUserId(req.userId!, {
     habitId: habitId ? String(habitId) : undefined,
@@ -678,16 +851,16 @@ apiRouter.get('/habits/logs', requireAuth, async (req: AuthenticatedRequest, res
   });
 
   res.json({ success: true, data: logs });
-});
+}));
 
-apiRouter.get('/habits/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/habits/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const habit = await habitRepository.findById(req.params.id, req.userId!);
   if (!habit) {
     res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
     return;
   }
   res.json({ success: true, data: habit });
-});
+}));
 
 apiRouter.put(
   '/habits/:id',
@@ -702,6 +875,9 @@ apiRouter.put(
       }
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Habit');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update habit.' } });
     }
   }
@@ -720,6 +896,9 @@ apiRouter.patch(
       }
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Habit');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update habit.' } });
     }
   }
@@ -734,6 +913,9 @@ apiRouter.delete('/habits/:id', requireAuth, async (req: AuthenticatedRequest, r
     }
     res.json({ success: true, message: 'Habit deleted successfully.' });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Habit');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete habit.' } });
   }
 });
@@ -742,19 +924,19 @@ apiRouter.delete('/habits/:id', requireAuth, async (req: AuthenticatedRequest, r
 // GOALS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/goals', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/goals', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const goals = await goalRepository.findByUserId(req.userId!);
   res.json({ success: true, data: goals });
-});
+}));
 
-apiRouter.get('/goals/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/goals/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const goal = await goalRepository.findById(req.params.id, req.userId!);
   if (!goal) {
     res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
     return;
   }
   res.json({ success: true, data: goal });
-});
+}));
 
 apiRouter.put(
   '/goals/:id',
@@ -769,6 +951,9 @@ apiRouter.put(
       }
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Goal');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update goal.' } });
     }
   }
@@ -787,6 +972,9 @@ apiRouter.patch(
       }
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Goal');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update goal.' } });
     }
   }
@@ -801,6 +989,9 @@ apiRouter.delete('/goals/:id', requireAuth, async (req: AuthenticatedRequest, re
     }
     res.json({ success: true, message: 'Goal deleted successfully.' });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Goal');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete goal.' } });
   }
 });
@@ -835,6 +1026,9 @@ apiRouter.post(
       const created = await goalRepository.create(newGoal);
       res.json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Goal');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create goal.' } });
     }
   }
@@ -844,10 +1038,10 @@ apiRouter.post(
 // FINANCES ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/finances/transactions', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/finances/transactions', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const txs = await transactionRepository.findByUserId(req.userId!);
   res.json({ success: true, data: txs });
-});
+}));
 
 apiRouter.post(
   '/finances/transactions',
@@ -883,24 +1077,27 @@ apiRouter.post(
       const created = await transactionRepository.create(newTx);
       res.json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Transaction');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to record transaction.' } });
     }
   }
 );
 
-apiRouter.get('/finances/summary', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/finances/summary', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const summary = await transactionRepository.getSummary(req.userId!);
   res.json({ success: true, data: summary });
-});
+}));
 
-apiRouter.get('/finances/transactions/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/finances/transactions/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const tx = await transactionRepository.findById(req.params.id, req.userId!);
   if (!tx) {
     res.status(404).json({ success: false, error: { code: 'TRANSACTION_NOT_FOUND', message: 'Transaction not found.' } });
     return;
   }
   res.json({ success: true, data: tx });
-});
+}));
 
 apiRouter.delete('/finances/transactions/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -911,6 +1108,9 @@ apiRouter.delete('/finances/transactions/:id', requireAuth, async (req: Authenti
     }
     res.json({ success: true, message: 'Transaction deleted successfully.' });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Transaction');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete transaction.' } });
   }
 });
@@ -919,10 +1119,10 @@ apiRouter.delete('/finances/transactions/:id', requireAuth, async (req: Authenti
 // EMOTIONS & REFLECTIONS
 // -------------------------------------------------------------
 
-apiRouter.get('/emotions/reflections', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/emotions/reflections', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const clean = await reflectionRepository.findByUserId(req.userId!);
   res.json({ success: true, data: clean });
-});
+}));
 
 apiRouter.post(
   '/emotions/reflections',
@@ -949,6 +1149,9 @@ apiRouter.post(
 
       res.json({ success: true, data: saved });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Record Reflection');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to record reflection.' } });
     }
   }
@@ -958,10 +1161,10 @@ apiRouter.post(
 // RELATIONSHIPS ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/relationships', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/relationships', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const rels = await relationshipRepository.findByUserId(req.userId!);
   res.json({ success: true, data: rels });
-});
+}));
 
 apiRouter.post(
   '/relationships',
@@ -992,19 +1195,22 @@ apiRouter.post(
       const created = await relationshipRepository.create(newRel);
       res.json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Contact');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to save contact.' } });
     }
   }
 );
 
-apiRouter.get('/relationships/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/relationships/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const rel = await relationshipRepository.findById(req.params.id, req.userId!);
   if (!rel) {
     res.status(404).json({ success: false, error: { code: 'RELATIONSHIP_NOT_FOUND', message: 'Contact not found.' } });
     return;
   }
   res.json({ success: true, data: rel });
-});
+}));
 
 apiRouter.put(
   '/relationships/:id',
@@ -1019,6 +1225,30 @@ apiRouter.put(
       }
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Contact');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update contact.' } });
+    }
+  }
+);
+
+apiRouter.patch(
+  '/relationships/:id',
+  requireAuth,
+  validateBody(updateRelationshipSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await relationshipRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'RELATIONSHIP_NOT_FOUND', message: 'Contact not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Contact');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update contact.' } });
     }
   }
@@ -1033,6 +1263,9 @@ apiRouter.delete('/relationships/:id', requireAuth, async (req: AuthenticatedReq
     }
     res.json({ success: true, message: 'Contact deleted successfully.' });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Contact');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete contact.' } });
   }
 });
@@ -1041,19 +1274,19 @@ apiRouter.delete('/relationships/:id', requireAuth, async (req: AuthenticatedReq
 // NOTES ROUTES
 // -------------------------------------------------------------
 
-apiRouter.get('/notes', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/notes', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const notes = await noteRepository.findByUserId(req.userId!);
   res.json({ success: true, data: notes });
-});
+}));
 
-apiRouter.get('/notes/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/notes/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const note = await noteRepository.findById(req.params.id, req.userId!);
   if (!note) {
     res.status(404).json({ success: false, error: { code: 'NOTE_NOT_FOUND', message: 'Note not found.' } });
     return;
   }
   res.json({ success: true, data: note });
-});
+}));
 
 apiRouter.put(
   '/notes/:id',
@@ -1068,6 +1301,30 @@ apiRouter.put(
       }
       res.json({ success: true, data: updated });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Note');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update note.' } });
+    }
+  }
+);
+
+apiRouter.patch(
+  '/notes/:id',
+  requireAuth,
+  validateBody(updateNoteSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const updated = await noteRepository.update(req.params.id, req.userId!, req.body);
+      if (!updated) {
+        res.status(404).json({ success: false, error: { code: 'NOTE_NOT_FOUND', message: 'Note not found.' } });
+        return;
+      }
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Note');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update note.' } });
     }
   }
@@ -1082,6 +1339,9 @@ apiRouter.delete('/notes/:id', requireAuth, async (req: AuthenticatedRequest, re
     }
     res.json({ success: true, message: 'Note deleted successfully.' });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Note');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete note.' } });
   }
 });
@@ -1114,6 +1374,9 @@ apiRouter.post(
       const created = await noteRepository.create(newNote);
       res.json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Note');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create note.' } });
     }
   }
@@ -1145,6 +1408,9 @@ apiRouter.put(
       const updated = await userRepository.updateProfile(user.id, updates);
       res.json({ success: true, data: toPublicUser(updated || user) });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Profile');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update profile.' } });
     }
   }
@@ -1168,6 +1434,9 @@ apiRouter.put(
       const updated = await userRepository.updatePreferences(user.id, updates);
       res.json({ success: true, data: toPublicUser(updated || user) });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Preferences');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update preferences.' } });
     }
   }
@@ -1214,6 +1483,9 @@ apiRouter.post(
         });
         return;
       }
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Stripe Checkout');
+      }
       console.error('Checkout error:', err?.message || 'Unknown error');
       res.status(500).json({ success: false, error: { code: 'CHECKOUT_ERROR', message: 'Failed to initiate checkout.' } });
     }
@@ -1247,26 +1519,26 @@ apiRouter.post('/billing/webhook', async (req: Request, res: Response) => {
   }
 });
 
-apiRouter.get('/audit/logs', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/audit/logs', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const logs = await auditLogRepository.findByUserId(req.userId!);
   res.json({ success: true, data: logs });
-});
+}));
 
 // -------------------------------------------------------------
 // NOTIFICATIONS & SERVER-AUTHORITATIVE SCHEDULING ROUTES
 // -------------------------------------------------------------
 
 // List in-app notifications for authenticated user
-apiRouter.get('/notifications', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/notifications', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userNotifs = await notificationRepository.findByUserId(req.userId!);
   res.json({ success: true, data: userNotifs });
-});
+}));
 
 // Get unread notification count
-apiRouter.get('/notifications/unread-count', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/notifications/unread-count', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const unreadCount = await notificationRepository.countUnreadByUserId(req.userId!);
   res.json({ success: true, data: { count: unreadCount } });
-});
+}));
 
 // Directly create an in-app notification for authenticated user
 apiRouter.post(
@@ -1301,13 +1573,16 @@ apiRouter.post(
       const created = await notificationRepository.create(newNotif);
       res.status(201).json({ success: true, data: created });
     } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Notification');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to create notification.' } });
     }
   }
 );
 
 // Mark a single notification as read (Strict ownership verification)
-apiRouter.put('/notifications/:id/read', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.put('/notifications/:id/read', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const updated = await notificationRepository.markAsRead(req.params.id, req.userId!);
   if (!updated) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Notification not found.' } });
@@ -1315,16 +1590,16 @@ apiRouter.put('/notifications/:id/read', requireAuth, async (req: AuthenticatedR
   }
 
   res.json({ success: true, data: updated });
-});
+}));
 
 // Mark all notifications as read for authenticated user
-apiRouter.post('/notifications/mark-all-read', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.post('/notifications/mark-all-read', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const updatedCount = await notificationRepository.markAllAsRead(req.userId!);
   res.json({ success: true, data: { updatedCount } });
-});
+}));
 
 // Delete a single in-app notification (Strict ownership verification)
-apiRouter.delete('/notifications/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.delete('/notifications/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const deleted = await notificationRepository.delete(req.params.id, req.userId!);
   if (!deleted) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Notification not found.' } });
@@ -1332,13 +1607,13 @@ apiRouter.delete('/notifications/:id', requireAuth, async (req: AuthenticatedReq
   }
 
   res.json({ success: true, message: 'Notification deleted successfully.' });
-});
+}));
 
 // Clear all notifications for authenticated user
-apiRouter.delete('/notifications', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.delete('/notifications', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   await notificationRepository.deleteAllByUserId(req.userId!);
   res.json({ success: true, message: 'All notifications cleared.' });
-});
+}));
 
 // Evaluate server-side notification rules for authenticated user
 apiRouter.post('/notifications/evaluate', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
@@ -1347,6 +1622,9 @@ apiRouter.post('/notifications/evaluate', requireAuth, async (req: Authenticated
     const userNotifs = await notificationRepository.findByUserId(req.userId!);
     res.json({ success: true, data: userNotifs, newlyCreatedCount: created.length });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Evaluate Notifications');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to evaluate notifications.' } });
   }
 });
@@ -1385,26 +1663,29 @@ apiRouter.post(
         res.status(400).json({ success: false, error: { code: 'INVALID_TIMESTAMP', message: err.message } });
         return;
       }
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Schedule Notification');
+      }
       res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to schedule notification.' } });
     }
   }
 );
 
 // List scheduled notifications for authenticated user
-apiRouter.get('/notifications/scheduled', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/notifications/scheduled', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const list = await scheduledNotificationRepository.findByUserId(req.userId!);
   res.json({ success: true, data: list });
-});
+}));
 
 // Get a single scheduled notification (Strict ownership verification)
-apiRouter.get('/notifications/scheduled/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.get('/notifications/scheduled/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const item = await scheduledNotificationRepository.findById(req.params.id, req.userId!);
   if (!item) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
     return;
   }
   res.json({ success: true, data: item });
-});
+}));
 
 // Update a scheduled notification (Strict ownership verification & timestamp validation)
 apiRouter.put(
@@ -1415,37 +1696,44 @@ apiRouter.put(
     fieldCodeMap: { scheduledFor: 'INVALID_TIMESTAMP' },
   }),
   async (req: AuthenticatedRequest, res: Response) => {
-    const item = await scheduledNotificationRepository.findById(req.params.id, req.userId!);
-    if (!item) {
-      res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
-      return;
+    try {
+      const item = await scheduledNotificationRepository.findById(req.params.id, req.userId!);
+      if (!item) {
+        res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
+        return;
+      }
+
+      if (item.status === 'delivered') {
+        res.status(400).json({
+          success: false,
+          error: { code: 'ALREADY_DELIVERED', message: 'Delivered notifications cannot be modified.' },
+        });
+        return;
+      }
+
+      const { title, message, scheduledFor, priority, actionUrl, metadata } = req.body;
+      const updates: Partial<any> = {};
+
+      if (title !== undefined) updates.title = title.trim();
+      if (message !== undefined) updates.message = message.trim();
+      if (scheduledFor !== undefined) updates.scheduledFor = new Date(scheduledFor).toISOString();
+      if (priority !== undefined) updates.priority = priority;
+      if (actionUrl !== undefined) updates.actionUrl = actionUrl;
+      if (metadata !== undefined) updates.metadata = { ...item.metadata, ...metadata };
+
+      const updated = await scheduledNotificationRepository.update(req.params.id, req.userId!, updates);
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Scheduled Notification');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update scheduled notification.' } });
     }
-
-    if (item.status === 'delivered') {
-      res.status(400).json({
-        success: false,
-        error: { code: 'ALREADY_DELIVERED', message: 'Delivered notifications cannot be modified.' },
-      });
-      return;
-    }
-
-    const { title, message, scheduledFor, priority, actionUrl, metadata } = req.body;
-    const updates: Partial<any> = {};
-
-    if (title !== undefined) updates.title = title.trim();
-    if (message !== undefined) updates.message = message.trim();
-    if (scheduledFor !== undefined) updates.scheduledFor = new Date(scheduledFor).toISOString();
-    if (priority !== undefined) updates.priority = priority;
-    if (actionUrl !== undefined) updates.actionUrl = actionUrl;
-    if (metadata !== undefined) updates.metadata = { ...item.metadata, ...metadata };
-
-    const updated = await scheduledNotificationRepository.update(req.params.id, req.userId!, updates);
-    res.json({ success: true, data: updated });
   }
 );
 
 // Cancel / delete a scheduled notification (Strict ownership verification)
-apiRouter.delete('/notifications/scheduled/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+apiRouter.delete('/notifications/scheduled/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const removed = await scheduledNotificationRepository.delete(req.params.id, req.userId!);
   if (!removed) {
     res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Scheduled notification not found.' } });
@@ -1453,7 +1741,7 @@ apiRouter.delete('/notifications/scheduled/:id', requireAuth, async (req: Authen
   }
 
   res.json({ success: true, message: 'Scheduled notification cancelled.', data: removed });
-});
+}));
 
 // Trigger execution of due scheduled notifications (server-authoritative processor)
 apiRouter.post('/notifications/scheduled/process', requireAuth, async (_req: AuthenticatedRequest, res: Response) => {
@@ -1461,6 +1749,13 @@ apiRouter.post('/notifications/scheduled/process', requireAuth, async (_req: Aut
     const result = await processDueScheduledNotifications();
     res.json({ success: true, data: result });
   } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Process Scheduled Notifications');
+    }
     res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to process scheduled notifications.' } });
   }
 });
+
+// Central error handler fallback for any uncaught errors in apiRouter
+apiRouter.use(centralErrorHandler);
+

@@ -8,9 +8,10 @@ export class PostgresGoalRepository implements IGoalRepository {
     const map = new Map<string, any[]>();
     if (goalIds.length === 0) return map;
 
+    const placeholders = goalIds.map((_, i) => `$${i + 1}`).join(', ');
     const res = await query(
-      `SELECT * FROM goal_milestones WHERE goal_id = ANY($1::varchar[]) ORDER BY order_index ASC, created_at ASC`,
-      [goalIds]
+      `SELECT * FROM goal_milestones WHERE goal_id IN (${placeholders}) ORDER BY order_index ASC, created_at ASC`,
+      goalIds
     );
 
     for (const row of res.rows) {

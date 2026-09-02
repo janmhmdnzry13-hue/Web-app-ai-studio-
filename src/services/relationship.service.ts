@@ -119,19 +119,7 @@ export class RelationshipService extends BaseService {
 
   private getStoredRelationships(userId: string): Relationship[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Relationship[]>(this.getStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_RELATIONSHIPS.map((sr) => ({
-        ...sr,
-        id: generateId('rel'),
-        userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Relationship[]>(this.getStorageKey(userId), []);
   }
 
   private saveStoredRelationships(userId: string, relationships: Relationship[]): void {

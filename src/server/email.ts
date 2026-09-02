@@ -24,9 +24,17 @@ export interface EmailMessage {
   text: string;
 }
 
+export interface EmailDeliveryResult {
+  success: boolean;
+  messageId?: string;
+  error?: string;
+  isRealDelivery?: boolean;
+}
+
 export interface EmailProvider {
   readonly name: string;
-  sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId?: string; error?: string }>;
+  readonly isRealDelivery: boolean;
+  sendEmail(message: EmailMessage): Promise<EmailDeliveryResult>;
 }
 
 /**
@@ -34,6 +42,7 @@ export interface EmailProvider {
  */
 export class SendGridEmailProvider implements EmailProvider {
   readonly name = 'sendgrid';
+  readonly isRealDelivery = true;
   private apiKey: string;
   private defaultFrom: string;
 
@@ -42,7 +51,7 @@ export class SendGridEmailProvider implements EmailProvider {
     this.defaultFrom = defaultFrom;
   }
 
-  async sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  async sendEmail(message: EmailMessage): Promise<EmailDeliveryResult> {
     try {
       const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
         method: 'POST',
@@ -63,13 +72,13 @@ export class SendGridEmailProvider implements EmailProvider {
 
       if (!response.ok) {
         const errText = await response.text().catch(() => '');
-        return { success: false, error: `SendGrid API returned status ${response.status}: ${errText}` };
+        return { success: false, error: `SendGrid API returned status ${response.status}: ${errText}`, isRealDelivery: true };
       }
 
       const messageId = response.headers.get('x-message-id') || `sg_${Date.now()}`;
-      return { success: true, messageId };
+      return { success: true, messageId, isRealDelivery: true };
     } catch (err: any) {
-      return { success: false, error: err.message || 'SendGrid network error' };
+      return { success: false, error: err.message || 'SendGrid network error', isRealDelivery: true };
     }
   }
 }
@@ -79,6 +88,7 @@ export class SendGridEmailProvider implements EmailProvider {
  */
 export class WebhookEmailProvider implements EmailProvider {
   readonly name = 'webhook';
+  readonly isRealDelivery = true;
   private webhookUrl: string;
   private defaultFrom: string;
 
@@ -87,7 +97,7 @@ export class WebhookEmailProvider implements EmailProvider {
     this.defaultFrom = defaultFrom;
   }
 
-  async sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  async sendEmail(message: EmailMessage): Promise<EmailDeliveryResult> {
     try {
       const response = await fetch(this.webhookUrl, {
         method: 'POST',
@@ -103,12 +113,12 @@ export class WebhookEmailProvider implements EmailProvider {
       });
 
       if (!response.ok) {
-        return { success: false, error: `Webhook relay returned HTTP ${response.status}` };
+        return { success: false, error: `Webhook relay returned HTTP ${response.status}`, isRealDelivery: true };
       }
 
-      return { success: true, messageId: `wh_${Date.now()}` };
+      return { success: true, messageId: `wh_${Date.now()}`, isRealDelivery: true };
     } catch (err: any) {
-      return { success: false, error: err.message || 'Webhook relay network error' };
+      return { success: false, error: err.message || 'Webhook relay network error', isRealDelivery: true };
     }
   }
 }
@@ -154,6 +164,7 @@ export interface SmtpConfig {
  */
 export class SmtpEmailProvider implements EmailProvider {
   readonly name = 'smtp';
+  readonly isRealDelivery = true;
   private config: SmtpConfig;
   private transporter: Transporter | null = null;
 
@@ -216,19 +227,19 @@ export class SmtpEmailProvider implements EmailProvider {
     }
   }
 
-  async sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  async sendEmail(message: EmailMessage): Promise<EmailDeliveryResult> {
     if (!this.config.host) {
-      return { success: false, error: 'SMTP host is not configured' };
+      return { success: false, error: 'SMTP host is not configured', isRealDelivery: true };
     }
 
     if (isNaN(this.config.port) || this.config.port <= 0 || this.config.port > 65535) {
-      return { success: false, error: 'SMTP port is invalid' };
+      return { success: false, error: 'SMTP port is invalid', isRealDelivery: true };
     }
 
     try {
       const transporter = this.getTransporter();
       if (!transporter) {
-        return { success: false, error: 'Failed to initialize SMTP transporter' };
+        return { success: false, error: 'Failed to initialize SMTP transporter', isRealDelivery: true };
       }
 
       const mailOptions: SendMailOptions = {
@@ -248,6 +259,7 @@ export class SmtpEmailProvider implements EmailProvider {
           return {
             success: false,
             error: 'Message was rejected by the SMTP server for all recipients',
+            isRealDelivery: true,
           };
         }
       }
@@ -256,6 +268,7 @@ export class SmtpEmailProvider implements EmailProvider {
         return {
           success: false,
           error: 'No recipients were accepted by the SMTP server',
+          isRealDelivery: true,
         };
       }
 
@@ -263,34 +276,56 @@ export class SmtpEmailProvider implements EmailProvider {
         return {
           success: false,
           error: 'SMTP server did not acknowledge message delivery',
+          isRealDelivery: true,
         };
       }
 
       return {
         success: true,
         messageId: info.messageId,
+        isRealDelivery: true,
       };
     } catch (err: any) {
       const sanitized = sanitizeEmailError(err?.message || 'SMTP delivery failed');
       return {
         success: false,
         error: sanitized,
+        isRealDelivery: true,
       };
     }
   }
 }
 
 /**
+ * Unconfigured Email Provider for production environments when no valid provider is configured.
+ * Explicitly reports failure instead of pretending emails were sent.
+ */
+export class UnconfiguredEmailProvider implements EmailProvider {
+  readonly name = 'unconfigured';
+  readonly isRealDelivery = false;
+
+  async sendEmail(_message: EmailMessage): Promise<EmailDeliveryResult> {
+    return {
+      success: false,
+      error: 'No production email provider is configured. Please configure SMTP_HOST, SENDGRID_API_KEY, or EMAIL_WEBHOOK_URL.',
+      isRealDelivery: false,
+    };
+  }
+}
+
+/**
  * Development / Safe Console Email Provider
+ * Explicitly marked as test/development delivery (isRealDelivery = false)
  * Logs email dispatch events WITHOUT leaking sensitive tokens or credentials
  */
 export class DevelopmentEmailProvider implements EmailProvider {
   readonly name = 'development';
+  readonly isRealDelivery = false;
 
-  async sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId?: string }> {
+  async sendEmail(message: EmailMessage): Promise<EmailDeliveryResult> {
     const maskedRecipient = message.to.replace(/(?<=^.).+(?=@)/, (m) => '*'.repeat(m.length));
     console.info(`[Email Service: DEV] Notification queued for recipient: ${maskedRecipient} | Subject: "${message.subject}" | (Raw security tokens omitted for safety)`);
-    return { success: true, messageId: `dev_${Date.now()}` };
+    return { success: true, messageId: `dev_${Date.now()}`, isRealDelivery: false };
   }
 }
 
@@ -306,7 +341,8 @@ export class EmailService {
     this.provider = this.resolveProvider();
   }
 
-  private resolveProvider(): EmailProvider {
+  public resolveProvider(): EmailProvider {
+    const isProduction = process.env.NODE_ENV === 'production';
     const smtpHost = process.env.SMTP_HOST?.trim();
     if (smtpHost) {
       return new SmtpEmailProvider({
@@ -323,11 +359,25 @@ export class EmailService {
     if (process.env.EMAIL_WEBHOOK_URL?.trim()) {
       return new WebhookEmailProvider(process.env.EMAIL_WEBHOOK_URL.trim(), this.defaultFrom);
     }
+    if (isProduction) {
+      return new UnconfiguredEmailProvider();
+    }
     return new DevelopmentEmailProvider();
   }
 
   public getProvider(): EmailProvider {
     return this.provider;
+  }
+
+  public isConfigured(): boolean {
+    if (process.env.NODE_ENV === 'production') {
+      return this.provider.isRealDelivery && this.provider.name !== 'unconfigured' && this.provider.name !== 'development';
+    }
+    return this.provider.name !== 'unconfigured';
+  }
+
+  public isRealDeliveryConfigured(): boolean {
+    return Boolean(this.provider.isRealDelivery);
   }
 
   public setProviderForTesting(provider: EmailProvider): void {
@@ -346,7 +396,7 @@ export class EmailService {
     toEmail: string,
     resetToken: string,
     requestOrigin?: string
-  ): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  ): Promise<EmailDeliveryResult> {
     const envAppUrl = process.env.APP_URL;
     let baseUrl = 'http://localhost:3000';
     if (envAppUrl) {

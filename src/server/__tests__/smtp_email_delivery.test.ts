@@ -382,12 +382,12 @@ describe('Real SMTP Email Delivery for Password Resets', () => {
       expect(responseString).not.toContain('rst_');
       expect(responseString).not.toContain('token');
 
-      // Verify token exists in database for valid confirmation
+      // Verify token exists in database for valid confirmation as a secure hash representation
       const tokenRecord = db.schema.passwordResetTokens.find(
         (r) => r.email === testUser.email && !r.used
       );
       expect(tokenRecord).toBeDefined();
-      expect(tokenRecord!.token).toMatch(/^rst_[a-f0-9]{48}$/);
+      expect(tokenRecord!.token).toMatch(/^[a-f0-9]{64}$/);
     });
   });
 
@@ -427,7 +427,10 @@ describe('Real SMTP Email Delivery for Password Resets', () => {
         (r) => r.email === testUser.email && !r.used
       );
       expect(tokenRecord).toBeDefined();
-      const rawToken = tokenRecord!.token;
+      const tokenHash = tokenRecord!.token;
+
+      // Extract raw token from mockSendMail
+      const rawToken = mockSendMail.mock.calls[0]?.[0]?.html?.match(/token=(rst_[a-f0-9]{64})/)?.[1] || '';
 
       // Inspect all recorded console calls
       const allLoggedMessages = [
@@ -439,7 +442,10 @@ describe('Real SMTP Email Delivery for Password Resets', () => {
         .map((arg) => (typeof arg === 'string' ? arg : JSON.stringify(arg)))
         .join(' ');
 
-      expect(allLoggedMessages).not.toContain(rawToken);
+      if (rawToken) {
+        expect(allLoggedMessages).not.toContain(rawToken);
+      }
+      expect(allLoggedMessages).not.toContain(tokenHash);
     });
   });
 
@@ -476,6 +482,97 @@ describe('Real SMTP Email Delivery for Password Resets', () => {
       expect(responseText).not.toContain('smtp.private-internal.net');
       expect(responseText).not.toContain('SECRET_SMTP_PASS_NEVER_LEAK');
       expect(responseText).not.toContain('admin_smtp_user');
+    });
+  });
+
+  describe('9. API failure reporting when SMTP delivery fails', () => {
+    it('returns HTTP 503 and failure when SMTP provider fails to deliver email for an existing user', async () => {
+      const mockSendMail = vi
+        .fn()
+        .mockRejectedValue(new Error('SMTP connect ETIMEDOUT 198.51.100.1:587'));
+
+      const mockTransporter = {
+        sendMail: mockSendMail,
+      } as unknown as Transporter;
+
+      const failingProvider = new SmtpEmailProvider(
+        {
+          host: '198.51.100.1',
+          port: 587,
+          from: 'noreply@origin-os.internal',
+        },
+        mockTransporter
+      );
+
+      emailService.setProviderForTesting(failingProvider);
+
+      const res = await request(app)
+        .post('/api/auth/password-reset-request')
+        .send({ email: testUser.email });
+
+      expect(res.status).toBe(503);
+      expect(res.body.success).toBe(false);
+      expect(res.body.error.code).toBe('EMAIL_DELIVERY_FAILED');
+      expect(res.body.error.message).toContain('Unable to deliver password reset email');
+      // Verify no sensitive token or server internals are exposed
+      expect(JSON.stringify(res.body)).not.toContain('ETIMEDOUT');
+      expect(JSON.stringify(res.body)).not.toContain('rst_');
+    });
+  });
+
+  describe('10. Missing production email configuration fails honestly and never reports fake success', () => {
+    it('returns HTTP 503 and fails honestly when no email provider is configured in production', async () => {
+      process.env.NODE_ENV = 'production';
+      delete process.env.SMTP_HOST;
+      delete process.env.SENDGRID_API_KEY;
+      delete process.env.EMAIL_WEBHOOK_URL;
+
+      emailService.resetProvider();
+
+      expect(emailService.getProvider().name).toBe('unconfigured');
+      expect(emailService.getProvider().isRealDelivery).toBe(false);
+      expect(emailService.isConfigured()).toBe(false);
+      expect(emailService.isRealDeliveryConfigured()).toBe(false);
+
+      // Direct service call fails honestly
+      const directResult = await emailService.sendPasswordResetEmail(testUser.email, 'rst_test_token_123');
+      expect(directResult.success).toBe(false);
+      expect(directResult.error).toContain('No production email provider is configured');
+
+      // API request fails honestly with HTTP 503 and does not report fake success
+      const res = await request(app)
+        .post('/api/auth/password-reset-request')
+        .send({ email: testUser.email });
+
+      expect(res.status).toBe(503);
+      expect(res.body.success).toBe(false);
+      expect(res.body.error.code).toBe('EMAIL_SERVICE_UNCONFIGURED');
+      expect(res.body.error.message).toContain('temporarily unavailable');
+      expect(JSON.stringify(res.body)).not.toContain('rst_');
+    });
+
+    it('never silently selects DevelopmentEmailProvider in production mode', () => {
+      process.env.NODE_ENV = 'production';
+      delete process.env.SMTP_HOST;
+      delete process.env.SENDGRID_API_KEY;
+      delete process.env.EMAIL_WEBHOOK_URL;
+
+      const service = new EmailService();
+      expect(service.getProvider().name).toBe('unconfigured');
+      expect(service.getProvider().name).not.toBe('development');
+      expect(service.isConfigured()).toBe(false);
+    });
+
+    it('distinguishes development provider from real production delivery in non-production mode', () => {
+      process.env.NODE_ENV = 'development';
+      delete process.env.SMTP_HOST;
+      delete process.env.SENDGRID_API_KEY;
+      delete process.env.EMAIL_WEBHOOK_URL;
+
+      const service = new EmailService();
+      expect(service.getProvider().name).toBe('development');
+      expect(service.getProvider().isRealDelivery).toBe(false);
+      expect(service.isRealDeliveryConfigured()).toBe(false);
     });
   });
 });

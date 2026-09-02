@@ -142,19 +142,7 @@ export class GoalService extends BaseService implements IGoalService {
 
   private getStoredGoals(userId: string): Goal[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Goal[]>(this.getStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_GOALS.map((sg) => ({
-        ...sg,
-        id: generateId('gol'),
-        userId,
-        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Goal[]>(this.getStorageKey(userId), []);
   }
 
   private saveStoredGoals(userId: string, goals: Goal[]): void {

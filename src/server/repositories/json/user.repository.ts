@@ -1,6 +1,7 @@
 import { db, UserRecord } from '../../db';
 import { IUserRepository } from '../interfaces';
 import { toPublicUser } from '../../auth';
+import { isProductionEnvironment } from '../../db/postgres';
 
 export class JsonUserRepository implements IUserRepository {
   async findById(id: string): Promise<UserRecord | null> {
@@ -77,6 +78,9 @@ export class JsonUserRepository implements IUserRepository {
   }
 
   async seedStarterData(userId: string): Promise<void> {
+    if (isProductionEnvironment() && process.env.ALLOW_DEMO_IN_PRODUCTION !== 'true' && process.env.ENABLE_DEMO_ENVIRONMENT !== 'true') {
+      return;
+    }
     db.seedUserStarterData(userId);
     await db.save();
   }

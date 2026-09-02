@@ -17,29 +17,7 @@ export class AIMemoryService extends BaseService {
   private loadMemories(userId: string): AIMemoryItem[] {
     const raw = safeStorage.get<AIMemoryItem[] | null>(this.getStorageKey(userId), null);
     if (!raw) {
-      // Seed transparent defaults
-      const defaults: AIMemoryItem[] = [
-        {
-          id: `mem_default_1`,
-          userId,
-          key: 'Preferred Deep Work Block',
-          value: 'Morning 9:00 AM - 11:30 AM for highest cognitive leverage',
-          category: 'planning',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: `mem_default_2`,
-          userId,
-          key: 'Planning Cadence',
-          value: 'Daily 3-priority matrix with time-boxed sprints',
-          category: 'routine',
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-      ];
-      this.saveMemories(userId, defaults);
-      return defaults;
+      return [];
     }
     return raw;
   }

@@ -2,66 +2,98 @@
   "version": 1,
   "users": [
     {
-      "id": "usr_notif_user_a",
-      "email": "user_a@origin-os.internal",
-      "passwordHash": "$2b$10$YkYCGqWwjdlnuKf.P8whj.Lu5Rf8HFJEg3vg0HzdPBRSq42aWE07K",
+      "id": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "email": "guest.fb97820b@origin-os.internal",
+      "passwordHash": "$2b$10$SKfgdnrGJde7n891OCCNYOutC2I1mm5aPJ9BoY/Vi0ihCgJnZzP9W",
       "role": "member",
       "emailVerified": true,
       "profile": {
-        "displayName": "User Alpha"
+        "displayName": "Alex Vance",
+        "headline": "Lead Architect (Demo)",
+        "bio": "Designing deliberate personal operating systems in an isolated session.",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
       },
       "preferences": {
         "theme": "system",
-        "timezone": "UTC",
+        "timezone": "America/New_York",
         "locale": "en-US",
         "weekStartDay": 1,
         "reducedMotion": false,
         "compactDensity": false,
-        "dailyReflectionReminderTime": null,
+        "dailyReflectionReminderTime": "21:30",
         "notificationChannels": {
           "inApp": true,
-          "email": true,
+          "email": false,
           "dailyDigest": true
-        }
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals",
+          "notes",
+          "emotions",
+          "relationships"
+        ]
       },
-      "lastLoginAt": null,
-      "createdAt": "2026-08-30T13:48:26.629Z",
-      "updatedAt": "2026-08-30T13:48:26.629Z"
+      "subscription": {
+        "tier": "pro",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-09-02T12:41:05.579Z",
+      "createdAt": "2026-09-02T12:41:05.579Z",
+      "updatedAt": "2026-09-02T12:41:05.579Z"
     },
     {
-      "id": "usr_notif_user_b",
-      "email": "user_b@origin-os.internal",
-      "passwordHash": "$2b$10$YkYCGqWwjdlnuKf.P8whj.Lu5Rf8HFJEg3vg0HzdPBRSq42aWE07K",
+      "id": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "email": "guest.3e914690@origin-os.internal",
+      "passwordHash": "$2b$10$O3O8EdnY1.IRNzIXV980oed5XfyT5XTKHdf7aG7o4MjCrqYPXB1WC",
       "role": "member",
       "emailVerified": true,
       "profile": {
-        "displayName": "User Beta"
+        "displayName": "Alex Vance",
+        "headline": "Lead Architect (Demo)",
+        "bio": "Designing deliberate personal operating systems in an isolated session.",
+        "primaryLifeFocus": "Deep Work & Daily Focus"
       },
       "preferences": {
         "theme": "system",
-        "timezone": "UTC",
+        "timezone": "America/New_York",
         "locale": "en-US",
         "weekStartDay": 1,
         "reducedMotion": false,
         "compactDensity": false,
-        "dailyReflectionReminderTime": null,
+        "dailyReflectionReminderTime": "21:30",
         "notificationChannels": {
           "inApp": true,
-          "email": true,
+          "email": false,
           "dailyDigest": true
-        }
+        },
+        "unlockedModules": [
+          "tasks",
+          "habits",
+          "finances",
+          "goals",
+          "notes",
+          "emotions",
+          "relationships"
+        ]
       },
-      "lastLoginAt": null,
-      "createdAt": "2026-08-30T13:48:26.629Z",
-      "updatedAt": "2026-08-30T13:48:26.629Z"
+      "subscription": {
+        "tier": "pro",
+        "status": "active"
+      },
+      "lastLoginAt": "2026-09-02T12:41:05.828Z",
+      "createdAt": "2026-09-02T12:41:05.828Z",
+      "updatedAt": "2026-09-02T12:41:05.828Z"
     },
     {
-      "id": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
-      "email": "valid_session_1788097707654@origin-os.internal",
-      "passwordHash": "$2b$10$q3ATUe7yTitz5AbYfftn4O/nrhtYR5afp8fi7htxE2eIHuLMX6q0m",
+      "id": "usr_0717963e3edc3fb3936fa036ad45c5a004e8e3814001779d",
+      "email": "valid_session_1788352867150@origin-os.internal",
+      "passwordHash": "$2b$10$DgW/h8gTCSSU2OUiZ3VQeOg/sBu7BPhkiYw7JC1jtkWiB4pHczjWa",
       "role": "member",
       "emailVerified": true,
-      "verificationToken": "vtok_830d522d06924c6522875868d76a492e9acaac0180ccfd52",
+      "verificationToken": "vtok_724b329a63e4c68c9cf8f4b559329aa3458ce9a7b452e170",
       "profile": {
         "displayName": "Valid User",
         "headline": "Member",
@@ -92,17 +124,17 @@
         "tier": "free",
         "status": "active"
       },
-      "lastLoginAt": "2026-08-30T13:48:27.782Z",
-      "createdAt": "2026-08-30T13:48:27.782Z",
-      "updatedAt": "2026-08-30T13:48:27.782Z"
+      "lastLoginAt": "2026-09-02T12:41:07.304Z",
+      "createdAt": "2026-09-02T12:41:07.305Z",
+      "updatedAt": "2026-09-02T12:41:07.305Z"
     },
     {
-      "id": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
-      "email": "logout_test_1788097708036@origin-os.internal",
-      "passwordHash": "$2b$10$aKp2mpcUzHlHXzmhqG90uuodzYPV6YDDpsAXEla6rgQVy3pDvBz.q",
+      "id": "usr_765bbfdac2d12e878c084535f459f98c3c7c6eb243f5a6e8",
+      "email": "logout_test_1788352867531@origin-os.internal",
+      "passwordHash": "$2b$10$8Bzo9m9UEXTVmKqhtPMnj.y22HNwS9qIh63j57iJpzCmO0c.X3Jve",
       "role": "member",
       "emailVerified": true,
-      "verificationToken": "vtok_edcbe87c44537ebc06fee936df971e58f05911dad2a1fa5e",
+      "verificationToken": "vtok_2b7ea5d9452113ad4ca88c1a9be8aba1ba8d9bd33b73e28a",
       "profile": {
         "displayName": "Logout User",
         "headline": "Member",
@@ -133,17 +165,17 @@
         "tier": "free",
         "status": "active"
       },
-      "lastLoginAt": "2026-08-30T13:48:28.150Z",
-      "createdAt": "2026-08-30T13:48:28.150Z",
-      "updatedAt": "2026-08-30T13:48:28.150Z"
+      "lastLoginAt": "2026-09-02T12:41:07.653Z",
+      "createdAt": "2026-09-02T12:41:07.653Z",
+      "updatedAt": "2026-09-02T12:41:07.653Z"
     },
     {
-      "id": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "email": "alice_1788097708315@origin-os.internal",
-      "passwordHash": "$2b$10$txyPOvtfz3cFzFavwZpeSuxkmDNxD8Ee8ShIvSQElWBHxPs2heY6y",
+      "id": "usr_75edbe99c068ddf19d3fe08ef2fb7cfba8f8e6fbaff34f69",
+      "email": "alice_1788352867771@origin-os.internal",
+      "passwordHash": "$2b$10$m/szKD2gOj7R9ARL5KlneeiVt30lDNEfnj5oCKRKdLj2GDPpoRqjW",
       "role": "member",
       "emailVerified": true,
-      "verificationToken": "vtok_8358a0172efb693f91668ffb17c91ec60919eb7296a69d41",
+      "verificationToken": "vtok_88be18b49515bc3ba72fbe402d59c5ade761cdced83a5546",
       "profile": {
         "displayName": "Alice",
         "headline": "Member",
@@ -174,17 +206,17 @@
         "tier": "free",
         "status": "active"
       },
-      "lastLoginAt": "2026-08-30T13:48:28.410Z",
-      "createdAt": "2026-08-30T13:48:28.411Z",
-      "updatedAt": "2026-08-30T13:48:28.411Z"
+      "lastLoginAt": "2026-09-02T12:41:07.885Z",
+      "createdAt": "2026-09-02T12:41:07.885Z",
+      "updatedAt": "2026-09-02T12:41:07.885Z"
     },
     {
-      "id": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "email": "bob_1788097708568@origin-os.internal",
-      "passwordHash": "$2b$10$ELdhN8P39bTQ0tQObSl54ufnKKGNGWi3k.LXwicZzS9AgNXk2QJiS",
+      "id": "usr_ac80bc8b507924ae62e3974b776a2fe71519bd8efe99ee08",
+      "email": "bob_1788352867994@origin-os.internal",
+      "passwordHash": "$2b$10$bJ.eVIE1M5mIZq27XuFcke.q6srzgwEBQlYZgNc62wC3jEpEMRG2e",
       "role": "member",
       "emailVerified": true,
-      "verificationToken": "vtok_54f0b7d72e0c96a3b218977536e6024e7ef67ea1608461c6",
+      "verificationToken": "vtok_7435fa18b178c105ca23c5ea456974206cb567c2f919d4af",
       "profile": {
         "displayName": "Bob",
         "headline": "Member",
@@ -215,34 +247,20 @@
         "tier": "free",
         "status": "active"
       },
-      "lastLoginAt": "2026-08-30T13:48:28.666Z",
-      "createdAt": "2026-08-30T13:48:28.666Z",
-      "updatedAt": "2026-08-30T13:48:28.666Z"
+      "lastLoginAt": "2026-09-02T12:41:08.104Z",
+      "createdAt": "2026-09-02T12:41:08.104Z",
+      "updatedAt": "2026-09-02T12:41:08.104Z"
     }
   ],
   "tasks": [
     {
-      "id": "tsk_alpha_1",
-      "userId": "usr_notif_user_a",
-      "title": "Server Task Review",
-      "priority": "urgent",
-      "status": "todo",
-      "dueDate": "2026-08-30T18:00:00.000Z",
-      "tags": [
-        "work"
-      ],
-      "subtasks": [],
-      "createdAt": "2026-08-30T13:48:26.772Z",
-      "updatedAt": "2026-08-30T13:48:26.772Z"
-    },
-    {
-      "id": "task_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "task_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "title": "Review quarterly architecture roadmap",
       "description": "Synthesize engineering priorities and key milestone deliverables.",
       "priority": "high",
       "status": "todo",
-      "dueDate": "2026-08-30",
+      "dueDate": "2026-09-02",
       "estimatedMinutes": 60,
       "actualMinutes": null,
       "tags": [
@@ -251,44 +269,44 @@
       ],
       "subtasks": [
         {
-          "id": "sub_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
+          "id": "sub_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
           "title": "Outline core milestones",
           "completed": true
         },
         {
-          "id": "sub_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_2",
+          "id": "sub_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
           "title": "Align resource capacity",
           "completed": false
         }
       ],
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "task_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_2",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "task_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "title": "Publish weekly product synthesis",
       "description": "Share cross-domain insights and key progress updates with the team.",
       "priority": "medium",
       "status": "completed",
-      "dueDate": "2026-08-30",
+      "dueDate": "2026-09-02",
       "estimatedMinutes": 45,
       "actualMinutes": 40,
       "tags": [
         "communication"
       ],
       "subtasks": [],
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "task_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "task_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "title": "Review quarterly architecture roadmap",
       "description": "Synthesize engineering priorities and key milestone deliverables.",
       "priority": "high",
       "status": "todo",
-      "dueDate": "2026-08-30",
+      "dueDate": "2026-09-02",
       "estimatedMinutes": 60,
       "actualMinutes": null,
       "tags": [
@@ -297,148 +315,41 @@
       ],
       "subtasks": [
         {
-          "id": "sub_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
+          "id": "sub_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
           "title": "Outline core milestones",
           "completed": true
         },
         {
-          "id": "sub_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_2",
+          "id": "sub_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
           "title": "Align resource capacity",
           "completed": false
         }
       ],
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     },
     {
-      "id": "task_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_2",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "task_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "title": "Publish weekly product synthesis",
       "description": "Share cross-domain insights and key progress updates with the team.",
       "priority": "medium",
       "status": "completed",
-      "dueDate": "2026-08-30",
+      "dueDate": "2026-09-02",
       "estimatedMinutes": 45,
       "actualMinutes": 40,
       "tags": [
         "communication"
       ],
       "subtasks": [],
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "task_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "title": "Review quarterly architecture roadmap",
-      "description": "Synthesize engineering priorities and key milestone deliverables.",
-      "priority": "high",
-      "status": "todo",
-      "dueDate": "2026-08-30",
-      "estimatedMinutes": 60,
-      "actualMinutes": null,
-      "tags": [
-        "strategy",
-        "deep_work"
-      ],
-      "subtasks": [
-        {
-          "id": "sub_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-          "title": "Outline core milestones",
-          "completed": true
-        },
-        {
-          "id": "sub_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_2",
-          "title": "Align resource capacity",
-          "completed": false
-        }
-      ],
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "task_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_2",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "title": "Publish weekly product synthesis",
-      "description": "Share cross-domain insights and key progress updates with the team.",
-      "priority": "medium",
-      "status": "completed",
-      "dueDate": "2026-08-30",
-      "estimatedMinutes": 45,
-      "actualMinutes": 40,
-      "tags": [
-        "communication"
-      ],
-      "subtasks": [],
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "task_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "title": "Review quarterly architecture roadmap",
-      "description": "Synthesize engineering priorities and key milestone deliverables.",
-      "priority": "high",
-      "status": "todo",
-      "dueDate": "2026-08-30",
-      "estimatedMinutes": 60,
-      "actualMinutes": null,
-      "tags": [
-        "strategy",
-        "deep_work"
-      ],
-      "subtasks": [
-        {
-          "id": "sub_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-          "title": "Outline core milestones",
-          "completed": true
-        },
-        {
-          "id": "sub_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_2",
-          "title": "Align resource capacity",
-          "completed": false
-        }
-      ],
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
-    },
-    {
-      "id": "task_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_2",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "title": "Publish weekly product synthesis",
-      "description": "Share cross-domain insights and key progress updates with the team.",
-      "priority": "medium",
-      "status": "completed",
-      "dueDate": "2026-08-30",
-      "estimatedMinutes": 45,
-      "actualMinutes": 40,
-      "tags": [
-        "communication"
-      ],
-      "subtasks": [],
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "habits": [
     {
-      "id": "hbt_alpha_1",
-      "userId": "usr_notif_user_a",
-      "name": "Deep Focus Sprint",
-      "category": "deep_work",
-      "frequency": "daily",
-      "targetPerDay": 1,
-      "unit": "session",
-      "streakCount": 5,
-      "bestStreak": 10,
-      "totalCompletions": 25,
-      "archived": false,
-      "createdAt": "2026-08-30T13:48:26.772Z",
-      "updatedAt": "2026-08-30T13:48:26.772Z"
-    },
-    {
-      "id": "habit_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "habit_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "name": "Morning Deep Work Block",
       "description": "90 minutes of focused, distraction-free execution.",
       "category": "deep_work",
@@ -448,12 +359,12 @@
       "bestStreak": 14,
       "totalCompletions": 28,
       "archived": false,
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "habit_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_2",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "habit_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "name": "Mindful Movement & Walk",
       "description": "30 minutes outdoors to recharge cognitive energy.",
       "category": "health",
@@ -463,12 +374,12 @@
       "bestStreak": 21,
       "totalCompletions": 42,
       "archived": false,
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "habit_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "habit_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "name": "Morning Deep Work Block",
       "description": "90 minutes of focused, distraction-free execution.",
       "category": "deep_work",
@@ -478,12 +389,12 @@
       "bestStreak": 14,
       "totalCompletions": 28,
       "archived": false,
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     },
     {
-      "id": "habit_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_2",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "habit_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "name": "Mindful Movement & Walk",
       "description": "30 minutes outdoors to recharge cognitive energy.",
       "category": "health",
@@ -493,365 +404,165 @@
       "bestStreak": 21,
       "totalCompletions": 42,
       "archived": false,
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "habit_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "name": "Morning Deep Work Block",
-      "description": "90 minutes of focused, distraction-free execution.",
-      "category": "deep_work",
-      "frequency": "daily",
-      "targetPerDay": 1,
-      "streakCount": 5,
-      "bestStreak": 14,
-      "totalCompletions": 28,
-      "archived": false,
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "habit_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_2",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "name": "Mindful Movement & Walk",
-      "description": "30 minutes outdoors to recharge cognitive energy.",
-      "category": "health",
-      "frequency": "daily",
-      "targetPerDay": 1,
-      "streakCount": 12,
-      "bestStreak": 21,
-      "totalCompletions": 42,
-      "archived": false,
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "habit_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "name": "Morning Deep Work Block",
-      "description": "90 minutes of focused, distraction-free execution.",
-      "category": "deep_work",
-      "frequency": "daily",
-      "targetPerDay": 1,
-      "streakCount": 5,
-      "bestStreak": 14,
-      "totalCompletions": 28,
-      "archived": false,
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
-    },
-    {
-      "id": "habit_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_2",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "name": "Mindful Movement & Walk",
-      "description": "30 minutes outdoors to recharge cognitive energy.",
-      "category": "health",
-      "frequency": "daily",
-      "targetPerDay": 1,
-      "streakCount": 12,
-      "bestStreak": 21,
-      "totalCompletions": 42,
-      "archived": false,
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "habitLogs": [],
   "goals": [
     {
-      "id": "goal_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "goal_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "title": "Architect Enterprise Co-Pilot OS",
       "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
       "category": "career",
       "horizon": "quarterly",
-      "targetDate": "2026-10-29",
+      "targetDate": "2026-11-01",
       "progressPercentage": 65,
       "status": "active",
       "milestones": [
         {
-          "id": "mil_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
+          "id": "mil_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
           "title": "Security audit & JWT hardening",
           "completed": true,
           "order": 1
         },
         {
-          "id": "mil_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_2",
+          "id": "mil_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
           "title": "Offline-ready data synchronization",
           "completed": true,
           "order": 2
         },
         {
-          "id": "mil_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_3",
+          "id": "mil_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_3",
           "title": "Enterprise RBAC verification",
           "completed": false,
           "order": 3
         }
       ],
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "goal_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "goal_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "title": "Architect Enterprise Co-Pilot OS",
       "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
       "category": "career",
       "horizon": "quarterly",
-      "targetDate": "2026-10-29",
+      "targetDate": "2026-11-01",
       "progressPercentage": 65,
       "status": "active",
       "milestones": [
         {
-          "id": "mil_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
+          "id": "mil_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
           "title": "Security audit & JWT hardening",
           "completed": true,
           "order": 1
         },
         {
-          "id": "mil_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_2",
+          "id": "mil_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
           "title": "Offline-ready data synchronization",
           "completed": true,
           "order": 2
         },
         {
-          "id": "mil_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_3",
+          "id": "mil_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_3",
           "title": "Enterprise RBAC verification",
           "completed": false,
           "order": 3
         }
       ],
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "goal_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "title": "Architect Enterprise Co-Pilot OS",
-      "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
-      "category": "career",
-      "horizon": "quarterly",
-      "targetDate": "2026-10-29",
-      "progressPercentage": 65,
-      "status": "active",
-      "milestones": [
-        {
-          "id": "mil_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-          "title": "Security audit & JWT hardening",
-          "completed": true,
-          "order": 1
-        },
-        {
-          "id": "mil_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_2",
-          "title": "Offline-ready data synchronization",
-          "completed": true,
-          "order": 2
-        },
-        {
-          "id": "mil_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_3",
-          "title": "Enterprise RBAC verification",
-          "completed": false,
-          "order": 3
-        }
-      ],
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "goal_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "title": "Architect Enterprise Co-Pilot OS",
-      "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
-      "category": "career",
-      "horizon": "quarterly",
-      "targetDate": "2026-10-29",
-      "progressPercentage": 65,
-      "status": "active",
-      "milestones": [
-        {
-          "id": "mil_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-          "title": "Security audit & JWT hardening",
-          "completed": true,
-          "order": 1
-        },
-        {
-          "id": "mil_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_2",
-          "title": "Offline-ready data synchronization",
-          "completed": true,
-          "order": 2
-        },
-        {
-          "id": "mil_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_3",
-          "title": "Enterprise RBAC verification",
-          "completed": false,
-          "order": 3
-        }
-      ],
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "transactions": [
     {
-      "id": "tx_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "tx_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "title": "Cloud Infrastructure & Dedicated Servers",
       "amount": 45,
       "minorUnits": 4500,
       "type": "expense",
       "category": "Software & Tools",
-      "date": "2026-08-30",
+      "date": "2026-09-02",
       "isRecurring": true,
       "notes": "Monthly isolated container hosting",
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "tx_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "tx_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "title": "Cloud Infrastructure & Dedicated Servers",
       "amount": 45,
       "minorUnits": 4500,
       "type": "expense",
       "category": "Software & Tools",
-      "date": "2026-08-30",
+      "date": "2026-09-02",
       "isRecurring": true,
       "notes": "Monthly isolated container hosting",
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "tx_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "title": "Cloud Infrastructure & Dedicated Servers",
-      "amount": 45,
-      "minorUnits": 4500,
-      "type": "expense",
-      "category": "Software & Tools",
-      "date": "2026-08-30",
-      "isRecurring": true,
-      "notes": "Monthly isolated container hosting",
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "tx_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "title": "Cloud Infrastructure & Dedicated Servers",
-      "amount": 45,
-      "minorUnits": 4500,
-      "type": "expense",
-      "category": "Software & Tools",
-      "date": "2026-08-30",
-      "isRecurring": true,
-      "notes": "Monthly isolated container hosting",
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "budgets": [
     {
-      "id": "b_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "b_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "category": "Software & Tools",
       "limitAmount": 150,
       "limitMinorUnits": 15000,
       "period": "monthly",
       "alertThresholdPercentage": 80,
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "b_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "b_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "category": "Software & Tools",
       "limitAmount": 150,
       "limitMinorUnits": 15000,
       "period": "monthly",
       "alertThresholdPercentage": 80,
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "b_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "category": "Software & Tools",
-      "limitAmount": 150,
-      "limitMinorUnits": 15000,
-      "period": "monthly",
-      "alertThresholdPercentage": 80,
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "b_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "category": "Software & Tools",
-      "limitAmount": 150,
-      "limitMinorUnits": 15000,
-      "period": "monthly",
-      "alertThresholdPercentage": 80,
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "reflections": [],
   "relationships": [
     {
-      "id": "rel_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "rel_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "name": "Sarah Chen",
       "relationType": "friend",
       "cadenceDays": 14,
-      "lastInteractionDate": "2026-08-25",
-      "nextDueReminderDate": "2026-09-08",
+      "lastInteractionDate": "2026-08-28",
+      "nextDueReminderDate": "2026-09-11",
       "notes": "Great conversation about deliberate life engineering.",
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "rel_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "rel_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "name": "Sarah Chen",
       "relationType": "friend",
       "cadenceDays": 14,
-      "lastInteractionDate": "2026-08-25",
-      "nextDueReminderDate": "2026-09-08",
+      "lastInteractionDate": "2026-08-28",
+      "nextDueReminderDate": "2026-09-11",
       "notes": "Great conversation about deliberate life engineering.",
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "rel_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "name": "Sarah Chen",
-      "relationType": "friend",
-      "cadenceDays": 14,
-      "lastInteractionDate": "2026-08-25",
-      "nextDueReminderDate": "2026-09-08",
-      "notes": "Great conversation about deliberate life engineering.",
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "rel_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "name": "Sarah Chen",
-      "relationType": "friend",
-      "cadenceDays": 14,
-      "lastInteractionDate": "2026-08-25",
-      "nextDueReminderDate": "2026-09-08",
-      "notes": "Great conversation about deliberate life engineering.",
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "interactions": [],
   "notes": [
     {
-      "id": "note_usr_demo_gst_7a091c08167565e188cff512f9f64e7875476aab4f6b14a8_1",
-      "userId": "usr_demo_gst_7a091c08167565e188cff512f9f64e7875476aab4f6b14a8",
+      "id": "note_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
       "title": "Principles for Deliberate Living",
       "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
       "tags": [
@@ -861,12 +572,12 @@
       "isPinned": true,
       "isArchived": false,
       "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:11.949Z",
-      "updatedAt": "2026-08-30T13:48:11.949Z"
+      "createdAt": "2026-09-02T12:41:05.630Z",
+      "updatedAt": "2026-09-02T12:41:05.630Z"
     },
     {
-      "id": "note_usr_demo_gst_d842d16a7c9b35ad9e1311d988ff7e2a8ed522f91713ba97_1",
-      "userId": "usr_demo_gst_d842d16a7c9b35ad9e1311d988ff7e2a8ed522f91713ba97",
+      "id": "note_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
       "title": "Principles for Deliberate Living",
       "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
       "tags": [
@@ -876,615 +587,542 @@
       "isPinned": true,
       "isArchived": false,
       "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:12.219Z",
-      "updatedAt": "2026-08-30T13:48:12.219Z"
-    },
-    {
-      "id": "note_usr_42af6e47bd18d54d130fb5eb99c524604ad91690f57317e7_1",
-      "userId": "usr_42af6e47bd18d54d130fb5eb99c524604ad91690f57317e7",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:17.760Z",
-      "updatedAt": "2026-08-30T13:48:17.760Z"
-    },
-    {
-      "id": "note_usr_bceb51f66418566591a66653d16d0f41f94c9d929ff5a450_1",
-      "userId": "usr_bceb51f66418566591a66653d16d0f41f94c9d929ff5a450",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:18.208Z",
-      "updatedAt": "2026-08-30T13:48:18.208Z"
-    },
-    {
-      "id": "note_usr_8fe381d6f5e2c527216970392e14e7e2ca69661bea2c8f10_1",
-      "userId": "usr_8fe381d6f5e2c527216970392e14e7e2ca69661bea2c8f10",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:19.858Z",
-      "updatedAt": "2026-08-30T13:48:19.858Z"
-    },
-    {
-      "id": "note_usr_2ba3f98d19b0a0ccb28f9bfc5e6ac0ec93875ee16d9daaa3_1",
-      "userId": "usr_2ba3f98d19b0a0ccb28f9bfc5e6ac0ec93875ee16d9daaa3",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:20.649Z",
-      "updatedAt": "2026-08-30T13:48:20.649Z"
-    },
-    {
-      "id": "note_usr_0ee806e94f29c7b2b2c0141dd09cd5b5d172a9e6b32c2ab2_1",
-      "userId": "usr_0ee806e94f29c7b2b2c0141dd09cd5b5d172a9e6b32c2ab2",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:22.858Z",
-      "updatedAt": "2026-08-30T13:48:22.858Z"
-    },
-    {
-      "id": "note_usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22_1",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:27.834Z",
-      "updatedAt": "2026-08-30T13:48:27.834Z"
-    },
-    {
-      "id": "note_usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a_1",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:28.201Z",
-      "updatedAt": "2026-08-30T13:48:28.201Z"
-    },
-    {
-      "id": "note_usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd_1",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:28.461Z",
-      "updatedAt": "2026-08-30T13:48:28.461Z"
-    },
-    {
-      "id": "note_usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56_1",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
-      "title": "Principles for Deliberate Living",
-      "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
-      "tags": [
-        "principles",
-        "philosophy"
-      ],
-      "isPinned": true,
-      "isArchived": false,
-      "linkedNoteIds": [],
-      "createdAt": "2026-08-30T13:48:28.718Z",
-      "updatedAt": "2026-08-30T13:48:28.718Z"
+      "createdAt": "2026-09-02T12:41:05.880Z",
+      "updatedAt": "2026-09-02T12:41:05.880Z"
     }
   ],
   "aiMemories": [],
   "auditLogs": [
     {
-      "id": "audit_2c071d319ad10477d07945d179d41ab11c65fef27f2bf74b",
-      "userId": "usr_897f54e906ae0b41f959edeb665d77c3ce576874e64ebc56",
+      "id": "audit_560b56624c5c45200f1a9123df26083ec6a70ba315bc8a74",
+      "userId": "usr_ac80bc8b507924ae62e3974b776a2fe71519bd8efe99ee08",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "bob_1788097708568@origin-os.internal"
+        "email": "bob_1788352867994@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:28.769Z"
+      "timestamp": "2026-09-02T12:41:08.156Z"
     },
     {
-      "id": "audit_4d6948ed1364448242e6d7b0a3784d0687847a757856c496",
-      "userId": "usr_743c5c7b3df31d7a336a6aaca488aa1743103440a25c93dd",
+      "id": "audit_0d321851170614cc0cefc8e580c3fd56fcf8dbe6e8b2561d",
+      "userId": "usr_75edbe99c068ddf19d3fe08ef2fb7cfba8f8e6fbaff34f69",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "alice_1788097708315@origin-os.internal"
+        "email": "alice_1788352867771@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:28.513Z"
+      "timestamp": "2026-09-02T12:41:07.940Z"
     },
     {
-      "id": "audit_f93533914e6d447fbff0c68e6039726e608e671897c2c38c",
-      "userId": "usr_2ba97a788f50686718b97e7116d06c92ac142a456116e47a",
+      "id": "audit_f5ab5d05a991ef5b837f808624f7afcfa074df6f8ed7bf3b",
+      "userId": "usr_765bbfdac2d12e878c084535f459f98c3c7c6eb243f5a6e8",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "logout_test_1788097708036@origin-os.internal"
+        "email": "logout_test_1788352867531@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:28.254Z"
+      "timestamp": "2026-09-02T12:41:07.704Z"
     },
     {
-      "id": "audit_7bb2b2da6c4a78dbd89f664eb93c0356913fd9212353126d",
-      "userId": "usr_a7eaf0d204440cd318ac85f31923cf5294273d83604d5f22",
+      "id": "audit_fdda0ac1cf55bc84093a3ad316498a48efe6a69c3199e1bc",
+      "userId": "usr_0717963e3edc3fb3936fa036ad45c5a004e8e3814001779d",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "valid_session_1788097707654@origin-os.internal"
+        "email": "valid_session_1788352867150@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:27.885Z"
+      "timestamp": "2026-09-02T12:41:07.358Z"
     },
     {
-      "id": "audit_982530caa40357cef4b2fc6bcbea3162424746198429780a",
-      "userId": "usr_leak_test_f34aaa56bb961639baafeffcc44e2beea67184d780b6cbef",
+      "id": "audit_eda2d3f12aa66ef3d3eda1e6fe458f4e144c4a1cefe64767",
+      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-02T12:41:05.931Z"
+    },
+    {
+      "id": "audit_c9ea0b3e5e5bac3d07014ba923dd0a00e80ba5d5eb6e7357",
+      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-02T12:41:05.682Z"
+    },
+    {
+      "id": "audit_981ce3dd30881dcd69899e6ad1f26d1dc66cf457448b4fa1",
+      "userId": "usr_dc741f82a925419e763408497dd11d2dc87ed31a6cb1a5cb",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "realuser_1788352865226@origin-test.com"
+      },
+      "timestamp": "2026-09-02T12:41:05.387Z"
+    },
+    {
+      "id": "audit_a3f95e1fefc7b660275c44b7060dceec105bc0e29e258719",
+      "userId": "usr_demo_gst_14991458efddad270f4d29db210079cd0849a4ada357a7aa",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-02T12:41:05.112Z"
+    },
+    {
+      "id": "audit_e7c9c7115ede1051e3df4333d6fb5626cddd44a2006aeee4",
+      "userId": "usr_leak_test_aef05ac9193ba3fafd2ce9c9fead30833e0359e2db1a5908",
       "action": "PASSWORD_RESET_COMPLETED",
       "resource": "auth",
-      "timestamp": "2026-08-30T13:48:24.261Z"
+      "timestamp": "2026-09-02T12:40:56.078Z"
     },
     {
-      "id": "audit_8f2f01b0a298f239393d4ea1f6809e2848114552818498c5",
-      "userId": "usr_leak_test_f34aaa56bb961639baafeffcc44e2beea67184d780b6cbef",
+      "id": "audit_6c2a07f9b4368ce7193af152542934f527d2e2b786362e89",
+      "userId": "usr_leak_test_aef05ac9193ba3fafd2ce9c9fead30833e0359e2db1a5908",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "leak.test.1788097703798@origin-os.internal"
+        "email": "leak.test.1788352855628@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:23.996Z"
+      "timestamp": "2026-09-02T12:40:55.792Z"
     },
     {
-      "id": "audit_fe0f8f22de29274231771fd7842624e4185f869cadbc00e1",
-      "userId": "usr_leak_test_6d33a04597dd675e938533a3b477af2336cacfcdee538dbf",
+      "id": "audit_359b8dced050c8e8ec54e25a84eb5e53051e9ad14ac1c334",
+      "userId": "usr_leak_test_4840815854a940d8a605c79742d77cef7098ccd28c941841",
       "action": "USER_LOGIN",
       "resource": "auth",
-      "timestamp": "2026-08-30T13:48:23.300Z"
+      "timestamp": "2026-09-02T12:40:55.225Z"
     },
     {
-      "id": "audit_b46cf3bb4af4d103e4bda8c77c2ddb1e74a05ad2b46f79d0",
-      "userId": "usr_0ee806e94f29c7b2b2c0141dd09cd5b5d172a9e6b32c2ab2",
+      "id": "audit_db434fc2210d11a58f80902281ea6a4a82942ba26c17b0be",
+      "userId": "usr_bd31a24ea5490391d82d5d5ff091b47b5fbee14b9efa81d8",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "new.signup.1788097702608@origin-os.internal"
+        "email": "new.signup.1788352854722@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:22.910Z"
+      "timestamp": "2026-09-02T12:40:54.906Z"
     },
     {
-      "id": "audit_2e64fd2c6c87e2894667b4996b62adf2076b344096b0a343",
-      "userId": "usr_2ba3f98d19b0a0ccb28f9bfc5e6ac0ec93875ee16d9daaa3",
+      "id": "audit_9d4162f2f4f5da8df3012e7be9b5a4f5d7839b83aed5e87f",
+      "userId": "usr_test_ph_3802bd7bc863441c1e4b84a5713f007351fa1155f6396124",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-09-02T12:40:52.893Z"
+    },
+    {
+      "id": "audit_a5ed5707c14ca5dfb506fcc581e257f1c62cf87a01047eaf",
+      "userId": "usr_test_ph_0ad14b990ef25f91cfb8e9f11ec865db616517ad13d0a273",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-09-02T12:40:52.045Z"
+    },
+    {
+      "id": "audit_aac219a20d4ceed5816b45afab3974c2742dded857713f65",
+      "userId": "usr_c029fa45e407eb5963f0c421f7564ce16081e0916dcb5aef",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "expired_1788097700397@origin-os.internal"
+        "email": "new.signup.1788352851488@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:20.701Z"
+      "timestamp": "2026-09-02T12:40:51.666Z"
     },
     {
-      "id": "audit_9f83fc4ea66dba4beb75db5c632066dc2e85c80fcdf41609",
-      "userId": "usr_8fe381d6f5e2c527216970392e14e7e2ca69661bea2c8f10",
+      "id": "audit_6c246e1af5ea904cd5489b244cacf760ce83638e20d41f3c",
+      "userId": "usr_a5421166a4fc39a76243ac9b1fa77d19e8d604d1fd744c3d",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_9_1788352849982@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:50.133Z"
+    },
+    {
+      "id": "audit_ed838f41953d700259584a54950cbcff19fb3648dabe11b2",
+      "userId": "usr_9ec18ceeec59bad20baf3fec9d60c1c237644bdc8830f7b0",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_8_1788352849780@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:49.928Z"
+    },
+    {
+      "id": "audit_2c86761007ae4f529334b4b5f07f2a713ff5320ee9826cf5",
+      "userId": "usr_1ac9c6625ba1b1b99c5ecde4dacddadb21a884016c9687be",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_7_1788352849563@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:49.726Z"
+    },
+    {
+      "id": "audit_4039c160ac04007c605fc9512f388c79563336aa6b47f9dc",
+      "userId": "usr_6c13d9f9ac6752af536d7b86c1cc648614da1bd051b436f2",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_6_1788352849352@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:49.504Z"
+    },
+    {
+      "id": "audit_0d0dc137bc31b9f1de2651706eefbd6105ddedf7f109d4c4",
+      "userId": "usr_ba5ca203f3fc3ea87e9188528e8e6e7ef7a50b23263a008a",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_5_1788352849139@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:49.298Z"
+    },
+    {
+      "id": "audit_20fd3478cc9f4e63aa8062241589a444ff10c67d8fc773d6",
+      "userId": "usr_08a5418146c06951c3e5f7bd124ef8881968aa8aa9370b7e",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_4_1788352848932@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:49.083Z"
+    },
+    {
+      "id": "audit_134a0d2a57f7caaf74944f23ac05c64b00545eea9a803d1a",
+      "userId": "usr_7bc99e16aecf23b172f9909db5b2cb7bf1d1f8cb46d13d83",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_3_1788352848734@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:48.878Z"
+    },
+    {
+      "id": "audit_2a5b1dd093f88812e05edf04ce88f5d918e656444c0f88e7",
+      "userId": "usr_9579df9d4b522db57e3a9c7d7956822d4b393080a5f523e4",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_2_1788352848521@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:48.681Z"
+    },
+    {
+      "id": "audit_51b2b2cd38733dff832e2244bbffb41775b164858d7521e2",
+      "userId": "usr_25f3299f28152cc62c9253d7933ef0c3e2ea5fbeabd250a0",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_1_1788352848318@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:48.468Z"
+    },
+    {
+      "id": "audit_a83e351c5a9a7bf92445a0bf957ea8cf935eb281a8a4ab2d",
+      "userId": "usr_41eb9edf1d7296e9a47f02529c66d958d902729268aedf2a",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "signup_burst_0_1788352848104@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:48.264Z"
+    },
+    {
+      "id": "audit_ea616c9232b1b91a5701d86679638842bda51a4fe8495d55",
+      "userId": "usr_00d9a955aeda8513ed50f9b26ef60f20da816e23a7ab0d07",
+      "action": "USER_LOGIN",
+      "resource": "auth",
+      "timestamp": "2026-09-02T12:40:47.953Z"
+    },
+    {
+      "id": "audit_6720cc4c19a2cf81dee28966785afbf8dca1bbe27ab6ef0f",
+      "userId": "usr_00d9a955aeda8513ed50f9b26ef60f20da816e23a7ab0d07",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "normal_user_1788352847536@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:47.733Z"
+    },
+    {
+      "id": "audit_a467a6e61690d272f3ac39a7eccfdb8a00730059d2f691a6",
+      "userId": "usr_679473f546d69149d82373801e2782d9843edb4f3d657ea5",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "resource": "auth",
+      "metadata": {
+        "email": "crypto_check_1788352842781@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:43.034Z"
+    },
+    {
+      "id": "audit_a91be77ee0e2419c02d2c897a73932d434267a1e8c4cf623",
+      "userId": "usr_679473f546d69149d82373801e2782d9843edb4f3d657ea5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "crypto_check_1788352842781@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:42.928Z"
+    },
+    {
+      "id": "audit_24a440d97b3eb846c59809dce936f14bc0ddc533ff37d7a9",
+      "userId": "usr_d7bc386c7fe22a9d2a06999de0a56939a5360fa9f0cc14cd",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "expired_1788352842505@origin-os.internal"
+      },
+      "timestamp": "2026-09-02T12:40:42.659Z"
+    },
+    {
+      "id": "audit_86a3ffe1d9ded4f52c1fff567605e8868f739e360314f85a",
+      "userId": "usr_2f6a9c4b4b33e4428066efc001dfea40dbc3b65ddb7498c9",
       "action": "PASSWORD_RESET_COMPLETED",
       "resource": "auth",
-      "timestamp": "2026-08-30T13:48:20.320Z"
+      "timestamp": "2026-09-02T12:40:42.448Z"
     },
     {
-      "id": "audit_9258a2437f941a57f89648c0683e31ea6ac125c093b87f66",
-      "userId": "usr_8fe381d6f5e2c527216970392e14e7e2ca69661bea2c8f10",
+      "id": "audit_a0deedfd0962e81eae4ddfbfd96d5e36e9c3bebef8cdf130",
+      "userId": "usr_2f6a9c4b4b33e4428066efc001dfea40dbc3b65ddb7498c9",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "used_token_1788097699633@origin-os.internal"
+        "email": "used_token_1788352841931@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:20.017Z"
+      "timestamp": "2026-09-02T12:40:42.194Z"
     },
     {
-      "id": "audit_bb5d30e107d7a4bb3a133451f239ceb44dd4e9a919c2bb4b",
-      "userId": "usr_8fe381d6f5e2c527216970392e14e7e2ca69661bea2c8f10",
+      "id": "audit_36da3ea40107e1e3933f5a4fae821f8d2f14621269009b8c",
+      "userId": "usr_2f6a9c4b4b33e4428066efc001dfea40dbc3b65ddb7498c9",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "used_token_1788097699633@origin-os.internal"
+        "email": "used_token_1788352841931@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:19.909Z"
+      "timestamp": "2026-09-02T12:40:42.085Z"
     },
     {
-      "id": "audit_e647569ee69efe7c4eb35d53f84ccc39c04c26d2305b4ba6",
-      "userId": "usr_bceb51f66418566591a66653d16d0f41f94c9d929ff5a450",
+      "id": "audit_49f6a42348746fbb8f6e7af8ae85c831487c6694137ecdc4",
+      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
       "action": "USER_LOGIN",
       "resource": "auth",
-      "timestamp": "2026-08-30T13:48:19.452Z"
+      "timestamp": "2026-09-02T12:40:41.780Z"
     },
     {
-      "id": "audit_c182f27e6257ad93230e3a1cee2313188c627eeebe9b5fa2",
-      "userId": "usr_bceb51f66418566591a66653d16d0f41f94c9d929ff5a450",
+      "id": "audit_9c7ca7a04d3c0d1ff66d87c5230e3f9229cd6cd178820f80",
+      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
       "action": "PASSWORD_RESET_COMPLETED",
       "resource": "auth",
-      "timestamp": "2026-08-30T13:48:18.801Z"
+      "timestamp": "2026-09-02T12:40:41.380Z"
     },
     {
-      "id": "audit_2f3bef2b2691c37b79d6fa4079a0794eca26b4430ec7d16a",
-      "userId": "usr_bceb51f66418566591a66653d16d0f41f94c9d929ff5a450",
+      "id": "audit_a74353a9c2df87ac1c868970b146ba97f3ad9686814ac22b",
+      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "reset_flow_1788097698019@origin-os.internal"
+        "email": "reset_flow_1788352840870@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:18.396Z"
+      "timestamp": "2026-09-02T12:40:41.126Z"
     },
     {
-      "id": "audit_8eb905da01b4f42195beca72a1e2095f7b7ec7bfc4e3af13",
-      "userId": "usr_bceb51f66418566591a66653d16d0f41f94c9d929ff5a450",
+      "id": "audit_bc066385103d130be7310171fe321cbfa619d396ecb9f786",
+      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "reset_flow_1788097698019@origin-os.internal"
+        "email": "reset_flow_1788352840870@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:18.265Z"
+      "timestamp": "2026-09-02T12:40:41.017Z"
     },
     {
-      "id": "audit_efa4198edb04ffdea10793d6dff77a0dd74fb9afee5ca236",
-      "userId": "usr_42af6e47bd18d54d130fb5eb99c524604ad91690f57317e7",
+      "id": "audit_1e77bcc3c0bb208a0952a22972d439d65eb9f02f0542ec75",
+      "userId": "usr_f086f90f97b988a3b327bb1b59247aa9592c608731714759",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "existing_1788097697440@origin-os.internal"
+        "email": "existing_1788352840503@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:17.954Z"
+      "timestamp": "2026-09-02T12:40:40.808Z"
     },
     {
-      "id": "audit_9b1e01709fc17f71654440500457313bd2b6202a4d239938",
-      "userId": "usr_42af6e47bd18d54d130fb5eb99c524604ad91690f57317e7",
+      "id": "audit_fba9d46c810a164c377ee9047253d554834996cc591aac2d",
+      "userId": "usr_f086f90f97b988a3b327bb1b59247aa9592c608731714759",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "existing_1788097697440@origin-os.internal"
+        "email": "existing_1788352840503@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:17.812Z"
+      "timestamp": "2026-09-02T12:40:40.691Z"
     },
     {
-      "id": "audit_15ac758954c0943f1cc8e657469a779f5434a4df626cf33e",
-      "userId": "usr_smtp_test_1de267ef2d6c5ab5bca94c89319f064e131390ac761d8ab2",
+      "id": "audit_122597c64d2989a56cb9e56cd8fc492d7911ad19611456a8",
+      "userId": "usr_smtp_test_c55190c216b7af8fcfa5dcf3de761debb34742101830e255",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "smtp.test.1788097695545@origin-os.internal"
+        "email": "smtp.test.1788352838853@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:15.742Z"
+      "timestamp": "2026-09-02T12:40:39.052Z"
     },
     {
-      "id": "audit_cd310cc602c13702b1ff4e1dbb69d298850cedd8f2837429",
-      "userId": "usr_smtp_test_73592ace155d04d3efe12c58ef6fc4b7c1e514b98f942489",
+      "id": "audit_677604192e5470c84fa0ec62d664d89cd31cc2d6623fca00",
+      "userId": "usr_smtp_test_4ebfb381c32859857748ad26189b398a31ed2c826bfce418",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "smtp.test.1788097695266@origin-os.internal"
+        "email": "smtp.test.1788352838306@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:15.484Z"
+      "timestamp": "2026-09-02T12:40:38.503Z"
     },
     {
-      "id": "audit_d4ff7d1f29d09e0428a00b6405823838cf0b7b13c57f4827",
-      "userId": "usr_demo_gst_d842d16a7c9b35ad9e1311d988ff7e2a8ed522f91713ba97",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:12.270Z"
-    },
-    {
-      "id": "audit_cf96a9e8e2063b25ed4dff8db5a82e026997e80140e22c76",
-      "userId": "usr_demo_gst_7a091c08167565e188cff512f9f64e7875476aab4f6b14a8",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:12.000Z"
-    },
-    {
-      "id": "audit_2664844b60ba25976d053a83568f78e9909b77b9abada334",
-      "userId": "usr_demo_gst_dca0f7881cac0be137f942574b3a7885d0f5832da5aa3c18",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:11.609Z"
-    },
-    {
-      "id": "audit_98ffd1be88a60a0087c31694ac406cf50dcb1389580b2978",
-      "userId": "usr_demo_gst_190faee8d6ef31629ae41a0d5468795e2d2686d51cd6b3d2",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:11.310Z"
-    },
-    {
-      "id": "audit_4516f5a1b68bd891e32e11914e68f4bc253189c1a24debc2",
-      "userId": "usr_demo_gst_678be31c426e23a534c770fd98a73c264320c5587ed29b63",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:11.008Z"
-    },
-    {
-      "id": "audit_8e8b3bf6eac53f326f2f3675a466690c4eadfd9451703d8d",
-      "userId": "usr_demo_gst_236217e7e5b879e0f0c08c998b70bbc88ce6c097806247b2",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:10.631Z"
-    },
-    {
-      "id": "audit_493dfd40618905dc496daae3b78953000b9faba9fbba625d",
-      "userId": "usr_demo_gst_366a7aa2fcc6adb6bad0698962a61749d917306eb72be0cb",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:10.371Z"
-    },
-    {
-      "id": "audit_c4965262682e03e22dc697488870332d76934d05a3909fe6",
-      "userId": "usr_demo_gst_d6f4c07a7a1fe4e2caf314e8a0b34e7856a99a8376b9e8fb",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:10.044Z"
-    },
-    {
-      "id": "audit_a028cf75661af1fada5f7cac46f399e0c5721d3024887bfe",
-      "userId": "usr_demo_gst_ac74ca8d1ad738b3b791637e4736f07ea5c9c4fa85099d87",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:09.756Z"
-    },
-    {
-      "id": "audit_a2ae1225e2f46a49c5a5aca779c11e48965b88d359f83f1d",
-      "userId": "usr_demo_gst_e244ed3287b12adb94c1f255f47ef87f76ac327b145eb0c1",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:09.446Z"
-    },
-    {
-      "id": "audit_185e522cd13bdc321471778f6e6a26facffc677637a7d314",
-      "userId": "usr_demo_gst_8ec7afacb48bc24d38075f989b459aab82b7f8dac6de65ba",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-08-30T13:48:09.110Z"
-    },
-    {
-      "id": "audit_1718d0ecc02012b79f4c2dfed880889a0ee5bb74ccb73ebe",
-      "userId": "usr_54b425f9258d914d7c1d9ac6ec9c2b57e089445dc1d5feb6",
-      "action": "USER_SIGNUP",
+      "id": "audit_397960ee54825c1777823f6135504df8d953d44c22fc84be",
+      "userId": "usr_smtp_test_ad95638ffa5bc341e7bbaa89d9c4a93e61a00495058f244e",
+      "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "signup_burst_9_1788097685808@origin-os.internal"
+        "email": "smtp.test.1788352838022@origin-os.internal"
       },
-      "timestamp": "2026-08-30T13:48:06.098Z"
+      "timestamp": "2026-09-02T12:40:38.247Z"
     },
     {
-      "id": "audit_53d39970c9688c5d2247eaea3efd7f44617a5af5cb8a8a69",
-      "userId": "usr_4dea9a995bda6d19f27d89da1bc69767e14b661a5f115c72",
-      "action": "USER_SIGNUP",
+      "id": "audit_9416e140f4ecb567b034ef8c2b2478e93fd1aca59ff6b8b9",
+      "userId": "usr_demo_gst_d92be8b882113b26a877ba721f0392d9c5312b03eed127aa",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_8_1788097685502@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:05.753Z"
+      "timestamp": "2026-09-02T12:40:35.667Z"
     },
     {
-      "id": "audit_a5c9a98ef0b28a907c78c0491679d3f4e0dff4ca947ed9aa",
-      "userId": "usr_5e1ab45a96b36353f857bf1402b72fc4e1de53fde3a00920",
-      "action": "USER_SIGNUP",
+      "id": "audit_50873715255f43e061e7fd3b6f22f3bbcb8894c227d8ea2b",
+      "userId": "usr_demo_gst_03df7e8a3f7307bf909f72be880af16d237c0f25f4fd1ed3",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_7_1788097685203@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:05.448Z"
+      "timestamp": "2026-09-02T12:40:35.414Z"
     },
     {
-      "id": "audit_2bab689a666578da2625770717a215717739bc0d054ee3a2",
-      "userId": "usr_86f4781bf192dca8dd32c95353fc0c80c10eaa88e551709d",
-      "action": "USER_SIGNUP",
+      "id": "audit_dd8765b230393c0bef3fb22e8f7bc586281316e4f1452427",
+      "userId": "usr_demo_gst_37a796649b0ec89c73f84b7973df0c903192cfc60d14d7c6",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_6_1788097684898@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:05.148Z"
+      "timestamp": "2026-09-02T12:40:35.097Z"
     },
     {
-      "id": "audit_8b535cd5bc1f57ddda60099c7ce281e1879ef182f56e595b",
-      "userId": "usr_e76d1dc3a5c7a17c622e1a6b18752874ee0db0efd71d3976",
-      "action": "USER_SIGNUP",
+      "id": "audit_79e88e899950aba07c9d719fc6eff83a5c3d2a1755081d2f",
+      "userId": "usr_demo_gst_8a91bcd527c0fa80568bdf0d554720caf4d147928ea4f897",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_5_1788097684460@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:04.828Z"
+      "timestamp": "2026-09-02T12:40:34.833Z"
     },
     {
-      "id": "audit_8e53be033b5da1b1efce60447d4245aea325db981a444a94",
-      "userId": "usr_4da7c34013538246bc5b659714bf533c5da67cbf1fd82d6e",
-      "action": "USER_SIGNUP",
+      "id": "audit_c7040620ba8d0f3ecf8449b5f3db3c4389aad281ccce4f44",
+      "userId": "usr_demo_gst_057c7a005ac613871361d897dda0e22816b07236c2b2d4d0",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_4_1788097684108@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:04.406Z"
+      "timestamp": "2026-09-02T12:40:34.559Z"
     },
     {
-      "id": "audit_833c043f65699894499e0d37ddc462c9ab80f92041647fdb",
-      "userId": "usr_682800f4030c4d5c09670f455c5bdee5caf48347a040efc1",
-      "action": "USER_SIGNUP",
+      "id": "audit_4ba63b916914ae14cb21adefe78cc70bd76f8d6af96d553a",
+      "userId": "usr_demo_gst_f7626f4b30eaba2a5afa4da9823884d1680b2a4318c78e8b",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_3_1788097683717@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:04.048Z"
+      "timestamp": "2026-09-02T12:40:34.217Z"
     },
     {
-      "id": "audit_bf547e500aeaecc9c1be726047c757a9beee0fd0fa832607",
-      "userId": "usr_7d5b79fb97724017a50faa7ac6fd8893bb1746d450459dbd",
-      "action": "USER_SIGNUP",
+      "id": "audit_9c56aae0f20e3d90988f478d6d10ba0ffde7862f2ce0e4a4",
+      "userId": "usr_demo_gst_d20aee81a701bfefc7c105448c208957c24d9d05d325f744",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_2_1788097683404@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:03.659Z"
+      "timestamp": "2026-09-02T12:40:33.965Z"
     },
     {
-      "id": "audit_f728b72a32952c13fe8dd3fb52878664fa6c03d5e767dcec",
-      "userId": "usr_0bf16a3bad01d93bb90388b9e736ccd20f254641d83a130d",
-      "action": "USER_SIGNUP",
+      "id": "audit_06a51bbf8082d00d06d0070ec329fb6414f087c36f5efdd2",
+      "userId": "usr_demo_gst_c90ea8a4a4810e956bf8379d5a22352054008d53abc57a74",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_1_1788097683011@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:03.349Z"
+      "timestamp": "2026-09-02T12:40:33.635Z"
     },
     {
-      "id": "audit_df65b21abafc804ba2e42205536e7e4c18d6235be4d4bc69",
-      "userId": "usr_ef65b3b95b9cd34dfe6be685dc3c37a1a3db907099ed8e18",
-      "action": "USER_SIGNUP",
+      "id": "audit_ad967a21e3122bc8ea3531350d3aa38aa479a707cef627d7",
+      "userId": "usr_demo_gst_ceca98c887fb024f21b3e6714c1d799411a08de194cff30e",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_0_1788097682561@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:02.954Z"
+      "timestamp": "2026-09-02T12:40:33.373Z"
     },
     {
-      "id": "audit_03e96f6db0e1b68b9a7e0ae8ecc65ea25bc7953f81bbce52",
-      "userId": "usr_806801b10e6950b19d51934cfc11fafae2d08fffae9d3ab9",
-      "action": "USER_LOGIN",
+      "id": "audit_c3baa148c3accc34d92230188b454bbca48ce27508ae1542",
+      "userId": "usr_demo_gst_ab9840c3a4ecc1ee43f56d1b00b72177d3e3cb9b294f28a8",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "timestamp": "2026-08-30T13:48:02.274Z"
+      "timestamp": "2026-09-02T12:40:33.109Z"
     },
     {
-      "id": "audit_82f7d9fb063d0d7c8bfe84ffe340527002abde9a6c7e01e6",
-      "userId": "usr_806801b10e6950b19d51934cfc11fafae2d08fffae9d3ab9",
-      "action": "USER_SIGNUP",
+      "id": "audit_62c08081bd1df9725e6348702f7ca07c8290c0c578e79061",
+      "userId": "usr_demo_gst_02386d84d989d0a86803071331711622789b53ecd16a61fb",
+      "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "metadata": {
-        "email": "normal_user_1788097681440@origin-os.internal"
-      },
-      "timestamp": "2026-08-30T13:48:01.809Z"
+      "timestamp": "2026-09-02T12:40:32.850Z"
     }
   ],
   "passwordResetTokens": [
     {
-      "token": "rst_88aa9194585880a0c18180f958ed73b1de37439f38947a8e",
-      "email": "smtp.test.1788097695266@origin-os.internal",
-      "expiresAt": "2026-08-30T14:48:15.433Z",
+      "token": "786c144722756ab3437419527570875db492d65e5effafd4faa5d50107896fa6",
+      "email": "smtp.test.1788352838022@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:38.194Z",
       "used": false,
-      "createdAt": "2026-08-30T13:48:15.433Z"
+      "createdAt": "2026-09-02T12:40:38.194Z"
     },
     {
-      "token": "rst_85bbfc33e2eeb45ebfd08274cd54e91840aa9f253a15e5ff",
-      "email": "smtp.test.1788097695545@origin-os.internal",
-      "expiresAt": "2026-08-30T14:48:15.691Z",
+      "token": "51178dccda69c9afc48d57acd78d6611a723c1c6fdaa8ba3f18398f32466f794",
+      "email": "smtp.test.1788352838306@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:38.452Z",
       "used": false,
-      "createdAt": "2026-08-30T13:48:15.691Z"
+      "createdAt": "2026-09-02T12:40:38.452Z"
     },
     {
-      "token": "rst_f70929f026789d5df76b4f5b00b1e161e085f3c3a6355f2b",
-      "email": "existing_1788097697440@origin-os.internal",
-      "expiresAt": "2026-08-30T14:48:17.902Z",
+      "token": "ed8c32e9e474eec7a3f35dfbc4872a472222477d6d6d649ed8afc32b7a79103c",
+      "email": "smtp.test.1788352838853@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:39.000Z",
       "used": false,
-      "createdAt": "2026-08-30T13:48:17.902Z"
+      "createdAt": "2026-09-02T12:40:39.000Z"
     },
     {
-      "token": "rst_f95e714e9ee52e9122f7002a9e5538edfdaada5b18455453",
-      "email": "reset_flow_1788097698019@origin-os.internal",
-      "expiresAt": "2026-08-30T14:48:18.324Z",
+      "token": "fa06bf6dfe5f8b2909f2431083a46d541a29af8ccce07c65fa18ccc3650a98aa",
+      "email": "existing_1788352840503@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:40.757Z",
+      "used": false,
+      "createdAt": "2026-09-02T12:40:40.757Z"
+    },
+    {
+      "token": "e34d3bd37fbb5c0348c2b467ed3a3419f82b7f2a8e9d3909d329e9e3b5788b0a",
+      "email": "reset_flow_1788352840870@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:41.074Z",
       "used": true,
-      "createdAt": "2026-08-30T13:48:18.324Z"
+      "createdAt": "2026-09-02T12:40:41.074Z"
     },
     {
-      "token": "rst_0d20ea6c37f7967f69adb5342636cdef0488e140f96dffb8",
-      "email": "used_token_1788097699633@origin-os.internal",
-      "expiresAt": "2026-08-30T14:48:19.966Z",
+      "token": "a4367cb614745026f2f5abd59a60a24a56bfdf696527127abc5be280593401f5",
+      "email": "used_token_1788352841931@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:42.142Z",
       "used": true,
-      "createdAt": "2026-08-30T13:48:19.966Z"
+      "createdAt": "2026-09-02T12:40:42.142Z"
     },
     {
-      "token": "rst_expired_1788097700755",
-      "email": "expired_1788097700397@origin-os.internal",
-      "expiresAt": "2026-08-30T12:48:20.755Z",
+      "token": "e56365e548d32dd98b1d5fb8c4d1f0982a21ad29bfdd2d8dcbccac0b40ae5122",
+      "email": "expired_1788352842505@origin-os.internal",
+      "expiresAt": "2026-09-02T11:40:42.712Z",
       "used": false,
-      "createdAt": "2026-08-30T11:48:20.755Z"
+      "createdAt": "2026-09-02T10:40:42.712Z"
     },
     {
-      "token": "rst_3e01c922026814ac9acbb87dedefd66a0f70dbc6f5ed274e",
-      "email": "leak.test.1788097703798@origin-os.internal",
-      "expiresAt": "2026-08-30T14:48:23.937Z",
+      "token": "3b00565939cfe71c9c248f3a433c8a4bdf7d6c52f39484cacae3192e732aa89f",
+      "email": "crypto_check_1788352842781@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:42.983Z",
+      "used": false,
+      "createdAt": "2026-09-02T12:40:42.983Z"
+    },
+    {
+      "token": "7c532340b3384d7390c55e02d55e23cfdbfb4453fb26c62698ca8160021f0c19",
+      "email": "leak.test.1788352855628@origin-os.internal",
+      "expiresAt": "2026-09-02T13:40:55.740Z",
       "used": true,
-      "createdAt": "2026-08-30T13:48:23.937Z"
+      "createdAt": "2026-09-02T12:40:55.740Z"
     }
   ],
-  "notifications": [
-    {
-      "id": "notif_87d6dab5d43492ee10ce8bc5adfb87df39cba3a22ae2dabf",
-      "userId": "usr_notif_user_a",
-      "title": "Task Due Today: Server Task Review",
-      "message": "Scheduled for completion today. Priority: urgent.",
-      "type": "task_reminder",
-      "priority": "urgent",
-      "isRead": false,
-      "readAt": null,
-      "actionUrl": "/app/tasks",
-      "entityReference": {
-        "type": "task",
-        "id": "tsk_alpha_1"
-      },
-      "scheduledNotificationId": null,
-      "createdAt": "2026-08-30T13:48:26.827Z",
-      "updatedAt": "2026-08-30T13:48:26.827Z"
-    },
-    {
-      "id": "notif_ad4c0ec4f8980c830da8cd164ee30a574d772db9172054a6",
-      "userId": "usr_notif_user_a",
-      "title": "Daily Cadence: Deep Focus Sprint",
-      "message": "Maintain your 5-day streak. Target: 1 session.",
-      "type": "habit_reminder",
-      "priority": "medium",
-      "isRead": false,
-      "readAt": null,
-      "actionUrl": "/app/habits",
-      "entityReference": {
-        "type": "habit",
-        "id": "hbt_alpha_1"
-      },
-      "scheduledNotificationId": null,
-      "createdAt": "2026-08-30T13:48:26.827Z",
-      "updatedAt": "2026-08-30T13:48:26.827Z"
-    }
-  ],
+  "notifications": [],
   "scheduledNotifications": []
 }

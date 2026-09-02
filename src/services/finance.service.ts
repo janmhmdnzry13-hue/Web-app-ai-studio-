@@ -230,19 +230,7 @@ export class FinanceService extends BaseService {
 
   private getStoredTransactions(userId: string): Transaction[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Transaction[]>(this.getTransactionStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_TRANSACTIONS.map((st) => ({
-        ...st,
-        id: generateId('tx'),
-        userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getTransactionStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Transaction[]>(this.getTransactionStorageKey(userId), []);
   }
 
   private saveStoredTransactions(userId: string, txs: Transaction[]): void {
@@ -252,19 +240,7 @@ export class FinanceService extends BaseService {
 
   private getStoredBudgets(userId: string): Budget[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Budget[]>(this.getBudgetStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_BUDGETS.map((b) => ({
-        ...b,
-        id: generateId('bdg'),
-        userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getBudgetStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Budget[]>(this.getBudgetStorageKey(userId), []);
   }
 
   private saveStoredBudgets(userId: string, budgets: Budget[]): void {

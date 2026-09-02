@@ -8,9 +8,10 @@ export class PostgresRelationshipRepository implements IRelationshipRepository {
     const map = new Map<string, any[]>();
     if (relIds.length === 0) return map;
 
+    const placeholders = relIds.map((_, i) => `$${i + 1}`).join(', ');
     const res = await query(
-      `SELECT * FROM relationship_important_dates WHERE relationship_id = ANY($1::varchar[]) ORDER BY created_at ASC`,
-      [relIds]
+      `SELECT * FROM relationship_important_dates WHERE relationship_id IN (${placeholders}) ORDER BY created_at ASC`,
+      relIds
     );
 
     for (const row of res.rows) {

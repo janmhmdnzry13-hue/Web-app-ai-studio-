@@ -142,11 +142,10 @@ describe('ORIGIN AI Operating System Suite', () => {
   });
 
   describe('3. AI Memory & User Preferences Directives', () => {
-    it('loads transparent default preferences when uninitialized', async () => {
+    it('initializes with empty memory collection when uninitialized', async () => {
       const res = await aiMemoryService.getMemories(TEST_USER);
       expect(res.success).toBe(true);
-      expect(res.data!.length).toBeGreaterThanOrEqual(2);
-      expect(res.data!.some((m) => m.key.includes('Deep Work'))).toBe(true);
+      expect(res.data).toHaveLength(0);
     });
 
     it('allows saving and updating user-scoped custom AI directives', async () => {

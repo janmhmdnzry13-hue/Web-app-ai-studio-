@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
+import { isProductionEnvironment } from './db/postgres';
 
 // Types for DB entities
 export interface UserRecord {
@@ -294,23 +295,39 @@ export interface DatabaseSchema {
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'origin_db.json');
 
+const KNOWN_INSECURE_ENCRYPTION_SECRETS = new Set([
+  'origin-aes-256-gcm-master-key-prod-2026',
+  'origin-dev-test-encryption-key-not-for-production-2026',
+  'default_secret',
+  'secret',
+  'test-dev-secret',
+  'encryption_secret',
+  'encryption-secret',
+  'changeme',
+  'change-me',
+  'placeholder',
+]);
+
 /**
  * Resolves the AES-256 encryption key.
  * In production mode, fails fast if ENCRYPTION_SECRET is missing or insecure default.
+ * In non-production, provides a stable development fallback key (never auto-generating random secrets).
  */
 export function getEncryptionKey(): Buffer {
   const secret = process.env.ENCRYPTION_SECRET;
   if (process.env.NODE_ENV === 'production') {
     const trimmed = secret ? secret.trim() : '';
+    const lower = trimmed.toLowerCase();
     const isWeakOrPlaceholder =
       !trimmed ||
       trimmed.length < 16 ||
-      trimmed === 'origin-aes-256-gcm-master-key-prod-2026' ||
-      trimmed === 'origin-dev-test-encryption-key-not-for-production-2026' ||
-      trimmed.toLowerCase().includes('dev-test') ||
-      trimmed.toLowerCase().includes('test-dev') ||
-      trimmed === 'default_secret' ||
-      trimmed === 'secret';
+      KNOWN_INSECURE_ENCRYPTION_SECRETS.has(trimmed) ||
+      KNOWN_INSECURE_ENCRYPTION_SECRETS.has(lower) ||
+      lower.includes('dev-test') ||
+      lower.includes('test-dev') ||
+      lower.includes('changeme') ||
+      lower.includes('change-me') ||
+      lower.includes('placeholder');
 
     if (isWeakOrPlaceholder) {
       throw new Error('CRITICAL_SECURITY_ERROR: ENCRYPTION_SECRET environment variable is required and must be configured in production.');
@@ -366,6 +383,9 @@ export class DatabaseEngine {
   }
 
   public seedUserStarterData(userId: string): void {
+    if (isProductionEnvironment() && process.env.ALLOW_DEMO_IN_PRODUCTION !== 'true' && process.env.ENABLE_DEMO_ENVIRONMENT !== 'true') {
+      return;
+    }
     if (!this.db) return;
     const now = new Date().toISOString();
     const today = now.slice(0, 10);
@@ -519,6 +539,12 @@ export class DatabaseEngine {
   }
 
   private ensureInitialized(): void {
+    if (isProductionEnvironment()) {
+      // In production mode, origin_db.json file creation is strictly prohibited
+      this.db = this.getInitialSchema();
+      return;
+    }
+
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
@@ -582,6 +608,11 @@ export class DatabaseEngine {
 
   // Atomic write to prevent file corruption
   public async save(): Promise<void> {
+    if (isProductionEnvironment()) {
+      // In production mode, writing to origin_db.json is strictly prohibited
+      return;
+    }
+
     if (this.pendingSave) return this.pendingSave;
 
     this.pendingSave = new Promise((resolve) => {
@@ -596,6 +627,11 @@ export class DatabaseEngine {
   }
 
   private saveImmediate(): void {
+    if (isProductionEnvironment()) {
+      // In production mode, writing to origin_db.json is strictly prohibited
+      return;
+    }
+
     if (!this.db) return;
     try {
       const tempPath = `${DB_FILE}.${Date.now()}.tmp`;

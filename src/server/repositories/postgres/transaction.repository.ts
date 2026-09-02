@@ -156,15 +156,21 @@ export class PostgresTransactionRepository implements ITransactionRepository {
   }
 
   async getSummary(userId: string): Promise<FinanceSummary> {
-    const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+    const now = new Date();
+    const year = now.getUTCFullYear();
+    const month = now.getUTCMonth();
+    const startDate = new Date(Date.UTC(year, month, 1)).toISOString().slice(0, 10);
+    const nextMonthFirst = new Date(Date.UTC(year, month + 1, 1));
+    const endDate = new Date(nextMonthFirst.getTime() - 1).toISOString().slice(0, 10);
+
     const sql = `
       SELECT type, category, SUM(amount) as total
       FROM financial_transactions
-      WHERE user_id = $1 AND date LIKE $2
+      WHERE user_id = $1 AND date >= $2 AND date <= $3
       GROUP BY type, category
     `;
 
-    const res = await query(sql, [userId, `${currentMonth}%`]);
+    const res = await query(sql, [userId, startDate, endDate]);
 
     let monthlyIncome = 0;
     let monthlyExpenses = 0;
@@ -180,10 +186,21 @@ export class PostgresTransactionRepository implements ITransactionRepository {
       }
     }
 
+    const countRes = await query('SELECT COUNT(*) as count FROM financial_transactions WHERE user_id = $1', [userId]);
+    const transactionCount = parseInt(countRes.rows[0]?.count || '0', 10);
+    const inc = Math.round(monthlyIncome * 100) / 100;
+    const exp = Math.round(monthlyExpenses * 100) / 100;
+    const net = Math.round((inc - exp) * 100) / 100;
+    const savingsRate = inc > 0 ? Math.round(((inc - exp) / inc) * 1000) / 10 : 0;
+
     return {
-      monthlyIncome: Math.round(monthlyIncome * 100) / 100,
-      monthlyExpenses: Math.round(monthlyExpenses * 100) / 100,
-      netBalance: Math.round((monthlyIncome - monthlyExpenses) * 100) / 100,
+      totalIncome: inc,
+      totalExpense: exp,
+      netBalance: net,
+      savingsRatePercentage: savingsRate,
+      transactionCount,
+      monthlyIncome: inc,
+      monthlyExpenses: exp,
       byCategory,
     };
   }

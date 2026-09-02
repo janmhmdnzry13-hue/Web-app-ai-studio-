@@ -21,8 +21,6 @@ export const signupSchema = z.object({
     .trim()
     .min(1, 'Display name is required.')
     .max(100, 'Display name is too long.'),
-  userId: z.string().max(100).optional(),
-  id: z.string().max(100).optional(),
 });
 
 export const loginSchema = z.object({
@@ -93,7 +91,6 @@ export const createTaskSchema = z.object({
   tags: z.array(z.string().max(100, 'Tag exceeds maximum length.')).max(50, 'Too many tags.').optional(),
   goalId: z.string().max(100).optional().nullable(),
   subtasks: z.array(subtaskSchema).max(100, 'Too many subtasks.').optional(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateTaskSchema = z.object({
@@ -109,7 +106,6 @@ export const updateTaskSchema = z.object({
   goalId: z.string().max(100).optional().nullable(),
   subtasks: z.array(subtaskSchema).max(100).optional(),
   completedAt: z.string().max(100).optional().nullable(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateTaskStatusSchema = z.object({
@@ -142,7 +138,6 @@ export const createHabitSchema = z.object({
   why: z.string().max(1000).optional().nullable(),
   icon: z.string().max(50).optional().nullable(),
   color: z.string().max(50).optional().nullable(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateHabitSchema = createHabitSchema.partial();
@@ -208,7 +203,6 @@ export const createGoalSchema = z.object({
   timeframe: z.enum(['quarterly', 'annual', 'multi_year', 'lifetime', 'monthly']).optional(),
   targetDate: z.string().max(100).optional(),
   milestones: z.array(milestoneSchema).max(50, 'Too many milestones.').optional(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateGoalSchema = createGoalSchema.partial();
@@ -236,7 +230,6 @@ export const createTransactionSchema = z.object({
   notes: z.string().max(5000, 'Notes too long.').optional().nullable(),
   tags: z.array(z.string().max(100)).max(50).optional(),
   merchantOrSource: z.string().max(200).optional().nullable(),
-  userId: z.string().max(100).optional(),
 });
 
 // -------------------------------------------------------------
@@ -255,7 +248,6 @@ export const createReflectionSchema = z.object({
   gratitudes: z.array(z.string().max(500)).max(50).optional(),
   learnings: z.array(z.string().max(500)).max(50).optional(),
   tags: z.array(z.string().max(100)).max(50).optional(),
-  userId: z.string().max(100).optional(),
 });
 
 // -------------------------------------------------------------
@@ -283,7 +275,6 @@ export const createRelationshipSchema = z.object({
   anniversaries: z.array(z.any()).max(50).optional(),
   importantDates: z.array(importantDateSchema).max(50).optional(),
   tags: z.array(z.string().max(100)).max(50).optional(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateRelationshipSchema = createRelationshipSchema.partial();
@@ -301,7 +292,6 @@ export const createNoteSchema = z.object({
   isArchived: z.boolean().optional(),
   linkedGoalId: z.string().max(100).optional().nullable(),
   linkedTaskId: z.string().max(100).optional().nullable(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateNoteSchema = createNoteSchema.partial();
@@ -316,7 +306,6 @@ export const updateProfileSchema = z.object({
   bio: z.string().max(2000).optional().nullable(),
   avatarUrl: z.string().max(2000).optional().nullable(),
   primaryLifeFocus: z.string().max(200).optional().nullable(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updatePreferencesSchema = z.object({
@@ -335,7 +324,6 @@ export const updatePreferencesSchema = z.object({
     })
     .optional(),
   unlockedModules: z.array(z.string().max(50)).max(50).optional(),
-  userId: z.string().max(100).optional(),
 });
 
 // -------------------------------------------------------------
@@ -382,7 +370,6 @@ export const createNotificationSchema = z.object({
     })
     .optional()
     .nullable(),
-  userId: z.string().max(100).optional(),
 });
 
 export const scheduleNotificationSchema = z.object({
@@ -426,7 +413,6 @@ export const scheduleNotificationSchema = z.object({
     .optional()
     .nullable(),
   metadata: z.record(z.string(), z.any()).optional(),
-  userId: z.string().max(100).optional(),
 });
 
 export const updateScheduledNotificationSchema = z.object({
@@ -450,27 +436,31 @@ export const updateScheduledNotificationSchema = z.object({
 // AI SCHEMAS
 // -------------------------------------------------------------
 
-export const aiChatSchema = z.object({
-  message: z
-    .string()
-    .trim()
-    .min(1, 'Missing or invalid message string.')
-    .max(10000, 'Message is too long.'),
-  conversationHistory: z
-    .array(
-      z.object({
-        role: z.string().max(50),
-        content: z.string().max(10000),
-      })
-    )
-    .max(100)
-    .optional(),
-  moduleContext: z.string().max(100).optional(),
-});
+export const aiChatSchema = z
+  .object({
+    message: z
+      .string()
+      .trim()
+      .min(1, 'Missing or invalid message string.')
+      .max(10000, 'Message is too long.'),
+    conversationHistory: z
+      .array(
+        z.object({
+          role: z.string().max(50),
+          content: z.string().max(10000),
+        })
+      )
+      .max(100)
+      .optional(),
+    moduleContext: z.string().max(100).optional(),
+  })
+  .passthrough();
 
-export const aiInsightsSchema = z.object({
-  focusArea: z.string().max(100).optional(),
-});
+export const aiInsightsSchema = z
+  .object({
+    focusArea: z.string().max(100).optional(),
+  })
+  .passthrough();
 
 // -------------------------------------------------------------
 // VALIDATION MIDDLEWARE GENERATOR

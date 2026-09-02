@@ -83,20 +83,7 @@ export class EmotionService extends BaseService {
 
   private getStoredReflections(userId: string): EmotionReflectionEntry[] {
     if (!userId) return [];
-    const raw = safeStorage.get<EmotionReflectionEntry[]>(this.getStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_REFLECTIONS.map((sr) => ({
-        ...sr,
-        id: generateId('ref'),
-        userId,
-        loggedAt: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<EmotionReflectionEntry[]>(this.getStorageKey(userId), []);
   }
 
   private saveStoredReflections(userId: string, entries: EmotionReflectionEntry[]): void {
@@ -255,7 +242,8 @@ export class EmotionService extends BaseService {
       tags: dto.tags || [],
     };
 
-    const res = await this.logReflection(userId || 'usr_origin_demo', mappedDto);
+    const resolvedUserId = await this.resolveUserId(userId);
+    const res = await this.logReflection(resolvedUserId, mappedDto);
     if (!res.success || !res.data) {
       return res;
     }

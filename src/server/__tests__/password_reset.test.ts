@@ -2,10 +2,11 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import { apiRouter } from '../routes';
 import { db } from '../db';
 import { emailService, EmailProvider, EmailMessage } from '../email';
-import { verifyPassword } from '../auth';
+import { verifyPassword, hashResetToken } from '../auth';
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use('/api', apiRouter);
 // Mock email provider to capture dispatched emails securely in test harness
 class TestEmailCaptureProvider implements EmailProvider {
   readonly name = 'test_capture';
+  readonly isRealDelivery = false;
   public sentMessages: EmailMessage[] = [];
 
   async sendEmail(message: EmailMessage): Promise<{ success: boolean; messageId: string }> {
@@ -34,7 +36,7 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
     emailService.setProviderForTesting(testEmailProvider);
   });
 
-  // Requirement 1 & 8: API never returns resetToken, and does not leak whether email exists
+  // Requirement 1, 3, 11, 12: Cryptographically unpredictable token, never returned in API, user enumeration prevented
   it('1. Forgot-password returns identical generic success message for both existing and non-existing emails, never leaking token', async () => {
     const existingEmail = `existing_${Date.now()}@origin-os.internal`;
     const nonExistingEmail = `nobody_${Date.now()}@origin-os.internal`;
@@ -82,8 +84,8 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
     expect(testEmailProvider.sentMessages.length).toBe(0);
   });
 
-  // Requirement 6 & 10: Valid token successfully resets password, hashes password, and immediately invalidates token (single-use)
-  it('2. Valid token successfully resets password, hashes password with bcrypt, and invalidates single-use token', async () => {
+  // Requirement 1, 2, 6, 8, 9, 13: Secure hashed token representation in DB, raw token in email, single-use invalidation
+  it('2. Valid token successfully resets password, stores only hash on server, and invalidates single-use token', async () => {
     const email = `reset_flow_${Date.now()}@origin-os.internal`;
     const initialPassword = 'InitialPassword123!';
     const newPassword = 'NewlyChosenPassword456!';
@@ -97,22 +99,31 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
       .post('/api/auth/password-reset-request')
       .send({ email });
 
-    // Extract generated token from server DB record (simulating user clicking link from email)
+    // Extract raw token from securely dispatched email message
+    expect(testEmailProvider.sentMessages.length).toBe(1);
+    const emailBody = testEmailProvider.sentMessages[0].html;
+    const tokenMatch = emailBody.match(/token=(rst_[a-f0-9]{64})/);
+    expect(tokenMatch).not.toBeNull();
+    const rawValidToken = tokenMatch![1];
+    expect(rawValidToken).toMatch(/^rst_[a-f0-9]{64}$/);
+
+    // Server-side DB record stores ONLY the SHA-256 hash of the reset token, NEVER the raw token
     const tokenRecord = db.schema.passwordResetTokens.find((r) => r.email === email && !r.used);
     expect(tokenRecord).toBeDefined();
-    expect(tokenRecord!.token).toMatch(/^rst_[a-f0-9]{48}$/);
-    const validToken = tokenRecord!.token;
+    expect(tokenRecord!.token).not.toBe(rawValidToken);
+    expect(tokenRecord!.token).toBe(hashResetToken(rawValidToken));
+    expect(tokenRecord!.token).toMatch(/^[a-f0-9]{64}$/);
 
-    // Confirm password reset with new password
+    // Confirm password reset with new password using raw token received in email
     const confirmRes = await request(app)
       .post('/api/auth/password-reset-confirm')
-      .send({ token: validToken, newPassword });
+      .send({ token: rawValidToken, newPassword });
 
     expect(confirmRes.status).toBe(200);
     expect(confirmRes.body.success).toBe(true);
     expect(confirmRes.body.data.message).toContain('successfully updated');
 
-    // Verify token is marked as used in DB immediately
+    // Verify token is marked as used in DB immediately (single-use)
     expect(tokenRecord!.used).toBe(true);
 
     // Verify password is encrypted with bcrypt hash (never plaintext)
@@ -137,7 +148,7 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
     expect(loginResOld.status).toBe(401);
   });
 
-  // Requirement: Used token is rejected
+  // Requirement 8: Used token is rejected (single-use enforcement)
   it('3. Rejects already used tokens (single-use enforcement)', async () => {
     const email = `used_token_${Date.now()}@origin-os.internal`;
     await request(app)
@@ -148,8 +159,9 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
       .post('/api/auth/password-reset-request')
       .send({ email });
 
-    const tokenRecord = db.schema.passwordResetTokens.find((r) => r.email === email && !r.used);
-    const token = tokenRecord!.token;
+    expect(testEmailProvider.sentMessages.length).toBe(1);
+    const tokenMatch = testEmailProvider.sentMessages[0].html.match(/token=(rst_[a-f0-9]{64})/);
+    const token = tokenMatch![1];
 
     // First use: success
     const firstUse = await request(app)
@@ -165,16 +177,18 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
     expect(secondUse.body.error.code).toBe('TOKEN_EXPIRED');
   });
 
-  // Requirement: Expired token is rejected
+  // Requirement 6 & 7: Strict expiration time and rejection of expired tokens
   it('4. Rejects expired reset tokens', async () => {
     const email = `expired_${Date.now()}@origin-os.internal`;
     await request(app)
       .post('/api/auth/signup')
       .send({ email, password: 'Password123!', displayName: 'Expired User' });
 
-    const expiredToken = `rst_expired_${Date.now()}`;
+    const rawExpiredToken = `rst_expired_${crypto.randomBytes(32).toString('hex')}`;
+    const tokenHash = hashResetToken(rawExpiredToken);
+
     db.schema.passwordResetTokens.push({
-      token: expiredToken,
+      token: tokenHash,
       email,
       expiresAt: new Date(Date.now() - 3600000).toISOString(), // Expired 1 hour ago
       used: false,
@@ -184,13 +198,13 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
 
     const res = await request(app)
       .post('/api/auth/password-reset-confirm')
-      .send({ token: expiredToken, newPassword: 'BrandNewPassword123!' });
+      .send({ token: rawExpiredToken, newPassword: 'BrandNewPassword123!' });
 
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('TOKEN_EXPIRED');
   });
 
-  // Requirement: Invalid / forged token is rejected
+  // Requirement 10: Invalid / forged token is rejected without sensitive details
   it('5. Rejects non-existent or forged reset tokens', async () => {
     const res = await request(app)
       .post('/api/auth/password-reset-confirm')
@@ -200,7 +214,7 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
     expect(res.body.error.code).toBe('TOKEN_EXPIRED');
   });
 
-  // Requirement: Rejects short password (< 6 chars) or missing payload
+  // Rejects short password (< 6 chars) or missing payload
   it('6. Rejects weak password or malformed payload on confirmation', async () => {
     const resShort = await request(app)
       .post('/api/auth/password-reset-confirm')
@@ -215,5 +229,33 @@ describe('ORIGIN Password Reset Architecture & Security Suite', () => {
 
     expect(resEmpty.status).toBe(400);
     expect(resEmpty.body.error.code).toBe('INVALID_PAYLOAD');
+  });
+
+  // Requirement 1 & 2: Cryptographic unpredictability and server hashing
+  it('7. Generates cryptographically unpredictable reset tokens and hashes them before storage', async () => {
+    const email = `crypto_check_${Date.now()}@origin-os.internal`;
+    await request(app)
+      .post('/api/auth/signup')
+      .send({ email, password: 'Password123!', displayName: 'Crypto User' });
+
+    await request(app)
+      .post('/api/auth/password-reset-request')
+      .send({ email });
+
+    expect(testEmailProvider.sentMessages.length).toBe(1);
+    const tokenMatch = testEmailProvider.sentMessages[0].html.match(/token=(rst_[a-f0-9]{64})/);
+    expect(tokenMatch).not.toBeNull();
+    const rawToken = tokenMatch![1];
+
+    // Check high entropy (length of hex portion is 64 hex chars = 32 bytes / 256 bits)
+    expect(rawToken.startsWith('rst_')).toBe(true);
+    expect(rawToken.slice(4).length).toBe(64);
+
+    const tokenRecord = db.schema.passwordResetTokens.find((r) => r.email === email && !r.used);
+    expect(tokenRecord).toBeDefined();
+    // Server-side record must NOT equal raw token
+    expect(tokenRecord!.token).not.toBe(rawToken);
+    // Server-side record must equal SHA-256 hash of the token
+    expect(tokenRecord!.token).toBe(hashResetToken(rawToken));
   });
 });

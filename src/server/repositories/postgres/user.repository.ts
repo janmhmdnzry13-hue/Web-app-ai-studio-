@@ -1,4 +1,4 @@
-import { query, withTransaction } from '../../db/postgres';
+import { query, withTransaction, isProductionEnvironment } from '../../db/postgres';
 import { UserRecord } from '../../db';
 import { IUserRepository } from '../interfaces';
 import { mapUserRow } from './mappers';
@@ -249,6 +249,9 @@ export class PostgresUserRepository implements IUserRepository {
   }
 
   async seedStarterData(userId: string): Promise<void> {
+    if (isProductionEnvironment() && process.env.ALLOW_DEMO_IN_PRODUCTION !== 'true' && process.env.ENABLE_DEMO_ENVIRONMENT !== 'true') {
+      return;
+    }
     const now = new Date().toISOString();
     const today = now.slice(0, 10);
 

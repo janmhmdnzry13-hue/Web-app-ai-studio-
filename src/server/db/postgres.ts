@@ -28,7 +28,11 @@ let testPoolOverride: Pool | null = null;
  * Checks if the runtime environment is production.
  */
 export function isProductionEnvironment(): boolean {
-  return process.env.NODE_ENV === 'production';
+  return (
+    process.env.NODE_ENV === 'production' ||
+    process.env.ENVIRONMENT === 'production' ||
+    process.env.APP_ENV === 'production'
+  );
 }
 
 /**
@@ -157,12 +161,16 @@ export async function closeDbPool(): Promise<void> {
  * Sanitizes any error message to ensure no database passwords or connection tokens are leaked.
  */
 export function sanitizeDatabaseError(error: any): Error {
-  const message = error?.message || 'Database query error';
+  const message = typeof error === 'string' ? error : error?.message || 'Database query error';
   const sanitized = message
-    .replace(/(?:password|pwd)=[^;&\s]+/gi, 'password=***')
-    .replace(/postgresql:\/\/[^:]+:[^@]+@/gi, 'postgresql://***:***@');
+    .replace(/(?:password|pwd|secret)=[^;&\s]+/gi, 'password=***')
+    .replace(/postgres(?:ql)?:\/\/[^:]+:[^@]+@/gi, 'postgresql://***:***@')
+    .replace(/:\/\/[^:]+:[^@]+@/g, '://***:***@');
   const safeErr = new Error(sanitized);
-  (safeErr as any).code = error?.code;
+  if (error && typeof error === 'object') {
+    (safeErr as any).code = error.code;
+    (safeErr as any).name = error.name || 'DatabaseError';
+  }
   return safeErr;
 }
 

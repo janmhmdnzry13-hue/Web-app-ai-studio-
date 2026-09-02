@@ -208,46 +208,7 @@ export class HabitService extends BaseService implements IHabitService {
 
   private getStoredHabits(userId: string): Habit[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Habit[]>(this.getHabitsStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_HABITS.map((sh) => ({
-        ...sh,
-        id: generateId('hab'),
-        userId,
-        streak: { currentStreak: 5, longestStreak: 12, totalCompletions: 18 },
-        createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getHabitsStorageKey(userId), seeded);
-
-      // Seed starter logs for the last 5 days
-      const seededLogs: HabitLog[] = [];
-      const today = new Date();
-      for (let dayOffset = 0; dayOffset < 6; dayOffset++) {
-        const d = new Date(today);
-        d.setDate(d.getDate() - dayOffset);
-        const dStr = getLocalDateString(d);
-
-        seeded.forEach((h) => {
-          if (isDayExpectedForFrequency(dStr, h.frequency, h.customDaysOfWeek)) {
-            seededLogs.push({
-              id: generateId('hlog'),
-              userId,
-              habitId: h.id,
-              date: dStr,
-              value: h.targetUnits,
-              targetMet: true,
-              loggedAt: d.toISOString(),
-              createdAt: d.toISOString(),
-              updatedAt: d.toISOString(),
-            });
-          }
-        });
-      }
-      safeStorage.set(this.getLogsStorageKey(userId), seededLogs);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Habit[]>(this.getHabitsStorageKey(userId), []);
   }
 
   private getStoredLogs(userId: string): HabitLog[] {

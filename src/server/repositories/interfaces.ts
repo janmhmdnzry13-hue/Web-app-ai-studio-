@@ -36,6 +36,9 @@ export interface TaskFilterOptions {
   priority?: string;
   search?: string;
   goalId?: string;
+  dueBefore?: string;
+  dueAfter?: string;
+  tag?: string;
   excludeCanceled?: boolean;
 }
 
@@ -63,6 +66,7 @@ export interface HabitLogFilterOptions {
   date?: string;
   startDate?: string;
   endDate?: string;
+  completedOnly?: boolean;
 }
 
 export interface IHabitLogRepository {
@@ -94,6 +98,8 @@ export interface TransactionFilterOptions {
   startDate?: string;
   endDate?: string;
   month?: string; // YYYY-MM
+  minAmount?: number;
+  maxAmount?: number;
 }
 
 export interface FinanceSummary {
@@ -102,6 +108,9 @@ export interface FinanceSummary {
   netBalance: number;
   savingsRatePercentage: number;
   transactionCount: number;
+  monthlyIncome?: number;
+  monthlyExpenses?: number;
+  byCategory?: Record<string, number>;
 }
 
 export interface ITransactionRepository {
@@ -164,6 +173,8 @@ export interface NoteFilterOptions {
   folderId?: string;
   isPinned?: boolean;
   isArchived?: boolean;
+  tag?: string;
+  search?: string;
 }
 
 export interface INoteRepository {

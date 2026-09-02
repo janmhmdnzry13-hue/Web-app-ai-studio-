@@ -188,6 +188,24 @@ export class InMemoryRateLimiter {
   }
 }
 
+// Centralized AI Endpoints Rate Limiting Configuration
+export const AI_RATE_LIMIT_CONFIG = {
+  chat: {
+    limit: 30, // max 30 requests
+    windowMs: 60 * 1000, // per 1 minute window
+  },
+  insights: {
+    limit: 20, // max 20 requests
+    windowMs: 60 * 1000, // per 1 minute window
+  },
+};
+
+// Centralized Signup Endpoint Rate Limiting Configuration
+export const SIGNUP_RATE_LIMIT_CONFIG = {
+  limit: 10, // max 10 requests per window
+  windowMs: 10 * 60 * 1000, // 10 minute window
+};
+
 // Global Singleton Rate Limiter Instance
 export const rateLimiter = new InMemoryRateLimiter();
 

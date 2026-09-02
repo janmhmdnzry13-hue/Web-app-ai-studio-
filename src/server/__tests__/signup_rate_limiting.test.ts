@@ -259,4 +259,141 @@ describe('Signup Endpoint Rate Limiting & Abuse Prevention Suite', () => {
     expect(duplicateRes.status).toBe(409);
     expect(duplicateRes.body.error.code).toBe('AUTH_EMAIL_EXISTS');
   });
+
+  // TEST 7: Rate-limited requests do not create accounts, write to the database, or hash passwords
+  it('7. Rate-limited requests do not create accounts, write to the database, or hash passwords', async () => {
+    const ip = '203.0.113.140';
+    const hashSpy = vi.spyOn(bcrypt, 'hashSync');
+
+    // Consume all 10 tokens
+    for (let i = 1; i <= 10; i++) {
+      await request(app)
+        .post('/api/auth/signup')
+        .set('X-Forwarded-For', ip)
+        .send({
+          email: `user_before_limit_${i}_${Date.now()}@origin-os.internal`,
+          password: 'Password123!',
+          displayName: `User ${i}`,
+        });
+    }
+
+    const userCountBeforeBlocked = db.schema.users.length;
+    expect(userCountBeforeBlocked).toBe(10);
+    const hashCountBeforeBlocked = hashSpy.mock.calls.length;
+
+    // Send rate-limited attempt
+    const blockedEmail = `blocked_user_${Date.now()}@origin-os.internal`;
+    const blockedRes = await request(app)
+      .post('/api/auth/signup')
+      .set('X-Forwarded-For', ip)
+      .send({
+        email: blockedEmail,
+        password: 'Password123!',
+        displayName: 'Blocked User',
+      });
+
+    expect(blockedRes.status).toBe(429);
+    expect(blockedRes.body.success).toBe(false);
+    expect(blockedRes.body.error.code).toBe('RATE_LIMITED');
+
+    // Verify no user was created
+    const foundBlockedUser = db.schema.users.find((u) => u.email === blockedEmail);
+    expect(foundBlockedUser).toBeUndefined();
+    expect(db.schema.users.length).toBe(userCountBeforeBlocked);
+
+    // Verify bcrypt hashing was NOT invoked for the rate-limited request
+    expect(hashSpy.mock.calls.length).toBe(hashCountBeforeBlocked);
+  });
+
+  // TEST 8: Different legitimate request identities (IPs) are handled independently
+  it('8. Different legitimate request identities are handled independently', async () => {
+    const ipA = '198.51.100.10';
+    const ipB = '198.51.100.20';
+
+    // Exhaust rate limit for IP A
+    for (let i = 1; i <= 10; i++) {
+      const resA = await request(app)
+        .post('/api/auth/signup')
+        .set('X-Forwarded-For', ipA)
+        .send({
+          email: `ip_a_user_${i}_${Date.now()}@origin-os.internal`,
+          password: 'Password123!',
+          displayName: `IP A User ${i}`,
+        });
+      expect(resA.status).toBe(200);
+    }
+
+    // 11th request from IP A is blocked
+    const blockedA = await request(app)
+      .post('/api/auth/signup')
+      .set('X-Forwarded-For', ipA)
+      .send({
+        email: `ip_a_blocked_${Date.now()}@origin-os.internal`,
+        password: 'Password123!',
+        displayName: 'IP A Blocked',
+      });
+    expect(blockedA.status).toBe(429);
+
+    // IP B must NOT be blocked and can sign up successfully
+    const successB = await request(app)
+      .post('/api/auth/signup')
+      .set('X-Forwarded-For', ipB)
+      .send({
+        email: `ip_b_user_1_${Date.now()}@origin-os.internal`,
+        password: 'Password123!',
+        displayName: 'IP B User 1',
+      });
+
+    expect(successB.status).toBe(200);
+    expect(successB.body.success).toBe(true);
+    expect(successB.headers['ratelimit-remaining']).toBe('9');
+  });
+
+  // TEST 9: Existing authentication and login behavior remain unchanged
+  it('9. Existing authentication and login behavior remain unchanged', async () => {
+    const ip = '198.51.100.50';
+    const email = `auth_test_${Date.now()}@origin-os.internal`;
+    const password = 'AuthPassword2026!';
+
+    // Signup user
+    const signupRes = await request(app)
+      .post('/api/auth/signup')
+      .set('X-Forwarded-For', ip)
+      .send({
+        email,
+        password,
+        displayName: 'Auth Test User',
+      });
+    expect(signupRes.status).toBe(200);
+    const token = signupRes.body.data.token;
+    expect(token).toBeDefined();
+
+    // Verify created user can authenticate and retrieve profile
+    const profileRes = await request(app)
+      .get('/api/users/me')
+      .set('Authorization', `Bearer ${token}`);
+    expect(profileRes.status).toBe(200);
+    expect(profileRes.body.data.email).toBe(email);
+
+    // Verify user can log in with their credentials via /api/auth/login
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email,
+        password,
+      });
+    expect(loginRes.status).toBe(200);
+    expect(loginRes.body.success).toBe(true);
+    expect(loginRes.body.data.token).toBeDefined();
+
+    // Verify invalid password fails login with 401
+    const invalidLoginRes = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email,
+        password: 'WrongPassword!',
+      });
+    expect(invalidLoginRes.status).toBe(401);
+    expect(invalidLoginRes.body.error.code).toBe('AUTH_INVALID_CREDENTIALS');
+  });
 });

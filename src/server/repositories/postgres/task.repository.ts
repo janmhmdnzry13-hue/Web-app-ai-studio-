@@ -8,9 +8,10 @@ export class PostgresTaskRepository implements ITaskRepository {
     const map = new Map<string, any[]>();
     if (taskIds.length === 0) return map;
 
+    const placeholders = taskIds.map((_, i) => `$${i + 1}`).join(', ');
     const res = await query(
-      `SELECT * FROM task_subtasks WHERE task_id = ANY($1::varchar[]) ORDER BY order_index ASC, created_at ASC`,
-      [taskIds]
+      `SELECT * FROM task_subtasks WHERE task_id IN (${placeholders}) ORDER BY order_index ASC, created_at ASC`,
+      taskIds
     );
 
     for (const row of res.rows) {

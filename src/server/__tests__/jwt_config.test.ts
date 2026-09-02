@@ -61,4 +61,15 @@ describe('Production JWT_SECRET Configuration Mandatory Enforcement Suite', () =
       expect(() => getJwtSecret()).toThrowError(/CRITICAL_SECURITY_ERROR: JWT_SECRET/);
     }
   });
+
+  // TEST 4: Development/test mode does not require production secrets
+  it('4. Development/test mode does not require production secrets and uses stable fallback', () => {
+    process.env.NODE_ENV = 'development';
+    delete process.env.JWT_SECRET;
+
+    const secret1 = getJwtSecret();
+    const secret2 = getJwtSecret();
+    expect(secret1).toBe('origin-dev-test-jwt-secret-not-for-production-2026');
+    expect(secret2).toBe(secret1); // Stable, never randomly generated across restarts
+  });
 });

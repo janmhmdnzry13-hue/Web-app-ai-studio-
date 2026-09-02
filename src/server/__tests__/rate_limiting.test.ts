@@ -17,10 +17,8 @@ import {
 // Mirror server.ts routing configuration for isolated integration testing
 const app = express();
 app.use(express.json());
-app.use('/api', apiRouter);
-app.use(apiRouter); // Mirror root mount for /auth/login and /auth/signup
 
-// Mount server-side AI endpoints mirroring server.ts
+// Mount server-side AI endpoints mirroring server.ts for isolated rate limit testing
 app.post('/api/ai/chat', requireAuth, (req: AuthenticatedRequest, res) => {
   const userId = req.userId!;
   if (!checkRateLimit(`ai_chat_${userId}`, 5, 60000)) {
@@ -44,6 +42,9 @@ app.post('/api/ai/insights', requireAuth, (req: AuthenticatedRequest, res) => {
   }
   res.json({ success: true, data: [] });
 });
+
+app.use('/api', apiRouter);
+app.use(apiRouter); // Mirror root mount for /auth/login and /auth/signup
 
 function createTestUser(email: string): { user: UserRecord; token: string } {
   const user: UserRecord = {

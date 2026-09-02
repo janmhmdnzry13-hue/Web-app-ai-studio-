@@ -101,19 +101,7 @@ export class NoteService extends BaseService {
 
   private getStoredNotes(userId: string): Note[] {
     if (!userId) return [];
-    const raw = safeStorage.get<Note[]>(this.getStorageKey(userId), []);
-    if (raw.length === 0 && userId === 'usr_origin_demo') {
-      const seeded = STARTER_NOTES.map((sn) => ({
-        ...sn,
-        id: generateId('not'),
-        userId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      }));
-      safeStorage.set(this.getStorageKey(userId), seeded);
-      return seeded;
-    }
-    return raw;
+    return safeStorage.get<Note[]>(this.getStorageKey(userId), []);
   }
 
   private saveStoredNotes(userId: string, notes: Note[]): void {

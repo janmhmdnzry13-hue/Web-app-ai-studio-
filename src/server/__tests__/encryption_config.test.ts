@@ -75,4 +75,16 @@ describe('Production ENCRYPTION_SECRET Configuration Mandatory Enforcement Suite
     const decrypted = db.decrypt(encrypted);
     expect(decrypted).toBe(originalText);
   });
+
+  // TEST 5: Development/test mode does not require production secrets and uses stable fallback
+  it('5. Development/test mode does not require production secrets and uses stable fallback', () => {
+    process.env.NODE_ENV = 'development';
+    delete process.env.ENCRYPTION_SECRET;
+
+    const key1 = getEncryptionKey();
+    const key2 = getEncryptionKey();
+    expect(key1).toBeInstanceOf(Buffer);
+    expect(key1.length).toBe(32);
+    expect(key1.equals(key2)).toBe(true); // Stable, never randomly generated across restarts
+  });
 });
