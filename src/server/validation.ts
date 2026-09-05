@@ -127,17 +127,21 @@ export const createHabitSchema = z.object({
   cue: z.string().max(1000).optional().nullable(),
   reward: z.string().max(1000).optional().nullable(),
   category: z.string().max(100).optional(),
-  frequency: z.enum(['daily', 'weekly', 'custom', 'weekdays', 'weekends', 'three_times_weekly']).optional(),
+  frequency: z.enum(['daily', 'weekly', 'custom', 'custom_days', 'weekdays', 'weekends', 'three_times_weekly']).optional(),
   targetDays: z.array(z.union([z.number().int().min(0).max(6), z.string().max(20)])).max(7).optional(),
+  customDaysOfWeek: z.array(z.number().int().min(0).max(6)).max(7).optional(),
   targetPerDay: z.number().int().positive().max(1000).optional(),
   reminderTime: z.string().max(50).optional().nullable(),
   timeOfDay: z.enum(['morning', 'afternoon', 'evening', 'anytime']).optional(),
   targetUnits: z.number().nonnegative().max(100000).optional(),
+  unit: z.string().max(50).optional(),
   unitLabel: z.string().max(50).optional(),
   goalId: z.string().max(100).optional().nullable(),
   why: z.string().max(1000).optional().nullable(),
   icon: z.string().max(50).optional().nullable(),
   color: z.string().max(50).optional().nullable(),
+  archived: z.boolean().optional(),
+  isArchived: z.boolean().optional(),
 });
 
 export const updateHabitSchema = createHabitSchema.partial();
@@ -169,6 +173,8 @@ export const milestoneSchema = z.object({
   isCompleted: z.boolean().optional(),
   order: z.number().int().optional(),
   targetDate: z.string().max(100).optional().nullable(),
+  dueDate: z.string().max(100).optional().nullable(),
+  completedAt: z.string().max(100).optional().nullable(),
   weight: z.number().min(0).max(100).optional(),
 });
 
@@ -202,6 +208,10 @@ export const createGoalSchema = z.object({
   horizon: z.enum(['quarterly', 'annual', 'multi_year', 'lifetime', 'monthly']).optional(),
   timeframe: z.enum(['quarterly', 'annual', 'multi_year', 'lifetime', 'monthly']).optional(),
   targetDate: z.string().max(100).optional(),
+  status: z.enum(['active', 'achieved', 'completed', 'paused', 'archived', 'cancelled']).optional(),
+  progressPercentage: z.number().min(0).max(100).optional(),
+  linkedHabitIds: z.array(z.string().max(100)).max(50).optional(),
+  successCriteria: z.array(z.string().max(500)).max(50).optional(),
   milestones: z.array(milestoneSchema).max(50, 'Too many milestones.').optional(),
 });
 
@@ -211,25 +221,91 @@ export const updateGoalSchema = createGoalSchema.partial();
 // FINANCE SCHEMAS
 // -------------------------------------------------------------
 
-export const createTransactionSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(1, 'Title and valid numerical amount are required.')
-    .max(300, 'Title is too long.'),
-  amount: z
-    .number()
-    .positive('Amount must be a positive number.')
-    .max(1000000000, 'Amount exceeds maximum allowable threshold.'),
+export const createTransactionSchema = z
+  .object({
+    title: z.string().trim().max(300, 'Title is too long.').optional(),
+    description: z.string().trim().max(300, 'Description is too long.').optional(),
+    amount: z
+      .number()
+      .positive('Amount must be a positive number.')
+      .max(1000000000, 'Amount exceeds maximum allowable threshold.')
+      .optional(),
+    amountMinor: z.number().int().positive().optional(),
+    amountMinorUnits: z.number().int().positive().optional(),
+    minorUnits: z.number().int().positive().optional(),
+    type: z.enum(['income', 'expense']).optional(),
+    category: z.string().max(100).optional(),
+    date: z.string().max(50).optional(),
+    currency: z.string().max(10).optional(),
+    paymentMethod: z.string().max(100).optional().nullable(),
+    isRecurring: z.boolean().optional(),
+    notes: z.string().max(5000, 'Notes too long.').optional().nullable(),
+    tags: z.array(z.string().max(100)).max(50).optional(),
+    merchantOrSource: z.string().max(200).optional().nullable(),
+  })
+  .refine(
+    (data) => Boolean((data.title && data.title.trim().length > 0) || (data.description && data.description.trim().length > 0)),
+    { message: 'Title and valid numerical amount are required.', path: ['title'] }
+  )
+  .refine(
+    (data) =>
+      typeof data.amount === 'number' ||
+      typeof data.amountMinor === 'number' ||
+      typeof data.amountMinorUnits === 'number' ||
+      typeof data.minorUnits === 'number',
+    { message: 'Amount must be a positive number.', path: ['amount'] }
+  );
+
+export const updateTransactionSchema = z.object({
+  title: z.string().trim().max(300).optional(),
+  description: z.string().trim().max(300).optional(),
+  amount: z.number().positive().max(1000000000).optional(),
+  amountMinor: z.number().int().positive().optional(),
+  amountMinorUnits: z.number().int().positive().optional(),
+  minorUnits: z.number().int().positive().optional(),
   type: z.enum(['income', 'expense']).optional(),
   category: z.string().max(100).optional(),
   date: z.string().max(50).optional(),
   currency: z.string().max(10).optional(),
   paymentMethod: z.string().max(100).optional().nullable(),
   isRecurring: z.boolean().optional(),
-  notes: z.string().max(5000, 'Notes too long.').optional().nullable(),
+  notes: z.string().max(5000).optional().nullable(),
   tags: z.array(z.string().max(100)).max(50).optional(),
   merchantOrSource: z.string().max(200).optional().nullable(),
+});
+
+export const createBudgetSchema = z
+  .object({
+    category: z.string().trim().min(1, 'Budget category is required.').max(100),
+    amount: z.number().positive('Budget cap must be greater than 0.').max(1000000000).optional(),
+    limitAmount: z.number().positive().max(1000000000).optional(),
+    amountMinor: z.number().int().positive().optional(),
+    amountMinorUnits: z.number().int().positive().optional(),
+    limitMinorUnits: z.number().int().positive().optional(),
+    period: z.enum(['monthly', 'weekly', 'quarterly', 'annual', 'yearly']).optional(),
+    monthYear: z.string().max(50).optional(),
+    alertThresholdPercentage: z.number().min(1).max(100).optional(),
+  })
+  .refine(
+    (data) =>
+      typeof data.amount === 'number' ||
+      typeof data.limitAmount === 'number' ||
+      typeof data.amountMinor === 'number' ||
+      typeof data.amountMinorUnits === 'number' ||
+      typeof data.limitMinorUnits === 'number',
+    { message: 'A valid positive budget cap is required.', path: ['amount'] }
+  );
+
+export const updateBudgetSchema = z.object({
+  category: z.string().trim().max(100).optional(),
+  amount: z.number().positive('Budget cap must be greater than 0.').max(1000000000).optional(),
+  limitAmount: z.number().positive().max(1000000000).optional(),
+  amountMinor: z.number().int().positive().optional(),
+  amountMinorUnits: z.number().int().positive().optional(),
+  limitMinorUnits: z.number().int().positive().optional(),
+  period: z.enum(['monthly', 'weekly', 'quarterly', 'annual', 'yearly']).optional(),
+  monthYear: z.string().max(50).optional(),
+  alertThresholdPercentage: z.number().min(1).max(100).optional(),
 });
 
 // -------------------------------------------------------------
@@ -241,6 +317,9 @@ export const createReflectionSchema = z.object({
   energyLevel: z.number().min(1).max(10).optional(),
   clarityLevel: z.number().min(1).max(10).optional(),
   stressLevel: z.number().min(1).max(10).optional(),
+  mood: z.number().min(1).max(10).optional(),
+  energy: z.number().min(1).max(10).optional(),
+  stress: z.number().min(1).max(10).optional(),
   primaryEmotion: z.string().max(100).optional(),
   journalEntry: z.string().max(50000).optional().nullable(),
   reflection: z.string().max(50000).optional().nullable(),
@@ -249,6 +328,8 @@ export const createReflectionSchema = z.object({
   learnings: z.array(z.string().max(500)).max(50).optional(),
   tags: z.array(z.string().max(100)).max(50).optional(),
 });
+
+export const updateReflectionSchema = createReflectionSchema.partial();
 
 // -------------------------------------------------------------
 // RELATIONSHIP SCHEMAS

@@ -105,18 +105,30 @@ export function mapHabitRow(row: any): HabitRecord {
   return {
     id: row.id,
     userId: row.user_id,
+    goalId: row.goal_id || undefined,
     name: row.name,
     description: row.description || undefined,
-    category: row.category || 'health',
+    routine: row.routine || undefined,
+    cue: row.cue || undefined,
+    reward: row.reward || undefined,
+    category: row.category || 'Health & Vitality',
     frequency: row.frequency || 'daily',
     targetDays: Array.isArray(row.target_days) ? row.target_days : undefined,
+    customDaysOfWeek: Array.isArray(row.target_days) ? row.target_days : undefined,
     targetPerDay: Number(row.target_per_day || 1),
+    targetUnits: Number(row.target_units != null ? row.target_units : (row.target_per_day || 1)),
     unit: row.unit || undefined,
+    unitLabel: row.unit_label || row.unit || undefined,
+    timeOfDay: row.time_of_day || 'morning',
     reminderTime: row.reminder_time || null,
+    why: row.why || undefined,
+    icon: row.icon || undefined,
+    color: row.color || undefined,
     streakCount: Number(row.streak_count || 0),
     bestStreak: Number(row.best_streak || 0),
     totalCompletions: Number(row.total_completions || 0),
     archived: Boolean(row.archived),
+    isArchived: Boolean(row.archived),
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),
   };
@@ -132,8 +144,10 @@ export function mapHabitLogRow(row: any): HabitLogRecord {
         ? row.date.slice(0, 10)
         : new Date(row.date).toISOString().slice(0, 10),
     completed: Boolean(row.completed),
+    targetMet: Boolean(row.completed),
     value: Number(row.value != null ? row.value : 1),
     notes: row.notes || undefined,
+    loggedAt: new Date(row.created_at).toISOString(),
     createdAt: new Date(row.created_at).toISOString(),
   };
 }
@@ -156,11 +170,19 @@ export function mapGoalRow(row: any, milestones: any[] = []): GoalRecord {
       id: m.id,
       title: m.title,
       completed: Boolean(m.completed),
+      isCompleted: Boolean(m.completed),
+      targetDate: m.target_date
+        ? typeof m.target_date === 'string'
+          ? m.target_date.slice(0, 10)
+          : new Date(m.target_date).toISOString().slice(0, 10)
+        : undefined,
       dueDate: m.target_date
         ? typeof m.target_date === 'string'
           ? m.target_date.slice(0, 10)
           : new Date(m.target_date).toISOString().slice(0, 10)
         : undefined,
+      completedAt: m.completed_at ? new Date(m.completed_at).toISOString() : undefined,
+      weight: Number(m.weight || 0),
       order: Number(m.order_index || 0),
     })),
     createdAt: new Date(row.created_at).toISOString(),
@@ -179,8 +201,10 @@ export function mapTransactionRow(row: any): TransactionRecord {
     id: row.id,
     userId: row.user_id,
     title: row.title,
+    description: row.description || row.title,
     amount,
     minorUnits,
+    amountMinorUnits: minorUnits,
     type: row.type,
     category: row.category,
     date:
@@ -189,7 +213,9 @@ export function mapTransactionRow(row: any): TransactionRecord {
         : new Date(row.date).toISOString().slice(0, 10),
     paymentMethod: row.payment_method || undefined,
     isRecurring: Boolean(row.is_recurring),
+    merchantOrSource: row.merchant_or_source || undefined,
     notes: row.notes || undefined,
+    currency: row.currency || 'USD',
     isEncrypted: Boolean(row.is_encrypted),
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),
@@ -209,7 +235,10 @@ export function mapBudgetRow(row: any): BudgetRecord {
     category: row.category,
     limitAmount,
     limitMinorUnits,
+    amount: limitAmount,
+    amountMinorUnits: limitMinorUnits,
     period: row.period || 'monthly',
+    monthYear: row.month_year || 'all',
     alertThresholdPercentage: Number(row.alert_threshold_percentage || 80),
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),
@@ -227,14 +256,19 @@ export function mapReflectionRow(row: any, decryptedJournal?: string): Reflectio
     energyLevel: Number(row.energy_level || 5),
     clarityLevel: Number(row.clarity_level || 5),
     stressLevel: Number(row.stress_level || 5),
+    mood: row.mood !== null && row.mood !== undefined ? Number(row.mood) : undefined,
+    energy: row.energy !== null && row.energy !== undefined ? Number(row.energy) : (row.energy_level ? Math.round(Number(row.energy_level) / 2) : undefined),
+    stress: row.stress !== null && row.stress !== undefined ? Number(row.stress) : (row.stress_level ? Math.round(Number(row.stress_level) / 2) : undefined),
     primaryEmotion: row.primary_emotion || 'neutral',
     journalEntry:
       decryptedJournal !== undefined
         ? decryptedJournal
         : row.journal_entry || '',
+    reflection: row.reflection || '',
     wins: Array.isArray(row.wins) ? row.wins : [],
     gratitudes: Array.isArray(row.gratitudes) ? row.gratitudes : [],
     learnings: Array.isArray(row.learnings) ? row.learnings : [],
+    tags: Array.isArray(row.tags) ? row.tags : [],
     isEncrypted: Boolean(row.is_encrypted),
     createdAt: new Date(row.created_at).toISOString(),
     updatedAt: new Date(row.updated_at).toISOString(),

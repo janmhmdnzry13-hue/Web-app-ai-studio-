@@ -112,4 +112,26 @@ export class JsonHabitLogRepository implements IHabitLogRepository {
     }
     return false;
   }
+
+  async unlogHabit(userId: string, habitId: string, date: string): Promise<boolean> {
+    const habit = db.schema.habits.find((h) => h.id === habitId && h.userId === userId);
+    const initialLen = db.schema.habitLogs.length;
+    db.schema.habitLogs = db.schema.habitLogs.filter(
+      (l) => !(l.habitId === habitId && l.userId === userId && l.date === date)
+    );
+
+    if (db.schema.habitLogs.length !== initialLen) {
+      if (habit) {
+        const userLogs = db.schema.habitLogs.filter(
+          (l) => l.habitId === habitId && l.userId === userId && l.completed
+        );
+        habit.totalCompletions = userLogs.length;
+        habit.streakCount = Math.min(habit.streakCount, userLogs.length);
+        habit.updatedAt = new Date().toISOString();
+      }
+      await db.save();
+      return true;
+    }
+    return false;
+  }
 }

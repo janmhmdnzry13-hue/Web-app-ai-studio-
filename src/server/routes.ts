@@ -4,6 +4,7 @@ import {
   HabitRecord,
   GoalRecord,
   TransactionRecord,
+  BudgetRecord,
   RelationshipRecord,
   NoteRecord,
   UserRecord,
@@ -18,6 +19,7 @@ import {
   habitLogRepository,
   goalRepository,
   transactionRepository,
+  budgetRepository,
   reflectionRepository,
   relationshipRepository,
   noteRepository,
@@ -78,7 +80,11 @@ import {
   createGoalSchema,
   updateGoalSchema,
   createTransactionSchema,
+  updateTransactionSchema,
+  createBudgetSchema,
+  updateBudgetSchema,
   createReflectionSchema,
+  updateReflectionSchema,
   createRelationshipSchema,
   updateRelationshipSchema,
   createNoteSchema,
@@ -778,22 +784,70 @@ apiRouter.post(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { name, description, category, frequency, targetDays, targetPerDay, reminderTime } = req.body;
+      const {
+        name,
+        description,
+        routine,
+        cue,
+        reward,
+        category,
+        frequency,
+        targetDays,
+        customDaysOfWeek,
+        targetPerDay,
+        targetUnits,
+        unit,
+        unitLabel,
+        timeOfDay,
+        reminderTime,
+        goalId,
+        why,
+        icon,
+        color,
+      } = req.body;
+
+      const trimmedName = name.trim();
+      const routineText = routine?.trim() || description?.trim() || trimmedName;
+      const targetDaysArray = Array.isArray(targetDays)
+        ? targetDays.map(Number)
+        : Array.isArray(customDaysOfWeek)
+        ? customDaysOfWeek.map(Number)
+        : [];
+      const unitsNumber =
+        typeof targetUnits === 'number' && targetUnits > 0
+          ? targetUnits
+          : typeof targetPerDay === 'number' && targetPerDay > 0
+          ? targetPerDay
+          : 1;
+      const labelText = unitLabel?.trim() || unit?.trim() || 'session';
 
       const newHabit: HabitRecord = {
         id: generateCryptoToken('hbt'),
         userId,
-        name: name.trim(),
+        goalId: goalId || null,
+        name: trimmedName,
         description: description?.trim() || '',
-        category: category || 'deep_work',
+        routine: routineText,
+        cue: cue?.trim() || '',
+        reward: reward?.trim() || '',
+        category: category || 'Health & Vitality',
         frequency: frequency || 'daily',
-        targetDays: targetDays || [],
-        targetPerDay: targetPerDay ? Number(targetPerDay) : 1,
+        targetDays: targetDaysArray,
+        customDaysOfWeek: targetDaysArray.length > 0 ? targetDaysArray : undefined,
+        targetPerDay: unitsNumber,
+        targetUnits: unitsNumber,
+        unit: labelText,
+        unitLabel: labelText,
+        timeOfDay: timeOfDay || 'morning',
         reminderTime: reminderTime || null,
+        why: why?.trim() || '',
+        icon: icon || '🌱',
+        color: color || '',
         streakCount: 0,
         bestStreak: 0,
         totalCompletions: 0,
         archived: false,
+        isArchived: false,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -822,8 +876,8 @@ apiRouter.post(
 
       const result = await habitLogRepository.logHabit(userId, habitId, {
         date,
-        completed,
-        value,
+        completed: completed !== undefined ? Boolean(completed) : true,
+        value: typeof value === 'number' ? value : 1,
         notes,
       });
 
@@ -841,6 +895,36 @@ apiRouter.post(
     }
   }
 );
+
+apiRouter.delete('/habits/:habitId/logs/:date', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { habitId, date } = req.params;
+    const deleted = await habitLogRepository.unlogHabit(req.userId!, habitId, date);
+    res.json({ success: true, data: { unlogged: deleted } });
+  } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Unlog Habit');
+    }
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to unlog habit.' } });
+  }
+});
+
+apiRouter.post('/habits/unlog', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { habitId, date } = req.body;
+    if (!habitId || !date) {
+      res.status(400).json({ success: false, error: { code: 'INVALID_PAYLOAD', message: 'habitId and date are required.' } });
+      return;
+    }
+    const deleted = await habitLogRepository.unlogHabit(req.userId!, habitId, date);
+    res.json({ success: true, data: { unlogged: deleted } });
+  } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Unlog Habit');
+    }
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to unlog habit.' } });
+  }
+});
 
 apiRouter.get('/habits/logs', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { habitId, startDate, endDate } = req.query;
@@ -868,7 +952,17 @@ apiRouter.put(
   validateBody(updateHabitSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
   async (req: AuthenticatedRequest, res: Response) => {
     try {
-      const updated = await habitRepository.update(req.params.id, req.userId!, req.body);
+      const updates = { ...req.body };
+      if (updates.isArchived !== undefined && updates.archived === undefined) {
+        updates.archived = Boolean(updates.isArchived);
+      }
+      if (updates.targetUnits !== undefined && updates.targetPerDay === undefined) {
+        updates.targetPerDay = Number(updates.targetUnits);
+      }
+      if (updates.customDaysOfWeek !== undefined && updates.targetDays === undefined) {
+        updates.targetDays = Array.isArray(updates.customDaysOfWeek) ? updates.customDaysOfWeek.map(Number) : [];
+      }
+      const updated = await habitRepository.update(req.params.id, req.userId!, updates);
       if (!updated) {
         res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
         return;
@@ -889,7 +983,17 @@ apiRouter.patch(
   validateBody(updateHabitSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
   async (req: AuthenticatedRequest, res: Response) => {
     try {
-      const updated = await habitRepository.update(req.params.id, req.userId!, req.body);
+      const updates = { ...req.body };
+      if (updates.isArchived !== undefined && updates.archived === undefined) {
+        updates.archived = Boolean(updates.isArchived);
+      }
+      if (updates.targetUnits !== undefined && updates.targetPerDay === undefined) {
+        updates.targetPerDay = Number(updates.targetUnits);
+      }
+      if (updates.customDaysOfWeek !== undefined && updates.targetDays === undefined) {
+        updates.targetDays = Array.isArray(updates.customDaysOfWeek) ? updates.customDaysOfWeek.map(Number) : [];
+      }
+      const updated = await habitRepository.update(req.params.id, req.userId!, updates);
       if (!updated) {
         res.status(404).json({ success: false, error: { code: 'HABIT_NOT_FOUND', message: 'Habit not found.' } });
         return;
@@ -944,7 +1048,25 @@ apiRouter.put(
   validateBody(updateGoalSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
   async (req: AuthenticatedRequest, res: Response) => {
     try {
-      const updated = await goalRepository.update(req.params.id, req.userId!, req.body);
+      const updates: any = { ...req.body };
+      if (updates.timeframe && !updates.horizon) {
+        updates.horizon = updates.timeframe;
+      }
+      if (Array.isArray(updates.milestones)) {
+        updates.milestones = updates.milestones.map((m: any, idx: number) => ({
+          id: m.id || generateCryptoToken('ms'),
+          title: (m.title || '').trim(),
+          completed: Boolean(m.completed ?? m.isCompleted ?? false),
+          isCompleted: Boolean(m.completed ?? m.isCompleted ?? false),
+          targetDate: m.targetDate || m.dueDate || undefined,
+          dueDate: m.dueDate || m.targetDate || undefined,
+          completedAt: m.completedAt || undefined,
+          weight: typeof m.weight === 'number' ? m.weight : 0,
+          order: typeof m.order === 'number' ? m.order : idx + 1,
+        }));
+      }
+
+      const updated = await goalRepository.update(req.params.id, req.userId!, updates);
       if (!updated) {
         res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
         return;
@@ -965,7 +1087,25 @@ apiRouter.patch(
   validateBody(updateGoalSchema, { defaultErrorCode: 'INVALID_PAYLOAD' }),
   async (req: AuthenticatedRequest, res: Response) => {
     try {
-      const updated = await goalRepository.update(req.params.id, req.userId!, req.body);
+      const updates: any = { ...req.body };
+      if (updates.timeframe && !updates.horizon) {
+        updates.horizon = updates.timeframe;
+      }
+      if (Array.isArray(updates.milestones)) {
+        updates.milestones = updates.milestones.map((m: any, idx: number) => ({
+          id: m.id || generateCryptoToken('ms'),
+          title: (m.title || '').trim(),
+          completed: Boolean(m.completed ?? m.isCompleted ?? false),
+          isCompleted: Boolean(m.completed ?? m.isCompleted ?? false),
+          targetDate: m.targetDate || m.dueDate || undefined,
+          dueDate: m.dueDate || m.targetDate || undefined,
+          completedAt: m.completedAt || undefined,
+          weight: typeof m.weight === 'number' ? m.weight : 0,
+          order: typeof m.order === 'number' ? m.order : idx + 1,
+        }));
+      }
+
+      const updated = await goalRepository.update(req.params.id, req.userId!, updates);
       if (!updated) {
         res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND', message: 'Goal not found.' } });
         return;
@@ -1006,7 +1146,31 @@ apiRouter.post(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { title, description, category, horizon, targetDate, milestones } = req.body;
+      const {
+        title,
+        description,
+        category,
+        horizon,
+        timeframe,
+        targetDate,
+        progressPercentage,
+        status,
+        milestones,
+        linkedHabitIds,
+        successCriteria,
+      } = req.body;
+
+      const normalizedMilestones = (Array.isArray(milestones) ? milestones : []).map((m: any, idx: number) => ({
+        id: m.id || generateCryptoToken('ms'),
+        title: (m.title || '').trim(),
+        completed: Boolean(m.completed ?? m.isCompleted ?? false),
+        isCompleted: Boolean(m.completed ?? m.isCompleted ?? false),
+        targetDate: m.targetDate || m.dueDate || undefined,
+        dueDate: m.dueDate || m.targetDate || undefined,
+        completedAt: m.completedAt || undefined,
+        weight: typeof m.weight === 'number' ? m.weight : 0,
+        order: typeof m.order === 'number' ? m.order : idx + 1,
+      }));
 
       const newGoal: GoalRecord = {
         id: generateCryptoToken('gol'),
@@ -1014,11 +1178,14 @@ apiRouter.post(
         title: title.trim(),
         description: description?.trim() || '',
         category: category || 'personal',
-        horizon: horizon || 'quarterly',
+        horizon: horizon || timeframe || 'quarterly',
+        timeframe: timeframe || horizon || 'quarterly',
         targetDate: targetDate || new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
-        progressPercentage: 0,
-        status: 'active',
-        milestones: Array.isArray(milestones) ? milestones : [],
+        progressPercentage: typeof progressPercentage === 'number' ? progressPercentage : 0,
+        status: status || 'active',
+        milestones: normalizedMilestones,
+        linkedHabitIds: Array.isArray(linkedHabitIds) ? linkedHabitIds : [],
+        successCriteria: Array.isArray(successCriteria) ? successCriteria : [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -1039,8 +1206,43 @@ apiRouter.post(
 // -------------------------------------------------------------
 
 apiRouter.get('/finances/transactions', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
-  const txs = await transactionRepository.findByUserId(req.userId!);
-  res.json({ success: true, data: txs });
+  const userId = req.userId!;
+  const month = (req.query.month || req.query.monthYear) as string | undefined;
+  const type = req.query.type as any;
+  const category = req.query.category as string | undefined;
+  const startDate = req.query.startDate as string | undefined;
+  const endDate = req.query.endDate as string | undefined;
+  const search = req.query.search as string | undefined;
+
+  let txs = await transactionRepository.findByUserId(userId, {
+    month: month && month !== 'all' ? month : undefined,
+    type: type && type !== 'all' ? type : undefined,
+    category: category && category !== 'all' ? category : undefined,
+    startDate,
+    endDate,
+  });
+
+  if (search && search.trim()) {
+    const q = search.trim().toLowerCase();
+    txs = txs.filter((t) =>
+      (t.title && t.title.toLowerCase().includes(q)) ||
+      (t.description && t.description.toLowerCase().includes(q)) ||
+      (t.category && t.category.toLowerCase().includes(q)) ||
+      (t.merchantOrSource && t.merchantOrSource.toLowerCase().includes(q)) ||
+      (t.notes && t.notes.toLowerCase().includes(q))
+    );
+  }
+
+  // Ensure normalized fields for frontend
+  const mapped = txs.map((tx) => ({
+    ...tx,
+    description: tx.description || tx.title,
+    amountMinorUnits: tx.amountMinorUnits != null ? tx.amountMinorUnits : tx.minorUnits,
+    minorUnits: tx.minorUnits != null ? tx.minorUnits : (tx.amountMinorUnits != null ? tx.amountMinorUnits : Math.round(tx.amount * 100)),
+    currency: tx.currency || 'USD',
+  }));
+
+  res.json({ success: true, data: mapped });
 }));
 
 apiRouter.post(
@@ -1052,22 +1254,54 @@ apiRouter.post(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { title, amount, type, category, date, paymentMethod, isRecurring, notes } = req.body;
+      const {
+        title,
+        description,
+        amount,
+        amountMinor,
+        amountMinorUnits,
+        minorUnits: rawMinorUnits,
+        type,
+        category,
+        date,
+        currency,
+        paymentMethod,
+        isRecurring,
+        merchantOrSource,
+        tags,
+        notes,
+      } = req.body;
 
-      const parsedAmount = Math.abs(Number(amount));
-      const minorUnits = Math.round(parsedAmount * 100);
+      const rawAmount = typeof amount === 'number' ? Math.abs(amount) : null;
+      const minor = typeof amountMinorUnits === 'number'
+        ? amountMinorUnits
+        : typeof amountMinor === 'number'
+        ? amountMinor
+        : typeof rawMinorUnits === 'number'
+        ? rawMinorUnits
+        : rawAmount != null
+        ? Math.round(rawAmount * 100)
+        : 0;
+
+      const major = rawAmount != null ? rawAmount : minor / 100;
+      const finalTitle = (title && title.trim()) || (description && description.trim()) || 'Transaction';
 
       const newTx: TransactionRecord = {
         id: generateCryptoToken('tx'),
         userId,
-        title: title.trim(),
-        amount: parsedAmount,
-        minorUnits,
+        title: finalTitle,
+        description: (description && description.trim()) || finalTitle,
+        amount: major,
+        minorUnits: minor,
+        amountMinorUnits: minor,
         type: type === 'income' ? 'income' : 'expense',
-        category: category || 'General',
+        category: category || 'other',
         date: date || new Date().toISOString().slice(0, 10),
+        currency: currency || 'USD',
         paymentMethod,
         isRecurring: Boolean(isRecurring),
+        merchantOrSource: merchantOrSource ? merchantOrSource.trim() : undefined,
+        tags: Array.isArray(tags) ? tags : [],
         notes: notes?.trim() ? db.encrypt(notes.trim()) : undefined,
         isEncrypted: Boolean(notes?.trim()),
         createdAt: new Date().toISOString(),
@@ -1075,7 +1309,15 @@ apiRouter.post(
       };
 
       const created = await transactionRepository.create(newTx);
-      res.json({ success: true, data: created });
+      res.json({
+        success: true,
+        data: {
+          ...created,
+          description: created.description || created.title,
+          amountMinorUnits: created.amountMinorUnits != null ? created.amountMinorUnits : created.minorUnits,
+          minorUnits: created.minorUnits != null ? created.minorUnits : created.amountMinorUnits,
+        },
+      });
     } catch (err: any) {
       if (isDatabaseError(err)) {
         return handleDatabaseError(res, err, 'Create Transaction');
@@ -1096,8 +1338,88 @@ apiRouter.get('/finances/transactions/:id', requireAuth, asyncHandler(async (req
     res.status(404).json({ success: false, error: { code: 'TRANSACTION_NOT_FOUND', message: 'Transaction not found.' } });
     return;
   }
-  res.json({ success: true, data: tx });
+  res.json({
+    success: true,
+    data: {
+      ...tx,
+      description: tx.description || tx.title,
+      amountMinorUnits: tx.amountMinorUnits != null ? tx.amountMinorUnits : tx.minorUnits,
+      minorUnits: tx.minorUnits != null ? tx.minorUnits : tx.amountMinorUnits,
+    },
+  });
 }));
+
+apiRouter.put(
+  '/finances/transactions/:id',
+  requireAuth,
+  validateBody(updateTransactionSchema, {
+    defaultErrorCode: 'INVALID_PAYLOAD',
+  }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const userId = req.userId!;
+      const txId = req.params.id;
+      const existing = await transactionRepository.findById(txId, userId);
+      if (!existing) {
+        return res.status(404).json({ success: false, error: { code: 'TRANSACTION_NOT_FOUND', message: 'Transaction not found.' } });
+      }
+
+      const updates: Partial<TransactionRecord> = {};
+      if (req.body.title !== undefined || req.body.description !== undefined) {
+        const titleVal = req.body.title !== undefined ? req.body.title.trim() : (req.body.description ? req.body.description.trim() : existing.title);
+        updates.title = titleVal;
+        updates.description = req.body.description !== undefined ? req.body.description.trim() : titleVal;
+      }
+      if (req.body.amount !== undefined || req.body.amountMinorUnits !== undefined || req.body.amountMinor !== undefined || req.body.minorUnits !== undefined) {
+        const rawAmount = typeof req.body.amount === 'number' ? Math.abs(req.body.amount) : null;
+        const minor = typeof req.body.amountMinorUnits === 'number'
+          ? req.body.amountMinorUnits
+          : typeof req.body.amountMinor === 'number'
+          ? req.body.amountMinor
+          : typeof req.body.minorUnits === 'number'
+          ? req.body.minorUnits
+          : rawAmount != null
+          ? Math.round(rawAmount * 100)
+          : existing.minorUnits;
+        updates.amount = rawAmount != null ? rawAmount : minor / 100;
+        updates.minorUnits = minor;
+        updates.amountMinorUnits = minor;
+      }
+      if (req.body.type !== undefined) updates.type = req.body.type === 'income' ? 'income' : 'expense';
+      if (req.body.category !== undefined) updates.category = req.body.category;
+      if (req.body.date !== undefined) updates.date = req.body.date;
+      if (req.body.currency !== undefined) updates.currency = req.body.currency;
+      if (req.body.paymentMethod !== undefined) updates.paymentMethod = req.body.paymentMethod;
+      if (req.body.isRecurring !== undefined) updates.isRecurring = Boolean(req.body.isRecurring);
+      if (req.body.merchantOrSource !== undefined) updates.merchantOrSource = req.body.merchantOrSource;
+      if (req.body.tags !== undefined) updates.tags = req.body.tags;
+      if (req.body.notes !== undefined) {
+        updates.notes = req.body.notes?.trim() ? db.encrypt(req.body.notes.trim()) : undefined;
+        updates.isEncrypted = Boolean(req.body.notes?.trim());
+      }
+
+      const updated = await transactionRepository.update(txId, userId, updates);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: { code: 'TRANSACTION_NOT_FOUND', message: 'Transaction not found.' } });
+      }
+
+      res.json({
+        success: true,
+        data: {
+          ...updated,
+          description: updated.description || updated.title,
+          amountMinorUnits: updated.amountMinorUnits != null ? updated.amountMinorUnits : updated.minorUnits,
+          minorUnits: updated.minorUnits != null ? updated.minorUnits : updated.amountMinorUnits,
+        },
+      });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Transaction');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update transaction.' } });
+    }
+  }
+);
 
 apiRouter.delete('/finances/transactions/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -1115,13 +1437,197 @@ apiRouter.delete('/finances/transactions/:id', requireAuth, async (req: Authenti
   }
 });
 
+// Budgets Endpoints
+apiRouter.get('/finances/budgets', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const budgets = await budgetRepository.findByUserId(req.userId!);
+  const mapped = budgets.map((b) => ({
+    ...b,
+    amount: b.amount != null ? b.amount : b.limitAmount,
+    amountMinorUnits: b.amountMinorUnits != null ? b.amountMinorUnits : b.limitMinorUnits,
+    limitAmount: b.limitAmount != null ? b.limitAmount : b.amount,
+    limitMinorUnits: b.limitMinorUnits != null ? b.limitMinorUnits : b.amountMinorUnits,
+  }));
+  res.json({ success: true, data: mapped });
+}));
+
+apiRouter.post(
+  '/finances/budgets',
+  requireAuth,
+  validateBody(createBudgetSchema, {
+    defaultErrorCode: 'INVALID_PAYLOAD',
+  }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const userId = req.userId!;
+      const { category, amount, limitAmount, amountMinor, amountMinorUnits, limitMinorUnits, period, monthYear, alertThresholdPercentage } = req.body;
+
+      const major = typeof amount === 'number' ? Math.abs(amount) : typeof limitAmount === 'number' ? Math.abs(limitAmount) : null;
+      const minor = typeof amountMinorUnits === 'number'
+        ? amountMinorUnits
+        : typeof limitMinorUnits === 'number'
+        ? limitMinorUnits
+        : typeof amountMinor === 'number'
+        ? amountMinor
+        : major != null
+        ? Math.round(major * 100)
+        : 0;
+      const finalMajor = major != null ? major : minor / 100;
+
+      const newBudget: BudgetRecord = {
+        id: generateCryptoToken('bdg'),
+        userId,
+        category: category.trim(),
+        limitAmount: finalMajor,
+        limitMinorUnits: minor,
+        amount: finalMajor,
+        amountMinorUnits: minor,
+        period: period || 'monthly',
+        monthYear: monthYear || 'all',
+        alertThresholdPercentage: alertThresholdPercentage != null ? alertThresholdPercentage : 80,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      const created = await budgetRepository.create(newBudget);
+      res.json({
+        success: true,
+        data: {
+          ...created,
+          amount: created.amount != null ? created.amount : created.limitAmount,
+          amountMinorUnits: created.amountMinorUnits != null ? created.amountMinorUnits : created.limitMinorUnits,
+        },
+      });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Create Budget');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to record budget.' } });
+    }
+  }
+);
+
+apiRouter.get('/finances/budgets/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const b = await budgetRepository.findById(req.params.id, req.userId!);
+  if (!b) {
+    res.status(404).json({ success: false, error: { code: 'BUDGET_NOT_FOUND', message: 'Budget not found.' } });
+    return;
+  }
+  res.json({
+    success: true,
+    data: {
+      ...b,
+      amount: b.amount != null ? b.amount : b.limitAmount,
+      amountMinorUnits: b.amountMinorUnits != null ? b.amountMinorUnits : b.limitMinorUnits,
+    },
+  });
+}));
+
+apiRouter.put(
+  '/finances/budgets/:id',
+  requireAuth,
+  validateBody(updateBudgetSchema, {
+    defaultErrorCode: 'INVALID_PAYLOAD',
+  }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const userId = req.userId!;
+      const budgetId = req.params.id;
+      const existing = await budgetRepository.findById(budgetId, userId);
+      if (!existing) {
+        return res.status(404).json({ success: false, error: { code: 'BUDGET_NOT_FOUND', message: 'Budget not found.' } });
+      }
+
+      const updates: Partial<BudgetRecord> = {};
+      if (req.body.category !== undefined) updates.category = req.body.category.trim();
+      if (req.body.amount !== undefined || req.body.limitAmount !== undefined || req.body.amountMinorUnits !== undefined || req.body.limitMinorUnits !== undefined || req.body.amountMinor !== undefined) {
+        const major = typeof req.body.amount === 'number' ? Math.abs(req.body.amount) : typeof req.body.limitAmount === 'number' ? Math.abs(req.body.limitAmount) : null;
+        const minor = typeof req.body.amountMinorUnits === 'number'
+          ? req.body.amountMinorUnits
+          : typeof req.body.limitMinorUnits === 'number'
+          ? req.body.limitMinorUnits
+          : typeof req.body.amountMinor === 'number'
+          ? req.body.amountMinor
+          : major != null
+          ? Math.round(major * 100)
+          : existing.limitMinorUnits;
+        const finalMajor = major != null ? major : minor / 100;
+        updates.limitAmount = finalMajor;
+        updates.limitMinorUnits = minor;
+        updates.amount = finalMajor;
+        updates.amountMinorUnits = minor;
+      }
+      if (req.body.period !== undefined) updates.period = req.body.period;
+      if (req.body.monthYear !== undefined) updates.monthYear = req.body.monthYear;
+      if (req.body.alertThresholdPercentage !== undefined) updates.alertThresholdPercentage = req.body.alertThresholdPercentage;
+
+      const updated = await budgetRepository.update(budgetId, userId, updates);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: { code: 'BUDGET_NOT_FOUND', message: 'Budget not found.' } });
+      }
+
+      res.json({
+        success: true,
+        data: {
+          ...updated,
+          amount: updated.amount != null ? updated.amount : updated.limitAmount,
+          amountMinorUnits: updated.amountMinorUnits != null ? updated.amountMinorUnits : updated.limitMinorUnits,
+        },
+      });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Budget');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update budget.' } });
+    }
+  }
+);
+
+apiRouter.delete('/finances/budgets/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const deleted = await budgetRepository.delete(req.params.id, req.userId!);
+    if (!deleted) {
+      res.status(404).json({ success: false, error: { code: 'BUDGET_NOT_FOUND', message: 'Budget not found.' } });
+      return;
+    }
+    res.json({ success: true, message: 'Budget deleted successfully.' });
+  } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Budget');
+    }
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete budget.' } });
+  }
+});
+
 // -------------------------------------------------------------
 // EMOTIONS & REFLECTIONS
 // -------------------------------------------------------------
 
 apiRouter.get('/emotions/reflections', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
-  const clean = await reflectionRepository.findByUserId(req.userId!);
+  let clean = await reflectionRepository.findByUserId(req.userId!);
+  const { startDate, endDate, date, limit } = req.query;
+
+  if (typeof date === 'string') {
+    clean = clean.filter((r) => r.date === date);
+  }
+  if (typeof startDate === 'string') {
+    clean = clean.filter((r) => r.date >= startDate);
+  }
+  if (typeof endDate === 'string') {
+    clean = clean.filter((r) => r.date <= endDate);
+  }
+  if (limit && !isNaN(Number(limit))) {
+    clean = clean.slice(0, Number(limit));
+  }
   res.json({ success: true, data: clean });
+}));
+
+apiRouter.get('/emotions/reflections/:id', requireAuth, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+  const { id } = req.params;
+  const item = await reflectionRepository.findById(id, req.userId!);
+  if (!item) {
+    return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Reflection not found.' } });
+  }
+  res.json({ success: true, data: item });
 }));
 
 apiRouter.post(
@@ -1133,18 +1639,36 @@ apiRouter.post(
   async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.userId!;
-      const { date, energyLevel, clarityLevel, stressLevel, primaryEmotion, journalEntry, wins, gratitudes, learnings } = req.body;
-
-      const refDate = date || new Date().toISOString().slice(0, 10);
-      const saved = await reflectionRepository.upsert(userId, refDate, {
+      const {
+        date,
         energyLevel,
         clarityLevel,
         stressLevel,
+        mood,
+        energy,
+        stress,
         primaryEmotion,
         journalEntry,
+        reflection,
         wins,
         gratitudes,
         learnings,
+        tags,
+      } = req.body;
+
+      const refDate = date || new Date().toISOString().slice(0, 10);
+      const saved = await reflectionRepository.upsert(userId, refDate, {
+        energyLevel: energyLevel !== undefined ? energyLevel : (energy ? Math.min(10, Math.max(1, energy * 2)) : undefined),
+        clarityLevel,
+        stressLevel: stressLevel !== undefined ? stressLevel : (stress ? Math.min(10, Math.max(1, stress * 2)) : undefined),
+        mood: mood !== undefined ? mood : (energyLevel ? Math.min(5, Math.max(1, Math.round(energyLevel / 2))) : undefined),
+        primaryEmotion,
+        journalEntry: journalEntry || reflection || '',
+        reflection: reflection || journalEntry || '',
+        wins,
+        gratitudes,
+        learnings,
+        tags,
       });
 
       res.json({ success: true, data: saved });
@@ -1156,6 +1680,94 @@ apiRouter.post(
     }
   }
 );
+
+apiRouter.patch(
+  '/emotions/reflections/:id',
+  requireAuth,
+  validateBody(updateReflectionSchema, {
+    defaultErrorCode: 'INVALID_PAYLOAD',
+  }),
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const userId = req.userId!;
+      const { id } = req.params;
+
+      const existing = await reflectionRepository.findById(id, userId);
+      if (!existing) {
+        return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Reflection not found.' } });
+      }
+
+      const {
+        date,
+        energyLevel,
+        clarityLevel,
+        stressLevel,
+        mood,
+        energy,
+        stress,
+        primaryEmotion,
+        journalEntry,
+        reflection,
+        wins,
+        gratitudes,
+        learnings,
+        tags,
+      } = req.body;
+
+      const updates: any = {};
+      if (date !== undefined) updates.date = date;
+      if (energyLevel !== undefined) updates.energyLevel = energyLevel;
+      else if (energy !== undefined) updates.energyLevel = Math.min(10, Math.max(1, energy * 2));
+      if (clarityLevel !== undefined) updates.clarityLevel = clarityLevel;
+      if (stressLevel !== undefined) updates.stressLevel = stressLevel;
+      else if (stress !== undefined) updates.stressLevel = Math.min(10, Math.max(1, stress * 2));
+      if (mood !== undefined) updates.mood = mood;
+      if (primaryEmotion !== undefined) updates.primaryEmotion = primaryEmotion;
+      if (journalEntry !== undefined) updates.journalEntry = journalEntry;
+      if (reflection !== undefined) updates.reflection = reflection;
+      if (wins !== undefined) updates.wins = wins;
+      if (gratitudes !== undefined) updates.gratitudes = gratitudes;
+      if (learnings !== undefined) updates.learnings = learnings;
+      if (tags !== undefined) updates.tags = tags;
+
+      const updated = await reflectionRepository.update(id, userId, updates);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Reflection not found.' } });
+      }
+
+      res.json({ success: true, data: updated });
+    } catch (err: any) {
+      if (isDatabaseError(err)) {
+        return handleDatabaseError(res, err, 'Update Reflection');
+      }
+      res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to update reflection.' } });
+    }
+  }
+);
+
+apiRouter.delete('/emotions/reflections/:id', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.userId!;
+    const { id } = req.params;
+
+    const existing = await reflectionRepository.findById(id, userId);
+    if (!existing) {
+      return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Reflection not found.' } });
+    }
+
+    const deleted = await reflectionRepository.delete(id, userId);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: { code: 'NOT_FOUND', message: 'Reflection not found.' } });
+    }
+
+    res.json({ success: true, data: { deleted: true } });
+  } catch (err: any) {
+    if (isDatabaseError(err)) {
+      return handleDatabaseError(res, err, 'Delete Reflection');
+    }
+    res.status(500).json({ success: false, error: { code: 'SERVER_ERROR', message: 'Failed to delete reflection.' } });
+  }
+});
 
 // -------------------------------------------------------------
 // RELATIONSHIPS ROUTES

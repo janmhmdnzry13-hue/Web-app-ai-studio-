@@ -34,17 +34,27 @@ export class PostgresHabitRepository implements IHabitRepository {
   }
 
   async create(habit: HabitRecord): Promise<HabitRecord> {
+    const targetDays = Array.isArray(habit.targetDays)
+      ? habit.targetDays
+      : Array.isArray(habit.customDaysOfWeek)
+      ? habit.customDaysOfWeek
+      : [];
+    const targetUnits = habit.targetUnits != null ? habit.targetUnits : (habit.targetPerDay != null ? habit.targetPerDay : 1);
+    const unitLabel = habit.unitLabel || habit.unit || 'session';
+
     const sql = `
       INSERT INTO habits (
-        id, user_id, name, description, category, frequency,
-        target_days, target_per_day, unit, reminder_time,
-        streak_count, best_streak, total_completions, archived,
+        id, user_id, goal_id, name, description, cue, routine, reward,
+        category, frequency, target_days, target_per_day, target_units,
+        unit, unit_label, time_of_day, reminder_time, streak_count,
+        best_streak, total_completions, archived, why, icon, color,
         created_at, updated_at
       ) VALUES (
-        $1, $2, $3, $4, $5, $6,
-        $7, $8, $9, $10,
-        $11, $12, $13, $14,
-        $15, $16
+        $1, $2, $3, $4, $5, $6, $7, $8,
+        $9, $10, $11, $12, $13,
+        $14, $15, $16, $17, $18,
+        $19, $20, $21, $22, $23, $24,
+        $25, $26
       )
       RETURNING *
     `;
@@ -52,18 +62,28 @@ export class PostgresHabitRepository implements IHabitRepository {
     const values = [
       habit.id,
       habit.userId,
+      habit.goalId || null,
       habit.name,
       habit.description || null,
-      habit.category || 'health',
+      habit.cue || null,
+      habit.routine || null,
+      habit.reward || null,
+      habit.category || 'Health & Vitality',
       habit.frequency || 'daily',
-      Array.isArray(habit.targetDays) ? habit.targetDays : [],
-      habit.targetPerDay != null ? habit.targetPerDay : 1,
-      habit.unit || null,
+      targetDays,
+      habit.targetPerDay != null ? habit.targetPerDay : targetUnits,
+      targetUnits,
+      habit.unit || unitLabel,
+      unitLabel,
+      habit.timeOfDay || 'morning',
       habit.reminderTime || null,
       habit.streakCount != null ? habit.streakCount : 0,
       habit.bestStreak != null ? habit.bestStreak : 0,
       habit.totalCompletions != null ? habit.totalCompletions : 0,
-      Boolean(habit.archived),
+      Boolean(habit.archived || habit.isArchived),
+      habit.why || null,
+      habit.icon || null,
+      habit.color || null,
       habit.createdAt ? new Date(habit.createdAt) : new Date(),
       habit.updatedAt ? new Date(habit.updatedAt) : new Date(),
     ];
@@ -84,21 +104,39 @@ export class PostgresHabitRepository implements IHabitRepository {
       updatedAt: new Date().toISOString(),
     };
 
+    const targetDays = Array.isArray(merged.targetDays)
+      ? merged.targetDays
+      : Array.isArray(merged.customDaysOfWeek)
+      ? merged.customDaysOfWeek
+      : [];
+    const targetUnits = merged.targetUnits != null ? merged.targetUnits : (merged.targetPerDay != null ? merged.targetPerDay : 1);
+    const unitLabel = merged.unitLabel || merged.unit || 'session';
+
     const sql = `
       UPDATE habits SET
-        name = $3,
-        description = $4,
-        category = $5,
-        frequency = $6,
-        target_days = $7,
-        target_per_day = $8,
-        unit = $9,
-        reminder_time = $10,
-        streak_count = $11,
-        best_streak = $12,
-        total_completions = $13,
-        archived = $14,
-        updated_at = $15
+        goal_id = $3,
+        name = $4,
+        description = $5,
+        cue = $6,
+        routine = $7,
+        reward = $8,
+        category = $9,
+        frequency = $10,
+        target_days = $11,
+        target_per_day = $12,
+        target_units = $13,
+        unit = $14,
+        unit_label = $15,
+        time_of_day = $16,
+        reminder_time = $17,
+        streak_count = $18,
+        best_streak = $19,
+        total_completions = $20,
+        archived = $21,
+        why = $22,
+        icon = $23,
+        color = $24,
+        updated_at = $25
       WHERE id = $1 AND user_id = $2
       RETURNING *
     `;
@@ -106,18 +144,28 @@ export class PostgresHabitRepository implements IHabitRepository {
     const values = [
       id,
       userId,
+      merged.goalId || null,
       merged.name,
       merged.description || null,
+      merged.cue || null,
+      merged.routine || null,
+      merged.reward || null,
       merged.category,
       merged.frequency,
-      Array.isArray(merged.targetDays) ? merged.targetDays : [],
-      merged.targetPerDay,
-      merged.unit || null,
+      targetDays,
+      merged.targetPerDay != null ? merged.targetPerDay : targetUnits,
+      targetUnits,
+      merged.unit || unitLabel,
+      unitLabel,
+      merged.timeOfDay || 'morning',
       merged.reminderTime || null,
       merged.streakCount,
       merged.bestStreak,
       merged.totalCompletions,
-      Boolean(merged.archived),
+      Boolean(merged.archived || merged.isArchived),
+      merged.why || null,
+      merged.icon || null,
+      merged.color || null,
       new Date(),
     ];
 

@@ -68,18 +68,30 @@ export interface TaskRecord {
 export interface HabitRecord {
   id: string;
   userId: string;
+  goalId?: string | null;
   name: string;
   description?: string;
-  category: 'health' | 'deep_work' | 'mindfulness' | 'finance' | 'learning' | 'relationships';
-  frequency: 'daily' | 'weekdays' | 'weekends' | 'custom_days';
+  routine?: string | null;
+  cue?: string | null;
+  reward?: string | null;
+  category: string;
+  frequency: string;
   targetDays?: number[];
+  customDaysOfWeek?: number[];
   targetPerDay: number;
+  targetUnits?: number;
   unit?: string;
+  unitLabel?: string;
+  timeOfDay?: string;
   reminderTime?: string | null;
+  why?: string | null;
+  icon?: string | null;
+  color?: string | null;
   streakCount: number;
   bestStreak: number;
   totalCompletions: number;
   archived: boolean;
+  isArchived?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -91,8 +103,11 @@ export interface HabitLogRecord {
   date: string; // YYYY-MM-DD
   completed: boolean;
   value: number;
+  targetMet?: boolean;
   notes?: string;
+  loggedAt?: string;
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface GoalRecord {
@@ -100,18 +115,25 @@ export interface GoalRecord {
   userId: string;
   title: string;
   description?: string;
-  category: 'career' | 'health' | 'financial' | 'personal' | 'intellectual' | 'relational';
-  horizon: 'quarterly' | 'annual' | 'multi_year' | 'lifetime';
+  category: string;
+  horizon: string;
+  timeframe?: string;
   targetDate: string;
   progressPercentage: number;
-  status: 'active' | 'achieved' | 'paused' | 'archived';
+  status: string;
   milestones: Array<{
     id: string;
     title: string;
     completed: boolean;
+    isCompleted?: boolean;
     dueDate?: string;
-    order: number;
+    targetDate?: string;
+    completedAt?: string;
+    weight?: number;
+    order?: number;
   }>;
+  linkedHabitIds?: string[];
+  successCriteria?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -120,13 +142,18 @@ export interface TransactionRecord {
   id: string;
   userId: string;
   title: string;
+  description?: string;
   amount: number;
   minorUnits: number;
+  amountMinorUnits?: number;
   type: 'income' | 'expense';
   category: string;
   date: string; // YYYY-MM-DD
   paymentMethod?: string;
   isRecurring: boolean;
+  merchantOrSource?: string;
+  tags?: string[];
+  currency?: string;
   notes?: string;
   isEncrypted?: boolean;
   createdAt: string;
@@ -139,7 +166,10 @@ export interface BudgetRecord {
   category: string;
   limitAmount: number;
   limitMinorUnits: number;
-  period: 'monthly' | 'weekly' | 'annual';
+  amount?: number;
+  amountMinorUnits?: number;
+  period: 'monthly' | 'weekly' | 'quarterly' | 'annual' | 'yearly';
+  monthYear?: string;
   alertThresholdPercentage: number;
   createdAt: string;
   updatedAt: string;
@@ -152,12 +182,18 @@ export interface ReflectionRecord {
   energyLevel: number; // 1-10
   clarityLevel: number; // 1-10
   stressLevel: number; // 1-10
+  mood?: number; // 1-5
+  energy?: number; // 1-5
+  stress?: number; // 1-5
   primaryEmotion: string;
   journalEntry: string;
+  reflection?: string;
   wins: string[];
   gratitudes: string[];
   learnings: string[];
+  tags?: string[];
   isEncrypted?: boolean;
+  loggedAt?: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,8 +1,10 @@
 /**
  * Goal Service Contract & Persistent Implementation
  * Manages hierarchical life objectives, milestone progression, weighted completion math, and user isolation.
+ * Uses the authenticated backend API as the authoritative source of truth with resilient local storage caching.
  */
 import { APP_CONSTANTS } from '../config/constants';
+import { apiClient } from '../lib/api-client';
 import { safeStorage } from '../lib/storage';
 import { generateId } from '../lib/utils';
 import { ServiceResult } from '../types/common.types';
@@ -124,6 +126,34 @@ const STARTER_GOALS: readonly Omit<Goal, 'id' | 'userId' | 'createdAt' | 'update
   },
 ];
 
+function mapBackendGoalRecordToGoal(record: any, fallbackUserId?: string): Goal {
+  const milestones: Milestone[] = (Array.isArray(record.milestones) ? record.milestones : []).map((m: any, idx: number) => ({
+    id: m.id || `ms_${idx + 1}`,
+    title: (m.title || '').trim(),
+    isCompleted: Boolean(m.isCompleted ?? m.completed ?? false),
+    targetDate: m.targetDate || m.dueDate || undefined,
+    completedAt: m.completedAt || undefined,
+    weight: typeof m.weight === 'number' ? m.weight : 0,
+  }));
+
+  return {
+    id: record.id,
+    userId: record.userId || fallbackUserId || '',
+    title: record.title || '',
+    description: record.description || '',
+    category: record.category || 'personal',
+    timeframe: (record.timeframe || record.horizon || 'quarterly') as any,
+    status: (record.status || 'active') as any,
+    targetDate: record.targetDate || '',
+    progressPercentage: typeof record.progressPercentage === 'number' ? record.progressPercentage : 0,
+    milestones,
+    linkedHabitIds: Array.isArray(record.linkedHabitIds) ? record.linkedHabitIds : [],
+    successCriteria: Array.isArray(record.successCriteria) ? record.successCriteria : [],
+    createdAt: record.createdAt || new Date().toISOString(),
+    updatedAt: record.updatedAt || new Date().toISOString(),
+  };
+}
+
 export class GoalService extends BaseService implements IGoalService {
   private async resolveUserId(providedUserId?: string): Promise<string> {
     if (providedUserId && typeof providedUserId === 'string' && providedUserId.trim().length > 0) {
@@ -150,14 +180,37 @@ export class GoalService extends BaseService implements IGoalService {
     safeStorage.set(this.getStorageKey(userId), goals);
   }
 
-  async getGoals(userId?: string): Promise<ServiceResult<readonly Goal[]>> {
+  async getGoals(userIdOrNull?: string): Promise<ServiceResult<readonly Goal[]>> {
     try {
-      const uid = await this.resolveUserId(userId);
-      if (!uid) return this.success([]);
-      const goals = this.getStoredGoals(uid);
-      return this.success(goals);
-    } catch (err) {
-      return this.failure('GOAL_FETCH_ERROR', 'Failed to retrieve goals.', { err });
+      const userId = await this.resolveUserId(userIdOrNull);
+
+      let goals: Goal[] = [];
+      const res = await apiClient.get<any[]>('/api/goals');
+
+      if (res.success && Array.isArray(res.data)) {
+        goals = res.data.map((r) => mapBackendGoalRecordToGoal(r, userId));
+        if (userId) {
+          this.saveStoredGoals(userId, goals);
+        }
+        return this.success(goals);
+      }
+
+      // Offline / test fallback
+      if (userId) {
+        const stored = this.getStoredGoals(userId);
+        return this.success(stored);
+      }
+
+      return this.failure(
+        res.error?.code || 'GOAL_FETCH_ERROR',
+        res.error?.message || 'Failed to retrieve goals.'
+      );
+    } catch (err: any) {
+      if (userIdOrNull) {
+        const stored = this.getStoredGoals(userIdOrNull);
+        return this.success(stored);
+      }
+      return this.failure('GOAL_FETCH_ERROR', err?.message || 'Failed to retrieve goals.', { err });
     }
   }
 
@@ -166,23 +219,49 @@ export class GoalService extends BaseService implements IGoalService {
       const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const goalId = maybeId || userIdOrId;
 
-      const goals = this.getStoredGoals(userId);
-      const found = goals.find((g) => g.id === goalId);
-
-      if (!found) {
-        return this.failure('GOAL_NOT_FOUND', `Goal with ID ${goalId} not found.`);
+      const res = await apiClient.get<any>(`/api/goals/${goalId}`);
+      if (res.success && res.data) {
+        const goal = mapBackendGoalRecordToGoal(res.data, userId);
+        if (userId) {
+          const stored = this.getStoredGoals(userId);
+          const idx = stored.findIndex((g) => g.id === goalId);
+          if (idx !== -1) {
+            stored[idx] = goal;
+          } else {
+            stored.push(goal);
+          }
+          this.saveStoredGoals(userId, stored);
+        }
+        return this.success(goal);
       }
 
-      return this.success(found);
-    } catch (err) {
+      // Offline / test fallback
+      if (userId) {
+        const stored = this.getStoredGoals(userId);
+        const found = stored.find((g) => g.id === goalId);
+        if (found) {
+          return this.success(found);
+        }
+      }
+
+      return this.failure('GOAL_NOT_FOUND', `Goal with ID ${goalId} not found.`);
+    } catch (err: any) {
       return this.failure('GOAL_FETCH_ERROR', 'Failed to retrieve goal by ID', { err });
     }
   }
 
   async createGoal(userIdOrDto: string | CreateGoalDTO, maybeDto?: CreateGoalDTO): Promise<ServiceResult<Goal>> {
     try {
-      const userId = typeof userIdOrDto === 'string' ? await this.resolveUserId(userIdOrDto) : await this.resolveUserId();
-      const dto = (typeof userIdOrDto === 'object' ? userIdOrDto : maybeDto) as CreateGoalDTO;
+      let userId: string;
+      let dto: CreateGoalDTO;
+
+      if (typeof userIdOrDto === 'string') {
+        userId = await this.resolveUserId(userIdOrDto);
+        dto = maybeDto as CreateGoalDTO;
+      } else {
+        userId = await this.resolveUserId();
+        dto = userIdOrDto as CreateGoalDTO;
+      }
 
       if (!dto || !dto.title || dto.title.trim().length === 0) {
         return this.failure('GOAL_VALIDATION_ERROR', 'Goal title is required.');
@@ -194,19 +273,46 @@ export class GoalService extends BaseService implements IGoalService {
         return this.failure('GOAL_VALIDATION_ERROR', 'Goal target date is required.');
       }
 
-      const goals = this.getStoredGoals(userId);
-
-      const milestones: Milestone[] = (dto.milestones || []).map((m, idx) => ({
+      const milestones = (dto.milestones || []).map((m, idx) => ({
         id: generateId('ms'),
         title: m.title.trim(),
         targetDate: m.targetDate,
+        dueDate: m.targetDate,
+        completed: false,
         isCompleted: false,
         weight: m.weight > 0 ? m.weight : Math.round(100 / Math.max(1, dto.milestones?.length || 1)),
+        order: idx + 1,
       }));
 
+      const payload = {
+        title: dto.title.trim(),
+        description: dto.description?.trim() || '',
+        category: dto.category,
+        horizon: dto.timeframe || 'quarterly',
+        timeframe: dto.timeframe || 'quarterly',
+        targetDate: dto.targetDate,
+        status: 'active',
+        progressPercentage: 0,
+        milestones,
+        linkedHabitIds: [],
+        successCriteria: [],
+      };
+
+      const res = await apiClient.post<any>('/api/goals', payload);
+      if (res.success && res.data) {
+        const createdGoal = mapBackendGoalRecordToGoal(res.data, userId);
+        if (userId) {
+          const stored = this.getStoredGoals(userId);
+          stored.unshift(createdGoal);
+          this.saveStoredGoals(userId, stored);
+        }
+        return this.success(createdGoal);
+      }
+
+      // Offline / test fallback
       const newGoal: Goal = {
         id: generateId('gol'),
-        userId,
+        userId: userId || 'usr_anonymous',
         title: dto.title.trim(),
         description: dto.description?.trim() || '',
         category: dto.category,
@@ -214,18 +320,27 @@ export class GoalService extends BaseService implements IGoalService {
         status: 'active',
         targetDate: dto.targetDate,
         progressPercentage: 0,
-        milestones,
+        milestones: milestones.map((m) => ({
+          id: m.id,
+          title: m.title,
+          targetDate: m.targetDate,
+          isCompleted: false,
+          weight: m.weight,
+        })),
         linkedHabitIds: [],
         successCriteria: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
 
-      goals.unshift(newGoal);
-      this.saveStoredGoals(userId, goals);
+      if (userId) {
+        const stored = this.getStoredGoals(userId);
+        stored.unshift(newGoal);
+        this.saveStoredGoals(userId, stored);
+      }
 
       return this.success(newGoal);
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('GOAL_CREATE_ERROR', 'Failed to create goal.', { err });
     }
   }
@@ -250,6 +365,41 @@ export class GoalService extends BaseService implements IGoalService {
         updates = idOrUpdates as Partial<Goal>;
       }
 
+      const payload: any = { ...updates };
+      if (updates.timeframe && !payload.horizon) {
+        payload.horizon = updates.timeframe;
+      }
+      if (Array.isArray(updates.milestones)) {
+        payload.milestones = updates.milestones.map((m, idx) => ({
+          id: m.id || generateId('ms'),
+          title: m.title.trim(),
+          targetDate: m.targetDate,
+          dueDate: m.targetDate,
+          completed: Boolean(m.isCompleted),
+          isCompleted: Boolean(m.isCompleted),
+          completedAt: m.completedAt,
+          weight: typeof m.weight === 'number' ? m.weight : 0,
+          order: idx + 1,
+        }));
+      }
+
+      const res = await apiClient.patch<any>(`/api/goals/${goalId}`, payload);
+      if (res.success && res.data) {
+        const updatedGoal = mapBackendGoalRecordToGoal(res.data, userId);
+        if (userId) {
+          const stored = this.getStoredGoals(userId);
+          const index = stored.findIndex((g) => g.id === goalId);
+          if (index !== -1) {
+            stored[index] = updatedGoal;
+          } else {
+            stored.unshift(updatedGoal);
+          }
+          this.saveStoredGoals(userId, stored);
+        }
+        return this.success(updatedGoal);
+      }
+
+      // Offline / test fallback
       const goals = this.getStoredGoals(userId);
       const index = goals.findIndex((g) => g.id === goalId);
 
@@ -269,7 +419,7 @@ export class GoalService extends BaseService implements IGoalService {
       this.saveStoredGoals(userId, goals);
 
       return this.success(updatedGoal);
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('GOAL_UPDATE_ERROR', 'Failed to update goal.', { err });
     }
   }
@@ -296,7 +446,27 @@ export class GoalService extends BaseService implements IGoalService {
 
       // Strict boundary check: 0 <= progress <= 100
       const clampedProgress = Math.min(100, Math.max(0, Math.round(progress)));
+      const nextStatus = clampedProgress >= 100 ? 'completed' : 'active';
 
+      const res = await apiClient.patch<any>(`/api/goals/${goalId}`, {
+        progressPercentage: clampedProgress,
+        status: nextStatus,
+      });
+
+      if (res.success && res.data) {
+        const updatedGoal = mapBackendGoalRecordToGoal(res.data, userId);
+        if (userId) {
+          const stored = this.getStoredGoals(userId);
+          const index = stored.findIndex((g) => g.id === goalId);
+          if (index !== -1) {
+            stored[index] = updatedGoal;
+          }
+          this.saveStoredGoals(userId, stored);
+        }
+        return this.success(updatedGoal);
+      }
+
+      // Offline / test fallback
       const goals = this.getStoredGoals(userId);
       const index = goals.findIndex((g) => g.id === goalId);
 
@@ -305,12 +475,12 @@ export class GoalService extends BaseService implements IGoalService {
       }
 
       const current = goals[index];
-      const nextStatus = clampedProgress >= 100 ? 'completed' : current.status === 'completed' ? 'active' : current.status;
+      const fallbackStatus = clampedProgress >= 100 ? 'completed' : current.status === 'completed' ? 'active' : current.status;
 
       const updatedGoal: Goal = {
         ...current,
         progressPercentage: clampedProgress,
-        status: nextStatus,
+        status: fallbackStatus,
         updatedAt: new Date().toISOString(),
       };
 
@@ -318,7 +488,7 @@ export class GoalService extends BaseService implements IGoalService {
       this.saveStoredGoals(userId, goals);
 
       return this.success(updatedGoal);
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('GOAL_PROGRESS_ERROR', 'Failed to update goal progress.', { err });
     }
   }
@@ -343,14 +513,12 @@ export class GoalService extends BaseService implements IGoalService {
         milestoneId = goalIdOrMilestoneId;
       }
 
-      const goals = this.getStoredGoals(userId);
-      const goalIndex = goals.findIndex((g) => g.id === goalId);
-
-      if (goalIndex === -1) {
+      const goalRes = await this.getGoalById(userId, goalId);
+      if (!goalRes.success || !goalRes.data) {
         return this.failure('GOAL_NOT_FOUND', `Goal with ID ${goalId} not found.`);
       }
 
-      const goal = goals[goalIndex];
+      const goal = goalRes.data;
       const updatedMilestones = goal.milestones.map((m) => {
         if (m.id === milestoneId) {
           const nextCompleted = !m.isCompleted;
@@ -377,19 +545,12 @@ export class GoalService extends BaseService implements IGoalService {
       const calculatedProgress = totalWeight > 0 ? Math.min(100, Math.round((completedWeight / totalWeight) * 100)) : goal.progressPercentage;
       const nextStatus = calculatedProgress >= 100 ? 'completed' : goal.status === 'completed' ? 'active' : goal.status;
 
-      const updatedGoal: Goal = {
-        ...goal,
+      return await this.updateGoal(userId, goalId, {
         milestones: updatedMilestones,
         progressPercentage: calculatedProgress,
         status: nextStatus,
-        updatedAt: new Date().toISOString(),
-      };
-
-      goals[goalIndex] = updatedGoal;
-      this.saveStoredGoals(userId, goals);
-
-      return this.success(updatedGoal);
-    } catch (err) {
+      });
+    } catch (err: any) {
       return this.failure('MILESTONE_TOGGLE_ERROR', 'Failed to toggle milestone.', { err });
     }
   }
@@ -414,14 +575,12 @@ export class GoalService extends BaseService implements IGoalService {
         milestoneData = goalIdOrMilestone as Omit<Milestone, 'id' | 'isCompleted'>;
       }
 
-      const goals = this.getStoredGoals(userId);
-      const goalIndex = goals.findIndex((g) => g.id === goalId);
-
-      if (goalIndex === -1) {
+      const goalRes = await this.getGoalById(userId, goalId);
+      if (!goalRes.success || !goalRes.data) {
         return this.failure('GOAL_NOT_FOUND', `Goal with ID ${goalId} not found.`);
       }
 
-      const goal = goals[goalIndex];
+      const goal = goalRes.data;
       const newMilestone: Milestone = {
         id: generateId('ms'),
         title: milestoneData.title.trim(),
@@ -432,17 +591,10 @@ export class GoalService extends BaseService implements IGoalService {
 
       const updatedMilestones = [...goal.milestones, newMilestone];
 
-      const updatedGoal: Goal = {
-        ...goal,
+      return await this.updateGoal(userId, goalId, {
         milestones: updatedMilestones,
-        updatedAt: new Date().toISOString(),
-      };
-
-      goals[goalIndex] = updatedGoal;
-      this.saveStoredGoals(userId, goals);
-
-      return this.success(updatedGoal);
-    } catch (err) {
+      });
+    } catch (err: any) {
       return this.failure('MILESTONE_ADD_ERROR', 'Failed to add milestone.', { err });
     }
   }
@@ -452,36 +604,90 @@ export class GoalService extends BaseService implements IGoalService {
       const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const goalId = maybeId || userIdOrId;
 
-      const goals = this.getStoredGoals(userId);
-      const filtered = goals.filter((g) => g.id !== goalId);
-
-      if (filtered.length === goals.length) {
-        return this.failure('GOAL_NOT_FOUND', `Goal with ID ${goalId} not found.`);
+      const res = await apiClient.delete(`/api/goals/${goalId}`);
+      if (!res.success && res.error) {
+        if (
+          res.error.code === 'UNAUTHORIZED' ||
+          res.error.code === 'INVALID_TOKEN' ||
+          res.error.code === 'USER_NOT_FOUND' ||
+          res.error.code === 'TOKEN_EXPIRED'
+        ) {
+          return this.failure(res.error.code, res.error.message || 'Authentication required to delete goal.');
+        }
       }
 
-      this.saveStoredGoals(userId, filtered);
+      if (userId) {
+        const goals = this.getStoredGoals(userId);
+        const filtered = goals.filter((g) => g.id !== goalId);
+        this.saveStoredGoals(userId, filtered);
+      }
+
       return this.success(undefined);
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('GOAL_DELETE_ERROR', 'Failed to delete goal.', { err });
     }
   }
 
   async seedStarterGoals(userId: string): Promise<ServiceResult<Goal[]>> {
     try {
-      const seeded = STARTER_GOALS.map((sg) => ({
+      const uid = await this.resolveUserId(userId);
+      const seededGoals: Goal[] = [];
+
+      for (const sg of STARTER_GOALS) {
+        const createRes = await this.createGoal(uid, {
+          title: sg.title,
+          description: sg.description,
+          category: sg.category,
+          timeframe: sg.timeframe,
+          targetDate: sg.targetDate,
+          milestones: sg.milestones.map((m) => ({
+            title: m.title,
+            targetDate: m.targetDate,
+            weight: m.weight,
+          })),
+        });
+
+        if (createRes.success && createRes.data) {
+          if (sg.progressPercentage > 0 || sg.milestones.some((m) => m.isCompleted)) {
+            const milestoneUpdates = createRes.data.milestones.map((m, idx) => ({
+              ...m,
+              isCompleted: Boolean(sg.milestones[idx]?.isCompleted),
+              completedAt: sg.milestones[idx]?.completedAt,
+            }));
+            const updateRes = await this.updateGoal(uid, createRes.data.id, {
+              milestones: milestoneUpdates,
+              progressPercentage: sg.progressPercentage,
+              status: sg.status,
+            });
+            if (updateRes.success && updateRes.data) {
+              seededGoals.push(updateRes.data);
+              continue;
+            }
+          }
+          seededGoals.push(createRes.data);
+        }
+      }
+
+      if (seededGoals.length > 0) {
+        return this.success(seededGoals);
+      }
+
+      // Offline / test fallback
+      const localSeeded: Goal[] = STARTER_GOALS.map((sg) => ({
         ...sg,
         id: generateId('gol'),
-        userId,
+        userId: uid,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }));
 
-      this.saveStoredGoals(userId, seeded);
-      return this.success(seeded);
-    } catch (err) {
+      this.saveStoredGoals(uid, localSeeded);
+      return this.success(localSeeded);
+    } catch (err: any) {
       return this.failure('GOAL_SEED_ERROR', 'Failed to seed starter goals.', { err });
     }
   }
 }
 
 export const goalService = new GoalService();
+

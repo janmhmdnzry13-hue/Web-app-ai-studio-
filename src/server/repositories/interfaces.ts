@@ -81,6 +81,7 @@ export interface IHabitLogRepository {
   create(log: HabitLogRecord): Promise<HabitLogRecord>;
   update(id: string, userId: string, updates: Partial<HabitLogRecord>): Promise<HabitLogRecord | null>;
   delete(id: string, userId: string): Promise<boolean>;
+  unlogHabit(userId: string, habitId: string, date: string): Promise<boolean>;
 }
 
 export interface IGoalRepository {
@@ -142,11 +143,14 @@ export interface IReflectionRepository {
       energyLevel?: number;
       clarityLevel?: number;
       stressLevel?: number;
+      mood?: number;
       primaryEmotion?: string;
       journalEntry?: string;
+      reflection?: string;
       wins?: string[];
       gratitudes?: string[];
       learnings?: string[];
+      tags?: string[];
     }
   ): Promise<ReflectionRecord>;
   create(reflection: ReflectionRecord): Promise<ReflectionRecord>;

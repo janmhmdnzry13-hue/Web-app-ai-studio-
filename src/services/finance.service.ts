@@ -1,10 +1,9 @@
 /**
  * Finance Service & Safe Minor-Unit Arithmetic Engine
+ * Authoritative persistence layer backed by authenticated backend API endpoints.
  * Manages income, expenses, dynamic category budgets, and cashflow metrics with integer precision.
  */
-import { APP_CONSTANTS } from '../config/constants';
-import { safeStorage } from '../lib/storage';
-import { generateId } from '../lib/utils';
+import { apiClient } from '../lib/api-client';
 import { ServiceResult } from '../types/common.types';
 import {
   Budget,
@@ -24,6 +23,8 @@ import {
 import { authService } from './auth.service';
 import { BaseService } from './base.service';
 import { getCurrentMonthString } from '../lib/dateUtils';
+import { safeStorage } from '../lib/storage';
+import { APP_CONSTANTS } from '../config/constants';
 
 /**
  * Monetary Arithmetic Helper Functions (Integer Minor-Units)
@@ -58,155 +59,73 @@ export interface TransactionFilterParams {
   sortDirection?: 'asc' | 'desc';
 }
 
-const STARTER_TRANSACTIONS: readonly Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>[] = [
-  {
-    type: 'income',
-    amount: 5400,
-    amountMinorUnits: 540000,
-    currency: 'USD',
-    category: 'income_salary',
-    date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Primary Engineering Retainer / Salary',
-    merchantOrSource: 'Principal Tech Corp',
-    isRecurring: true,
-    tags: ['Income', 'DirectDeposit'],
-  },
-  {
-    type: 'income',
-    amount: 750,
-    amountMinorUnits: 75000,
-    currency: 'USD',
-    category: 'freelance_business',
-    date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Systems Architecture Consulting Milestone',
-    merchantOrSource: 'Apex Digital Labs',
-    isRecurring: false,
-    tags: ['Freelance', 'Consulting'],
-  },
-  {
-    type: 'expense',
-    amount: 1650,
-    amountMinorUnits: 165000,
-    currency: 'USD',
-    category: 'housing',
-    date: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Monthly Apartment Lease & Community Dues',
-    merchantOrSource: 'Urban Crest Properties',
-    isRecurring: true,
-    tags: ['Fixed', 'Housing'],
-  },
-  {
-    type: 'expense',
-    amount: 145.8,
-    amountMinorUnits: 14580,
-    currency: 'USD',
-    category: 'food_groceries',
-    date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Organic Groceries & Weekly Meal Prep Supplies',
-    merchantOrSource: 'Whole Foods Market',
-    isRecurring: false,
-    tags: ['Groceries', 'Nutrition'],
-  },
-  {
-    type: 'expense',
-    amount: 68.5,
-    amountMinorUnits: 6850,
-    currency: 'USD',
-    category: 'dining_out',
-    date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Dinner with Systems Design team',
-    merchantOrSource: 'Bistro Lumina',
-    isRecurring: false,
-    tags: ['Social', 'Dining'],
-  },
-  {
-    type: 'expense',
-    amount: 120,
-    amountMinorUnits: 12000,
-    currency: 'USD',
-    category: 'utilities',
-    date: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Gigabit Fiber Internet & Cloud Infrastructure Power',
-    merchantOrSource: 'Metro Utility Services',
-    isRecurring: true,
-    tags: ['Utilities', 'Infrastructure'],
-  },
-  {
-    type: 'expense',
-    amount: 85,
-    amountMinorUnits: 8500,
-    currency: 'USD',
-    category: 'health',
-    date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Athletic Gym Membership & Recovery Sauna',
-    merchantOrSource: 'Equinox Athletic Club',
-    isRecurring: true,
-    tags: ['Health', 'Fitness'],
-  },
-  {
-    type: 'expense',
-    amount: 49.99,
-    amountMinorUnits: 4999,
-    currency: 'USD',
-    category: 'education_learning',
-    date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    description: 'Advanced Distributed Systems Certification Course',
-    merchantOrSource: 'O’Reilly Media',
-    isRecurring: false,
-    tags: ['Learning', 'Engineering'],
-  },
-];
+function normalizeTransaction(record: any): Transaction {
+  const minor =
+    typeof record.amountMinorUnits === 'number'
+      ? record.amountMinorUnits
+      : typeof record.minorUnits === 'number'
+      ? record.minorUnits
+      : typeof record.amountMinor === 'number'
+      ? record.amountMinor
+      : typeof record.amount === 'number'
+      ? Math.round(Math.abs(record.amount) * 100)
+      : 0;
 
-const STARTER_BUDGETS: readonly Omit<Budget, 'id' | 'userId' | 'createdAt' | 'updatedAt'>[] = [
-  {
-    category: 'housing',
-    amount: 1700,
-    amountMinorUnits: 170000,
-    period: 'monthly',
-    monthYear: 'all',
-    alertThresholdPercentage: 90,
-  },
-  {
-    category: 'food_groceries',
-    amount: 600,
-    amountMinorUnits: 60000,
-    period: 'monthly',
-    monthYear: 'all',
-    alertThresholdPercentage: 80,
-  },
-  {
-    category: 'dining_out',
-    amount: 300,
-    amountMinorUnits: 30000,
-    period: 'monthly',
-    monthYear: 'all',
-    alertThresholdPercentage: 75,
-  },
-  {
-    category: 'health',
-    amount: 200,
-    amountMinorUnits: 20000,
-    period: 'monthly',
-    monthYear: 'all',
-    alertThresholdPercentage: 85,
-  },
-  {
-    category: 'education_learning',
-    amount: 250,
-    amountMinorUnits: 25000,
-    period: 'monthly',
-    monthYear: 'all',
-    alertThresholdPercentage: 80,
-  },
-  {
-    category: 'entertainment_leisure',
-    amount: 200,
-    amountMinorUnits: 20000,
-    period: 'monthly',
-    monthYear: 'all',
-    alertThresholdPercentage: 80,
-  },
-];
+  const major = typeof record.amount === 'number' ? record.amount : minor / 100;
+  const desc = (record.description || record.title || 'Transaction').trim();
+
+  return {
+    id: record.id,
+    userId: record.userId,
+    type: record.type || 'expense',
+    amount: major,
+    amountMinorUnits: minor,
+    currency: record.currency || 'USD',
+    category: record.category || 'other',
+    date: record.date || new Date().toISOString().slice(0, 10),
+    description: desc,
+    merchantOrSource: record.merchantOrSource,
+    isRecurring: Boolean(record.isRecurring),
+    tags: Array.isArray(record.tags) ? record.tags : [],
+    createdAt: record.createdAt || new Date().toISOString(),
+    updatedAt: record.updatedAt || new Date().toISOString(),
+  };
+}
+
+function normalizeBudget(record: any): Budget {
+  const minor =
+    typeof record.amountMinorUnits === 'number'
+      ? record.amountMinorUnits
+      : typeof record.limitMinorUnits === 'number'
+      ? record.limitMinorUnits
+      : typeof record.amountMinor === 'number'
+      ? record.amountMinor
+      : typeof record.limitAmount === 'number'
+      ? Math.round(Math.abs(record.limitAmount) * 100)
+      : typeof record.amount === 'number'
+      ? Math.round(Math.abs(record.amount) * 100)
+      : 0;
+
+  const major =
+    typeof record.limitAmount === 'number'
+      ? record.limitAmount
+      : typeof record.amount === 'number'
+      ? record.amount
+      : minor / 100;
+
+  return {
+    id: record.id,
+    userId: record.userId,
+    category: record.category,
+    amount: major,
+    amountMinorUnits: minor,
+    period: record.period || 'monthly',
+    monthYear: record.monthYear || 'all',
+    alertThresholdPercentage: record.alertThresholdPercentage != null ? Number(record.alertThresholdPercentage) : 80,
+    createdAt: record.createdAt || new Date().toISOString(),
+    updatedAt: record.updatedAt || new Date().toISOString(),
+  };
+}
 
 export class FinanceService extends BaseService {
   private async resolveUserId(providedUserId?: string): Promise<string> {
@@ -220,90 +139,70 @@ export class FinanceService extends BaseService {
     return '';
   }
 
-  private getTransactionStorageKey(userId: string): string {
-    return `${APP_CONSTANTS.STORAGE_KEYS.TRANSACTIONS_PREFIX}${userId}`;
-  }
-
-  private getBudgetStorageKey(userId: string): string {
-    return `${APP_CONSTANTS.STORAGE_KEYS.BUDGETS_PREFIX}${userId}`;
-  }
-
-  private getStoredTransactions(userId: string): Transaction[] {
-    if (!userId) return [];
-    return safeStorage.get<Transaction[]>(this.getTransactionStorageKey(userId), []);
-  }
-
-  private saveStoredTransactions(userId: string, txs: Transaction[]): void {
-    if (!userId) return;
-    safeStorage.set(this.getTransactionStorageKey(userId), txs);
-  }
-
-  private getStoredBudgets(userId: string): Budget[] {
-    if (!userId) return [];
-    return safeStorage.get<Budget[]>(this.getBudgetStorageKey(userId), []);
-  }
-
-  private saveStoredBudgets(userId: string, budgets: Budget[]): void {
-    if (!userId) return;
-    safeStorage.set(this.getBudgetStorageKey(userId), budgets);
-  }
-
-  // --- Transactions API ---
+  // --- Transactions API (Backend Authoritative) ---
 
   async getTransactions(
     userIdOrParams?: string | TransactionFilterParams,
     maybeParams?: TransactionFilterParams
   ): Promise<ServiceResult<readonly Transaction[]>> {
     try {
-      let userId: string;
       let params: TransactionFilterParams = {};
-
       if (typeof userIdOrParams === 'string') {
-        userId = await this.resolveUserId(userIdOrParams);
         params = maybeParams || {};
       } else {
-        userId = await this.resolveUserId();
         params = userIdOrParams || {};
       }
 
-      if (!userId) {
-        return this.success([]);
+      const query = new URLSearchParams();
+      if (params.monthYear) query.set('month', params.monthYear);
+      if (params.type && params.type !== 'all') query.set('type', params.type);
+      if (params.category && params.category !== 'all') query.set('category', params.category);
+      if (params.startDate) query.set('startDate', params.startDate);
+      if (params.endDate) query.set('endDate', params.endDate);
+      if (params.search && params.search.trim()) query.set('search', params.search.trim());
+
+      const qs = query.toString();
+      const endpoint = qs ? `/api/finances/transactions?${qs}` : '/api/finances/transactions';
+
+      const res = await apiClient.get<any[]>(endpoint);
+      if (!res.success || !Array.isArray(res.data)) {
+        const userId = typeof userIdOrParams === 'string' ? userIdOrParams : await this.resolveUserId();
+        if (userId) {
+          const stored = safeStorage.get<Transaction[]>(`${APP_CONSTANTS.STORAGE_KEYS.TRANSACTIONS_PREFIX}${userId}`, []);
+          return this.success(stored);
+        }
+        return this.failure(
+          res.error?.code || 'FINANCE_FETCH_ERROR',
+          res.error?.message || 'Failed to fetch transaction records.'
+        );
       }
 
-      let txs = this.getStoredTransactions(userId);
+      let txs = res.data.map(normalizeTransaction);
 
-      // Filter by Type
-      if (params.type && params.type !== 'all') {
-        txs = txs.filter((t) => t.type === params.type);
-      }
-
-      // Filter by Category
-      if (params.category && params.category !== 'all') {
-        txs = txs.filter((t) => t.category === params.category);
-      }
-
-      // Filter by MonthYear (e.g. "2026-08")
+      // Client-side filtering as safety fallback
       if (params.monthYear) {
         txs = txs.filter((t) => t.date.startsWith(params.monthYear!));
       }
-
-      // Filter by Date range
+      if (params.type && params.type !== 'all') {
+        txs = txs.filter((t) => t.type === params.type);
+      }
+      if (params.category && params.category !== 'all') {
+        txs = txs.filter((t) => t.category === params.category);
+      }
       if (params.startDate) {
         txs = txs.filter((t) => t.date >= params.startDate!);
       }
       if (params.endDate) {
         txs = txs.filter((t) => t.date <= params.endDate!);
       }
-
-      // Filter by Search Query
       if (params.search && params.search.trim()) {
-        const query = params.search.toLowerCase().trim();
+        const q = params.search.toLowerCase().trim();
         txs = txs.filter(
           (t) =>
-            t.description.toLowerCase().includes(query) ||
-            t.merchantOrSource?.toLowerCase().includes(query) ||
-            t.category.toLowerCase().includes(query) ||
-            (t.tags && t.tags.some((tag) => tag.toLowerCase().includes(query)))
+            t.description.toLowerCase().includes(q) ||
+            t.merchantOrSource?.toLowerCase().includes(q) ||
+            t.category.toLowerCase().includes(q) ||
+            (t.tags && t.tags.some((tag) => tag.toLowerCase().includes(q)))
         );
       }
 
@@ -325,25 +224,28 @@ export class FinanceService extends BaseService {
       });
 
       return this.success(txs);
-    } catch (err) {
+    } catch (err: any) {
+      const userId = typeof userIdOrParams === 'string' ? userIdOrParams : await this.resolveUserId();
+      if (userId) {
+        const stored = safeStorage.get<Transaction[]>(`${APP_CONSTANTS.STORAGE_KEYS.TRANSACTIONS_PREFIX}${userId}`, []);
+        return this.success(stored);
+      }
       return this.failure('FINANCE_FETCH_ERROR', 'Failed to fetch transaction records.', { err });
     }
   }
 
   async getTransactionById(userIdOrId: string, maybeId?: string): Promise<ServiceResult<Transaction>> {
     try {
-      const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const txId = maybeId || userIdOrId;
-
-      const txs = this.getStoredTransactions(userId);
-      const found = txs.find((t) => t.id === txId);
-
-      if (!found) {
-        return this.failure('TRANSACTION_NOT_FOUND', `Transaction with ID ${txId} not found.`);
+      const res = await apiClient.get<any>(`/api/finances/transactions/${encodeURIComponent(txId)}`);
+      if (!res.success || !res.data) {
+        return this.failure(
+          res.error?.code || 'TRANSACTION_NOT_FOUND',
+          res.error?.message || `Transaction with ID ${txId} not found.`
+        );
       }
-
-      return this.success(found);
-    } catch (err) {
+      return this.success(normalizeTransaction(res.data));
+    } catch (err: any) {
       return this.failure('TRANSACTION_FETCH_ERROR', 'Error fetching transaction by ID', { err });
     }
   }
@@ -353,14 +255,11 @@ export class FinanceService extends BaseService {
     maybeDto?: CreateTransactionDTO | any
   ): Promise<ServiceResult<Transaction>> {
     try {
-      const userId = typeof userIdOrDto === 'string' ? await this.resolveUserId(userIdOrDto) : await this.resolveUserId();
       const dto = (typeof userIdOrDto === 'object' ? userIdOrDto : maybeDto) as any;
-
       if (!dto) {
         return this.failure('VALIDATION_ERROR', 'Transaction payload is required.');
       }
 
-      // Calculate minor units and major units safely from either amount or amountMinor/amountMinorUnits
       let minorUnits: number;
       let majorUnits: number;
 
@@ -378,31 +277,36 @@ export class FinanceService extends BaseService {
         return this.failure('VALIDATION_ERROR', 'Amount must be greater than 0.');
       }
 
-      const txs = this.getStoredTransactions(userId);
-      const description = (dto.description?.trim()) || `${dto.category || 'General'} transaction`;
+      const description = (dto.description?.trim()) || (dto.title?.trim()) || `${dto.category || 'General'} transaction`;
 
-      const newTx: Transaction = {
-        id: generateId('tx'),
-        userId,
-        type: dto.type || 'expense',
+      const payload = {
+        title: description,
+        description,
         amount: majorUnits,
+        amountMinor: minorUnits,
         amountMinorUnits: minorUnits,
-        currency: dto.currency || 'USD',
+        minorUnits,
+        type: dto.type || 'expense',
         category: dto.category || 'other',
         date: dto.date || new Date().toISOString().split('T')[0],
-        description,
+        currency: dto.currency || 'USD',
+        paymentMethod: dto.paymentMethod,
+        isRecurring: Boolean(dto.isRecurring),
         merchantOrSource: dto.merchantOrSource?.trim(),
-        isRecurring: dto.isRecurring ?? false,
-        tags: dto.tags || [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        tags: Array.isArray(dto.tags) ? dto.tags : [],
+        notes: dto.notes?.trim(),
       };
 
-      txs.unshift(newTx);
-      this.saveStoredTransactions(userId, txs);
+      const res = await apiClient.post<any>('/api/finances/transactions', payload);
+      if (!res.success || !res.data) {
+        return this.failure(
+          res.error?.code || 'TRANSACTION_CREATE_ERROR',
+          res.error?.message || 'Failed to create transaction.'
+        );
+      }
 
-      return this.success(newTx);
-    } catch (err) {
+      return this.success(normalizeTransaction(res.data));
+    } catch (err: any) {
       return this.failure('TRANSACTION_CREATE_ERROR', 'Failed to create transaction.', { err });
     }
   }
@@ -413,97 +317,132 @@ export class FinanceService extends BaseService {
     maybeDto?: UpdateTransactionDTO | any
   ): Promise<ServiceResult<Transaction>> {
     try {
-      let userId: string;
       let txId: string;
       let dto: any;
 
       if (maybeDto) {
-        userId = await this.resolveUserId(userIdOrId);
         txId = idOrDto as string;
         dto = maybeDto;
       } else {
-        userId = await this.resolveUserId();
         txId = userIdOrId;
         dto = idOrDto;
       }
 
-      const txs = this.getStoredTransactions(userId);
-      const index = txs.findIndex((t) => t.id === txId);
-
-      if (index === -1) {
-        return this.failure('TRANSACTION_NOT_FOUND', `Transaction with ID ${txId} not found.`);
-      }
-
-      const current = txs[index];
-      let minorUnits = current.amountMinorUnits;
-      let majorUnits = current.amount;
-
+      const payload: any = {};
       if (dto.amountMinor !== undefined || dto.amountMinorUnits !== undefined) {
-        minorUnits = Math.round(dto.amountMinor ?? dto.amountMinorUnits);
-        majorUnits = toMajorUnits(minorUnits);
+        const minor = Math.round(dto.amountMinor ?? dto.amountMinorUnits);
+        payload.amountMinor = minor;
+        payload.amountMinorUnits = minor;
+        payload.minorUnits = minor;
+        payload.amount = toMajorUnits(minor);
       } else if (dto.amount !== undefined) {
         if (typeof dto.amount !== 'number' || dto.amount <= 0 || isNaN(dto.amount)) {
           return this.failure('VALIDATION_ERROR', 'A valid positive amount is required.');
         }
-        minorUnits = toMinorUnits(dto.amount);
-        majorUnits = toMajorUnits(minorUnits);
+        const minor = toMinorUnits(dto.amount);
+        payload.amount = toMajorUnits(minor);
+        payload.amountMinorUnits = minor;
+        payload.minorUnits = minor;
+        payload.amountMinor = minor;
       }
 
-      const updated: Transaction = {
-        ...current,
-        ...dto,
-        amount: majorUnits,
-        amountMinorUnits: minorUnits,
-        description: dto.description !== undefined ? dto.description.trim() : current.description,
-        updatedAt: new Date().toISOString(),
-      };
+      if (dto.description !== undefined || dto.title !== undefined) {
+        const desc = (dto.description !== undefined ? dto.description : dto.title)?.trim();
+        payload.title = desc;
+        payload.description = desc;
+      }
+      if (dto.type !== undefined) payload.type = dto.type;
+      if (dto.category !== undefined) payload.category = dto.category;
+      if (dto.date !== undefined) payload.date = dto.date;
+      if (dto.currency !== undefined) payload.currency = dto.currency;
+      if (dto.merchantOrSource !== undefined) payload.merchantOrSource = dto.merchantOrSource;
+      if (dto.isRecurring !== undefined) payload.isRecurring = Boolean(dto.isRecurring);
+      if (dto.tags !== undefined) payload.tags = dto.tags;
+      if (dto.paymentMethod !== undefined) payload.paymentMethod = dto.paymentMethod;
+      if (dto.notes !== undefined) payload.notes = dto.notes;
 
-      txs[index] = updated;
-      this.saveStoredTransactions(userId, txs);
+      const res = await apiClient.put<any>(`/api/finances/transactions/${encodeURIComponent(txId)}`, payload);
+      if (!res.success || !res.data) {
+        return this.failure(
+          res.error?.code || 'TRANSACTION_UPDATE_ERROR',
+          res.error?.message || 'Failed to update transaction.'
+        );
+      }
 
-      return this.success(updated);
-    } catch (err) {
+      return this.success(normalizeTransaction(res.data));
+    } catch (err: any) {
       return this.failure('TRANSACTION_UPDATE_ERROR', 'Failed to update transaction.', { err });
     }
   }
 
   async deleteTransaction(userIdOrId: string, maybeId?: string): Promise<ServiceResult<void>> {
     try {
-      const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const txId = maybeId || userIdOrId;
-
-      const txs = this.getStoredTransactions(userId);
-      const filtered = txs.filter((t) => t.id !== txId);
-
-      if (filtered.length === txs.length) {
-        return this.failure('TRANSACTION_NOT_FOUND', `Transaction with ID ${txId} not found.`);
+      const res = await apiClient.delete(`/api/finances/transactions/${encodeURIComponent(txId)}`);
+      if (!res.success) {
+        return this.failure(
+          res.error?.code || 'TRANSACTION_DELETE_ERROR',
+          res.error?.message || 'Failed to delete transaction.'
+        );
       }
-
-      this.saveStoredTransactions(userId, filtered);
       return this.success(undefined);
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('TRANSACTION_DELETE_ERROR', 'Failed to delete transaction.', { err });
     }
   }
 
-  // --- Budgets API ---
+  // --- Budgets API (Backend Authoritative) ---
 
   async getBudgets(
     userIdOrMonth?: string,
     maybeMonth?: string
   ): Promise<ServiceResult<readonly BudgetProgress[]>> {
     try {
-      const userId = maybeMonth ? await this.resolveUserId(userIdOrMonth) : await this.resolveUserId();
-      if (!userId) return this.success([]);
-
       const targetMonthYear =
         maybeMonth ||
         (typeof userIdOrMonth === 'string' && userIdOrMonth.includes('-')
           ? userIdOrMonth
           : getCurrentMonthString());
 
-      const budgets = this.getStoredBudgets(userId);
-      const txs = this.getStoredTransactions(userId);
+      const [budgetsRes, txsRes] = await Promise.all([
+        apiClient.get<any[]>('/api/finances/budgets'),
+        apiClient.get<any[]>('/api/finances/transactions'),
+      ]);
+
+      if (!budgetsRes.success || !Array.isArray(budgetsRes.data)) {
+        const userId =
+          typeof userIdOrMonth === 'string' && !userIdOrMonth.includes('-')
+            ? userIdOrMonth
+            : await this.resolveUserId();
+        if (userId) {
+          const storedBudgets = safeStorage.get<Budget[]>(
+            `${APP_CONSTANTS.STORAGE_KEYS.BUDGETS_PREFIX}${userId}`,
+            []
+          );
+          const budgetProgressList: BudgetProgress[] = storedBudgets.map((b) => ({
+            ...b,
+            budget: b,
+            actualSpend: 0,
+            actualSpendMinorUnits: 0,
+            spent: 0,
+            spentMinor: 0,
+            spentMinorUnits: 0,
+            remaining: toMajorUnits(b.amountMinorUnits),
+            remainingMinor: b.amountMinorUnits,
+            remainingMinorUnits: b.amountMinorUnits,
+            percentageUsed: 0,
+            isOverBudget: false,
+          }));
+          return this.success(budgetProgressList);
+        }
+        return this.failure(
+          budgetsRes.error?.code || 'BUDGETS_FETCH_ERROR',
+          budgetsRes.error?.message || 'Failed to retrieve budget metrics.'
+        );
+      }
+
+      const budgets = budgetsRes.data.map(normalizeBudget);
+      const txs = Array.isArray(txsRes.data) ? txsRes.data.map(normalizeTransaction) : [];
 
       // Filter expenses for this target month
       const currentMonthExpenses = txs.filter(
@@ -544,7 +483,32 @@ export class FinanceService extends BaseService {
       });
 
       return this.success(budgetProgressList);
-    } catch (err) {
+    } catch (err: any) {
+      const userId =
+        typeof userIdOrMonth === 'string' && !userIdOrMonth.includes('-')
+          ? userIdOrMonth
+          : await this.resolveUserId();
+      if (userId) {
+        const storedBudgets = safeStorage.get<Budget[]>(
+          `${APP_CONSTANTS.STORAGE_KEYS.BUDGETS_PREFIX}${userId}`,
+          []
+        );
+        const budgetProgressList: BudgetProgress[] = storedBudgets.map((b) => ({
+          ...b,
+          budget: b,
+          actualSpend: 0,
+          actualSpendMinorUnits: 0,
+          spent: 0,
+          spentMinor: 0,
+          spentMinorUnits: 0,
+          remaining: toMajorUnits(b.amountMinorUnits),
+          remainingMinor: b.amountMinorUnits,
+          remainingMinorUnits: b.amountMinorUnits,
+          percentageUsed: 0,
+          isOverBudget: false,
+        }));
+        return this.success(budgetProgressList);
+      }
       return this.failure('BUDGETS_FETCH_ERROR', 'Failed to retrieve budget metrics.', { err });
     }
   }
@@ -568,11 +532,12 @@ export class FinanceService extends BaseService {
     return this.success(expenses);
   }
 
-  async createBudget(userIdOrDto: string | CreateBudgetDTO | any, maybeDto?: CreateBudgetDTO | any): Promise<ServiceResult<Budget>> {
+  async createBudget(
+    userIdOrDto: string | CreateBudgetDTO | any,
+    maybeDto?: CreateBudgetDTO | any
+  ): Promise<ServiceResult<Budget>> {
     try {
-      const userId = typeof userIdOrDto === 'string' ? await this.resolveUserId(userIdOrDto) : await this.resolveUserId();
       const dto = (typeof userIdOrDto === 'object' ? userIdOrDto : maybeDto) as any;
-
       if (!dto || !dto.category) {
         return this.failure('VALIDATION_ERROR', 'Budget category is required.');
       }
@@ -594,106 +559,105 @@ export class FinanceService extends BaseService {
         return this.failure('VALIDATION_ERROR', 'Budget cap must be greater than 0.');
       }
 
-      const budgets = this.getStoredBudgets(userId);
-
-      const newBudget: Budget = {
-        id: generateId('bdg'),
-        userId,
-        category: dto.category,
+      const payload = {
+        category: dto.category.trim(),
         amount: majorUnits,
+        limitAmount: majorUnits,
         amountMinorUnits: minorUnits,
+        limitMinorUnits: minorUnits,
+        amountMinor: minorUnits,
         period: dto.period || 'monthly',
         monthYear: dto.monthYear || dto.month || 'all',
-        alertThresholdPercentage: dto.alertThresholdPercentage || 80,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        alertThresholdPercentage: dto.alertThresholdPercentage != null ? Number(dto.alertThresholdPercentage) : 80,
       };
 
-      budgets.push(newBudget);
-      this.saveStoredBudgets(userId, budgets);
+      const res = await apiClient.post<any>('/api/finances/budgets', payload);
+      if (!res.success || !res.data) {
+        return this.failure(
+          res.error?.code || 'BUDGET_CREATE_ERROR',
+          res.error?.message || 'Failed to create budget.'
+        );
+      }
 
-      return this.success(newBudget);
-    } catch (err) {
+      return this.success(normalizeBudget(res.data));
+    } catch (err: any) {
       return this.failure('BUDGET_CREATE_ERROR', 'Failed to create budget.', { err });
     }
   }
 
   async updateBudget(
     userIdOrId: string,
-    idOrDto: string | UpdateBudgetDTO,
-    maybeDto?: UpdateBudgetDTO
+    idOrDto: string | UpdateBudgetDTO | any,
+    maybeDto?: UpdateBudgetDTO | any
   ): Promise<ServiceResult<Budget>> {
     try {
-      let userId: string;
       let budgetId: string;
-      let dto: UpdateBudgetDTO;
+      let dto: any;
 
       if (maybeDto) {
-        userId = await this.resolveUserId(userIdOrId);
         budgetId = idOrDto as string;
         dto = maybeDto;
       } else {
-        userId = await this.resolveUserId();
         budgetId = userIdOrId;
-        dto = idOrDto as UpdateBudgetDTO;
+        dto = idOrDto;
       }
 
-      const budgets = this.getStoredBudgets(userId);
-      const index = budgets.findIndex((b) => b.id === budgetId);
-
-      if (index === -1) {
-        return this.failure('BUDGET_NOT_FOUND', `Budget with ID ${budgetId} not found.`);
-      }
-
-      const current = budgets[index];
-      let minorUnits = current.amountMinorUnits;
-      let majorUnits = current.amount;
-
-      if (dto.amount !== undefined) {
+      const payload: any = {};
+      if (dto.category !== undefined) payload.category = dto.category.trim();
+      if (dto.amountMinor !== undefined || dto.amountMinorUnits !== undefined) {
+        const minor = Math.round(dto.amountMinor ?? dto.amountMinorUnits);
+        payload.amountMinor = minor;
+        payload.amountMinorUnits = minor;
+        payload.limitMinorUnits = minor;
+        payload.amount = toMajorUnits(minor);
+        payload.limitAmount = toMajorUnits(minor);
+      } else if (dto.amount !== undefined) {
         if (typeof dto.amount !== 'number' || dto.amount <= 0 || isNaN(dto.amount)) {
           return this.failure('VALIDATION_ERROR', 'A valid positive budget cap is required.');
         }
-        minorUnits = toMinorUnits(dto.amount);
-        majorUnits = toMajorUnits(minorUnits);
+        const minor = toMinorUnits(dto.amount);
+        payload.amount = toMajorUnits(minor);
+        payload.limitAmount = toMajorUnits(minor);
+        payload.amountMinorUnits = minor;
+        payload.limitMinorUnits = minor;
+        payload.amountMinor = minor;
       }
 
-      const updated: Budget = {
-        ...current,
-        ...dto,
-        amount: majorUnits,
-        amountMinorUnits: minorUnits,
-        updatedAt: new Date().toISOString(),
-      };
+      if (dto.period !== undefined) payload.period = dto.period;
+      if (dto.monthYear !== undefined || dto.month !== undefined) payload.monthYear = dto.monthYear || dto.month;
+      if (dto.alertThresholdPercentage !== undefined) payload.alertThresholdPercentage = Number(dto.alertThresholdPercentage);
 
-      budgets[index] = updated;
-      this.saveStoredBudgets(userId, budgets);
+      const res = await apiClient.put<any>(`/api/finances/budgets/${encodeURIComponent(budgetId)}`, payload);
+      if (!res.success || !res.data) {
+        return this.failure(
+          res.error?.code || 'BUDGET_UPDATE_ERROR',
+          res.error?.message || 'Failed to update budget.'
+        );
+      }
 
-      return this.success(updated);
-    } catch (err) {
+      return this.success(normalizeBudget(res.data));
+    } catch (err: any) {
       return this.failure('BUDGET_UPDATE_ERROR', 'Failed to update budget.', { err });
     }
   }
 
   async deleteBudget(userIdOrId: string, maybeId?: string): Promise<ServiceResult<void>> {
     try {
-      const userId = maybeId ? await this.resolveUserId(userIdOrId) : await this.resolveUserId();
       const budgetId = maybeId || userIdOrId;
-
-      const budgets = this.getStoredBudgets(userId);
-      const filtered = budgets.filter((b) => b.id !== budgetId);
-
-      if (filtered.length === budgets.length) {
-        return this.failure('BUDGET_NOT_FOUND', `Budget with ID ${budgetId} not found.`);
+      const res = await apiClient.delete(`/api/finances/budgets/${encodeURIComponent(budgetId)}`);
+      if (!res.success) {
+        return this.failure(
+          res.error?.code || 'BUDGET_DELETE_ERROR',
+          res.error?.message || 'Failed to delete budget.'
+        );
       }
-
-      this.saveStoredBudgets(userId, filtered);
       return this.success(undefined);
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('BUDGET_DELETE_ERROR', 'Failed to delete budget.', { err });
     }
   }
 
-  // --- Financial Analytics & Reports ---
+  // --- Financial Analytics & Reports (Derived from Backend API) ---
 
   async getMonthlyOverview(
     userIdOrMonthYear?: string,
@@ -725,35 +689,26 @@ export class FinanceService extends BaseService {
     });
   }
 
-  async getFinancialSummary(userIdOrMonthYear?: string, maybeMonthYear?: string): Promise<ServiceResult<FinancialSummary>> {
+  async getFinancialSummary(
+    userIdOrMonthYear?: string,
+    maybeMonthYear?: string
+  ): Promise<ServiceResult<FinancialSummary>> {
     try {
-      const userId = maybeMonthYear ? await this.resolveUserId(userIdOrMonthYear) : await this.resolveUserId();
       const targetMonthYear =
         maybeMonthYear ||
         (typeof userIdOrMonthYear === 'string' && userIdOrMonthYear.includes('-')
           ? userIdOrMonthYear
           : getCurrentMonthString());
 
-      if (!userId) {
-        return this.success({
-          monthYear: targetMonthYear,
-          periodMonthYear: targetMonthYear,
-          currency: 'USD',
-          totalIncome: 0,
-          totalIncomeMinorUnits: 0,
-          totalExpense: 0,
-          totalExpenseMinorUnits: 0,
-          netBalance: 0,
-          netBalanceMinorUnits: 0,
-          savingsRate: 0,
-          savingsRatePercentage: 0,
-          transactionCount: 0,
-          categoryBreakdown: { income: {}, expense: {} },
-          topExpenses: [],
-        });
+      const txRes = await apiClient.get<any[]>('/api/finances/transactions');
+      if (!txRes.success || !Array.isArray(txRes.data)) {
+        return this.failure(
+          txRes.error?.code || 'SUMMARY_ERROR',
+          txRes.error?.message || 'Failed to calculate financial summary.'
+        );
       }
 
-      const txs = this.getStoredTransactions(userId);
+      const txs = txRes.data.map(normalizeTransaction);
       const scopedTxs = txs.filter((t) => t.date.startsWith(targetMonthYear));
 
       let totalIncomeMinor = 0;
@@ -829,7 +784,7 @@ export class FinanceService extends BaseService {
         categoryBreakdown,
         topExpenses,
       });
-    } catch (err) {
+    } catch (err: any) {
       return this.failure('SUMMARY_ERROR', 'Failed to calculate financial summary.', { err });
     }
   }

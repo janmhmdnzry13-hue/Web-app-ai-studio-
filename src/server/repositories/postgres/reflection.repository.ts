@@ -36,7 +36,8 @@ export class PostgresReflectionRepository implements IReflectionRepository {
   }
 
   async findById(id: string, userId?: string): Promise<ReflectionRecord | null> {
-    let sql = 'SELECT * FROM reflections WHERE id = $1';
+    const isDate = /^\d{4}-\d{2}-\d{2}$/.test(id);
+    let sql = isDate ? 'SELECT * FROM reflections WHERE (id = $1 OR date = $1)' : 'SELECT * FROM reflections WHERE id = $1';
     const params: any[] = [id];
 
     if (userId) {
@@ -62,11 +63,14 @@ export class PostgresReflectionRepository implements IReflectionRepository {
       energyLevel?: number;
       clarityLevel?: number;
       stressLevel?: number;
+      mood?: number;
       primaryEmotion?: string;
       journalEntry?: string;
+      reflection?: string;
       wins?: string[];
       gratitudes?: string[];
       learnings?: string[];
+      tags?: string[];
     }
   ): Promise<ReflectionRecord> {
     const existing = await this.findByDate(userId, date);
@@ -74,11 +78,14 @@ export class PostgresReflectionRepository implements IReflectionRepository {
     const energyLevel = data.energyLevel !== undefined ? data.energyLevel : (existing?.energyLevel ?? 5);
     const clarityLevel = data.clarityLevel !== undefined ? data.clarityLevel : (existing?.clarityLevel ?? 5);
     const stressLevel = data.stressLevel !== undefined ? data.stressLevel : (existing?.stressLevel ?? 5);
+    const mood = data.mood !== undefined ? data.mood : (existing?.mood ?? null);
     const primaryEmotion = data.primaryEmotion !== undefined ? data.primaryEmotion : (existing?.primaryEmotion ?? 'neutral');
     const journalEntry = data.journalEntry !== undefined ? data.journalEntry : (existing?.journalEntry ?? '');
+    const reflection = data.reflection !== undefined ? data.reflection : (existing?.reflection ?? '');
     const wins = data.wins !== undefined ? data.wins : (existing?.wins ?? []);
     const gratitudes = data.gratitudes !== undefined ? data.gratitudes : (existing?.gratitudes ?? []);
     const learnings = data.learnings !== undefined ? data.learnings : (existing?.learnings ?? []);
+    const tags = data.tags !== undefined ? data.tags : (existing?.tags ?? []);
 
     const encryptedJournal = journalEntry ? db.encrypt(journalEntry) : '';
     const newId = existing?.id || generateCryptoToken('ref');
@@ -86,22 +93,25 @@ export class PostgresReflectionRepository implements IReflectionRepository {
     const sql = `
       INSERT INTO reflections (
         id, user_id, date, energy_level, clarity_level, stress_level,
-        primary_emotion, journal_entry, wins, gratitudes, learnings,
+        mood, primary_emotion, journal_entry, reflection, wins, gratitudes, learnings, tags,
         is_encrypted, created_at, updated_at
       ) VALUES (
         $1, $2, $3, $4, $5, $6,
-        $7, $8, $9, $10, $11,
-        $12, $13, $14
+        $7, $8, $9, $10, $11, $12, $13, $14,
+        $15, $16, $17
       )
       ON CONFLICT (user_id, date) DO UPDATE SET
         energy_level = EXCLUDED.energy_level,
         clarity_level = EXCLUDED.clarity_level,
         stress_level = EXCLUDED.stress_level,
+        mood = EXCLUDED.mood,
         primary_emotion = EXCLUDED.primary_emotion,
         journal_entry = EXCLUDED.journal_entry,
+        reflection = EXCLUDED.reflection,
         wins = EXCLUDED.wins,
         gratitudes = EXCLUDED.gratitudes,
         learnings = EXCLUDED.learnings,
+        tags = EXCLUDED.tags,
         is_encrypted = EXCLUDED.is_encrypted,
         updated_at = EXCLUDED.updated_at
       RETURNING *
@@ -114,11 +124,14 @@ export class PostgresReflectionRepository implements IReflectionRepository {
       energyLevel,
       clarityLevel,
       stressLevel,
+      mood,
       primaryEmotion,
       encryptedJournal,
+      reflection,
       wins,
       gratitudes,
       learnings,
+      tags,
       true,
       existing?.createdAt ? new Date(existing.createdAt) : new Date(),
       new Date(),
@@ -135,22 +148,25 @@ export class PostgresReflectionRepository implements IReflectionRepository {
     const sql = `
       INSERT INTO reflections (
         id, user_id, date, energy_level, clarity_level, stress_level,
-        primary_emotion, journal_entry, wins, gratitudes, learnings,
+        mood, primary_emotion, journal_entry, reflection, wins, gratitudes, learnings, tags,
         is_encrypted, created_at, updated_at
       ) VALUES (
         $1, $2, $3, $4, $5, $6,
-        $7, $8, $9, $10, $11,
-        $12, $13, $14
+        $7, $8, $9, $10, $11, $12, $13, $14,
+        $15, $16, $17
       )
       ON CONFLICT (user_id, date) DO UPDATE SET
         energy_level = EXCLUDED.energy_level,
         clarity_level = EXCLUDED.clarity_level,
         stress_level = EXCLUDED.stress_level,
+        mood = EXCLUDED.mood,
         primary_emotion = EXCLUDED.primary_emotion,
         journal_entry = EXCLUDED.journal_entry,
+        reflection = EXCLUDED.reflection,
         wins = EXCLUDED.wins,
         gratitudes = EXCLUDED.gratitudes,
         learnings = EXCLUDED.learnings,
+        tags = EXCLUDED.tags,
         is_encrypted = EXCLUDED.is_encrypted,
         updated_at = EXCLUDED.updated_at
       RETURNING *
@@ -163,11 +179,14 @@ export class PostgresReflectionRepository implements IReflectionRepository {
       reflection.energyLevel != null ? reflection.energyLevel : 5,
       reflection.clarityLevel != null ? reflection.clarityLevel : 5,
       reflection.stressLevel != null ? reflection.stressLevel : 5,
+      reflection.mood != null ? reflection.mood : null,
       reflection.primaryEmotion || 'neutral',
       encryptedJournal,
+      reflection.reflection || '',
       Array.isArray(reflection.wins) ? reflection.wins : [],
       Array.isArray(reflection.gratitudes) ? reflection.gratitudes : [],
       Array.isArray(reflection.learnings) ? reflection.learnings : [],
+      Array.isArray(reflection.tags) ? reflection.tags : [],
       Boolean(reflection.isEncrypted),
       reflection.createdAt ? new Date(reflection.createdAt) : new Date(),
       reflection.updatedAt ? new Date(reflection.updatedAt) : new Date(),
@@ -198,29 +217,35 @@ export class PostgresReflectionRepository implements IReflectionRepository {
         energy_level = $4,
         clarity_level = $5,
         stress_level = $6,
-        primary_emotion = $7,
-        journal_entry = $8,
-        wins = $9,
-        gratitudes = $10,
-        learnings = $11,
-        is_encrypted = $12,
-        updated_at = $13
+        mood = $7,
+        primary_emotion = $8,
+        journal_entry = $9,
+        reflection = $10,
+        wins = $11,
+        gratitudes = $12,
+        learnings = $13,
+        tags = $14,
+        is_encrypted = $15,
+        updated_at = $16
       WHERE id = $1 AND user_id = $2
       RETURNING *
     `;
 
     const values = [
-      id,
+      existing.id,
       userId,
       merged.date,
       merged.energyLevel,
       merged.clarityLevel,
       merged.stressLevel,
+      merged.mood != null ? merged.mood : null,
       merged.primaryEmotion,
       encryptedJournal,
+      merged.reflection || '',
       Array.isArray(merged.wins) ? merged.wins : [],
       Array.isArray(merged.gratitudes) ? merged.gratitudes : [],
       Array.isArray(merged.learnings) ? merged.learnings : [],
+      Array.isArray(merged.tags) ? merged.tags : [],
       Boolean(merged.isEncrypted),
       new Date(),
     ];
@@ -231,7 +256,11 @@ export class PostgresReflectionRepository implements IReflectionRepository {
   }
 
   async delete(id: string, userId: string): Promise<boolean> {
-    const res = await query('DELETE FROM reflections WHERE id = $1 AND user_id = $2', [id, userId]);
+    const isDate = /^\d{4}-\d{2}-\d{2}$/.test(id);
+    const sql = isDate
+      ? 'DELETE FROM reflections WHERE (id = $1 OR date = $1) AND user_id = $2'
+      : 'DELETE FROM reflections WHERE id = $1 AND user_id = $2';
+    const res = await query(sql, [id, userId]);
     return (res.rowCount || 0) > 0;
   }
 }

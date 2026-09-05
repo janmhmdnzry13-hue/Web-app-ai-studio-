@@ -97,15 +97,17 @@ export class PostgresGoalRepository implements IGoalRepository {
         const m = milestones[i];
         await client.query(
           `INSERT INTO goal_milestones (
-            id, goal_id, user_id, title, completed, target_date, order_index, created_at, updated_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            id, goal_id, user_id, title, completed, target_date, completed_at, weight, order_index, created_at, updated_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
           [
             m.id || `mil_${goal.id}_${i + 1}`,
             goal.id,
             goal.userId,
             m.title,
-            Boolean(m.completed),
-            m.dueDate || null,
+            Boolean(m.completed ?? m.isCompleted),
+            m.targetDate || m.dueDate || null,
+            m.completedAt ? new Date(m.completedAt) : (m.completed || m.isCompleted ? new Date() : null),
+            typeof m.weight === 'number' ? m.weight : 0,
             m.order != null ? m.order : i + 1,
             new Date(),
             new Date(),
@@ -167,15 +169,17 @@ export class PostgresGoalRepository implements IGoalRepository {
           const m = milestones[i];
           await client.query(
             `INSERT INTO goal_milestones (
-              id, goal_id, user_id, title, completed, target_date, order_index, created_at, updated_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+              id, goal_id, user_id, title, completed, target_date, completed_at, weight, order_index, created_at, updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
             [
               m.id || `mil_${id}_${i + 1}`,
               id,
               userId,
               m.title,
-              Boolean(m.completed),
-              m.dueDate || null,
+              Boolean(m.completed ?? m.isCompleted),
+              m.targetDate || m.dueDate || null,
+              m.completedAt ? new Date(m.completedAt) : (m.completed || m.isCompleted ? new Date() : null),
+              typeof m.weight === 'number' ? m.weight : 0,
               m.order != null ? m.order : i + 1,
               new Date(),
               new Date(),

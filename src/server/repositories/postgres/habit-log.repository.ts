@@ -199,4 +199,30 @@ export class PostgresHabitLogRepository implements IHabitLogRepository {
     const res = await query('DELETE FROM habit_logs WHERE id = $1 AND user_id = $2', [id, userId]);
     return (res.rowCount || 0) > 0;
   }
+
+  async unlogHabit(userId: string, habitId: string, date: string): Promise<boolean> {
+    return await withTransaction(async (client) => {
+      const res = await client.query(
+        'DELETE FROM habit_logs WHERE user_id = $1 AND habit_id = $2 AND date = $3',
+        [userId, habitId, date]
+      );
+      const deleted = (res.rowCount || 0) > 0;
+      if (deleted) {
+        const countRes = await client.query(
+          'SELECT COUNT(*) as completions FROM habit_logs WHERE user_id = $1 AND habit_id = $2 AND completed = TRUE',
+          [userId, habitId]
+        );
+        const totalCompletions = parseInt(countRes.rows[0]?.completions || '0', 10);
+        await client.query(
+          `UPDATE habits SET
+            total_completions = $3,
+            streak_count = LEAST(streak_count, $3),
+            updated_at = $4
+          WHERE id = $1 AND user_id = $2`,
+          [habitId, userId, totalCompletions, new Date()]
+        );
+      }
+      return deleted;
+    });
+  }
 }

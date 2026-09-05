@@ -5,6 +5,7 @@ import { generateCryptoToken } from '../../auth';
 export class JsonReflectionRepository implements IReflectionRepository {
   async findByUserId(userId: string): Promise<ReflectionRecord[]> {
     const refs = db.schema.reflections.filter((r) => r.userId === userId);
+    refs.sort((a, b) => b.date.localeCompare(a.date));
     return refs.map((r) => ({
       ...r,
       journalEntry: r.isEncrypted ? db.decrypt(r.journalEntry) : r.journalEntry,
@@ -21,7 +22,7 @@ export class JsonReflectionRepository implements IReflectionRepository {
   }
 
   async findById(id: string, userId?: string): Promise<ReflectionRecord | null> {
-    const ref = db.schema.reflections.find((r) => r.id === id && (!userId || r.userId === userId));
+    const ref = db.schema.reflections.find((r) => (r.id === id || r.date === id) && (!userId || r.userId === userId));
     if (!ref) return null;
     return {
       ...ref,
@@ -36,11 +37,14 @@ export class JsonReflectionRepository implements IReflectionRepository {
       energyLevel?: number;
       clarityLevel?: number;
       stressLevel?: number;
+      mood?: number;
       primaryEmotion?: string;
       journalEntry?: string;
+      reflection?: string;
       wins?: string[];
       gratitudes?: string[];
       learnings?: string[];
+      tags?: string[];
     }
   ): Promise<ReflectionRecord> {
     const existing = db.schema.reflections.find((r) => r.userId === userId && r.date === date);
@@ -50,14 +54,17 @@ export class JsonReflectionRepository implements IReflectionRepository {
       if (data.energyLevel !== undefined) existing.energyLevel = data.energyLevel;
       if (data.clarityLevel !== undefined) existing.clarityLevel = data.clarityLevel;
       if (data.stressLevel !== undefined) existing.stressLevel = data.stressLevel;
+      if (data.mood !== undefined) existing.mood = data.mood;
       if (data.primaryEmotion !== undefined) existing.primaryEmotion = data.primaryEmotion;
       if (encryptedJournal !== undefined) {
         existing.journalEntry = encryptedJournal;
         existing.isEncrypted = true;
       }
+      if (data.reflection !== undefined) existing.reflection = data.reflection;
       if (data.wins !== undefined) existing.wins = data.wins;
       if (data.gratitudes !== undefined) existing.gratitudes = data.gratitudes;
       if (data.learnings !== undefined) existing.learnings = data.learnings;
+      if (data.tags !== undefined) existing.tags = data.tags;
       existing.updatedAt = new Date().toISOString();
 
       await db.save();
@@ -74,11 +81,14 @@ export class JsonReflectionRepository implements IReflectionRepository {
       energyLevel: data.energyLevel ?? 7,
       clarityLevel: data.clarityLevel ?? 7,
       stressLevel: data.stressLevel ?? 3,
+      mood: data.mood,
       primaryEmotion: data.primaryEmotion || 'Calm & Grounded',
       journalEntry: encryptedJournal !== undefined ? encryptedJournal : '',
+      reflection: data.reflection || '',
       wins: data.wins || [],
       gratitudes: data.gratitudes || [],
       learnings: data.learnings || [],
+      tags: data.tags || [],
       isEncrypted: true,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -100,22 +110,34 @@ export class JsonReflectionRepository implements IReflectionRepository {
   }
 
   async update(id: string, userId: string, updates: Partial<ReflectionRecord>): Promise<ReflectionRecord | null> {
-    const ref = db.schema.reflections.find((r) => r.id === id && r.userId === userId);
+    const ref = db.schema.reflections.find((r) => (r.id === id || r.date === id) && r.userId === userId);
     if (!ref) return null;
+
+    let encryptedJournal = updates.journalEntry;
+    let isEncrypted = ref.isEncrypted;
+    if (updates.journalEntry !== undefined) {
+      encryptedJournal = updates.journalEntry ? db.encrypt(updates.journalEntry) : '';
+      isEncrypted = true;
+    }
 
     Object.assign(ref, updates, {
       id: ref.id,
       userId,
+      journalEntry: encryptedJournal !== undefined ? encryptedJournal : ref.journalEntry,
+      isEncrypted,
       updatedAt: new Date().toISOString(),
     });
 
     await db.save();
-    return { ...ref };
+    return {
+      ...ref,
+      journalEntry: updates.journalEntry !== undefined ? updates.journalEntry : (ref.isEncrypted ? db.decrypt(ref.journalEntry) : ref.journalEntry),
+    };
   }
 
   async delete(id: string, userId: string): Promise<boolean> {
     const initialLen = db.schema.reflections.length;
-    db.schema.reflections = db.schema.reflections.filter((r) => !(r.id === id && r.userId === userId));
+    db.schema.reflections = db.schema.reflections.filter((r) => !((r.id === id || r.date === id) && r.userId === userId));
 
     if (db.schema.reflections.length !== initialLen) {
       await db.save();

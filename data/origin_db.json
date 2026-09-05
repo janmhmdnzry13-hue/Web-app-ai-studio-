@@ -2,9 +2,9 @@
   "version": 1,
   "users": [
     {
-      "id": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
-      "email": "guest.fb97820b@origin-os.internal",
-      "passwordHash": "$2b$10$SKfgdnrGJde7n891OCCNYOutC2I1mm5aPJ9BoY/Vi0ihCgJnZzP9W",
+      "id": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
+      "email": "guest.e5b3ddfd@origin-os.internal",
+      "passwordHash": "$2b$10$RHx5nlPClq7.2xvOpHYSSe/gSvrAbyIDcqpB.37u0aXfzF52cKG7S",
       "role": "member",
       "emailVerified": true,
       "profile": {
@@ -40,14 +40,14 @@
         "tier": "pro",
         "status": "active"
       },
-      "lastLoginAt": "2026-09-02T12:41:05.579Z",
-      "createdAt": "2026-09-02T12:41:05.579Z",
-      "updatedAt": "2026-09-02T12:41:05.579Z"
+      "lastLoginAt": "2026-09-04T09:58:07.125Z",
+      "createdAt": "2026-09-04T09:58:07.125Z",
+      "updatedAt": "2026-09-04T09:58:07.125Z"
     },
     {
-      "id": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
-      "email": "guest.3e914690@origin-os.internal",
-      "passwordHash": "$2b$10$O3O8EdnY1.IRNzIXV980oed5XfyT5XTKHdf7aG7o4MjCrqYPXB1WC",
+      "id": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
+      "email": "guest.452dc75b@origin-os.internal",
+      "passwordHash": "$2b$10$Je8P93j65ufFNf0HAMzT2.mQie4rwiKq4EDDXHZkbP6xzxVM9O/hO",
       "role": "member",
       "emailVerified": true,
       "profile": {
@@ -83,184 +83,20 @@
         "tier": "pro",
         "status": "active"
       },
-      "lastLoginAt": "2026-09-02T12:41:05.828Z",
-      "createdAt": "2026-09-02T12:41:05.828Z",
-      "updatedAt": "2026-09-02T12:41:05.828Z"
-    },
-    {
-      "id": "usr_0717963e3edc3fb3936fa036ad45c5a004e8e3814001779d",
-      "email": "valid_session_1788352867150@origin-os.internal",
-      "passwordHash": "$2b$10$DgW/h8gTCSSU2OUiZ3VQeOg/sBu7BPhkiYw7JC1jtkWiB4pHczjWa",
-      "role": "member",
-      "emailVerified": true,
-      "verificationToken": "vtok_724b329a63e4c68c9cf8f4b559329aa3458ce9a7b452e170",
-      "profile": {
-        "displayName": "Valid User",
-        "headline": "Member",
-        "bio": "",
-        "primaryLifeFocus": "Deep Work & Daily Focus"
-      },
-      "preferences": {
-        "theme": "system",
-        "timezone": "UTC",
-        "locale": "en-US",
-        "weekStartDay": 1,
-        "reducedMotion": false,
-        "compactDensity": false,
-        "dailyReflectionReminderTime": "21:00",
-        "notificationChannels": {
-          "inApp": true,
-          "email": false,
-          "dailyDigest": true
-        },
-        "unlockedModules": [
-          "tasks",
-          "habits",
-          "finances",
-          "goals"
-        ]
-      },
-      "subscription": {
-        "tier": "free",
-        "status": "active"
-      },
-      "lastLoginAt": "2026-09-02T12:41:07.304Z",
-      "createdAt": "2026-09-02T12:41:07.305Z",
-      "updatedAt": "2026-09-02T12:41:07.305Z"
-    },
-    {
-      "id": "usr_765bbfdac2d12e878c084535f459f98c3c7c6eb243f5a6e8",
-      "email": "logout_test_1788352867531@origin-os.internal",
-      "passwordHash": "$2b$10$8Bzo9m9UEXTVmKqhtPMnj.y22HNwS9qIh63j57iJpzCmO0c.X3Jve",
-      "role": "member",
-      "emailVerified": true,
-      "verificationToken": "vtok_2b7ea5d9452113ad4ca88c1a9be8aba1ba8d9bd33b73e28a",
-      "profile": {
-        "displayName": "Logout User",
-        "headline": "Member",
-        "bio": "",
-        "primaryLifeFocus": "Deep Work & Daily Focus"
-      },
-      "preferences": {
-        "theme": "system",
-        "timezone": "UTC",
-        "locale": "en-US",
-        "weekStartDay": 1,
-        "reducedMotion": false,
-        "compactDensity": false,
-        "dailyReflectionReminderTime": "21:00",
-        "notificationChannels": {
-          "inApp": true,
-          "email": false,
-          "dailyDigest": true
-        },
-        "unlockedModules": [
-          "tasks",
-          "habits",
-          "finances",
-          "goals"
-        ]
-      },
-      "subscription": {
-        "tier": "free",
-        "status": "active"
-      },
-      "lastLoginAt": "2026-09-02T12:41:07.653Z",
-      "createdAt": "2026-09-02T12:41:07.653Z",
-      "updatedAt": "2026-09-02T12:41:07.653Z"
-    },
-    {
-      "id": "usr_75edbe99c068ddf19d3fe08ef2fb7cfba8f8e6fbaff34f69",
-      "email": "alice_1788352867771@origin-os.internal",
-      "passwordHash": "$2b$10$m/szKD2gOj7R9ARL5KlneeiVt30lDNEfnj5oCKRKdLj2GDPpoRqjW",
-      "role": "member",
-      "emailVerified": true,
-      "verificationToken": "vtok_88be18b49515bc3ba72fbe402d59c5ade761cdced83a5546",
-      "profile": {
-        "displayName": "Alice",
-        "headline": "Member",
-        "bio": "",
-        "primaryLifeFocus": "Deep Work & Daily Focus"
-      },
-      "preferences": {
-        "theme": "system",
-        "timezone": "UTC",
-        "locale": "en-US",
-        "weekStartDay": 1,
-        "reducedMotion": false,
-        "compactDensity": false,
-        "dailyReflectionReminderTime": "21:00",
-        "notificationChannels": {
-          "inApp": true,
-          "email": false,
-          "dailyDigest": true
-        },
-        "unlockedModules": [
-          "tasks",
-          "habits",
-          "finances",
-          "goals"
-        ]
-      },
-      "subscription": {
-        "tier": "free",
-        "status": "active"
-      },
-      "lastLoginAt": "2026-09-02T12:41:07.885Z",
-      "createdAt": "2026-09-02T12:41:07.885Z",
-      "updatedAt": "2026-09-02T12:41:07.885Z"
-    },
-    {
-      "id": "usr_ac80bc8b507924ae62e3974b776a2fe71519bd8efe99ee08",
-      "email": "bob_1788352867994@origin-os.internal",
-      "passwordHash": "$2b$10$bJ.eVIE1M5mIZq27XuFcke.q6srzgwEBQlYZgNc62wC3jEpEMRG2e",
-      "role": "member",
-      "emailVerified": true,
-      "verificationToken": "vtok_7435fa18b178c105ca23c5ea456974206cb567c2f919d4af",
-      "profile": {
-        "displayName": "Bob",
-        "headline": "Member",
-        "bio": "",
-        "primaryLifeFocus": "Deep Work & Daily Focus"
-      },
-      "preferences": {
-        "theme": "system",
-        "timezone": "UTC",
-        "locale": "en-US",
-        "weekStartDay": 1,
-        "reducedMotion": false,
-        "compactDensity": false,
-        "dailyReflectionReminderTime": "21:00",
-        "notificationChannels": {
-          "inApp": true,
-          "email": false,
-          "dailyDigest": true
-        },
-        "unlockedModules": [
-          "tasks",
-          "habits",
-          "finances",
-          "goals"
-        ]
-      },
-      "subscription": {
-        "tier": "free",
-        "status": "active"
-      },
-      "lastLoginAt": "2026-09-02T12:41:08.104Z",
-      "createdAt": "2026-09-02T12:41:08.104Z",
-      "updatedAt": "2026-09-02T12:41:08.104Z"
+      "lastLoginAt": "2026-09-04T09:58:07.397Z",
+      "createdAt": "2026-09-04T09:58:07.397Z",
+      "updatedAt": "2026-09-04T09:58:07.397Z"
     }
   ],
   "tasks": [
     {
-      "id": "task_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
-      "title": "Review quarterly architecture roadmap",
+      "id": "task_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
+      "title": "Updated Roadmap by User A",
       "description": "Synthesize engineering priorities and key milestone deliverables.",
       "priority": "high",
       "status": "todo",
-      "dueDate": "2026-09-02",
+      "dueDate": "2026-09-04",
       "estimatedMinutes": 60,
       "actualMinutes": null,
       "tags": [
@@ -269,44 +105,44 @@
       ],
       "subtasks": [
         {
-          "id": "sub_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+          "id": "sub_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
           "title": "Outline core milestones",
           "completed": true
         },
         {
-          "id": "sub_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
+          "id": "sub_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_2",
           "title": "Align resource capacity",
           "completed": false
         }
       ],
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.561Z"
     },
     {
-      "id": "task_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "task_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_2",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "title": "Publish weekly product synthesis",
       "description": "Share cross-domain insights and key progress updates with the team.",
       "priority": "medium",
       "status": "completed",
-      "dueDate": "2026-09-02",
+      "dueDate": "2026-09-04",
       "estimatedMinutes": 45,
       "actualMinutes": 40,
       "tags": [
         "communication"
       ],
       "subtasks": [],
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "task_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "task_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "title": "Review quarterly architecture roadmap",
       "description": "Synthesize engineering priorities and key milestone deliverables.",
       "priority": "high",
       "status": "todo",
-      "dueDate": "2026-09-02",
+      "dueDate": "2026-09-04",
       "estimatedMinutes": 60,
       "actualMinutes": null,
       "tags": [
@@ -315,41 +151,41 @@
       ],
       "subtasks": [
         {
-          "id": "sub_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+          "id": "sub_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
           "title": "Outline core milestones",
           "completed": true
         },
         {
-          "id": "sub_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
+          "id": "sub_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_2",
           "title": "Align resource capacity",
           "completed": false
         }
       ],
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     },
     {
-      "id": "task_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "task_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_2",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "title": "Publish weekly product synthesis",
       "description": "Share cross-domain insights and key progress updates with the team.",
       "priority": "medium",
       "status": "completed",
-      "dueDate": "2026-09-02",
+      "dueDate": "2026-09-04",
       "estimatedMinutes": 45,
       "actualMinutes": 40,
       "tags": [
         "communication"
       ],
       "subtasks": [],
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "habits": [
     {
-      "id": "habit_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "habit_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "name": "Morning Deep Work Block",
       "description": "90 minutes of focused, distraction-free execution.",
       "category": "deep_work",
@@ -359,12 +195,12 @@
       "bestStreak": 14,
       "totalCompletions": 28,
       "archived": false,
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "habit_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "habit_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_2",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "name": "Mindful Movement & Walk",
       "description": "30 minutes outdoors to recharge cognitive energy.",
       "category": "health",
@@ -374,12 +210,12 @@
       "bestStreak": 21,
       "totalCompletions": 42,
       "archived": false,
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "habit_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "habit_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "name": "Morning Deep Work Block",
       "description": "90 minutes of focused, distraction-free execution.",
       "category": "deep_work",
@@ -389,12 +225,12 @@
       "bestStreak": 14,
       "totalCompletions": 28,
       "archived": false,
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     },
     {
-      "id": "habit_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "habit_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_2",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "name": "Mindful Movement & Walk",
       "description": "30 minutes outdoors to recharge cognitive energy.",
       "category": "health",
@@ -404,165 +240,165 @@
       "bestStreak": 21,
       "totalCompletions": 42,
       "archived": false,
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "habitLogs": [],
   "goals": [
     {
-      "id": "goal_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "goal_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "title": "Architect Enterprise Co-Pilot OS",
       "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
       "category": "career",
       "horizon": "quarterly",
-      "targetDate": "2026-11-01",
+      "targetDate": "2026-11-03",
       "progressPercentage": 65,
       "status": "active",
       "milestones": [
         {
-          "id": "mil_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
+          "id": "mil_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
           "title": "Security audit & JWT hardening",
           "completed": true,
           "order": 1
         },
         {
-          "id": "mil_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_2",
+          "id": "mil_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_2",
           "title": "Offline-ready data synchronization",
           "completed": true,
           "order": 2
         },
         {
-          "id": "mil_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_3",
+          "id": "mil_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_3",
           "title": "Enterprise RBAC verification",
           "completed": false,
           "order": 3
         }
       ],
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "goal_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "goal_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "title": "Architect Enterprise Co-Pilot OS",
       "description": "Ship high-fidelity personal operating system architecture with sub-second resilience.",
       "category": "career",
       "horizon": "quarterly",
-      "targetDate": "2026-11-01",
+      "targetDate": "2026-11-03",
       "progressPercentage": 65,
       "status": "active",
       "milestones": [
         {
-          "id": "mil_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
+          "id": "mil_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
           "title": "Security audit & JWT hardening",
           "completed": true,
           "order": 1
         },
         {
-          "id": "mil_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_2",
+          "id": "mil_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_2",
           "title": "Offline-ready data synchronization",
           "completed": true,
           "order": 2
         },
         {
-          "id": "mil_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_3",
+          "id": "mil_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_3",
           "title": "Enterprise RBAC verification",
           "completed": false,
           "order": 3
         }
       ],
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "transactions": [
     {
-      "id": "tx_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "tx_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "title": "Cloud Infrastructure & Dedicated Servers",
       "amount": 45,
       "minorUnits": 4500,
       "type": "expense",
       "category": "Software & Tools",
-      "date": "2026-09-02",
+      "date": "2026-09-04",
       "isRecurring": true,
       "notes": "Monthly isolated container hosting",
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "tx_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "tx_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "title": "Cloud Infrastructure & Dedicated Servers",
       "amount": 45,
       "minorUnits": 4500,
       "type": "expense",
       "category": "Software & Tools",
-      "date": "2026-09-02",
+      "date": "2026-09-04",
       "isRecurring": true,
       "notes": "Monthly isolated container hosting",
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "budgets": [
     {
-      "id": "b_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "b_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "category": "Software & Tools",
       "limitAmount": 150,
       "limitMinorUnits": 15000,
       "period": "monthly",
       "alertThresholdPercentage": 80,
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "b_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "b_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "category": "Software & Tools",
       "limitAmount": 150,
       "limitMinorUnits": 15000,
       "period": "monthly",
       "alertThresholdPercentage": 80,
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "reflections": [],
   "relationships": [
     {
-      "id": "rel_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "rel_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "name": "Sarah Chen",
       "relationType": "friend",
       "cadenceDays": 14,
-      "lastInteractionDate": "2026-08-28",
-      "nextDueReminderDate": "2026-09-11",
+      "lastInteractionDate": "2026-08-30",
+      "nextDueReminderDate": "2026-09-13",
       "notes": "Great conversation about deliberate life engineering.",
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "rel_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "rel_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "name": "Sarah Chen",
       "relationType": "friend",
       "cadenceDays": 14,
-      "lastInteractionDate": "2026-08-28",
-      "nextDueReminderDate": "2026-09-11",
+      "lastInteractionDate": "2026-08-30",
+      "nextDueReminderDate": "2026-09-13",
       "notes": "Great conversation about deliberate life engineering.",
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "interactions": [],
   "notes": [
     {
-      "id": "note_usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b_1",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "note_usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd_1",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "title": "Principles for Deliberate Living",
       "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
       "tags": [
@@ -572,12 +408,12 @@
       "isPinned": true,
       "isArchived": false,
       "linkedNoteIds": [],
-      "createdAt": "2026-09-02T12:41:05.630Z",
-      "updatedAt": "2026-09-02T12:41:05.630Z"
+      "createdAt": "2026-09-04T09:58:07.183Z",
+      "updatedAt": "2026-09-04T09:58:07.183Z"
     },
     {
-      "id": "note_usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690_1",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "note_usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b_1",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "title": "Principles for Deliberate Living",
       "content": "1. Focus on inputs over outcomes.\n2. Protect deep work blocks.\n3. Keep your commitments high-signal and low-friction.",
       "tags": [
@@ -587,540 +423,896 @@
       "isPinned": true,
       "isArchived": false,
       "linkedNoteIds": [],
-      "createdAt": "2026-09-02T12:41:05.880Z",
-      "updatedAt": "2026-09-02T12:41:05.880Z"
+      "createdAt": "2026-09-04T09:58:07.453Z",
+      "updatedAt": "2026-09-04T09:58:07.453Z"
     }
   ],
   "aiMemories": [],
   "auditLogs": [
     {
-      "id": "audit_560b56624c5c45200f1a9123df26083ec6a70ba315bc8a74",
-      "userId": "usr_ac80bc8b507924ae62e3974b776a2fe71519bd8efe99ee08",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "bob_1788352867994@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:41:08.156Z"
-    },
-    {
-      "id": "audit_0d321851170614cc0cefc8e580c3fd56fcf8dbe6e8b2561d",
-      "userId": "usr_75edbe99c068ddf19d3fe08ef2fb7cfba8f8e6fbaff34f69",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "alice_1788352867771@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:41:07.940Z"
-    },
-    {
-      "id": "audit_f5ab5d05a991ef5b837f808624f7afcfa074df6f8ed7bf3b",
-      "userId": "usr_765bbfdac2d12e878c084535f459f98c3c7c6eb243f5a6e8",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "logout_test_1788352867531@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:41:07.704Z"
-    },
-    {
-      "id": "audit_fdda0ac1cf55bc84093a3ad316498a48efe6a69c3199e1bc",
-      "userId": "usr_0717963e3edc3fb3936fa036ad45c5a004e8e3814001779d",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "valid_session_1788352867150@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:41:07.358Z"
-    },
-    {
-      "id": "audit_eda2d3f12aa66ef3d3eda1e6fe458f4e144c4a1cefe64767",
-      "userId": "usr_demo_gst_e4be74c35abf341c4ac904f2881563b48d6367d03e914690",
+      "id": "audit_4c7f53283d8d05a58c24256e85df8d638a3e232fcc009493",
+      "userId": "usr_demo_gst_3ce74f53b9692ddac190c1d78e9491be9876c822452dc75b",
       "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "timestamp": "2026-09-02T12:41:05.931Z"
+      "timestamp": "2026-09-04T09:58:07.505Z"
     },
     {
-      "id": "audit_c9ea0b3e5e5bac3d07014ba923dd0a00e80ba5d5eb6e7357",
-      "userId": "usr_demo_gst_cb423d07fb6db4fb11b6532d8719ebfdd4a4175ffb97820b",
+      "id": "audit_c2031398a8784c0bb5f3e6efc45f66692dcafa4d3fa68873",
+      "userId": "usr_demo_gst_2a27d0e8df49a4d92a3a048c8af3d7948f974188e5b3ddfd",
       "action": "DEMO_SESSION_STARTED",
       "resource": "auth",
-      "timestamp": "2026-09-02T12:41:05.682Z"
+      "timestamp": "2026-09-04T09:58:07.235Z"
     },
     {
-      "id": "audit_981ce3dd30881dcd69899e6ad1f26d1dc66cf457448b4fa1",
-      "userId": "usr_dc741f82a925419e763408497dd11d2dc87ed31a6cb1a5cb",
+      "id": "audit_e099fb394709209735281abf0c0cf3d5ccf1c201f04443b4",
+      "userId": "usr_demo_gst_239e50fb5e0cea59cbd72cc5a6003be832f024625d0d5ea4",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:06.887Z"
+    },
+    {
+      "id": "audit_6173ea77e5abad763b492a3268e848c34cc95635cf307d75",
+      "userId": "usr_demo_gst_99ad801f995a3576213f1d7034790cdc2ea286cd54834c86",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:06.598Z"
+    },
+    {
+      "id": "audit_6e7e6630e6f25bef558c03dd9d1f9ff42f44695ad62a5d49",
+      "userId": "usr_demo_gst_edbf9fee15404c78af9425dbb50a4226cece270e20a5000a",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:06.334Z"
+    },
+    {
+      "id": "audit_4770800d97c68e225f8e530e7c0e5e21640782331c3b5c5c",
+      "userId": "usr_demo_gst_1ef54d730d2382c5e059e63cf660ab31c45382678b9ac269",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:05.994Z"
+    },
+    {
+      "id": "audit_ff10c4cd953c16dd933e946081c5161d5d7ba4be19d5beaa",
+      "userId": "usr_demo_gst_3e4eadec244d4e15cfa32bc7bd70464292f3d05f384745e6",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:05.706Z"
+    },
+    {
+      "id": "audit_65f27c2d8bd2538c5f1980f85680f17f1b3ccb51a630a859",
+      "userId": "usr_demo_gst_f1647eb79db3da4ec6a8ecbe7813f3c41bd3688669f4c164",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:05.335Z"
+    },
+    {
+      "id": "audit_86364e2b0fecfb3885afafa9cb64f020c234bd990ce51ac2",
+      "userId": "usr_demo_gst_7dd5ab8d9dd36a4922303b4e6ca08fc316473088eebde715",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:05.042Z"
+    },
+    {
+      "id": "audit_a74245acb5ec196fe82f3c97b40957193851da9db18f239f",
+      "userId": "usr_demo_gst_eea6b03780ed291e453c71c30b130dee628e22caa89e830e",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:04.754Z"
+    },
+    {
+      "id": "audit_23c69e0dc8e7aa1f0cfdb290ef1a4a685c1572831ed3c8f9",
+      "userId": "usr_demo_gst_12f74f6a0891f94d309dbd9f336f1bba396ac27342d066c4",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:58:04.495Z"
+    },
+    {
+      "id": "audit_609222b67c08d7bb1e956cc7811c8d408c462d5e53cc6157",
+      "userId": "usr_9411075a9dd0b9998d44e45e1a9a195bf915e3d72d2dd458",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "realuser_1788352865226@origin-test.com"
+        "email": "auth_test_1788515883150@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:41:05.387Z"
+      "timestamp": "2026-09-04T09:58:03.297Z"
     },
     {
-      "id": "audit_a3f95e1fefc7b660275c44b7060dceec105bc0e29e258719",
-      "userId": "usr_demo_gst_14991458efddad270f4d29db210079cd0849a4ada357a7aa",
-      "action": "DEMO_SESSION_STARTED",
+      "id": "audit_66b7493ef6038bd1177f590647168c25f98e139d3c4d6572",
+      "userId": "usr_33c6b3c181de6d0b519f337f5dbe2835568ec718c1e56a5b",
+      "action": "USER_SIGNUP",
       "resource": "auth",
-      "timestamp": "2026-09-02T12:41:05.112Z"
+      "metadata": {
+        "email": "ip_b_user_1_1788515882923@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:03.095Z"
     },
     {
-      "id": "audit_e7c9c7115ede1051e3df4333d6fb5626cddd44a2006aeee4",
-      "userId": "usr_leak_test_aef05ac9193ba3fafd2ce9c9fead30833e0359e2db1a5908",
-      "action": "PASSWORD_RESET_COMPLETED",
+      "id": "audit_fbdf6703e66f1f44ba2ba52595be3c1764a94b8d64ae9b20",
+      "userId": "usr_04c8895087ec5f8d36c1aa79a4975fd18a4398a7cad21bff",
+      "action": "USER_SIGNUP",
       "resource": "auth",
-      "timestamp": "2026-09-02T12:40:56.078Z"
+      "metadata": {
+        "email": "ip_a_user_10_1788515882697@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:02.863Z"
     },
     {
-      "id": "audit_6c2a07f9b4368ce7193af152542934f527d2e2b786362e89",
-      "userId": "usr_leak_test_aef05ac9193ba3fafd2ce9c9fead30833e0359e2db1a5908",
+      "id": "audit_db63e4b6ebb16d8059b06d97b27eb7f72f1991741c33f88b",
+      "userId": "usr_554408a83cc0ea3bc75d682d5d628b9c041aa588c057f279",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_9_1788515882480@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:02.643Z"
+    },
+    {
+      "id": "audit_cb56ac75a606e7c7b3ab77864ddc2742da2e7dff590ac77a",
+      "userId": "usr_a8419441816eaceb164edd9dc1fa0a1b45c14ec2e3e18f8a",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_8_1788515882263@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:02.423Z"
+    },
+    {
+      "id": "audit_db5e8b1cbbcb62b7344eb7f0cfc649b356d97bfa5a1c7882",
+      "userId": "usr_81227d44ed1e3de6827d9538e4cf992056d40006968b7368",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_7_1788515882048@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:02.209Z"
+    },
+    {
+      "id": "audit_4da95636d3a1095715d996bd84d218ce081c02089b9f4626",
+      "userId": "usr_72b669ef90da9af6b5e8350ba89f5fb35568308d2a176ef5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_6_1788515881843@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:01.995Z"
+    },
+    {
+      "id": "audit_3655ccdd4d3abd887b0c97ed18346ee09305e123b96ca5f6",
+      "userId": "usr_3e82b210e235ebece203558d3b294eceea20336e39564cb8",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_5_1788515881634@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:01.789Z"
+    },
+    {
+      "id": "audit_187d304a415761320ed58fb123c4af0b54e634f7033ba720",
+      "userId": "usr_4db1225ec4c8d3ba951bd19fc4ef1d9787c01aa2583fcaa3",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_4_1788515881422@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:01.580Z"
+    },
+    {
+      "id": "audit_56cce093f06b6f460388b4bb3c05f94104ef17ed9c6865d6",
+      "userId": "usr_392e7c57ac8e14aae30fc461cdaa15717dc274fd935f5da7",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_3_1788515881205@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:01.369Z"
+    },
+    {
+      "id": "audit_85d3bd5c3ecda6a2074d00ca012695cc53c18fb6132d28f1",
+      "userId": "usr_193538db3b7f155d9792e471901920263bdccda93153df5f",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_2_1788515880964@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:01.151Z"
+    },
+    {
+      "id": "audit_d64c13312249c3e5978d881a60c51e1c7250d86db0b95a06",
+      "userId": "usr_457fc8c3df1349757b8c465c61305ca32c7200c62cf8df4a",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ip_a_user_1_1788515880747@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:00.905Z"
+    },
+    {
+      "id": "audit_c0589f883432de1498f1b5536d39c02beaa5dbf5fed58011",
+      "userId": "usr_52bdaf97d5f94a3f2194a11a0a884b1ef7ec2e999e7be617",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_10_1788515880530@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:00.687Z"
+    },
+    {
+      "id": "audit_f2e94bded0c50b0caab8e803a7adde4ed9417ad13aca4344",
+      "userId": "usr_9063685c46669b5b097ee6e85c5018762c21a13d8be84dd3",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_9_1788515880309@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:00.475Z"
+    },
+    {
+      "id": "audit_6dfe68c7c4402cd46b9112fd4da90ffb7cfcb0d8899ac22b",
+      "userId": "usr_4f6cd81663f0f4359757b61a50b879412852a13f922a004f",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_8_1788515880092@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:00.241Z"
+    },
+    {
+      "id": "audit_f8d878ec97535f19b57d69385bf0ba30853f8f2e5ce506b4",
+      "userId": "usr_915a3ab0b05a452b57ad98660f80f0a2ca796aa456348686",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_7_1788515879893@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:58:00.037Z"
+    },
+    {
+      "id": "audit_4cf6e797540aa2459660d6fe62cca70e4c6d25ab72b0ecf9",
+      "userId": "usr_2f79c5c1868dda960642154ee2196436f9e540aa103ea1de",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_6_1788515879633@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:59.839Z"
+    },
+    {
+      "id": "audit_7fe45dfb874dd4066585dafbef1baabf2a31731893d229cc",
+      "userId": "usr_41810ebcd9fce54cbf955182443d1fbe299ad05d84695ac2",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_5_1788515879412@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:59.580Z"
+    },
+    {
+      "id": "audit_6c2812e324b3c9b6499cc6d24fb1044852b99ce29e9fc244",
+      "userId": "usr_352922467d8d6dfaa4a81f0cd7f02bfaf5ff60ca39599796",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_4_1788515879211@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:59.358Z"
+    },
+    {
+      "id": "audit_32376c5e3ba58861754426f596db447898a9fdb65339f877",
+      "userId": "usr_3a17dcab5d577e8a42889c024c23b80fd00f448815fa8c76",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_3_1788515878956@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:59.157Z"
+    },
+    {
+      "id": "audit_769266648abbc4373bfa52d9fb0eebb10ea5e75d4aae4c3f",
+      "userId": "usr_a297b4afddcfb9ed764602f8a8de441e70ed2f27d1513355",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_2_1788515878760@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:58.903Z"
+    },
+    {
+      "id": "audit_44c02c925f0a0e490a671dc4996d9aade4823304f2d9b472",
+      "userId": "usr_5751302cf8bbb88f9a4897b6fe450a055cec30cbe511de43",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_before_limit_1_1788515878517@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:58.705Z"
+    },
+    {
+      "id": "audit_efd8a6975ca1a28889fa5b733b32b9c45d67fd32994e1b31",
+      "userId": "usr_1ae73318318c24de6a4857ad53948e5d3adae55fce14e7c9",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "security_verified_user@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:58.293Z"
+    },
+    {
+      "id": "audit_02761e4201e5646a2dd30f40c48be3bdf294fc85e5b726c8",
+      "userId": "usr_f917bd1eab9f423c36fdcb7f23c8829b03484ce0cf5d9316",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_10_1788515877909@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:58.056Z"
+    },
+    {
+      "id": "audit_372eca38672bf29680ed513a0e7bed9d13164ebff0b24a43",
+      "userId": "usr_db4b245950d0bc649f7cb8321e3977ddbfe16972fbb911f5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_9_1788515877703@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:57.855Z"
+    },
+    {
+      "id": "audit_1bbd33c47b24b945083640710b4d88c5d3de5d6bd5a0b93d",
+      "userId": "usr_9923e91924f5a4c562caf5db1e5545d30e3f202297e7857c",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_8_1788515877448@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:57.647Z"
+    },
+    {
+      "id": "audit_69b6b3cb59212501dd9f2ce08778419ee70ea703c6473149",
+      "userId": "usr_8507269fecc713a03fbe9a58dd9f8aa25b447fc1e02b8b2e",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_7_1788515877253@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:57.394Z"
+    },
+    {
+      "id": "audit_c5e07d730e58265f8ce1293baa5cc1c474d681dc87bc53ee",
+      "userId": "usr_77d44f329dd93b39c7d1cdd2a0355a5a57abf23d13223e0b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_6_1788515877039@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:57.199Z"
+    },
+    {
+      "id": "audit_858910ed15fbb99c5b1eae9e6eb4ad4b7e2e75efb2aa99b0",
+      "userId": "usr_170226d266ba46d638bdc2325d69c76f32e07bdf75cfc791",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_5_1788515876838@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:56.981Z"
+    },
+    {
+      "id": "audit_b6f299b886b9f8ae8c5e23dd19004e94d9c68f142c0a242a",
+      "userId": "usr_376dd6f3445b446d25dab3644efc1eadc307a02a3cbac63f",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_4_1788515876627@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:56.784Z"
+    },
+    {
+      "id": "audit_5971bb59d603d0d2d44e06ac7455532ef50cae3b96e1dc80",
+      "userId": "usr_0c0a35a5935fe86b455fa1b41e0d3938d1d239d4feb692d1",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_3_1788515876433@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:56.573Z"
+    },
+    {
+      "id": "audit_268159f25aa717a6ff2980342dd79f822cf6dcf568400e71",
+      "userId": "usr_775aa00d147e8a1a1a76a9938dcf07fd9c269c389c0492b9",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_2_1788515876238@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:56.379Z"
+    },
+    {
+      "id": "audit_385f2163319b5d97d2d55b59a7188a646b145da9e1530468",
+      "userId": "usr_4e402121bdb56673a80da3087b8fabb82cfb142f5de81b93",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spoof_user_1_1788515876043@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:56.184Z"
+    },
+    {
+      "id": "audit_ba9548fc5f503dad7dac9b7b27ef32649f8d40382e0a3ac9",
+      "userId": "usr_b6e6e1eb3a522fb3c6b5378a228b7ec54d07f464d55fbb7c",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "fresh_window_user_1700000601000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:55.988Z"
+    },
+    {
+      "id": "audit_2bc3a28546e591c2b63aba179fbe094fd3f683b86469ab21",
+      "userId": "usr_fb12552232f3599efdc18780cdf294038f382d4d21e916d3",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_10_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:55.791Z"
+    },
+    {
+      "id": "audit_d6d01b5b1eeba19093132fde293c319ccb1c1bab9754b1c3",
+      "userId": "usr_26084555af4d66be73f23e06989f7cf6a0e3277fe1a941dd",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_9_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:55.599Z"
+    },
+    {
+      "id": "audit_610954a2379c35263a887dab77e2135162229a03e5d42564",
+      "userId": "usr_6c8ee7e55027e0e228aefcaaa163572f0800ed4a15f37025",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_8_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:55.405Z"
+    },
+    {
+      "id": "audit_90853a944a6cc55c92b07ec85fdd29776d4124dfaa5e8b0b",
+      "userId": "usr_2fd276d0f0c894a5cebb0d1e3ffe6b983a1b6e009f4265aa",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_7_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:55.213Z"
+    },
+    {
+      "id": "audit_42f740b92ed84a8f3c93642c482a80dca7b54b32cf0a9b03",
+      "userId": "usr_739688a1e2b5ec269d350566af1c4b26410a477ee6e3eeeb",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_6_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:55.016Z"
+    },
+    {
+      "id": "audit_ad8f8658eef49af80a5bc92019f7396149486a26f03db08a",
+      "userId": "usr_9add8895283530333592dec9d182bf9a79911267bf4eff99",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_5_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:54.814Z"
+    },
+    {
+      "id": "audit_8399cfeff33a0cd0ff81f042ce65c563743385afe919e095",
+      "userId": "usr_022bad4b8fc7abf0f8670a290f4dcf25de8505ed97667a24",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_4_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:54.617Z"
+    },
+    {
+      "id": "audit_8490976497ab88785c49debd892c0e830dd6cfb7b340bd88",
+      "userId": "usr_2ee10b1ac9c48d7230eb0b7a69eceb6eb8caea43f25edc56",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_3_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:54.425Z"
+    },
+    {
+      "id": "audit_8d7ddc1ac6ce588a2e110f1b1651d30f3332458d5ac95bbd",
+      "userId": "usr_cdcbe0d7e367e5011611dc1073c8c2653b84c50a433ce6f5",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_2_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:54.229Z"
+    },
+    {
+      "id": "audit_509a3639c4c216b18edabd9ce51393b8acbd9ee2e0390b93",
+      "userId": "usr_a57c92afd695c95dc4c20481a8334b24b124f58dff47d9dd",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "burst_user_1_1700000000000@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:54.033Z"
+    },
+    {
+      "id": "audit_6e31ecbb7dc1d440d646c6421c6d37c21cf36f79264cf27b",
+      "userId": "usr_560fcf356e91c87f93aca812047739ca399192c95ecf3a00",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_10_1788515873684@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:53.830Z"
+    },
+    {
+      "id": "audit_5fdc75f4a5388d84c2dfc8780bdda50d3b457a96d4e987ef",
+      "userId": "usr_9776e9d8e3929b9d4c8a70997a91777e56c25f292d2b5a60",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_9_1788515873489@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:53.630Z"
+    },
+    {
+      "id": "audit_f821bc46fbddaf53a519bef56df6b72ebd0737e27e502e04",
+      "userId": "usr_faad2aadb1ea1862ac46afc2457de6fefe3b883cebce9af7",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_8_1788515873294@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:53.435Z"
+    },
+    {
+      "id": "audit_6f998ba70f51e1f0ab0be0f42212fb4a0d92800b7ef02e1e",
+      "userId": "usr_df4d147724cc55e4e08f68b30fd71d808dc365ebb11671c8",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_7_1788515873100@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:53.240Z"
+    },
+    {
+      "id": "audit_6fb2d454ce4b6fea12a4c5870452ad7b0f2a77bc0d23b5c8",
+      "userId": "usr_d54d81f0988895ba15200f5fad4edfce4951997460879c61",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_6_1788515872902@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:53.046Z"
+    },
+    {
+      "id": "audit_fe13755d88746050fa35fddc029307c21527853fc0f122d3",
+      "userId": "usr_bed1e4dff437ea25650fe5cae7cd017f10b33a4cce266b72",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_5_1788515872707@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:52.848Z"
+    },
+    {
+      "id": "audit_072b084533147f50ad06e0a3b6d28cabea826420861200c7",
+      "userId": "usr_e1ffacb3c0457f22e1eab00a776781376f49fac7ef81a9b2",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_4_1788515872510@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:52.652Z"
+    },
+    {
+      "id": "audit_a8c411e6afe6deb15736d3a7a362cdd7198c77481a09ce4d",
+      "userId": "usr_fb5cadf1e32562b874c7cd9ad7eb127eeeae4755b3d49c35",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_3_1788515872311@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:52.454Z"
+    },
+    {
+      "id": "audit_6810f03c53038bd272408f7d9c168e626541010ecbc2da18",
+      "userId": "usr_237156ce38a02e373726b212aa8912ac5ff03914db81c722",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_2_1788515872115@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:52.256Z"
+    },
+    {
+      "id": "audit_84fc87dec008f66549117036e03d9077709ed04ceab28b93",
+      "userId": "usr_81a35c000cff80b51b0947d7c4a2f706b983c94f28c7a706",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "spam_user_1_1788515871921@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:52.061Z"
+    },
+    {
+      "id": "audit_2f7948de9bfa7e98711df1282d475d94047f5dcb687d2ef5",
+      "userId": "usr_29d915f59960b3eafcbf9e604a897de4f02bdcc4ec74aa15",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_within_limit_5_1788515871726@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:51.866Z"
+    },
+    {
+      "id": "audit_6904f4a4a0fc843f7059284920a9d7ee75239aae8f4dc961",
+      "userId": "usr_037d1262b7307ec81111fbcae1585332aacef5f7b107c255",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_within_limit_4_1788515871532@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:51.672Z"
+    },
+    {
+      "id": "audit_7e1f90adc64c34802151aafa4c24de9a66841edda240ec2d",
+      "userId": "usr_149f307913a52cff546b81d4c1445b4073c01cff814aac88",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_within_limit_3_1788515871340@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:51.479Z"
+    },
+    {
+      "id": "audit_83de7cd2cac3317688fe6a858515ac5ca1fc2b8f0c760776",
+      "userId": "usr_39281a0b6056e9b9ff258a29c556023cf47601f0a54260cd",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_within_limit_2_1788515871144@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:51.285Z"
+    },
+    {
+      "id": "audit_3beddbc86b73f8e7865fb4971f8062b0da80e3af1e919ccb",
+      "userId": "usr_56f54ad5bd399097ffc58236cf05b9778d19dbd3b8047a4d",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "user_within_limit_1_1788515870946@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:51.089Z"
+    },
+    {
+      "id": "audit_214efce7f7f259e317cd006cb4d6e417cf4e63a69f5b1d9c",
+      "userId": "usr_e4405783e6f205c14035f199eb03bd887b2f14d1b3bac668",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "legit_user_1788515870706@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:50.883Z"
+    },
+    {
+      "id": "audit_600b87efbed0cbfb72d50ddbc6d52c907cfc7e6e7e394a00",
+      "userId": "usr_7d095daf1caf3a1937d88bba08e4b8c4eb75c6bc03890cad",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "iso_b_1788515862997@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:43.142Z"
+    },
+    {
+      "id": "audit_6baafa51b71aff6d220615eb2fcdf5290152fd19e7dcfc2c",
+      "userId": "usr_68d52b76ee330124afbc5bd0113a8eb98b6ace857796632a",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "iso_a_1788515862802@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:42.942Z"
+    },
+    {
+      "id": "audit_9b202ec319d64cbd8b99d2012d68bc9fc15d3d3171d568a9",
+      "userId": "usr_f3aef685548bbc3374be9a4c5a5824f2733a34d66c1fdd7b",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "leak.test.1788352855628@origin-os.internal"
+        "email": "reset_safe_1788515862488@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:55.792Z"
+      "timestamp": "2026-09-04T09:57:42.745Z"
     },
     {
-      "id": "audit_359b8dced050c8e8ec54e25a84eb5e53051e9ad14ac1c334",
-      "userId": "usr_leak_test_4840815854a940d8a605c79742d77cef7098ccd28c941841",
+      "id": "audit_874039d6b69e699050de4d14fa3f2c7924e375ebf78c5afd",
+      "userId": "usr_f3aef685548bbc3374be9a4c5a5824f2733a34d66c1fdd7b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "reset_safe_1788515862488@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:42.635Z"
+    },
+    {
+      "id": "audit_884817938b8f535f5110d47173709a5108d72974a9e6a0ce",
+      "userId": "usr_970754d02f56e917c9b38e18e5b95c3f7f4252ee94275308",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "ai_user_1788515861981@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:42.122Z"
+    },
+    {
+      "id": "audit_5fc5768571706a3ef6892a8429addf5442e467c95c1f135a",
+      "userId": "usr_8e5c698bdf7ae69e352917ed73c7022503a6edaa775a1da0",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "tamper_1788515861723@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:41.865Z"
+    },
+    {
+      "id": "audit_dbde129e5e4f810091d372eab408dc0167ac742c45d5f619",
+      "userId": "usr_cbc0ce8dfa6226905e2480958cd8591c884bfbe2ea6837c9",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "userb_1788515861459@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:41.598Z"
+    },
+    {
+      "id": "audit_4ec48e87e8c7d1e7686d02ad7f869748ba1720b9eb071457",
+      "userId": "usr_b517b4ecb0b4ca66678f90871a318cad2360c51b6a80f79b",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "usera_1788515861262@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:41.406Z"
+    },
+    {
+      "id": "audit_459ee26937ff6c559b85e9cb76c6d629ad7e88ea00a16b7f",
+      "userId": "usr_ab48f165c6bf0f233de447ce6cb3ed592a94def592e1b80f",
+      "action": "USER_SIGNUP",
+      "resource": "auth",
+      "metadata": {
+        "email": "test_auth_fail_1788515860942@origin-os.internal"
+      },
+      "timestamp": "2026-09-04T09:57:41.088Z"
+    },
+    {
+      "id": "audit_56a843481af618af59f5713f80c90c3935a38739977b0651",
+      "userId": "usr_59cfd2dcbc05f2752fbcc4ad5518c7f3b7481915f7c9316f",
+      "action": "DATA_EXPORTED",
+      "resource": "user_data",
+      "timestamp": "2026-09-04T09:57:40.887Z"
+    },
+    {
+      "id": "audit_5e876a2cbef496c45d9a241f22307dbd8ff6165fd63bba92",
+      "userId": "usr_demo_gst_8c63a40d50ac48b30d19097d8adb4843491a2e86ed0b5972",
+      "action": "DEMO_SESSION_STARTED",
+      "resource": "auth",
+      "timestamp": "2026-09-04T09:57:40.705Z"
+    },
+    {
+      "id": "audit_1c50569a738e0e8c8b889a5b186b907df6bf214c175590e2",
+      "userId": "usr_59cfd2dcbc05f2752fbcc4ad5518c7f3b7481915f7c9316f",
       "action": "USER_LOGIN",
       "resource": "auth",
-      "timestamp": "2026-09-02T12:40:55.225Z"
+      "timestamp": "2026-09-04T09:57:40.449Z"
     },
     {
-      "id": "audit_db434fc2210d11a58f80902281ea6a4a82942ba26c17b0be",
-      "userId": "usr_bd31a24ea5490391d82d5d5ff091b47b5fbee14b9efa81d8",
+      "id": "audit_a28e29deb6579af4736cd7a5b9729df1770f7e69dac38664",
+      "userId": "usr_59cfd2dcbc05f2752fbcc4ad5518c7f3b7481915f7c9316f",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "new.signup.1788352854722@origin-os.internal"
+        "email": "test_sanitize_1788515860096@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:54.906Z"
+      "timestamp": "2026-09-04T09:57:40.250Z"
     },
     {
-      "id": "audit_9d4162f2f4f5da8df3012e7be9b5a4f5d7839b83aed5e87f",
-      "userId": "usr_test_ph_3802bd7bc863441c1e4b84a5713f007351fa1155f6396124",
+      "id": "audit_8bf414c2a5fa3e67d06acd3ca83ab698146b96994e4ad6aa",
+      "userId": "usr_36d8eb1e6d5d6f8afbefff131d4ca39f6bc22cbae907ca3d",
       "action": "USER_LOGIN",
       "resource": "auth",
-      "timestamp": "2026-09-02T12:40:52.893Z"
+      "timestamp": "2026-09-04T09:57:40.040Z"
     },
     {
-      "id": "audit_a5ed5707c14ca5dfb506fcc581e257f1c62cf87a01047eaf",
-      "userId": "usr_test_ph_0ad14b990ef25f91cfb8e9f11ec865db616517ad13d0a273",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:52.045Z"
-    },
-    {
-      "id": "audit_aac219a20d4ceed5816b45afab3974c2742dded857713f65",
-      "userId": "usr_c029fa45e407eb5963f0c421f7564ce16081e0916dcb5aef",
+      "id": "audit_7f9db5c697ae4f07b3da175af05ab859ce4e6b2c999edc91",
+      "userId": "usr_36d8eb1e6d5d6f8afbefff131d4ca39f6bc22cbae907ca3d",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "new.signup.1788352851488@origin-os.internal"
+        "email": "test_jwt_1788515859686@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:51.666Z"
+      "timestamp": "2026-09-04T09:57:39.840Z"
     },
     {
-      "id": "audit_6c246e1af5ea904cd5489b244cacf760ce83638e20d41f3c",
-      "userId": "usr_a5421166a4fc39a76243ac9b1fa77d19e8d604d1fd744c3d",
+      "id": "audit_f5738a0b84e5fd6640c819fa7590ef8eb010b50b0c99f883",
+      "userId": "usr_6d6a8556a8897a405c3e0c78a11d5243245ecda481fc4c95",
       "action": "USER_SIGNUP",
       "resource": "auth",
       "metadata": {
-        "email": "signup_burst_9_1788352849982@origin-os.internal"
+        "email": "test_dup_1788515859436@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:50.133Z"
+      "timestamp": "2026-09-04T09:57:39.617Z"
     },
     {
-      "id": "audit_ed838f41953d700259584a54950cbcff19fb3648dabe11b2",
-      "userId": "usr_9ec18ceeec59bad20baf3fec9d60c1c237644bdc8830f7b0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_8_1788352849780@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:49.928Z"
-    },
-    {
-      "id": "audit_2c86761007ae4f529334b4b5f07f2a713ff5320ee9826cf5",
-      "userId": "usr_1ac9c6625ba1b1b99c5ecde4dacddadb21a884016c9687be",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_7_1788352849563@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:49.726Z"
-    },
-    {
-      "id": "audit_4039c160ac04007c605fc9512f388c79563336aa6b47f9dc",
-      "userId": "usr_6c13d9f9ac6752af536d7b86c1cc648614da1bd051b436f2",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_6_1788352849352@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:49.504Z"
-    },
-    {
-      "id": "audit_0d0dc137bc31b9f1de2651706eefbd6105ddedf7f109d4c4",
-      "userId": "usr_ba5ca203f3fc3ea87e9188528e8e6e7ef7a50b23263a008a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_5_1788352849139@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:49.298Z"
-    },
-    {
-      "id": "audit_20fd3478cc9f4e63aa8062241589a444ff10c67d8fc773d6",
-      "userId": "usr_08a5418146c06951c3e5f7bd124ef8881968aa8aa9370b7e",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_4_1788352848932@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:49.083Z"
-    },
-    {
-      "id": "audit_134a0d2a57f7caaf74944f23ac05c64b00545eea9a803d1a",
-      "userId": "usr_7bc99e16aecf23b172f9909db5b2cb7bf1d1f8cb46d13d83",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_3_1788352848734@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:48.878Z"
-    },
-    {
-      "id": "audit_2a5b1dd093f88812e05edf04ce88f5d918e656444c0f88e7",
-      "userId": "usr_9579df9d4b522db57e3a9c7d7956822d4b393080a5f523e4",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_2_1788352848521@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:48.681Z"
-    },
-    {
-      "id": "audit_51b2b2cd38733dff832e2244bbffb41775b164858d7521e2",
-      "userId": "usr_25f3299f28152cc62c9253d7933ef0c3e2ea5fbeabd250a0",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_1_1788352848318@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:48.468Z"
-    },
-    {
-      "id": "audit_a83e351c5a9a7bf92445a0bf957ea8cf935eb281a8a4ab2d",
-      "userId": "usr_41eb9edf1d7296e9a47f02529c66d958d902729268aedf2a",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "signup_burst_0_1788352848104@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:48.264Z"
-    },
-    {
-      "id": "audit_ea616c9232b1b91a5701d86679638842bda51a4fe8495d55",
-      "userId": "usr_00d9a955aeda8513ed50f9b26ef60f20da816e23a7ab0d07",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:47.953Z"
-    },
-    {
-      "id": "audit_6720cc4c19a2cf81dee28966785afbf8dca1bbe27ab6ef0f",
-      "userId": "usr_00d9a955aeda8513ed50f9b26ef60f20da816e23a7ab0d07",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "normal_user_1788352847536@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:47.733Z"
-    },
-    {
-      "id": "audit_a467a6e61690d272f3ac39a7eccfdb8a00730059d2f691a6",
-      "userId": "usr_679473f546d69149d82373801e2782d9843edb4f3d657ea5",
+      "id": "audit_d248d526fe8ca9daa877154abaa7d6f62d5838d4d602ecad",
+      "userId": "usr_smtp_test_9ba9954a731d28ed82c1d58d84c8a7ef92a94154708e21cf",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "crypto_check_1788352842781@origin-os.internal"
+        "email": "smtp.test.1788515848725@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:43.034Z"
+      "timestamp": "2026-09-04T09:57:28.918Z"
     },
     {
-      "id": "audit_a91be77ee0e2419c02d2c897a73932d434267a1e8c4cf623",
-      "userId": "usr_679473f546d69149d82373801e2782d9843edb4f3d657ea5",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "crypto_check_1788352842781@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:42.928Z"
-    },
-    {
-      "id": "audit_24a440d97b3eb846c59809dce936f14bc0ddc533ff37d7a9",
-      "userId": "usr_d7bc386c7fe22a9d2a06999de0a56939a5360fa9f0cc14cd",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "expired_1788352842505@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:42.659Z"
-    },
-    {
-      "id": "audit_86a3ffe1d9ded4f52c1fff567605e8868f739e360314f85a",
-      "userId": "usr_2f6a9c4b4b33e4428066efc001dfea40dbc3b65ddb7498c9",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:42.448Z"
-    },
-    {
-      "id": "audit_a0deedfd0962e81eae4ddfbfd96d5e36e9c3bebef8cdf130",
-      "userId": "usr_2f6a9c4b4b33e4428066efc001dfea40dbc3b65ddb7498c9",
+      "id": "audit_5488342769a513027d6ae753302fe18bc84e90da62ce1065",
+      "userId": "usr_smtp_test_a088676cf62dd90ae55b2e5b01b63f642e468a7b2a9c3e88",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "used_token_1788352841931@origin-os.internal"
+        "email": "smtp.test.1788515848177@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:42.194Z"
+      "timestamp": "2026-09-04T09:57:28.372Z"
     },
     {
-      "id": "audit_36da3ea40107e1e3933f5a4fae821f8d2f14621269009b8c",
-      "userId": "usr_2f6a9c4b4b33e4428066efc001dfea40dbc3b65ddb7498c9",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "used_token_1788352841931@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:42.085Z"
-    },
-    {
-      "id": "audit_49f6a42348746fbb8f6e7af8ae85c831487c6694137ecdc4",
-      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
-      "action": "USER_LOGIN",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:41.780Z"
-    },
-    {
-      "id": "audit_9c7ca7a04d3c0d1ff66d87c5230e3f9229cd6cd178820f80",
-      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:41.380Z"
-    },
-    {
-      "id": "audit_a74353a9c2df87ac1c868970b146ba97f3ad9686814ac22b",
-      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
+      "id": "audit_185cd473bb1ddac9c75faf4904d76ffade7ee105df4d0732",
+      "userId": "usr_smtp_test_b67b9cc9b5806895d82e2f394370bb42c3e2cd8e59914973",
       "action": "PASSWORD_RESET_REQUESTED",
       "resource": "auth",
       "metadata": {
-        "email": "reset_flow_1788352840870@origin-os.internal"
+        "email": "smtp.test.1788515847898@origin-os.internal"
       },
-      "timestamp": "2026-09-02T12:40:41.126Z"
-    },
-    {
-      "id": "audit_bc066385103d130be7310171fe321cbfa619d396ecb9f786",
-      "userId": "usr_af81b23095d4139ea1830f6a7ca8d4e800bb18a0f3e62d57",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "reset_flow_1788352840870@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:41.017Z"
-    },
-    {
-      "id": "audit_1e77bcc3c0bb208a0952a22972d439d65eb9f02f0542ec75",
-      "userId": "usr_f086f90f97b988a3b327bb1b59247aa9592c608731714759",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1788352840503@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:40.808Z"
-    },
-    {
-      "id": "audit_fba9d46c810a164c377ee9047253d554834996cc591aac2d",
-      "userId": "usr_f086f90f97b988a3b327bb1b59247aa9592c608731714759",
-      "action": "USER_SIGNUP",
-      "resource": "auth",
-      "metadata": {
-        "email": "existing_1788352840503@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:40.691Z"
-    },
-    {
-      "id": "audit_122597c64d2989a56cb9e56cd8fc492d7911ad19611456a8",
-      "userId": "usr_smtp_test_c55190c216b7af8fcfa5dcf3de761debb34742101830e255",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "smtp.test.1788352838853@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:39.052Z"
-    },
-    {
-      "id": "audit_677604192e5470c84fa0ec62d664d89cd31cc2d6623fca00",
-      "userId": "usr_smtp_test_4ebfb381c32859857748ad26189b398a31ed2c826bfce418",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "smtp.test.1788352838306@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:38.503Z"
-    },
-    {
-      "id": "audit_397960ee54825c1777823f6135504df8d953d44c22fc84be",
-      "userId": "usr_smtp_test_ad95638ffa5bc341e7bbaa89d9c4a93e61a00495058f244e",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "resource": "auth",
-      "metadata": {
-        "email": "smtp.test.1788352838022@origin-os.internal"
-      },
-      "timestamp": "2026-09-02T12:40:38.247Z"
-    },
-    {
-      "id": "audit_9416e140f4ecb567b034ef8c2b2478e93fd1aca59ff6b8b9",
-      "userId": "usr_demo_gst_d92be8b882113b26a877ba721f0392d9c5312b03eed127aa",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:35.667Z"
-    },
-    {
-      "id": "audit_50873715255f43e061e7fd3b6f22f3bbcb8894c227d8ea2b",
-      "userId": "usr_demo_gst_03df7e8a3f7307bf909f72be880af16d237c0f25f4fd1ed3",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:35.414Z"
-    },
-    {
-      "id": "audit_dd8765b230393c0bef3fb22e8f7bc586281316e4f1452427",
-      "userId": "usr_demo_gst_37a796649b0ec89c73f84b7973df0c903192cfc60d14d7c6",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:35.097Z"
-    },
-    {
-      "id": "audit_79e88e899950aba07c9d719fc6eff83a5c3d2a1755081d2f",
-      "userId": "usr_demo_gst_8a91bcd527c0fa80568bdf0d554720caf4d147928ea4f897",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:34.833Z"
-    },
-    {
-      "id": "audit_c7040620ba8d0f3ecf8449b5f3db3c4389aad281ccce4f44",
-      "userId": "usr_demo_gst_057c7a005ac613871361d897dda0e22816b07236c2b2d4d0",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:34.559Z"
-    },
-    {
-      "id": "audit_4ba63b916914ae14cb21adefe78cc70bd76f8d6af96d553a",
-      "userId": "usr_demo_gst_f7626f4b30eaba2a5afa4da9823884d1680b2a4318c78e8b",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:34.217Z"
-    },
-    {
-      "id": "audit_9c56aae0f20e3d90988f478d6d10ba0ffde7862f2ce0e4a4",
-      "userId": "usr_demo_gst_d20aee81a701bfefc7c105448c208957c24d9d05d325f744",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:33.965Z"
-    },
-    {
-      "id": "audit_06a51bbf8082d00d06d0070ec329fb6414f087c36f5efdd2",
-      "userId": "usr_demo_gst_c90ea8a4a4810e956bf8379d5a22352054008d53abc57a74",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:33.635Z"
-    },
-    {
-      "id": "audit_ad967a21e3122bc8ea3531350d3aa38aa479a707cef627d7",
-      "userId": "usr_demo_gst_ceca98c887fb024f21b3e6714c1d799411a08de194cff30e",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:33.373Z"
-    },
-    {
-      "id": "audit_c3baa148c3accc34d92230188b454bbca48ce27508ae1542",
-      "userId": "usr_demo_gst_ab9840c3a4ecc1ee43f56d1b00b72177d3e3cb9b294f28a8",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:33.109Z"
-    },
-    {
-      "id": "audit_62c08081bd1df9725e6348702f7ca07c8290c0c578e79061",
-      "userId": "usr_demo_gst_02386d84d989d0a86803071331711622789b53ecd16a61fb",
-      "action": "DEMO_SESSION_STARTED",
-      "resource": "auth",
-      "timestamp": "2026-09-02T12:40:32.850Z"
+      "timestamp": "2026-09-04T09:57:28.118Z"
     }
   ],
   "passwordResetTokens": [
     {
-      "token": "786c144722756ab3437419527570875db492d65e5effafd4faa5d50107896fa6",
-      "email": "smtp.test.1788352838022@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:38.194Z",
+      "token": "255d9449b16e9d72d215d937b1a1b86e93d279442cd44088361fbe49e65da192",
+      "email": "smtp.test.1788515847898@origin-os.internal",
+      "expiresAt": "2026-09-04T10:57:28.066Z",
       "used": false,
-      "createdAt": "2026-09-02T12:40:38.194Z"
+      "createdAt": "2026-09-04T09:57:28.066Z"
     },
     {
-      "token": "51178dccda69c9afc48d57acd78d6611a723c1c6fdaa8ba3f18398f32466f794",
-      "email": "smtp.test.1788352838306@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:38.452Z",
+      "token": "b605e378ce19f731ffd42fd97cb1518b649edf92cfb1459c2e8a0ad1378ea3b8",
+      "email": "smtp.test.1788515848177@origin-os.internal",
+      "expiresAt": "2026-09-04T10:57:28.320Z",
       "used": false,
-      "createdAt": "2026-09-02T12:40:38.452Z"
+      "createdAt": "2026-09-04T09:57:28.320Z"
     },
     {
-      "token": "ed8c32e9e474eec7a3f35dfbc4872a472222477d6d6d649ed8afc32b7a79103c",
-      "email": "smtp.test.1788352838853@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:39.000Z",
+      "token": "8c04a8e61f885d35d211233a2c18655972c681a718cb3bfe8776e6203b6fa5c0",
+      "email": "smtp.test.1788515848725@origin-os.internal",
+      "expiresAt": "2026-09-04T10:57:28.867Z",
       "used": false,
-      "createdAt": "2026-09-02T12:40:39.000Z"
+      "createdAt": "2026-09-04T09:57:28.867Z"
     },
     {
-      "token": "fa06bf6dfe5f8b2909f2431083a46d541a29af8ccce07c65fa18ccc3650a98aa",
-      "email": "existing_1788352840503@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:40.757Z",
+      "token": "48791897a4f5c1944bd7bdc0aac89b1157f9cdf7f3bf37ed89b43d40d074b11a",
+      "email": "reset_safe_1788515862488@origin-os.internal",
+      "expiresAt": "2026-09-04T10:57:42.691Z",
       "used": false,
-      "createdAt": "2026-09-02T12:40:40.757Z"
-    },
-    {
-      "token": "e34d3bd37fbb5c0348c2b467ed3a3419f82b7f2a8e9d3909d329e9e3b5788b0a",
-      "email": "reset_flow_1788352840870@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:41.074Z",
-      "used": true,
-      "createdAt": "2026-09-02T12:40:41.074Z"
-    },
-    {
-      "token": "a4367cb614745026f2f5abd59a60a24a56bfdf696527127abc5be280593401f5",
-      "email": "used_token_1788352841931@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:42.142Z",
-      "used": true,
-      "createdAt": "2026-09-02T12:40:42.142Z"
-    },
-    {
-      "token": "e56365e548d32dd98b1d5fb8c4d1f0982a21ad29bfdd2d8dcbccac0b40ae5122",
-      "email": "expired_1788352842505@origin-os.internal",
-      "expiresAt": "2026-09-02T11:40:42.712Z",
-      "used": false,
-      "createdAt": "2026-09-02T10:40:42.712Z"
-    },
-    {
-      "token": "3b00565939cfe71c9c248f3a433c8a4bdf7d6c52f39484cacae3192e732aa89f",
-      "email": "crypto_check_1788352842781@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:42.983Z",
-      "used": false,
-      "createdAt": "2026-09-02T12:40:42.983Z"
-    },
-    {
-      "token": "7c532340b3384d7390c55e02d55e23cfdbfb4453fb26c62698ca8160021f0c19",
-      "email": "leak.test.1788352855628@origin-os.internal",
-      "expiresAt": "2026-09-02T13:40:55.740Z",
-      "used": true,
-      "createdAt": "2026-09-02T12:40:55.740Z"
+      "createdAt": "2026-09-04T09:57:42.691Z"
     }
   ],
   "notifications": [],
